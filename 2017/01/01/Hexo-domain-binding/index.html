@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Hexo域名绑定 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言出于”折腾”的目的,在使用github+hexo搭建blog*后,将原来.io*的域名绑定为个人申请的域名 准备 域名 DNS服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo域名绑定">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;01&#x2F;01&#x2F;Hexo-domain-binding&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="前言出于”折腾”的目的,在使用github+hexo搭建blog*后,将原来.io*的域名绑定为个人申请的域名 准备 域名 DNS服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;01&#x2F;01&#x2F;5869175f55d7b.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;01&#x2F;01&#x2F;58691bc7a5650.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;01&#x2F;01&#x2F;58691d32115de.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;01&#x2F;01&#x2F;58691fa67e0e0.png">
+<meta property="article:published_time" content="2017-01-01T14:29:49.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:50:37.379Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="utils">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;01&#x2F;01&#x2F;5869175f55d7b.png">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#准备">2&nbsp;&nbsp;<b>准备</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#注意">4&nbsp;&nbsp;<b>注意</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Hexo域名绑定
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-01-01T14:29:49.000Z" itemprop="datePublished">1月 1 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 537 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>出于”折腾”的目的,在使用<em>github</em>+<em>hexo<em>搭建</em>blog*后,将原来</em>.io*的域名绑定为个人申请的域名</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>域名</li>
+<li>DNS服务器</li>
+</ol>
+<a id="more"></a>
+
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>当前的需求是将<em>github</em>分配的域名,重新指向给新申请的域名</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/01/5869175f55d7b.png" alt></p>
+<p>由上图可知,<em>CNAME</em>能将域名指向另一个提供ip的域名,符合当前的需求、</p>
+<p>关于<em>DNS<em>服务器,我选择了</em>DNSPod</em>,它现在可以申请域名,一事不烦二主,所以申请域名我也交给了它。</p>
+<p>在<em>控制台</em> &gt; <em>域名解析<em>中添加申请成功的域名,比如</em>iosugar.com</em>,然后建立两条<em>dns</em>记录</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/01/58691bc7a5650.png" alt></p>
+<p>两者只有主机记录不一样,主要是为了访问<em><a href="http://www.iosugar.com" target="_blank" rel="noopener">www.iosugar.com</a></em>和<em>iosugar.com</em>效果能一致</p>
+<p>访问配置好的新域名,会出现<em>github<em>的</em>404<em>错误,到</em>blog<em>的</em>source<em>目录下,新建</em>CNAME<em>文件,写入</em><a href="http://www.iosugar.com" target="_blank" rel="noopener">www.iosugar.com</a></em>,<em>hexo d<em>到</em>github<em>上,然后点击工程的</em>setting</em>,可以看到</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/01/58691d32115de.png" alt="Snip20170101_7.png"></p>
+<p>配置自定义域名已经成功了</p>
+<p>等一段时间,访问<em>iosugar.com</em>成功了</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><ul>
+<li><em>dns<em>更新会有延迟,若是要想尽快测试效果,可以将</em>DNSPod<em>的</em>dns<em>域名服务器</em>ip</em>(通过<em>ping<em>指令)添加到本机的</em>dns<em>服务器的查询列表(网络&gt;高级&gt;</em>DNS</em>)</li>
+</ul>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ping f1g1ns1.dnspod.net</span><br><span class="line">PING f1g1ns1.dnspod.net (180.163.19.15): 56 data bytes</span><br><span class="line">64 bytes from 180.163.19.15: icmp_seq=0 ttl=50 time=131.329 ms</span><br><span class="line">64 bytes from 180.163.19.15: icmp_seq=1 ttl=50 time=135.907 ms</span><br><span class="line">64 bytes from 180.163.19.15: icmp_seq=2 ttl=50 time=133.248 ms</span><br><span class="line">64 bytes from 180.163.19.15: icmp_seq=3 ttl=50 time=136.791 ms</span><br><span class="line"></span><br><span class="line">$ ping f1g1ns2.dnspod.net</span><br><span class="line">PING f1g1ns2.dnspod.net (101.226.30.224): 56 data bytes</span><br><span class="line">64 bytes from 101.226.30.224: icmp_seq=0 ttl=51 time=58.310 ms</span><br><span class="line">64 bytes from 101.226.30.224: icmp_seq=1 ttl=51 time=55.261 ms</span><br><span class="line">64 bytes from 101.226.30.224: icmp_seq=2 ttl=51 time=56.218 ms</span><br><span class="line">64 bytes from 101.226.30.224: icmp_seq=3 ttl=51 time=65.365 ms</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>因为使用了自定义的域名,所以在<em>github<em>上搭建的</em>blog<em>无法支持</em>https</em></li>
+</ul>
+<p><img src="https://ooo.0o0.ooo/2017/01/01/58691fa67e0e0.png" alt="Snip20170101_10.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://www.jianshu.com/p/834d7cc0668d" target="_blank" rel="noopener">我的博客是如何搭建的（github pages + HEXO + 域名绑定）</a></li>
+<li><a href="http://blog.zfan.me/2015/09/03/为部署在Github上的Hexo博客绑定个性域名/" target="_blank" rel="noopener">为部署在Github上的Hexo博客绑定个性域名</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/utils/">#utils</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/01/21/How-to-export-the-ipa-file-for-other-apps-on-iOS9/">iOS9上如何导出其他应用的.ipa文件</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2016/12/25/Understand-objc-runtime-3-method-encoding-execution-etc/">理解objc运行时三:方法编码,执行,转发,交换</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

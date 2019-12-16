@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>标签: utils - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="一个程序员">
+<meta property="og:type" content="website">
+<meta property="og:title" content="光阴的故事">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;utils&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="一个程序员">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section section-heading">
+    <div class="container">
+        <div class="content">
+            <h5>#utils</h5>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2019/11/25/OC-Color-macro/" itemprop="url">iOS 颜色宏</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-11-25T05:57:21.000Z" itemprop="datePublished">11月 25 2019</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 216 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　平常用的颜色宏大概如下</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RGBHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue &amp; 0xFF0000) &gt;&gt; 16))/255.0 green:((float)((rgbValue &amp; 0xFF00) &gt;&gt; 8))/255.0 blue:((float)(rgbValue &amp; 0xFF))/255.0 alpha:1.0]</span></span><br></pre></td></tr></table></figure></p>
+<p>　　考虑到蓝湖中获得的十六进制颜色值为<code>#FF0000</code>,cv时需要先删除#再添加<code>0x</code>,想省略这部分</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>　　<code>C</code>语言宏中’#’称之为字符串化操作符(Stringizing Operator)，它将函数宏的实际参数转换为对应的字符串常量。利用这个特点定义如下的颜色宏</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HEXA(COLOR,A) (&#123; \</span></span><br><span class="line">    <span class="hljs-keyword">char</span> *color = #COLOR;\</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *colorString = [<span class="hljs-built_in">NSString</span> stringWithUTF8String:color]; \</span><br><span class="line">    colorString = [colorString stringByReplacingOccurrencesOfString:<span class="hljs-string">@"#"</span> withString:<span class="hljs-string">@""</span>]; \</span><br><span class="line">    colorString = [colorString stringByReplacingOccurrencesOfString:<span class="hljs-string">@"0x"</span> withString:<span class="hljs-string">@""</span>]; \</span><br><span class="line">    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> red,green,blue; \</span><br><span class="line">    <span class="hljs-built_in">NSRange</span> range; \</span><br><span class="line">    range.length = <span class="hljs-number">2</span>; \</span><br><span class="line">    range.location = <span class="hljs-number">0</span>; \</span><br><span class="line">    [[<span class="hljs-built_in">NSScanner</span> scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;red]; \</span><br><span class="line">    range.location = <span class="hljs-number">2</span>; \</span><br><span class="line">    [[<span class="hljs-built_in">NSScanner</span> scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;green]; \</span><br><span class="line">    range.location = <span class="hljs-number">4</span>; \</span><br><span class="line">    [[<span class="hljs-built_in">NSScanner</span> scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;blue]; \</span><br><span class="line">    [<span class="hljs-built_in">UIColor</span> colorWithRed:red/<span class="hljs-number">255.0</span>f green:green/<span class="hljs-number">255.0</span>f blue:blue/<span class="hljs-number">255.0</span>f alpha:A]; \</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HEX(COLOR) HEXA(COLOR,1.0)</span></span><br></pre></td></tr></table></figure></p>
+<p>　　支持<code>0xFF0000/#FF0000/FF0000</code>这三种格式</p>
+
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2019/01/09/Charles-capture-principle/" itemprop="url">Charles HTTP抓包原理</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2019-01-09T08:57:09.000Z" itemprop="datePublished">1月 9 2019</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            3 分钟 读完 (约 469 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言-Web代理服务器"><a href="#前言-Web代理服务器" class="headerlink" title="前言: Web代理服务器"></a>前言: Web代理服务器</h2><p><img src="https://i.loli.net/2019/01/09/5c35b6b81d2db.png" alt></p>
+<p>来自<a href="#refer2">参考链接2</a></p>
+<p>对客户端/浏览器来说<code>Web</code>代理服务器是服务器<br>对服务器来说<code>Web</code>代理服务器是客户端</p>
+        <p class="article-more-link">
+            <a href="/2019/01/09/Charles-capture-principle/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/09/24/router-cascade-magnified-wifi/" itemprop="url">路由器级联放大Wifi信号</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-09-24T08:17:06.000Z" itemprop="datePublished">9月 24 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 652 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<code>Wifi</code> 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>MERCURY xxx 路由器<br>macOS Sierra 10.12.6</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>网上搜了下,就是下面的参考链接,提供了3种方案</p>
+<ol>
+<li><code>WDS</code> 无线桥接</li>
+<li>当 <code>AP</code> (无线交换机) 使用</li>
+<li>搭建新网络 (子网络)</li>
+</ol>
+<p>因为没有联通路由器的登陆的用户名密码,就选第 <code>3</code> 种方案</p>
+        <p class="article-more-link">
+            <a href="/2017/09/24/router-cascade-magnified-wifi/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/06/25/ITunes-Store-unavailable-not-resolved/" itemprop="url">iTunes Store 不可用 (没解决)</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-06-25T11:20:23.000Z" itemprop="datePublished">6月 25 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            3 分钟 读完 (约 455 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近发现 <code>Mac</code> 上的 <code>iTunes</code> 中的 <code>AppStore</code> 总是无法访问，出现如下三种错误</p>
+<ul>
+<li>400 Bad Request</li>
+<li>502</li>
+<li>Your iTunes Store Session has expired  (再次登陆还是报这个错)</li>
+</ul>
+        <p class="article-more-link">
+            <a href="/2017/06/25/ITunes-Store-unavailable-not-resolved/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/04/27/Small-note-Apple-developer-renewal/" itemprop="url">小记 - Apple 开发者续费</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-04-26T23:39:25.000Z" itemprop="datePublished">4月 27 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            2 分钟 读完 (约 300 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>最近，公司的个人开发者账号需要续费，同事发现他的 <em>VISA</em> 信用卡无法支付。提示你的支付授权失败。请核实你的信息后重试，或试试其他付款方式。我在尝试的时候也报了上面的错误，再次尝试就顺利支付了。搜索后发现原来自 <em>2015年6月1日</em> 起，中国大陆发行的 <em>VISA</em> 单标卡若在中国境内他行的 <em>VISA</em> 外卡收单商户交易，<em>VISA</em> 网络将不能受理。</p>
+        <p class="article-more-link">
+            <a href="/2017/04/27/Small-note-Apple-developer-renewal/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/04/25/OC-Swift-Mixed/" itemprop="url">OC &amp; Swift 混编</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-04-25T13:55:24.000Z" itemprop="datePublished">4月 25 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            6 分钟 读完 (约 936 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>　　本文主要简单描述了在 <em>OC</em> &amp; <em>Swift</em> 混编工程中，两者是如何相互调用的，顺便实现在 <em>Swift</em> 中获取类的属性。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
+<blockquote>
+<p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Swift 3.0</p>
+</blockquote>
+        <p class="article-more-link">
+            <a href="/2017/04/25/OC-Swift-Mixed/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/04/10/WoSign-CA-signed-digital-certificate-is-invalid/" itemprop="url">WoSign CA 签名的数字证书失效</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-04-10T09:37:40.000Z" itemprop="datePublished">4月 10 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 563 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 <em>WoSign</em> 签名的。<br>　　<br>　　在证书交换阶段时报错了，<em>Google</em> 后找到一篇 <a href="https://support.apple.com/en-us/HT204132" target="_blank" rel="noopener"><em>Apple</em> 官方的声明</a>。</p>
+<h2 id="PKI"><a href="#PKI" class="headerlink" title="PKI"></a><code>PKI</code></h2><p>　</p>
+<p>　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。
+　</p>
+        <p class="article-more-link">
+            <a href="/2017/04/10/WoSign-CA-signed-digital-certificate-is-invalid/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/04/07/Full-width-spaces-used-in-Markdown/" itemprop="url">全角空格在Markdown中的使用</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-04-07T13:39:05.000Z" itemprop="datePublished">4月 7 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 199 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　<br>　　<code>Markdown</code> 是一种轻量级的标记语言。它关注内容而不是样式。因为全角空格在排版上会有一些用处，而且也确实碰到了，因此进行简单的记录。
+　　　　</p>
+<h2 id="段首空格"><a href="#段首空格" class="headerlink" title="段首空格"></a>段首空格</h2><p>　<br>　　切换到全角状态，输入空格，即可。因为 <code>Markdown</code> 最后还是被 <code>hexo-renderer-marked</code> 转换成 <code>html</code> 。所以也可以使用 <code>&amp;nbsp;</code>、<code>&amp;emsp;</code> 这种转义字符，但是还是全角空格感觉上会更纯粹一些。</p>
+        <p class="article-more-link">
+            <a href="/2017/04/07/Full-width-spaces-used-in-Markdown/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/03/28/How-to-create-URL-shortcuts-on-macOS/" itemprop="url">macOS上如何创建网址快捷方式</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-03-28T14:45:15.000Z" itemprop="datePublished">3月 28 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            2 分钟 读完 (约 253 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>mac</em> 上装了很多浏览器。因为喜欢 <em>Safari</em> 的 <em>Pin Tab</em> 的功能，所以主力的浏览器选择的是它，但是太多的 <em>Pin Tab</em> 似乎拖累了浏览器的速度，今天要打开苹果开发者后台时，由于网速不给力，最后换成 <em>Firefox</em> 才顺利打开。感觉有必要整理一下。又不想放到收藏夹中，放到那儿，似乎就很难再记起它了。</p>
+<p>闲话点到为止即可，讲讲如何制作网址快捷方式，非常简单，只是因为以前没注意过这个角落，因此才考虑花点时间记录一下。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ol>
+<li>切换到 <em>Safari</em> 浏览器中</li>
+<li>移动到地址栏</li>
+<li>长按鼠标/触摸板，以拖拽的方式将其移动到目标路径,比如 <em>Finder</em>/<em>Desktop</em></li>
+</ol>
+<p>顺利的话应该会生成类似这样的图标</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/28/58da76c4ed5a1.jpg" alt></p>
+<p><em>That’s all</em></p>
+
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/03/12/IntelliJ-IDEA-main-function-pass/" itemprop="url">IntelliJ IDEA Main函数传参</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-03-12T02:03:48.000Z" itemprop="datePublished">3月 12 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 218 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　单纯做个记录</p>
+<h2 id="程序传参"><a href="#程序传参" class="headerlink" title="程序传参"></a>程序传参</h2><h3 id="C"><a href="#C" class="headerlink" title="C"></a>C</h3><p><em>C</em>程序的入口为<em>main</em>,函数声明一般为</p>
+<p><epacse hidden>213</epacse></p>
+<p><em>arg<em>是参数缩写,</em>c<em>是</em>count</em>,<em>argc</em>代表外部参数的个数,<em>argv</em>是一个指向字符数组的指针。简而言之外部可以给<em>main</em>传递一个字符串数组,个数由<em>argc</em>确定</p>
+        <p class="article-more-link">
+            <a href="/2017/03/12/IntelliJ-IDEA-main-function-pass/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+    
+        
+<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+    <div class="pagination-previous is-invisible is-hidden-mobile">
+        <a href="/tags/utils/page/0/">上一页</a>
+    </div>
+    <div class="pagination-next">
+        <a href="/tags/utils/page/2/">下一页</a>
+    </div>
+    <ul class="pagination-list is-hidden-mobile">
+        
+        <li><a class="pagination-link is-current" href="/tags/utils/">1</a></li>
+        
+        <li><a class="pagination-link" href="/tags/utils/page/2/">2</a></li>
+        
+        <li><a class="pagination-link" href="/tags/utils/page/3/">3</a></li>
+        
+    </ul>
+</nav>
+    
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>浅析UIButton的imageEdgeInsets与titleEdgeInsets - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　 　　系统的 UIButton 默认状态下的样式是图标在左标题在右，但有时候可能需要不同的排版。当然可以通过继承添加子视图来实现需求，但本文打算通过理解 UIButton 自带的 imageEdgeInsets 和 titleEdgeInsets 属性实现该功能。 主要内容包含以下两点:  浅析 imageEdgeInsets 和 titleEdgeInsets 的属性的原理 [个人观点]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析UIButton的imageEdgeInsets与titleEdgeInsets">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;05&#x2F;20&#x2F;Analysis-of-UIButton-s-imageEdgeInsets-with-titleEdgeInsets&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="导语　 　　系统的 UIButton 默认状态下的样式是图标在左标题在右，但有时候可能需要不同的排版。当然可以通过继承添加子视图来实现需求，但本文打算通过理解 UIButton 自带的 imageEdgeInsets 和 titleEdgeInsets 属性实现该功能。 主要内容包含以下两点:  浅析 imageEdgeInsets 和 titleEdgeInsets 的属性的原理 [个人观点]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2be11585.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bd868d5.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2be44b9c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2be0e16c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bf45367.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bf32707.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2be04be2.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bf04f5a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bf2c9a8.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe3130618e.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2bf2aeb2.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe312df340.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe3132fcf3.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe312e67eb.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe31491ab7.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe314150fa.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe315dd532.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe315bfdd1.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe3137ecdb.jpg">
+<meta property="article:published_time" content="2017-05-20T06:35:14.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:42:33.459Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="UI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;20&#x2F;591fe2be11585.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#问题-1">3.1&nbsp;&nbsp;问题 1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试代码">3.2&nbsp;&nbsp;测试代码</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-1">3.2.1&nbsp;&nbsp;测试 1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-2">3.2.2&nbsp;&nbsp;测试 2</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-3">3.2.3&nbsp;&nbsp;测试 3</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-4">3.2.4&nbsp;&nbsp;测试 4</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-5">3.2.5&nbsp;&nbsp;测试 5</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#问题-2">3.3&nbsp;&nbsp;问题 2</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#寻找-amp-分析">3.4&nbsp;&nbsp;寻找 &amp;amp;amp; 分析</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#回答-1">3.5&nbsp;&nbsp;回答 1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-6">3.5.1&nbsp;&nbsp;测试 6</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-7">3.5.2&nbsp;&nbsp;测试 7</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试-8">3.5.3&nbsp;&nbsp;测试 8</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小结">3.5.4&nbsp;&nbsp;小结</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#佐证">3.5.5&nbsp;&nbsp;佐证</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#回答-2">3.6&nbsp;&nbsp;回答 2</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#如何转换">3.6.1&nbsp;&nbsp;如何转换?</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#实践">4&nbsp;&nbsp;<b>实践</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#图标在右标题在左">4.1&nbsp;&nbsp;图标在右标题在左</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#代码段-1">4.1.1&nbsp;&nbsp;代码段 1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#代码段-2">4.1.2&nbsp;&nbsp;代码段 2</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#图标在下标题在上">4.2&nbsp;&nbsp;图标在下标题在上</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#阶段-1">4.2.1&nbsp;&nbsp;阶段 1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#阶段-2">4.2.2&nbsp;&nbsp;阶段 2</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#假想的实现">5&nbsp;&nbsp;<b>假想的实现</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#总结">6&nbsp;&nbsp;<b>总结</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            浅析UIButton的imageEdgeInsets与titleEdgeInsets
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-05-20T06:35:14.000Z" itemprop="datePublished">5月 20 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            19 分钟 读完 (约 2888 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>　　系统的 <em>UIButton</em> 默认状态下的样式是图标在左标题在右，但有时候可能需要不同的排版。当然可以通过继承添加子视图来实现需求，但本文打算通过理解 <em>UIButton</em> 自带的 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> 属性实现该功能。</p>
+<p>主要内容包含以下两点:</p>
+<ul>
+<li>浅析 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> 的属性的原理 [个人观点]</li>
+<li>简单实现图标在右标题在左,图标在上标题在下。</li>
+</ul>
+<a id="more"></a>
+<p>　</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
+<blockquote>
+<p>macOS Sierra 10.12.4<br>Xcode 8.3.2<br>iPhone 6S (10.1.1)</p>
+</blockquote>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>　</p>
+<p>先从苹果官方对该方法的注释入手</p>
+<blockquote>
+<p>The inset or outset margins for the rectangle around the button’s title text.</p>
+</blockquote>
+<p>使用此属性可调整按钮标题的有效绘图矩形的大小并重新定位。(来自 <em>google</em> 翻译)</p>
+<blockquote>
+<p>Use this property to resize and reposition the effective drawing rectangle for the button title. You can specify a different value for each of the four insets (top, left, bottom, right). A positive value shrinks, or insets, that edge—moving it closer to the center of the button. A negative value expands, or outsets, that edge. Use the UIEdgeInsetsMake function to construct a value for this property. The default value is UIEdgeInsetsZero.</p>
+</blockquote>
+<p>关于 <em>UIEdgeInsetsMake</em> 的 <em>top, left, bottom, right</em> ，<strong>正数表明更靠近按钮的中心，负数表示更靠近按钮的边缘</strong>，默认为 <em>UIEdgeInsetsZero</em> 。</p>
+<h3 id="问题-1"><a href="#问题-1" class="headerlink" title="问题 1"></a>问题 1</h3><p>　</p>
+<ul>
+<li><em>margins</em> 是边距的含义，那原始的位置在哪?</li>
+</ul>
+<h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><p>　</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">JAButton</span> : <span class="hljs-title">UIButton</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"JAButton.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">JAButton</span></span></span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithFrame:(<span class="hljs-built_in">CGRect</span>)frame &#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> initWithFrame:frame]) &#123;</span><br><span class="line">        <span class="hljs-keyword">self</span>.layer.borderColor = [<span class="hljs-built_in">UIColor</span> blueColor].CGColor;</span><br><span class="line">        <span class="hljs-keyword">self</span>.layer.borderWidth = <span class="hljs-number">1</span>;</span><br><span class="line">        [<span class="hljs-keyword">self</span> setTitleColor:[<span class="hljs-built_in">UIColor</span> redColor] forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// [1]</span></span><br><span class="line">        [<span class="hljs-keyword">self</span> setTitle:<span class="hljs-string">@"测试"</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// [2]</span></span><br><span class="line">        [<span class="hljs-keyword">self</span> setImage:[<span class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@"arrow"</span>] forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="hljs-keyword">void</span>)layoutSubviews &#123;</span><br><span class="line">    [<span class="hljs-keyword">super</span> layoutSubviews];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// [3]</span></span><br><span class="line">    <span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// [4]</span></span><br><span class="line">    <span class="hljs-keyword">self</span>.imageEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">JAButton *b = [[JAButton alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">40</span>)];</span><br><span class="line">[<span class="hljs-keyword">self</span>.view addSubview:b];</span><br></pre></td></tr></table></figure></p>
+<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试 1"></a>测试 1</h4><p>　</p>
+<p>只有标题 [注释 2 3 4]</p>
+<p>标题的位置如下<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe2be11585.jpg" alt></p>
+<p>标题居中</p>
+<h4 id="测试-2"><a href="#测试-2" class="headerlink" title="测试 2"></a>测试 2</h4><p>　</p>
+<p>只有图标 [注释 1 3 4]</p>
+<p>图标位置信息如下<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bd868d5.jpg" alt></p>
+<p>图标居中</p>
+<h4 id="测试-3"><a href="#测试-3" class="headerlink" title="测试 3"></a>测试 3</h4><p>　</p>
+<p>标题 + 图标 [注释 3 4]</p>
+<p>图标<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe2be44b9c.jpg" alt></p>
+<p>标题<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe2be0e16c.jpg" alt></p>
+<p>为了维持居中就要将标题和图标看做一个整体即宽度和为 <em>37 + 10 = 47</em> ，用 <em>UIButton</em> 的宽度来减去总宽度再乘以 <em>0.5</em> 即可实现整体居中，因此图标的 <em>X</em> 就是 <em>(100 - 47) * 0.5 = 26.5</em></p>
+<h4 id="测试-4"><a href="#测试-4" class="headerlink" title="测试 4"></a>测试 4</h4><p>　</p>
+<p>只调整 <em>titleEdgeInsets</em> [注释 2 4]</p>
+<p>标题的位置信息如下</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bf45367.jpg" alt></p>
+<h4 id="测试-5"><a href="#测试-5" class="headerlink" title="测试 5"></a>测试 5</h4><p>　</p>
+<p>只调整 <em>imageEdgeInsets</em> [注释 1 3]</p>
+<p>图标的位置信息如下</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bf32707.jpg" alt></p>
+<h3 id="问题-2"><a href="#问题-2" class="headerlink" title="问题 2"></a>问题 2</h3><p>　</p>
+<p>比较测试 <em>4</em> 与测试 <em>1</em> 会发现</p>
+<ul>
+<li><em>titleEdgeInsets</em> 的 <em>right</em> 设置了 <em>10</em> , <em>X</em> 却向左偏移了 <em>5</em> ?</li>
+</ul>
+<p>同样对比 测试 <em>5</em> 与测试 <em>2</em> 会发现</p>
+<ul>
+<li><em>imageEdgeInsets</em> 的 <em>right</em> 设置了 <em>10</em> , <em>X</em> 却向左偏移了 <em>5</em></li>
+</ul>
+<p>为什么会有这种减半的现象呢?</p>
+<h3 id="寻找-amp-分析"><a href="#寻找-amp-分析" class="headerlink" title="寻找 &amp; 分析"></a>寻找 &amp; 分析</h3><p>　</p>
+<p>在搜索后，<a href="https://www.cnblogs.com/Phelthas/p/4452235.html" target="_blank" rel="noopener">这篇</a> 博客对我有所启发</p>
+<h3 id="回答-1"><a href="#回答-1" class="headerlink" title="回答 1"></a>回答 1</h3><p>　</p>
+<blockquote>
+<p><strong>它们只是image和button相较于原来位置的偏移量，那什么是原来的位置呢？就是这个<img src="https://ooo.0o0.ooo/2017/05/20/591fe2be04be2.jpg" alt> 没有设置edgeInset时候的位置了。</strong><br>如要要image在右边，label在左边，那image的左边相对于button的左边右移了labelWidth的距离，image的右边相对于label的左边右移了labelWidth的距离<br>所以，<code>self.oneButton.imageEdgeInsets = UIEdgeInsetsMake(0, labelWidth, 0, -labelWidth);</code> 为什么是负值呢？因为这是contentInset，是偏移量，不是距离<br>同样的，<code>label</code> 的右边相对于 <code>button</code> 的右边左移了 <code>imageWith</code> 的距离，<code>label</code> 的左边相对于 <code>image</code> 的右边左移了 <code>imageWith</code> 的距离<br>所以 <code>self.oneButton.titleEdgeInsets = UIEdgeInsetsMake(0, -imageWith, 0, imageWith)</code>; 这样就完成image在右边，label在左边的效果了。</p>
+</blockquote>
+<p>但是对下面的前置知识点，感觉有些疑惑</p>
+<blockquote>
+<p>前置知识点：titleEdgeInsets是title相对于其上下左右的inset，跟tableView的contentInset是类似的，如果只有title，那它上下左右都是相对于button的，image也是一样；<br>如果同时有image和label，那这时候image的上左下是相对于button，右边是相对于label的；title的上右下是相对于button，左边是相对于image的。</p>
+</blockquote>
+<p>我认为虽然两者都在 <em>UIButton</em> 中，但 <em>Apple</em> 既然将 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> 拆成两个属性，两者的位置应该不互相依赖才对，即使依赖，也应该依赖 <em>UIButton</em> 这个父视图比较合适。</p>
+<h4 id="测试-6"><a href="#测试-6" class="headerlink" title="测试 6"></a>测试 6</h4><p>　</p>
+<p>在标题和图标同时存在的情况下，调整 <em>titleEdgeInsets</em> [注释 4]</p>
+<p>标题</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bf04f5a.jpg" alt></p>
+<p>图标<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bf2c9a8.jpg" alt></p>
+<h4 id="测试-7"><a href="#测试-7" class="headerlink" title="测试 7"></a>测试 7</h4><p>　</p>
+<p>在标题和图标同时存在的情况下，调整 <em>imageEdgeInsets</em> [注释 3]</p>
+<p>标题<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe3130618e.jpg" alt></p>
+<p>图标</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe2bf2aeb2.jpg" alt></p>
+<h4 id="测试-8"><a href="#测试-8" class="headerlink" title="测试 8"></a>测试 8</h4><p>　</p>
+<p>在标题和图标同时存在的情况下，调整 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> [不注释]</p>
+<p>标题<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe312df340.jpg" alt></p>
+<p>图标<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe3132fcf3.jpg" alt></p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>　</p>
+<p>将测试 <em>3</em> 和 测试 <em>6</em> 或 测试 <em>3</em> 和测试 <em>7</em> 对比会发现即使在标题和图标同时存在的情况下，单独调整 <em>imageEdgeInsets</em> 或 <em>titleEdgeInsets</em> 都只会对对应的视图的位置产生影响，而且影响同样是 <em>减半</em> 的。而通过将测试 <em>3</em> 和 测试 <em>8</em> 比较， <em>titleEdgeInsets</em> 和 <em>imageEdgeInsets</em>  同时作用的情况下也是一样的。</p>
+<h4 id="佐证"><a href="#佐证" class="headerlink" title="佐证"></a>佐证</h4><p>　</p>
+<p>上面的参考博客中提到 <a href="http://stackoverflow.com/questions/4564621/aligning-text-and-image-on-uibutton-with-imageedgeinsets-and-titleedgeinsets/5358259#5358259" target="_blank" rel="noopener">Aligning text and image on UIButton with imageEdgeInsets and titleEdgeInsets</a> 是 <em>StackOverflow</em> 上关于这个问题的一个讨论。里面有这样一段话，对我有所启发</p>
+<blockquote>
+<p>I believe that this documentation was written imagining that the button has no title, just an image. It makes a lot more sense thought of this way, and behaves how UIEdgeInsets usually do. Basically, the frame of the image (or the title, with titleEdgeInsets) is moved inwards for positive insets and outwards for negative insets。</p>
+</blockquote>
+<p>官方的注释也许正如上面这段话所表达的，只是在告诉我们 <em>imageEdgeInsets</em>/<em>titleEdgeInsets</em> 其实只是描述了父视图(<em>UIButton</em>)与它们各自视图的间距。</p>
+<h3 id="回答-2"><a href="#回答-2" class="headerlink" title="回答 2"></a>回答 2</h3><p>　</p>
+<p>在理解了 <em>imageEdgeInsets</em>/<em>titleEdgeInsets</em> 的独立性后，我尝试用自己的话来说明为什么会存在”减半”的效果。</p>
+<p>比如下面的代码</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>);</span><br></pre></td></tr></table></figure></p>
+<p>在水平方向上 <em>titleLabel</em> 左侧偏移量为 <em>0</em>，<em>titleLabel</em> 右侧偏移量为 <em>10</em> ，但是偏移量 <em>≠</em> <em>X</em> 的变化量。</p>
+<p><em>X</em> 左移 <em>10</em> 那么实际上的偏移属性值应该为 <em>(0,-10,0,10)</em> : </p>
+<p>左偏移量(相对于 <em>button</em> 左侧)，<em>title</em> 从原始向目标是往边缘方向，所以是负值(参考本文最初的文档理解)，偏移量为 <em>10*，右偏移量(相对 *button</em> 右侧)，从原始到目标是往中间方向，所以是正值。</p>
+<p>因此上面的代码表明 <em>titleLabel</em> 相对 <em>UIButton</em> 左侧不改变，右侧改变 <em>10</em> ，应该是做不到的，左侧间距增加1，右侧间距必然会减少1。会被等价转换为 </p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">5</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>个人推测</strong></p>
+<h4 id="如何转换"><a href="#如何转换" class="headerlink" title="如何转换?"></a>如何转换?</h4><p>　</p>
+<p>参考 <em>iOS</em> 的坐标系，水平向右为 <em>X</em> 轴正方向 ，垂直向下为 <em>Y</em> 正方向,要根据 <em>titleEdgeInsets</em> / <em>imageEdgeInsets</em> 去计算 <em>title</em> 和 <em>image</em> 的坐标，可以对 <em>UIEdgeInsets</em> 结构体的四个成员<code>( top , left , bottom , right )</code> 进行处理 (在负方向留正偏移量即是往正方向偏移)。</p>
+<p>公式如下</p>
+<ul>
+<li>水平方向上 <em>X</em> 的偏移量: <code>(left + (-1) * right) / 2</code> </li>
+<li>垂直方向上 <em>Y</em> 的偏移量: <code>(top + (-1) * bottom) / 2</code> </li>
+</ul>
+<p>直白点的话: 负间距(<code>left,top</code>)更靠近，正间距(<code>left,top</code>)更远离，原始状态就是 <em>UIEdgeInsets</em> 全为 <em>0</em> 即你不去操作 <em>titleEdgeInsets</em> / <em>imageEdgeInsets</em> 时。</p>
+<p><strong>个人推测</strong></p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>　</p>
+<p>实践是检验真理的唯一标准；不管黑猫白猫，能抓老鼠的就是好🐱…</p>
+<h3 id="图标在右标题在左"><a href="#图标在右标题在左" class="headerlink" title="图标在右标题在左"></a>图标在右标题在左</h3><p>　</p>
+<p>根据上面的猜想，要实现图标与标题的位置交换，很简单: <em>imageView</em> 左侧相对于 <em>UIButton</em> 向中央移动了 <em>titleLabel</em> 的宽度，记为 <em>titleLabel.w*，右侧相对于 *UIButton</em> 向边缘同样移动了 <em>titleLabel.w</em> 因此</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)layoutSubviews &#123;</span><br><span class="line">    [<span class="hljs-keyword">super</span> layoutSubviews];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// [3]</span></span><br><span class="line"><span class="hljs-comment">//    self.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);</span></span><br><span class="line"><span class="hljs-comment">//    </span></span><br><span class="line"><span class="hljs-comment">//    // [4]</span></span><br><span class="line"><span class="hljs-comment">//    self.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">self</span>.imageEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-keyword">self</span>.titleLabel.frame.size.width, <span class="hljs-number">0</span>, -<span class="hljs-keyword">self</span>.titleLabel.frame.size.width);</span><br><span class="line">    <span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, -<span class="hljs-keyword">self</span>.imageView.frame.size.width, <span class="hljs-number">0</span>, <span class="hljs-keyword">self</span>.imageView.frame.size.width);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe312e67eb.jpg" alt></p>
+<p>标题<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe31491ab7.jpg" alt></p>
+<p>图标<br><img src="https://ooo.0o0.ooo/2017/05/20/591fe314150fa.jpg" alt></p>
+<p>但是如果用直接去设置 <em>UIButton</em> 的 </p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">UIButton</span> *b = [[<span class="hljs-built_in">UIButton</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">10</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">40</span>)];</span><br><span class="line">b.layer.borderColor = [<span class="hljs-built_in">UIColor</span> blueColor].CGColor;</span><br><span class="line">b.layer.borderWidth = <span class="hljs-number">1</span>;</span><br><span class="line">[b setTitleColor:[<span class="hljs-built_in">UIColor</span> redColor] forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">[b setTitle:<span class="hljs-string">@"测试"</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">[b setImage:[<span class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@"arrow"</span>] forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:b];</span><br><span class="line">    b.imageEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, b.titleLabel.frame.size.width, <span class="hljs-number">0</span>, -b.titleLabel.frame.size.width);</span><br><span class="line">    b.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, -b.imageView.frame.size.width, <span class="hljs-number">0</span>, b.imageView.frame.size.width);</span><br></pre></td></tr></table></figure></p>
+<p>你会发现效果并不如意，原因是因为 <em>titleLabel</em> 的尺寸不正确</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe315dd532.jpg" alt></p>
+<p>我想到的解决方法有三种</p>
+<ul>
+<li>继承 <em>UIButton</em> ，在子类的 <em>layoutSubviews</em> 中进行处理</li>
+<li>参考上面博客的作者在 <a href="https://github.com/Phelthas/Demo_ButtonImageTitleEdgeInsets/blob/master/Demo_ButtonImageTitleEdgeInsets/LXMButtonImagePosition/UIButton%2BLXMImagePosition.m" target="_blank" rel="noopener">Demo_ButtonImageTitleEdgeInsets</a> 提供的，<code>sizeWithFont:</code>来实现，通过字符串计算出 <em>titlelabel</em> 的尺寸，来设置 <em>titleEdgeInsets</em> ，详情见代码段 <em>1</em></li>
+<li>第三种通过 <em>sizeToFit</em> 和第二种思路是一样的，详情见代码段 <em>2</em></li>
+</ul>
+<h4 id="代码段-1"><a href="#代码段-1" class="headerlink" title="代码段 1"></a>代码段 1</h4><p>　</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">NSString</span>(<span class="hljs-title">UIStringDrawing</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Single line, no wrapping. Truncation based on the NSLineBreakMode.</span></span><br><span class="line">- (<span class="hljs-built_in">CGSize</span>)sizeWithFont:(<span class="hljs-built_in">UIFont</span> *)font <span class="hljs-built_in">NS_DEPRECATED_IOS</span>(<span class="hljs-number">2</span>_0, <span class="hljs-number">7</span>_0, <span class="hljs-string">"Use -sizeWithAttributes:"</span>) __TVOS_PROHIBITED;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">CGFloat</span> labelWidth = [<span class="hljs-keyword">self</span>.titleLabel.text</span><br><span class="line">sizeWithFont:<span class="hljs-keyword">self</span>.titleLabel.font].width;</span><br></pre></td></tr></table></figure></p>
+<h4 id="代码段-2"><a href="#代码段-2" class="headerlink" title="代码段 2"></a>代码段 2</h4><p>　</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">UIButton *b &#x3D; [[UIButton alloc] initWithFrame:CGRectMake(10, 100, 100, 40)];</span><br><span class="line">b.layer.borderColor &#x3D; [UIColor blueColor].CGColor;</span><br><span class="line">b.layer.borderWidth &#x3D; 1;</span><br><span class="line">[b setTitleColor:[UIColor redColor] forState:UIControlStateNormal];</span><br><span class="line">[b setTitle:@&quot;测试&quot; forState:UIControlStateNormal];</span><br><span class="line">[b setImage:[UIImage imageNamed:@&quot;arrow&quot;] forState:UIControlStateNormal];</span><br><span class="line">[self.view addSubview:b];</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 看这里 --- </span><br><span class="line">[b.titleLabel sizeToFit];</span><br><span class="line"></span><br><span class="line">b.imageEdgeInsets &#x3D; UIEdgeInsetsMake(0, b.titleLabel.frame.size.width, 0, -b.titleLabel.frame.size.width);</span><br><span class="line">b.titleEdgeInsets &#x3D; UIEdgeInsetsMake(0, -b.imageView.frame.size.width, 0, b.imageView.frame.size.width);</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe315bfdd1.jpg" alt></p>
+<p>虽然位置不对，但尺寸已经是正确的了，也能实现合适的效果。</p>
+<h3 id="图标在下标题在上"><a href="#图标在下标题在上" class="headerlink" title="图标在下标题在上"></a>图标在下标题在上</h3><p>　</p>
+<p>根据上面的原理，应该可以比较简单的推算出的 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> </p>
+<p>要求: <em>imageView</em> 和 <em>titleLabel</em> 都居中，且 <em>imageVeiw</em> 在上</p>
+<p>两者都存在的情况下，原始的左右间距是<code>( UIButton 的宽度 - 两者的宽度之和) * 0.5</code>，</p>
+<p><em>imageView</em> 的 <em>X</em> 要向右移动 <code>((UIButton 的宽度 - imageView 的宽度) - (UIButton 的宽度 - 两者的宽度之和)) * 0.5</code></p>
+<p><code>titleLable 的宽度 * 0.5</code></p>
+<h4 id="阶段-1"><a href="#阶段-1" class="headerlink" title="阶段 1"></a>阶段 1</h4><p>　</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">self</span>.imageEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, <span class="hljs-keyword">self</span>.titleLabel.frame.size.width * <span class="hljs-number">0.5</span>, <span class="hljs-number">0</span>, -<span class="hljs-keyword">self</span>.titleLabel.frame.size.width * <span class="hljs-number">0.5</span>);</span><br><span class="line"><span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">0</span>, -<span class="hljs-keyword">self</span>.imageView.frame.size.width * <span class="hljs-number">0.5</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">self</span>.imageView.frame.size.width * <span class="hljs-number">0.5</span>);</span><br></pre></td></tr></table></figure></p>
+<p>两者都居中了，然后调整垂直方向</p>
+<h4 id="阶段-2"><a href="#阶段-2" class="headerlink" title="阶段 2"></a>阶段 2</h4><p>　</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">self</span>.imageEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">-5</span>, <span class="hljs-keyword">self</span>.titleLabel.frame.size.width * <span class="hljs-number">0.5</span>, <span class="hljs-number">5</span>, -<span class="hljs-keyword">self</span>.titleLabel.frame.size.width * <span class="hljs-number">0.5</span>);</span><br><span class="line"><span class="hljs-keyword">self</span>.titleEdgeInsets = <span class="hljs-built_in">UIEdgeInsetsMake</span>(<span class="hljs-number">5</span>, -<span class="hljs-keyword">self</span>.imageView.frame.size.width * <span class="hljs-number">0.5</span>, <span class="hljs-number">-5</span>, <span class="hljs-keyword">self</span>.imageView.frame.size.width * <span class="hljs-number">0.5</span>);</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/20/591fe3137ecdb.jpg" alt></p>
+<p>效果有点丑…</p>
+<p>说明: 这里忽略了 <em>UIButton</em> 放不下 <em>titleLabel</em> 或者用 <em>xib</em> 创建有 <em>intrinsicSize</em> 引用的问题。</p>
+<h2 id="假想的实现"><a href="#假想的实现" class="headerlink" title="假想的实现"></a>假想的实现</h2><p>　</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">CGFloat</span> imageX = (<span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.imageView.frame)+ <span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.titleLabel.frame)) * <span class="hljs-number">0.5</span> + (<span class="hljs-keyword">self</span>.imageEdgeInsets.left - <span class="hljs-keyword">self</span>.imageEdgeInsets.right) / <span class="hljs-number">2</span>;</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> imageY = (<span class="hljs-built_in">CGRectGetHeight</span>(<span class="hljs-keyword">self</span>.frame) - <span class="hljs-keyword">self</span>.imageView.image.size.height) * <span class="hljs-number">0.5</span> + (<span class="hljs-keyword">self</span>.imageEdgeInsets.top - <span class="hljs-keyword">self</span>.imageEdgeInsets.bottom) / <span class="hljs-number">2</span>;</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> imageW = <span class="hljs-keyword">self</span>.imageView.image.size.width;</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> imageH = <span class="hljs-keyword">self</span>.imageView.image.size.height;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-built_in">CGFloat</span> titleX = (<span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.titleLabel.frame) + <span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.titleLabel.frame) * <span class="hljs-number">0.5</span>) + (<span class="hljs-keyword">self</span>.titleEdgeInsets.left - <span class="hljs-keyword">self</span>.titleEdgeInsets.right) / <span class="hljs-number">2</span>;</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> titleY = (<span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.frame) - <span class="hljs-built_in">CGRectGetHeight</span>(<span class="hljs-keyword">self</span>.titleLabel.frame)) * <span class="hljs-number">0.5</span> + (<span class="hljs-keyword">self</span>.titleEdgeInsets.top - <span class="hljs-keyword">self</span>.titleEdgeInsets.bottom) / <span class="hljs-number">2</span>;</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> titleW = <span class="hljs-built_in">CGRectGetWidth</span>(<span class="hljs-keyword">self</span>.titleLabel.frame);</span><br><span class="line"><span class="hljs-built_in">CGFloat</span> titleH = <span class="hljs-built_in">CGRectGetHeight</span>(<span class="hljs-keyword">self</span>.titleLabel.frame);</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　</p>
+<p>　　本文通过控制变量法😷 测试了 <em>UIButton</em> 的 <em>imageEdgeInsets</em> 和 <em>titleEdgeInsets</em> 属性的作用效果，发现两者是相互独立且只参考父视图 ( <em>UIButton</em> ) ，同时对实现图标在右标题在上，图标在上标题在下这两种样式提供了一点思路。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://www.cnblogs.com/Phelthas/p/4452235.html" target="_blank" rel="noopener">UIButton的titleEdgeInsets属性和imageEdgeInsets属性实现图片文字按要求排列</a></li>
+<li><a href="http://stackoverflow.com/questions/4564621/aligning-text-and-image-on-uibutton-with-imageedgeinsets-and-titleedgeinsets/5358259#5358259" target="_blank" rel="noopener">Aligning text and image on UIButton with imageEdgeInsets and titleEdgeInsets</a></li>
+</ol>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/UI/">#UI</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/05/29/Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/">ObjC Runtime 中 Weak 属性的实现 (上)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/05/13/WKWebView-UIWebView-progress-monitoring/">WKWebView &amp; UIWebView 进度条动画</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

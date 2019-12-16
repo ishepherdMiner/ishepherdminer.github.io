@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>objc-706工程搭建 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="OC,运行时">
+
+
+
+    <meta name="description" content="环境 macOS 10.12.1Xcode 8.1  代码可编译 &amp; 运行的工程 objc-706">
+<meta property="og:type" content="article">
+<meta property="og:title" content="objc-706工程搭建">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;02&#x2F;11&#x2F;objc-706-project-structures&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="环境 macOS 10.12.1Xcode 8.1  代码可编译 &amp; 运行的工程 objc-706">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d082317.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31ccb60b7.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d20cf50.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31cc398fa.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31cdb6c16.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31cb6be5e.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31cf4fe0c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31f502343.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d2109f4.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d2452a2.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e320682d97.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d24ae2d.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d8170d0.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d7aef58.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31dea4319.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31f489b44.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31f22db3a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e3204f0f87.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31da23267.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d8cfb1f.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d9e640b.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d85c72c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31e6d9e72.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31dbe17a6.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e320c4e12b.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31dbbebc7.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31ddbcf38.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e3205b0e2c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31fb82e3a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e3205627f2.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31e70b171.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31eb2e57a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e320551cd0.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31ede49ec.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31e63ebd3.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31e86ad64.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31ea266dc.jpg">
+<meta property="article:published_time" content="2017-02-10T21:36:05.000Z">
+<meta property="article:modified_time" content="2019-12-16T09:11:03.823Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="OC">
+<meta property="article:tag" content="运行时">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;11&#x2F;589e31d082317.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#环境">1&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#代码">2&nbsp;&nbsp;<b>代码</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#源代码下载">3.1&nbsp;&nbsp;源代码下载</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#编译-gt-失败-gt-编译-gt-失败…-编译-gt-成功">3.2&nbsp;&nbsp;编译 -&amp;amp;gt; 失败 -&amp;amp;gt; 编译 -&amp;amp;gt; 失败… 编译 -&amp;amp;gt; 成功</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘sys-reason-h’-file-not-found-objc-os-h">3.2.1&nbsp;&nbsp;✘ ‘sys/reason.h’ file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-mach-o-dyld-priv-h-file-not-found-objc-os-h">3.2.2&nbsp;&nbsp;✘ mach-o/dyld_priv.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-os-lock-private-h-file-not-found-objc-os-h">3.2.3&nbsp;&nbsp;✘ os/lock_private.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘System-pthread-machdep-h’-file-not-found-objc-os-h">3.2.4&nbsp;&nbsp;✘ ‘System/pthread_machdep.h’ file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-System-machine-cpu-capabilities-h-file-not-found-pthread-machdep-h">3.2.5&nbsp;&nbsp;✘ System/machine/cpu_capabilities.h file not found (pthread_machdep.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-CrashReporterClient-h-file-not-found-objc-os-h">3.2.6&nbsp;&nbsp;✘ CrashReporterClient.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-CrashReporterClient-h-file-not-found-CrashReporterClient-h">3.2.7&nbsp;&nbsp;✘ CrashReporterClient.h file not found (CrashReporterClient.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-phread-workqueue-private-h-file-not-found-objc-os-h">3.2.8&nbsp;&nbsp;✘ phread/workqueue_private.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-pthread-qos-private-h-file-not-found-objc-os-h">3.2.9&nbsp;&nbsp;✘ pthread/qos_private.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-sys-qos-private-h-file-not-found-objc-os-h">3.2.10&nbsp;&nbsp;✘ sys/qos_private.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-objc-shared-cache-h-file-not-found-objc-os-h">3.2.11&nbsp;&nbsp;✘ objc-shared-cache.h file not found (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘os-tsd-h’-file-not-found-tsd-private-h">3.2.12&nbsp;&nbsp;✘ ‘os/tsd.h’ file not found (tsd_private.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘pthread-spinlock-private-h’-file-not-found-tsd-private-h">3.2.13&nbsp;&nbsp;✘ ‘pthread/spinlock_private.h’ file not found (tsd_private.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-Unknown-type-name-‘pthread-priority-t’-objc-os-h">3.2.14&nbsp;&nbsp;✘ Unknown type name ‘pthread_priority_t’ (objc-os.h)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘-simple-h’-file-not-found-objc-errors-mm">3.2.15&nbsp;&nbsp;✘ ‘_simple.h’ file not found (objc-errors.mm)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-Use-of-undeclared-identifier-‘os-unfair-lock-assert-owner’-objc-lockdebug-mm">3.2.16&nbsp;&nbsp;✘ Use of undeclared identifier ‘os_unfair_lock_assert_owner’ (objc-lockdebug.mm)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#✘-‘Block-private-h’-file-not-found-objc-block-trampolines-mm">3.2.17&nbsp;&nbsp;✘ ‘Block_private.h’ file not found (objc-block-trampolines.mm)</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#续">4&nbsp;&nbsp;<b>续</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            objc-706工程搭建
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-02-10T21:36:05.000Z" itemprop="datePublished">2月 11 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            16 分钟 读完 (约 2408 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p><em>macOS 10.12.1</em><br><em>Xcode 8.1</em></p>
+</blockquote>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>可编译 &amp; 运行的工程 <a href="https://github.com/ishepherdMiner/objc-706" target="_blank" rel="noopener">objc-706</a></p>
+<a id="more"></a>
+
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="源代码下载"><a href="#源代码下载" class="headerlink" title="源代码下载"></a>源代码下载</h3><blockquote>
+<p><a href="https://opensource.apple.com" target="_blank" rel="noopener"><em>macOS10.12.1 objc4-706</em> </a></p>
+</blockquote>
+<h3 id="编译-gt-失败-gt-编译-gt-失败…-编译-gt-成功"><a href="#编译-gt-失败-gt-编译-gt-失败…-编译-gt-成功" class="headerlink" title="编译 -&gt; 失败 -&gt; 编译 -&gt; 失败… 编译 -&gt; 成功"></a>编译 -&gt; 失败 -&gt; 编译 -&gt; 失败… 编译 -&gt; 成功</h3><h4 id="✘-‘sys-reason-h’-file-not-found-objc-os-h"><a href="#✘-‘sys-reason-h’-file-not-found-objc-os-h" class="headerlink" title="✘ ‘sys/reason.h’ file not found (objc-os.h)"></a>✘ <em>‘sys/reason.h’ file not found (objc-os.h)</em></h4><p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d082317.jpg" alt></p>
+<blockquote>
+<p>Q1:  为什么<code>&lt;sys/param.h&gt;</code>可以找到?</p>
+</blockquote>
+<p>按住⌘ 点击进入<code>&lt;sys/param.h&gt;</code></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31ccb60b7.jpg" alt></p>
+<p><strong>实际路径</strong> </p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Platforms&#x2F;MacOSX.platform&#x2F;Developer&#x2F;SDKs&#x2F;MacOSX.sdk&#x2F;usr&#x2F;include&#x2F;sys&#x2F;param.h</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Q2: 为什么会去找这个路径?</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d20cf50.jpg" alt></p>
+<blockquote>
+<p>A2 : 决定于<em>Build Settings</em>中的<em>Use Standard System Header Directory Searching</em>字段</p>
+</blockquote>
+<p><em>Controls whether <strong>the standard system directories are searched</strong> for header files. When disabled, only the directories you have specified with -I options (and the directory of the current file, if appropriate) are searched.</em></p>
+<p>实际目录下确实没有 <code>&lt;sys/reason.h&gt;</code></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31cc398fa.jpg" alt></p>
+<blockquote>
+<p>A1: 实际目录下确实没有 <code>&lt;sys/reason.h&gt;</code></p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31cdb6c16.jpg" alt></p>
+<p>原来的头文件查找目录在<em>/tmp*下,为了方便,添加路径</em>$(SRCROOT)/include*</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31cb6be5e.jpg" alt></p>
+<p>在<em>objc-706</em>工程目录中创建一个<em>include</em>目录,将相关的头文件放在这里</p>
+<blockquote>
+<p>Q3: 如何找到对应的头文件</p>
+</blockquote>
+<blockquote>
+<p>A3: Google ⏎ xxx.h site:opensource.apple.com</p>
+</blockquote>
+<p>比如 <em>reason.h site:opensource.apple.com</em> </p>
+<p>结果如下:</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31cf4fe0c.jpg" alt></p>
+<p>看上去应该在xnu这个目录下</p>
+<p>根据有<em>sys<em>目录,最后找到 [reason.h](</em><a href="https://opensource.apple.com/source/xnu/xnu-3789.21.4/bsd/sys/reason.h" target="_blank" rel="noopener">https://opensource.apple.com/source/xnu/xnu-3789.21.4/bsd/sys/reason.h</a></em>)</p>
+<p>更好的方法是将整个目录下载下来通过 <em>find/grep</em> 指令去查找</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ find ~&#x2F;Downloads&#x2F;objc-res&#x2F;xnu-3789.21.4&#x2F;* -name &quot;reason.h&quot;</span><br><span class="line">&#x2F;Users&#x2F;Jason&#x2F;Downloads&#x2F;objc-res&#x2F;xnu-3789.21.4&#x2F;bsd&#x2F;sys&#x2F;reason.h*</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>在<em>include</em>下创建<em>sys</em>目录</li>
+<li>将<em>reason.h</em>拷贝到<em>sys</em>目录下</li>
+<li><em>⌘ + B*</em></li>
+</ul>
+<h4 id="✘-mach-o-dyld-priv-h-file-not-found-objc-os-h"><a href="#✘-mach-o-dyld-priv-h-file-not-found-objc-os-h" class="headerlink" title="✘ mach-o/dyld_priv.h file not found (objc-os.h)"></a>✘ <em>mach-o/dyld_priv.h file not found (objc-os.h)</em></h4><p><a href="https://opensource.apple.com/source/dyld/dyld-421.2/include/mach-o/dyld_priv.h" target="_blank" rel="noopener"><em>dyld_priv.h</em></a></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31f502343.jpg" alt></p>
+<h4 id="✘-os-lock-private-h-file-not-found-objc-os-h"><a href="#✘-os-lock-private-h-file-not-found-objc-os-h" class="headerlink" title="✘ os/lock_private.h file not found (objc-os.h)"></a>✘ <em>os/lock_private.h file not found (objc-os.h)</em></h4><p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d2109f4.jpg" alt></p>
+<p>没找到<br>换个思路,改搜github</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d2452a2.jpg" alt></p>
+<p>比较过,两个都是一样的,选择一个即可<br><a href="https://github.com/ourui/objc4-647/blob/master/include/os/lock_private.h" target="_blank" rel="noopener">lock_private.h</a><br><a href="https://github.com/samdmarshall/OSXPrivateSDK/blob/master/PrivateSDK10.10.sparse.sdk/usr/local/include/os/lock_private.h" target="_blank" rel="noopener">lock_private.h</a></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e320682d97.jpg" alt></p>
+<h4 id="✘-‘System-pthread-machdep-h’-file-not-found-objc-os-h"><a href="#✘-‘System-pthread-machdep-h’-file-not-found-objc-os-h" class="headerlink" title="✘ ‘System/pthread_machdep.h’ file not found (objc-os.h)"></a>✘ <em>‘System/pthread_machdep.h’ file not found (objc-os.h)</em></h4><p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d24ae2d.jpg" alt></p>
+<p>应该在<em>Libc</em>中</p>
+<p>但<em>macOS10.12.1</em>的<em>Libc-1158.20.4</em>并没有<em>pthreads</em>目录,找以前的版本,在<em>Libc-825.40.1</em>找到了<em>pthread</em>目录</p>
+<p><a href="https://opensource.apple.com/source/Libc/Libc-825.40.1/pthreads/pthread_machdep.h" target="_blank" rel="noopener"><em>pthread_machdep.h</em></a></p>
+<p>在<em>include</em>目录下新建<em>System</em>目录,拷贝<em>pthread_machdep.h</em>到该目录下</p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d8170d0.jpg" alt></p>
+<h4 id="✘-System-machine-cpu-capabilities-h-file-not-found-pthread-machdep-h"><a href="#✘-System-machine-cpu-capabilities-h-file-not-found-pthread-machdep-h" class="headerlink" title="✘ System/machine/cpu_capabilities.h file not found (pthread_machdep.h)"></a>✘ <em>System/machine/cpu_capabilities.h file not found (pthread_machdep.h)</em></h4><p><a href="https://opensource.apple.com/source/xnu/xnu-3789.21.4/osfmk/machine/cpu_capabilities.h" target="_blank" rel="noopener">cpu_capabilities.h</a></p>
+<p>在<em>System</em>目录下新建<em>machine</em>目录,拷贝<em>cpu_capabilities.h</em>到该目录下</p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d7aef58.jpg" alt></p>
+<h4 id="✘-CrashReporterClient-h-file-not-found-objc-os-h"><a href="#✘-CrashReporterClient-h-file-not-found-objc-os-h" class="headerlink" title="✘ CrashReporterClient.h file not found (objc-os.h)"></a>✘ <em>CrashReporterClient.h file not found (objc-os.h)</em></h4><p>在<em>Libc-825.40.1</em>中存在<br><a href="https://opensource.apple.com/source/Libc/Libc-825.40.1/include/CrashReporterClient.h" target="_blank" rel="noopener">CrashReporterClient.h</a></p>
+<p>将其拷贝到<em>include</em>目录下</p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31dea4319.jpg" alt></p>
+<h4 id="✘-CrashReporterClient-h-file-not-found-CrashReporterClient-h"><a href="#✘-CrashReporterClient-h-file-not-found-CrashReporterClient-h" class="headerlink" title="✘ CrashReporterClient.h file not found (CrashReporterClient.h)"></a>✘ <em>CrashReporterClient.h file not found (CrashReporterClient.h)</em></h4><p><em>#include_next</em> <strong>包含指定文件所在的路径的后面路径的那个文件</strong> </p>
+<blockquote>
+<p>例如有个搜索路径链，在#include中，它们的搜索顺序依次是A，B，C，D和E。在B目录中有个头文件叫a.h，在D目录中也有个头文件叫a.h，如果在我们的源代码中这样写#include &lt;a.h&gt;，那么我们就会包含的是B目录中的a.h头文件，如果我们这样写#include_next &lt;a.h&gt;那么我们就会包含的是D目录中的a.h头文件</p>
+</blockquote>
+<p>代码有如下注释</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;* Include the real CrashReporterClient.h *&#x2F;</span><br></pre></td></tr></table></figure></p>
+<p>但我们没有真正的<em>CrashReporterClient.h</em></p>
+<p><em>Build Settings-&gt;Preprocessor Macros（Debug &amp; Release）</em>加入:</p>
+<p><em>LIBC_NO_LIBCRASHREPORTERCLIENT</em></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31f489b44.jpg" alt></p>
+<p>错误就有些多了</p>
+<p>参考 <a href="http://blog.csdn.net/wotors/article/details/52489464" target="_blank" rel="noopener">objc - 编译Runtime源码</a><br>将需要的压缩包先下载下来</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31f22db3a.jpg" alt></p>
+<p>先解决<em>.h</em>没有的问题</p>
+<h4 id="✘-phread-workqueue-private-h-file-not-found-objc-os-h"><a href="#✘-phread-workqueue-private-h-file-not-found-objc-os-h" class="headerlink" title="✘ phread/workqueue_private.h file not found (objc-os.h)"></a>✘ <em>phread/workqueue_private.h file not found (objc-os.h)</em></h4><p>✔︎ <em>./libpthread-218.20.1/private/workqueue_private.h</em><br>在<em>include</em>目录下新建<em>pthread</em>目录,拷贝<em>workqueue_private.h</em>到<em>pthread</em>目录中<br><strong>⌘ + B</strong></p>
+<h4 id="✘-pthread-qos-private-h-file-not-found-objc-os-h"><a href="#✘-pthread-qos-private-h-file-not-found-objc-os-h" class="headerlink" title="✘ pthread/qos_private.h file not found (objc-os.h)"></a>✘ <em>pthread/qos_private.h file not found (objc-os.h)</em></h4><p><del><em>./libpthread-218.20.1/private/qos_private.h</em></del><br>✔︎ <strong><em>./libpthread-218.20.1/sys/qos_private.h</em></strong><br><strong>⌘ + B</strong></p>
+<h4 id="✘-sys-qos-private-h-file-not-found-objc-os-h"><a href="#✘-sys-qos-private-h-file-not-found-objc-os-h" class="headerlink" title="✘ sys/qos_private.h file not found (objc-os.h)"></a>✘ <em>sys/qos_private.h file not found (objc-os.h)</em></h4><p><del><em>./libpthread-218.20.1/private/qos_private.h</em></del><br>✔︎ <strong><em>./libpthread-218.20.1/sys/qos_private.h</em></strong><br><strong>⌘ + B</strong></p>
+<h4 id="✘-objc-shared-cache-h-file-not-found-objc-os-h"><a href="#✘-objc-shared-cache-h-file-not-found-objc-os-h" class="headerlink" title="✘ objc-shared-cache.h file not found (objc-os.h)"></a>✘ <em>objc-shared-cache.h file not found (objc-os.h)</em></h4><p>✔︎ <em>./dyld-421.2/include/objc-shared-cache.h</em><br><strong>⌘ + B</strong></p>
+<p>终于不报<em>xxx.h not found</em>的错误了</p>
+<p>继续,解决变量未定义的问题</p>
+<p>用<em>grep</em>的方式去找出来</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -rne <span class="hljs-string">"#define.*_PTHREAD_TSD_SLOT_MACH_THREAD_SELF"</span> .</span><br></pre></td></tr></table></figure></p>
+<p>✔︎ <em>/libpthread-218.20.1/private/tsd_private.h</em></p>
+<p><em>workqueue_private.h*也是来自于</em>/libpthread-218.20.1/private<em>,拷贝到了</em>pthread<em>目录下,将</em>tsd_private.h<em>也拷贝至</em>pthread*目录下</p>
+<p>还是报错,仔细检查<em>objc-os.h</em> 发现并未引入<em>tsd_private.h</em>头文件</p>
+<p>在第34行上下加一句</p>
+<p><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pthread/tsd_private.h&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e3204f0f87.jpg" alt></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31da23267.jpg" alt></p>
+<h4 id="✘-‘os-tsd-h’-file-not-found-tsd-private-h"><a href="#✘-‘os-tsd-h’-file-not-found-tsd-private-h" class="headerlink" title="✘ ‘os/tsd.h’ file not found (tsd_private.h)"></a>✘ <em>‘os/tsd.h’ file not found (tsd_private.h)</em></h4><p><del><em>./libdispatch-703.20.1/src/shims/tsd.h</em></del><br>✔︎ <strong><em>./xnu-3789.21.4/libsyscall/os/tsd.h</em></strong><br><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d8cfb1f.jpg" alt></p>
+<h4 id="✘-‘pthread-spinlock-private-h’-file-not-found-tsd-private-h"><a href="#✘-‘pthread-spinlock-private-h’-file-not-found-tsd-private-h" class="headerlink" title="✘ ‘pthread/spinlock_private.h’ file not found (tsd_private.h)"></a>✘ <em>‘pthread/spinlock_private.h’ file not found (tsd_private.h)</em></h4><p>✔︎<strong><em>./libpthread-218.20.1/private/spinlock_private.h</em></strong><br><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31d9e640b.jpg" alt></p>
+<p>错误”变多了”,看警告,发现重复定义了,参考上面的blog</p>
+<blockquote>
+<p>重复定义了pthread_lock_t，切换到Terminal，⌘+T打开新的一个Tab，cd到objc4-680/include/那grep一下就好了:<br>cd ../objc4-680/include/<br>grep -rne “typedef.*pthread_lock_t” .<br>结果:<br>./pthread/spinlock_private.h:59:typedef volatile OSSpinLock pthread_lock_t;<br>./System/pthread_machdep.h:214:typedef int pthread_lock_t;<br>从结果发现我们之前引入的pthread_machdep.h已经typedef过了。注释掉其中一个就好。但我这里选择注释掉pthread_machdep.h的，在Line 214：<br>//typedef int pthread_lock_t;<br>为什么是它呢？因为它是我们从Libc拷过来的，而Libc我们下载了较旧的版本。… </p>
+</blockquote>
+<p>因此注释掉<em>pthread_machdep.h</em>中重定义的部分</p>
+<p>根据重定义<em>pthread_lock_t</em>的错误<br><img src="https://ooo.0o0.ooo/2017/02/11/589e31d85c72c.jpg" alt></p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -rne &quot;typedef.*pthread_lock_t&quot; .</span><br></pre></td></tr></table></figure></p>
+<p><del><em>./Libc-825.40.1/fbsdcompat/spinlock.h:65:typedef pthread_lock_t spinlock_t;</em></del><br><del><em>./Libc-825.40.1/pthreads/pthread_machdep.h:214:typedef int pthread_lock_t;</em></del><br>✔︎ <strong><em>./libpthread-218.20.1/private/spinlock_private.h:59:typedef volatile OSSpinLock pthread_lock_t __deprecated_msg(“Use &lt;os/lock.h&gt; instead”);</em></strong><br><del><em>./libpthread-218.20.1/tests/cond_hang3.c:14:typedef long pthread_lock_t;</em></del></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31e6d9e72.jpg" alt></p>
+<h4 id="✘-Unknown-type-name-‘pthread-priority-t’-objc-os-h"><a href="#✘-Unknown-type-name-‘pthread-priority-t’-objc-os-h" class="headerlink" title="✘ Unknown type name ‘pthread_priority_t’ (objc-os.h)"></a>✘ <em>Unknown type name ‘pthread_priority_t’ (objc-os.h)</em></h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -rne <span class="hljs-string">"pthread_priority_t;"</span> .</span><br></pre></td></tr></table></figure></p>
+<p><del><em>./libdispatch-703.20.1/src/shims.h:42:typedef unsigned long pthread_priority_t;</em></del><br><del><em>./libdispatch-703.20.1/src/shims.h:80:typedef unsigned long pthread_priority_t;</em></del><br>✔︎ <strong><em>./libpthread-218.20.1/private/qos_private.h:38:typedef unsigned long pthread_priority_t;</em></strong></p>
+<p><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;pthread/qos_private.h&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31dbe17a6.jpg" alt></p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -rne <span class="hljs-string">"os_unfair_lock"</span> .</span><br></pre></td></tr></table></figure></p>
+<p><del><em>./libpthread-218.20.1/src/internal.h:105:typedef os_unfair_lock _pthread_lock;<br>./libpthread-218.20.1/src/internal.h:108:#define _PTHREAD_LOCK(lock) os_unfair_lock_lock_with_options_inline(&amp;(lock), OS_UNFAIR_LOCK_DATA_SYNCHRONIZATION)<br>./libpthread-218.20.1/src/internal.h:109:#define _PTHREAD_LOCK_FROM_MACH_THREAD(lock) os_unfair_lock_lock_inline_no_tsd_4libpthread(&amp;(lock))<br>./libpthread-218.20.1/src/internal.h:110:#define _PTHREAD_UNLOCK(lock) os_unfair_lock_unlock_inline(&amp;(lock))<br>./libpthread-218.20.1/src/internal.h:111:#define _PTHREAD_UNLOCK_FROM_MACH_THREAD(lock) os_unfair_lock_unlock_inline_no_tsd_4libpthread(&amp;(lock))</em></del></p>
+<p>这里路径是<em>src</em>,有点不一样,先不要引入<em>internal.h</em>,先<em>Google<em>一下,</em>os_unfair_lock</em></p>
+<p><a href="https://github.com/docker/hyperkit/issues/47" target="_blank" rel="noopener">OSSpinlock is depreciated</a><br><a href="https://developer.apple.com/reference/os/os_unfair_lock" target="_blank" rel="noopener">os_unfair_lock</a></p>
+<p>是个结构体,在<a href="https://github.com/facebook/folly/issues/484" target="_blank" rel="noopener">facebook/folly - macOS Sierra issues</a><br>中提到了<em>warning: ‘OSSpinLockUnlock’ is deprecated: first deprecated in macOS 10.12 - Use os_unfair_lock_unlock() from &lt;os/lock.h&gt; instead [-Wdeprecated-declarations]</em></p>
+<p>所以引入</p>
+<p><figure class="highlight c hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;os/lock.h&gt;</span></span></span><br></pre></td></tr></table></figure><br><strong>⌘ + B</strong><br><img src="https://ooo.0o0.ooo/2017/02/11/589e320c4e12b.jpg" alt></p>
+<p><em>grep<em>后发现又在</em>internal.h<em>中,根据</em>lock.h</em>,修改一下<em>lock() &amp; unlock()</em>方法<br><img src="https://ooo.0o0.ooo/2017/02/11/589e31dbbebc7.jpg" alt></p>
+<p>修改后<br><img src="https://ooo.0o0.ooo/2017/02/11/589e31ddbcf38.jpg" alt></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e3205b0e2c.jpg" alt></p>
+<h4 id="✘-‘-simple-h’-file-not-found-objc-errors-mm"><a href="#✘-‘-simple-h’-file-not-found-objc-errors-mm" class="headerlink" title="✘ ‘_simple.h’ file not found (objc-errors.mm)"></a>✘ <em>‘_simple.h’ file not found (objc-errors.mm)</em></h4><p>✔︎ <strong><em>./Libc-825.40.1/gen/_simple.h</em></strong><br><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31fb82e3a.jpg" alt></p>
+<h4 id="✘-Use-of-undeclared-identifier-‘os-unfair-lock-assert-owner’-objc-lockdebug-mm"><a href="#✘-Use-of-undeclared-identifier-‘os-unfair-lock-assert-owner’-objc-lockdebug-mm" class="headerlink" title="✘ Use of undeclared identifier ‘os_unfair_lock_assert_owner’ (objc-lockdebug.mm)"></a>✘ <em>Use of undeclared identifier ‘os_unfair_lock_assert_owner’ (objc-lockdebug.mm)</em></h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ grep -rne <span class="hljs-string">"os_unfair_lock_assert_owner"</span> .</span><br></pre></td></tr></table></figure><br>没有匹配项</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e3205627f2.jpg" alt></p>
+<p><em>Google</em>了未发现,先将该函数的功能修改为输出日志</p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31e70b171.jpg" alt></p>
+<h4 id="✘-‘Block-private-h’-file-not-found-objc-block-trampolines-mm"><a href="#✘-‘Block-private-h’-file-not-found-objc-block-trampolines-mm" class="headerlink" title="✘ ‘Block_private.h’ file not found (objc-block-trampolines.mm)"></a>✘ <em>‘Block_private.h’ file not found (objc-block-trampolines.mm)</em></h4><p>✔︎ <strong><em>./libclosure-67/Block_private.h</em></strong><br><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31eb2e57a.jpg" alt></p>
+<p>链接动态库的时候不能打开<em>libobjc.order</em>,查看在对应路径下并没有<em>libobjc.order<em>文件,发现</em>objc<em>工程已经有</em>libobjc.order</em>,应该会有字段说明要引用的路径,想办法让工程引入本身的<em>libobjc.order</em>文件</p>
+<p>最后找到<em>Build Settings<em>的</em>Order File</em><br><img src="https://ooo.0o0.ooo/2017/02/11/589e320551cd0.jpg" alt></p>
+<p>将该字段统一修改为<em>$(PROJECT_DIR)/libobjc.order</em></p>
+<p><strong>⌘ + B</strong></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31ede49ec.jpg" alt></p>
+<p>因为工程中并没有<em>CrashReporterClient<em>的库<br>将</em>Other Linker flags*中的</em>-lCrashReporterClient<em>参数去掉<br>*</em>⌘ + B**</p>
+<p>终于编译成功了☺,然后创建一个<em>debug-objc<em>的</em>target</em>,导入修改的<em>libobjc.A.dylib</em></p>
+<p><strong>⌘ + R</strong><br><img src="https://ooo.0o0.ooo/2017/02/11/589e31e63ebd3.jpg" alt><br>正常运行并输出,<em>lockdebug_mutex_assert_locked</em>被调用了很多次,但不会影响,可注释掉它的输出</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/11/589e31e86ad64.jpg" alt></p>
+<p>OK,已经可以进行调试了</p>
+<h2 id="续"><a href="#续" class="headerlink" title="续"></a>续</h2><p>可以调试,但是在<em>debug-objc<em>工程中还是无法访问</em>objc_class</em></p>
+<p>进行以下操作</p>
+<ul>
+<li>添加代码</li>
+</ul>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_class *obj_1 = (objc_class *)[<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">objc_class *obj_2 = (objc_class *)[<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>];</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%p,%p"</span>,obj_1,obj_2);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>main.m</em> 引入<em>#import “objc-private.h”</em>  // 会报错</li>
+<li><em>main.m</em> -&gt; <em>main.mm</em> 因为 <em>objc-private.h</em> 是objetive-c++类型的</li>
+<li><em>CrashReporterClient.h</em> 报错 -&gt; 同 <em>objc-706</em> 工程类似处理,在 <em>buildsetting</em> ,设置<em>LIBC_NO_LIBCRASHREPORTERCLIENT</em></li>
+<li><em>objc-probes.h file not found</em>  =&gt; 从网上找到文件放到工程的 <em>include</em> 目录,并在 <em>debug-objc</em> 添加 <em>$(SRCROOT)/include</em></li>
+<li><em>maptable.h file not found(&lt;objc/maptable.h&gt;)</em> =&gt;  从网上找到文件后放到工程的 <em>include/objc(目录没有要创建)</em></li>
+<li>编译成功</li>
+</ul>
+<p>截图如下:<br><img src="https://ooo.0o0.ooo/2017/02/11/589e31ea266dc.jpg" alt></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://blog.csdn.net/fjb2080/article/details/5247494" target="_blank" rel="noopener">gcc：预处理语句－－#include和#include_next</a></li>
+<li><a href="https://opensource.apple.com" target="_blank" rel="noopener">Apple开源</a></li>
+<li><a href="http://blog.csdn.net/wotors/article/details/52489464" target="_blank" rel="noopener">objc - 编译Runtime源码</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Runtime/">#Runtime</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/02/14/CentOS-remote-login-SSH-configuration/">CentOS远程登陆SSH配置</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/02/07/How-to-create-a-deb-type-of-application-in-iOS/">越狱环境下iOS如何制作.deb类型的应用</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>iOS远程推送总结 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOS,远程推送">
+
+
+
+    <meta name="description" content="内容概要 远程推送的原理远程推送证书格式及其转换(.pem&#x2F;.p12)远程推送证书的制作流程实例与环境">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS远程推送总结">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2016&#x2F;11&#x2F;20&#x2F;iOS-Remote-Push-Summary&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="内容概要 远程推送的原理远程推送证书格式及其转换(.pem&#x2F;.p12)远程推送证书的制作流程实例与环境">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185f45ec902.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185f8f488a7.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185fc552d39.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185fdd19077.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58186003456f6.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185fab496fa.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;5818602e6d2d8.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;581861be54a4b.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;581861fb01288.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58186225b39f4.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;5818623e969b8.jpg">
+<meta property="article:published_time" content="2016-11-20T08:22:24.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:53:43.288Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="远程推送">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2016&#x2F;11&#x2F;01&#x2F;58185f45ec902.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#内容概要">1&nbsp;&nbsp;<b>内容概要</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#远程推送的原理">2&nbsp;&nbsp;<b>远程推送的原理</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#问题">2.1&nbsp;&nbsp;问题</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#答案">2.2&nbsp;&nbsp;答案</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原理图">2.3&nbsp;&nbsp;原理图</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#远程推送证书格式及其转换">3&nbsp;&nbsp;<b>远程推送证书格式及其转换</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#SSL-TLS">3.1&nbsp;&nbsp;SSL/TLS</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#RSA">3.1.1&nbsp;&nbsp;RSA</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#X509">3.1.2&nbsp;&nbsp;X509</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#p12">3.2&nbsp;&nbsp;.p12</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#pem">3.3&nbsp;&nbsp;.pem</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#验证">3.3.1&nbsp;&nbsp;验证</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#格式转换">3.4&nbsp;&nbsp;格式转换</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#证书制作">4&nbsp;&nbsp;<b>证书制作</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#certSigningRequest">4.1&nbsp;&nbsp;.certSigningRequest</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#实例与环境">5&nbsp;&nbsp;<b>实例与环境</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#本地服务器-参考教程">5.1&nbsp;&nbsp;本地服务器 [参考教程]</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#效果图">5.1.1&nbsp;&nbsp;效果图:</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#推送证书相关处理">5.2&nbsp;&nbsp;推送证书相关处理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#测试证书的有效性">5.2.1&nbsp;&nbsp;测试证书的有效性</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#PHP">5.3&nbsp;&nbsp;PHP</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#recv-php-负责接收从客户端上报的deviceToken">5.3.1&nbsp;&nbsp;recv.php 负责接收从客户端上报的deviceToken</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#RemotePush-php-负责与APNs服务器交互-实现推送">5.3.2&nbsp;&nbsp;RemotePush.php  负责与APNs服务器交互,实现推送</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#iOS客户端">5.4&nbsp;&nbsp;iOS客户端</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#AppDelegate-m">5.4.1&nbsp;&nbsp;AppDelegate.m</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Xcode配置">5.4.2&nbsp;&nbsp;Xcode配置</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#推送测试">5.4.3&nbsp;&nbsp;推送测试</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#其他脚本">5.4.4&nbsp;&nbsp;其他脚本</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">6&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            iOS远程推送总结
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2016-11-20T08:22:24.000Z" itemprop="datePublished">11月 20 2016</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            24 分钟 读完 (约 3634 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="内容概要"><a href="#内容概要" class="headerlink" title="内容概要"></a>内容概要</h2><blockquote>
+<p><a href="#1">远程推送的原理</a><br><a href="#2">远程推送证书格式及其转换(.pem/.p12)</a><br><a href="#3">远程推送证书的制作流程</a><br><a href="#4">实例与环境</a></p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="远程推送的原理"><a href="#远程推送的原理" class="headerlink" title="远程推送的原理"></a>远程推送的原理</h2><p><a href="https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/index.html#//apple_ref/doc/uid/TP40008194-CH3-SW1" target="_blank" rel="noopener">官方文档</a></p>
+<blockquote>
+<p>A remote notification, also called a push notification, arrives from <strong>outside the device</strong>. It originates on a remote server that you manage—the app’s notification provider—and is pushed to your app on a user’s device <strong>via</strong> the <strong>Apple Push Notification service (APNs)</strong>.</p>
+</blockquote>
+<p>远程推送是基于<strong>APNs(苹果推送服务)</strong></p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>① APNs为什么能远程推送?<br>② APNs怎么知道要推送给哪个设备的哪个应用?</p>
+<blockquote>
+<p>APNs uses a <strong>persistent IP connection</strong> for implementing remote notifications.</p>
+</blockquote>
+<blockquote>
+<p>Apple Push Notification service (APNs) propagates remote notifications to devices having apps registered to receive those notifications. <strong>Each app on a device</strong> establishes an accredited and encrypted IP connection with the service and receives notifications over this persistent connection. </p>
+</blockquote>
+<blockquote>
+<p>With a TLS connection established between the device and APNs, APNs can then <strong>provide an app-specific device token to each app</strong> that registers for remote notifications.</p>
+</blockquote>
+<h3 id="答案"><a href="#答案" class="headerlink" title="答案"></a>答案</h3><p>① 存在一个<a href="http://baike.baidu.com/view/2831907.htm" target="_blank" rel="noopener">长连接</a><br>② 设备上的每个app都可建立一个加密的许可ip用于连接与接收远程推送(deviceToken)</p>
+<h3 id="原理图"><a href="#原理图" class="headerlink" title="原理图"></a>原理图</h3><p><img src="https://ooo.0o0.ooo/2016/11/01/58185f45ec902.jpg" alt><br>更详细的步骤(来自互联网)<br><img src="https://ooo.0o0.ooo/2016/11/01/58185f8f488a7.jpg" alt></p>
+<ol>
+<li><p>设备上的应用连接APNs服务器</p>
+</li>
+<li><p>APNs服务器接收到请求生成deviceToken加密后返回给设备</p>
+</li>
+<li><p>设备上应用获得deviceToken后上报给应用服务器</p>
+</li>
+<li><p>应用服务器调用APNs的API并发送 deviceToken(Each notification that your provider sends to APNs <strong>must include the device token</strong>)</p>
+</li>
+<li><p>APNs服务器根据deviceToken将消息推送给指定设备的具体应用</p>
+<blockquote>
+<p>Device tokens can change after updating the operating system, and always change when a device’s data and settings are erased<br>deviceToken在更新系统和重新安装(先删除)会被更新</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="远程推送证书格式及其转换"><a href="#远程推送证书格式及其转换" class="headerlink" title="远程推送证书格式及其转换"></a>远程推送证书格式及其转换</h2><p><img src="https://ooo.0o0.ooo/2016/11/01/58185fc552d39.jpg" alt></p>
+<p>从上图可知应用服务器与APNs会有一个TLS认证,<br>在申请证书时,提到了使用CSR获得SSL证书,我们先来了解其他一些相关的概念</p>
+<h3 id="SSL-TLS"><a href="#SSL-TLS" class="headerlink" title="SSL/TLS"></a>SSL/TLS</h3><p>传输层安全协议（英语：Transport Layer Security，缩写：TLS），及其前身安全套接层（Secure Sockets Layer，缩写：SSL）是一种安全协议，目的是為网络通信，提供<strong>安全</strong>及<strong>数据完整性</strong>保障。</p>
+<p><img src="https://ooo.0o0.ooo/2016/11/01/58185fdd19077.jpg" alt></p>
+<ul>
+<li><p>1.协商加密协议</p>
+<ul>
+<li>1.1 客户端生成随机数RNc发送client_hello,包含客户端支持的协议,支持的压缩算法等</li>
+<li>1.2 服务器接收到client_hello,并随机生成一个RNs,发送server_hello,包含服务器支持的协议,支持的压缩算法等(如果浏览器与服务器支持的版本不一致，服务器关闭加密通信)</li>
+<li>1.3 客户端收到RNs,准备进入证书交换阶段</li>
+</ul>
+</li>
+<li><p>2.证书交换</p>
+<ul>
+<li>2.1 服务器发送公钥,并要求客户端返回其公钥</li>
+<li>2.2 客户端收到服务器的公钥,并检查其证书的有效性,颁发证书的机构是否合法，证书中包含的网站地址是否与正在访问的地址一致等</li>
+<li>2.3 客户端验证证书合法后将发送自己的公钥,并hash处理以前的消息,最后用私钥签名加密发送给服务器</li>
+<li>2.4 服务器使用客户端的公钥解密并采用相同的hash算法验证</li>
+<li>2.5 客户端生成随机PMS(pre-master-secrect:一个用在对称加密密钥产生中的46位元組的乱数字),并用服务器的公钥加密发送给服务器</li>
+<li>2.6 双方各自使用MS,RNc,RNs去创建一个MS作为主密钥</li>
+</ul>
+</li>
+<li><p>3.对称密钥的数据传输保密</p>
+<ul>
+<li>3.1 客户端通知服务器使用MS做key加密</li>
+<li>3.2 服务器通知客户端使用MS做key加密</li>
+</ul>
+</li>
+</ul>
+<p>结果可能使用Diffie-Hellman交换,或简化的公钥加密,双方各自用私钥解密。所有其他关键数据均使用MS加密<br><a href="https://zh.wikipedia.org/wiki/傳輸層安全協議" target="_blank" rel="noopener">Wiki</a> 在了解SSL的过程中,我们又碰到了RSA,X509等概念,下面依次解释</p>
+<h4 id="RSA"><a href="#RSA" class="headerlink" title="RSA"></a>RSA</h4><p>RSA加密算法是现在世界上运用最广泛的非对称加密算法，比如常用的<strong>https</strong>协议、银行交易等等</p>
+<h5 id="非对称加密算法"><a href="#非对称加密算法" class="headerlink" title="非对称加密算法"></a>非对称加密算法</h5><p>　　非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥（privatekey）。公开密钥与私有密钥是一对，如果用公开密钥对数据进行加密，只有用对应的私有密钥才能解密；如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密。</p>
+<p><strong>用途1</strong>:公钥加密<br>　　甲方生成一对密钥并将其中的一把作为公用密钥向其它方公开；得到该公用密钥的乙方使用该密钥对机密信息进行加密后再发送给甲方；甲方再用自己保存的另一把专用密钥对加密后的信息进行解密。</p>
+<p><strong>用途2</strong>:数字签名<br>　　另一方面，甲方可以使用乙方的公钥对机密信息进行签名后再发送给乙方；乙方再用自己的私匙对数据进行验签。</p>
+<h4 id="X509"><a href="#X509" class="headerlink" title="X509"></a>X509</h4><p>一种证书标准,主要定义了证书中应该包含哪些内容 参考<a href="https://www.ietf.org/rfc/rfc5280.txt" target="_blank" rel="noopener">RFC5280</a> SSL使用的就是这种证书标准,该标准有两种编码格式(PEM和DER)</p>
+<h5 id="PEM"><a href="#PEM" class="headerlink" title="PEM"></a>PEM</h5><p>PEM - Privacy Enhanced Mail,打开看文本格式,以”—–BEGIN…”开头, “—–END…”结尾,内容是BASE64编码.<br>查看PEM格式证书的信息:openssl x509 -in certificate.pem -text -noout<br>Apache和*NIX服务器偏向于使用这种编码格式.</p>
+<h5 id="DER"><a href="#DER" class="headerlink" title="DER"></a>DER</h5><p>DER - Distinguished Encoding Rules,打开看是二进制格式,不可读.<br>查看DER格式证书的信息:openssl x509 -in certificate.der -inform der -text -noout<br>Java和Windows服务器偏向于使用这种编码格式.</p>
+<p>让我们重新理解证书申请的过程(数字证书)<br><strong>1.从钥匙串中导出CSR文件,包含公钥及其他一些信息,Apple开发者中心进行签名后,生成.cer文件,这是一个数字证书的签名过程<br>2.在导出CSR文件时,除了公钥上传给Apple开发者中心,钥匙串中还存在私钥,在双击时,通过私钥去匹配签名证书中的公钥,一个数字证书的签名与验签就完成了</strong></p>
+<h3 id="p12"><a href="#p12" class="headerlink" title=".p12"></a>.p12</h3><p>Personal Information Exchange Syntax Standard</p>
+<blockquote>
+<p>See RFC 7292. Defines a file format commonly used to <strong>store private keys with accompanying public key certificates</strong>, protected with a password-based symmetric key. PFX is a predecessor to PKCS #12.<br>This container format can contain multiple embedded objects, such as multiple certificates. Usually protected/encrypted with a password. Usable as a format for the Java key store and to establish client authentication certificates in Mozilla Firefox. Usable by Apache Tomcat.</p>
+</blockquote>
+<p>从中可以获知p12文件(个人信息交换标准),包含了私钥和与之相关的公钥证书,有密码作保护</p>
+<p>从钥匙串中将.p12文件导出并上传到极光服务器,因为证书的颁发机构就是Apple,在检测证书是否合法当然没有问题,自然也可以与Apple的APNs服务器建立TLS通信</p>
+<h3 id="pem"><a href="#pem" class="headerlink" title=".pem"></a>.pem</h3><p>多用于*NIX服务器<br>.cer, .crt, .der – usually in binary DER form这些后缀名的文件一般格式都为DER<br>从Apple开发者中心下载的证书就是.cer格式的<br>.pem与.cer/.crt的不同就是它是用base64编码来表示的,而那两个都是用DER格式编码的</p>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>.cer文件</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -in aps-3.cer -inform der -text -noout</span><br><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 3 (0x2)</span><br><span class="line">        Serial Number:</span><br><span class="line">            21:91:22:78:63:a2:3a:8c</span><br><span class="line">        Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">        Issuer: C&#x3D;US, O&#x3D;Apple Inc., OU&#x3D;Apple Worldwide Developer Relations, CN&#x3D;Apple Worldwide Developer Relations Certification Authority</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Oct 24 06:26:06 2016 GMT</span><br><span class="line">            Not After : Nov 23 06:26:06 2017 GMT</span><br><span class="line">            ...</span><br></pre></td></tr></table></figure></p>
+<p>证明从Apple开发者中心下载的推送证书是用X.509中的DER格式编码的</p>
+<h3 id="格式转换"><a href="#格式转换" class="headerlink" title="格式转换"></a>格式转换</h3><p><strong>PEM–p12(PEM–PKCS#12)</strong></p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl pkcs12 -export -out Cert.p12 -in Cert.pem -inkey key.pem</span><br></pre></td></tr></table></figure></p>
+<p><strong>PFX/p12–CER/DER(PKCS#12–CER/DER)</strong></p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ openssl pkcs12 -in certificate.p12 -out certificate.cer</span><br><span class="line">如无需加密pem中私钥，可以添加选项-nodes；</span><br><span class="line">如无需导出私钥，可以添加选项-nokeys;</span><br></pre></td></tr></table></figure></p>
+<p><strong>CER/DER–PEM(编码DER–BASE64)</strong></p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -inform der -<span class="hljs-keyword">in</span> certificate.cer -out certificate.pem</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2016/11/01/58186003456f6.jpg" alt></p>
+<p>应用服务器和APNs服务器通过TLS建立信任已经说明了,顺便提一下设备和APNs服务器的信任过程</p>
+<blockquote>
+<p>Trust between APNs and each device is established automatically by iOS upon initial device activation (and without participation by your app), as described in this section.</p>
+</blockquote>
+<blockquote>
+<p>Each device has a cryptographic certificate and a private cryptographic key, obtained at initial device activation and stored in the device’s keychain. During activation, APNs uses the certificate and key to validate the device’s connection using peer-to-peer authentication</p>
+</blockquote>
+<p>大体上也是APNs服务器发送公钥证书,然后系统验证证书,通过后发送设备证书,两者建立信任</p>
+<h2 id="证书制作"><a href="#证书制作" class="headerlink" title="证书制作"></a>证书制作</h2><ul>
+<li>登陆Apple开发者中心</li>
+<li>创建AppId</li>
+<li>使用钥匙串导出.certSigningRequest文件</li>
+<li>创建 &amp;&amp; 下载推送证书(.cer文件)</li>
+</ul>
+<p>只要有开发者账号,创建基本没什么问题,具体的截图流程可参考 <a href="https://docs.jiguang.cn/jpush/client/iOS/ios_cer_guide/" target="_blank" rel="noopener">极光</a></p>
+<h3 id="certSigningRequest"><a href="#certSigningRequest" class="headerlink" title=".certSigningRequest"></a>.certSigningRequest</h3><blockquote>
+<p>A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate</p>
+</blockquote>
+<p>CSR或证书签名请求是我们申请SSL证书时给予认证机构的表明身份的一段文本</p>
+<p> <img src="https://ooo.0o0.ooo/2016/11/01/58185fab496fa.jpg" alt></p>
+<p><span id="4"></span></p>
+<h2 id="实例与环境"><a href="#实例与环境" class="headerlink" title="实例与环境"></a>实例与环境</h2><h3 id="本地服务器-参考教程"><a href="#本地服务器-参考教程" class="headerlink" title="本地服务器 [参考教程]"></a>本地服务器 <a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-phpmyadmin-working-osx-10-10-yosemite/" target="_blank" rel="noopener">[参考教程]</a></h3><h4 id="效果图"><a href="#效果图" class="headerlink" title="效果图:"></a>效果图:</h4><p><img src="https://ooo.0o0.ooo/2016/11/01/5818602e6d2d8.jpg" alt></p>
+<h3 id="推送证书相关处理"><a href="#推送证书相关处理" class="headerlink" title="推送证书相关处理"></a>推送证书相关处理</h3><ul>
+<li>p12  钥匙串导出</li>
+<li>pem<ol>
+<li>将下载的.cer文件导出为.pem格式的文件</li>
+<li>将钥匙串中的p12文件中的私钥导出为.pem格式的文件</li>
+<li>合并两个文件</li>
+</ol>
+</li>
+</ul>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -<span class="hljs-keyword">in</span> 证书名字.cer -inform der -out push_distribution_cer.pem</span><br><span class="line">// man pkcs12 可知-nocerts 即 no certificates at all will be output.</span><br><span class="line">$ openssl pkcs12 -nocerts -out pushKey.pem -<span class="hljs-keyword">in</span> p12名字.p12</span><br><span class="line">$ cat 下载证书生成的.pem p12生成的.pem &gt; 最终证书的名字.pem</span><br></pre></td></tr></table></figure></p>
+<h4 id="测试证书的有效性"><a href="#测试证书的有效性" class="headerlink" title="测试证书的有效性"></a>测试证书的有效性</h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">生产环境 </span><br><span class="line">openssl s_client -connect gateway.push.apple.com:2195 -cert 下载证书生成的.pem -key p12生成的.pem</span><br><span class="line"></span><br><span class="line">开发环境时服务器地址: gateway.sandbox.push.apple.com:2195</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2016/11/01/581861be54a4b.jpg" alt></p>
+<p>将合并后的证书文件拷贝到本地服务器的合适目录,后面会用到</p>
+<h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h3><h4 id="recv-php-负责接收从客户端上报的deviceToken"><a href="#recv-php-负责接收从客户端上报的deviceToken" class="headerlink" title="recv.php 负责接收从客户端上报的deviceToken"></a>recv.php 负责接收从客户端上报的deviceToken</h4><p><figure class="highlight php hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?php</span></span><br><span class="line">    $myfile = fopen(<span class="hljs-string">"testfile.txt"</span>, <span class="hljs-string">"w"</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">"Unable to open file!"</span>);</span><br><span class="line">    $deviceToken = $_GET[<span class="hljs-string">'deviceToken'</span>];</span><br><span class="line">    $result = [<span class="hljs-string">"deviceToken"</span> =&gt; $deviceToken];</span><br><span class="line">    <span class="hljs-keyword">echo</span> json_encode($result);</span><br><span class="line">    fwrite($myfile,$deviceToken);</span><br><span class="line">    fclose($myfile);</span><br><span class="line"><span class="hljs-meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="RemotePush-php-负责与APNs服务器交互-实现推送"><a href="#RemotePush-php-负责与APNs服务器交互-实现推送" class="headerlink" title="RemotePush.php  负责与APNs服务器交互,实现推送"></a>RemotePush.php  负责与APNs服务器交互,实现推送</h4><p><figure class="highlight php hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?php</span>    </span><br><span class="line">    $filename = <span class="hljs-string">"testfile.txt"</span>;</span><br><span class="line">    $myfile = fopen($filename, <span class="hljs-string">"r"</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">"Unable to open file!"</span>);</span><br><span class="line">    $contents = fread($myfile, filesize($filename));</span><br><span class="line">    $deviceToken= $contents;    </span><br><span class="line">    $body = <span class="hljs-keyword">array</span>(<span class="hljs-string">"aps"</span> =&gt; <span class="hljs-keyword">array</span>(<span class="hljs-string">"alert"</span> =&gt; <span class="hljs-string">'推送的内容'</span>,<span class="hljs-string">"badge"</span> =&gt; <span class="hljs-number">1</span>,<span class="hljs-string">"sound"</span>=&gt;<span class="hljs-string">'default'</span>));  <span class="hljs-comment">//推送方式，包含内容和声音  </span></span><br><span class="line">    $ctx = stream_context_create();  </span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">//如果在Windows的服务器上，寻找pem路径会有问题，路径修改成这样的方法：  </span></span><br><span class="line">    <span class="hljs-comment">//$pem = dirname(__FILE__) . '/' . 'apns-dev.pem';  </span></span><br><span class="line">    <span class="hljs-comment">//linux 的服务器直接写pem的路径即可  </span></span><br><span class="line"></span><br><span class="line">    stream_context_set_option($ctx,<span class="hljs-string">"ssl"</span>,<span class="hljs-string">"local_cert"</span>,<span class="hljs-string">"remote.pem"</span>);  </span><br><span class="line">    $pass = <span class="hljs-string">'Apple123#@!'</span>;  </span><br><span class="line">    stream_context_set_option($ctx, <span class="hljs-string">'ssl'</span>, <span class="hljs-string">'passphrase'</span>, $pass);  </span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">//此处有两个服务器需要选择，如果是开发测试用，选择第二名sandbox的服务器并使用Dev的pem证书，如果是正是发布，使用Product的pem并选用正式的服务器  </span></span><br><span class="line">    </span><br><span class="line">    $fp = stream_socket_client(<span class="hljs-string">"ssl://gateway.push.apple.com:2195"</span>, $err, $errstr, <span class="hljs-number">60</span>, STREAM_CLIENT_CONNECT, $ctx);  </span><br><span class="line">    <span class="hljs-comment">// $fp = stream_socket_client("ssl://gateway.sandbox.push.apple.com:2195", $err, $errstr, 60, STREAM_CLIENT_CONNECT, $ctx);  </span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (!$fp) &#123;  </span><br><span class="line">        <span class="hljs-keyword">echo</span> <span class="hljs-string">"Failed to connect $err $errstrn"</span>;  </span><br><span class="line">        <span class="hljs-keyword">return</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">print</span> <span class="hljs-string">"Connection OK\n"</span>;  </span><br><span class="line">    $payload = json_encode($body);  </span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">//这边可以弄一个循环实现多个deviceToken 值,这里暂用一个token值得方法</span></span><br><span class="line">    $msg = chr(<span class="hljs-number">0</span>) . pack(<span class="hljs-string">"n"</span>,<span class="hljs-number">32</span>) . pack(<span class="hljs-string">"H*"</span>, str_replace(<span class="hljs-string">' '</span>, <span class="hljs-string">''</span>, $deviceToken)) . pack(<span class="hljs-string">"n"</span>,strlen($payload)) . $payload;  </span><br><span class="line">    <span class="hljs-keyword">echo</span> <span class="hljs-string">"sending message :"</span> . $payload .<span class="hljs-string">"\n"</span>;  </span><br><span class="line">    fwrite($fp, $msg);  </span><br><span class="line">    fclose($fp);</span><br><span class="line"><span class="hljs-meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2016/11/01/581861fb01288.jpg" alt></p>
+<h3 id="iOS客户端"><a href="#iOS客户端" class="headerlink" title="iOS客户端"></a>iOS客户端</h3><h4 id="AppDelegate-m"><a href="#AppDelegate-m" class="headerlink" title="AppDelegate.m"></a>AppDelegate.m</h4><p>import iOS10特有的UserNotification框架</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ifdef NSFoundationVersionNumber_iOS_9_x_Max</span><br><span class="line">#import &lt;UserNotifications&#x2F;UserNotifications.h&gt;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions &#123;</span><br><span class="line">	<span class="hljs-keyword">if</span> ([[<span class="hljs-built_in">UIDevice</span> currentDevice].systemVersion floatValue] &gt;= <span class="hljs-number">10.0</span>) &#123;</span><br><span class="line">        <span class="hljs-comment">//iOS10特有</span></span><br><span class="line">        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];</span><br><span class="line">        <span class="hljs-comment">// 必须写代理，不然无法监听通知的接收与点击</span></span><br><span class="line">        center.delegate = <span class="hljs-keyword">self</span>;</span><br><span class="line">        [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert | UNAuthorizationOptionBadge | UNAuthorizationOptionSound) completionHandler:^(<span class="hljs-built_in">BOOL</span> granted, <span class="hljs-built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">            <span class="hljs-keyword">if</span> (granted) &#123;</span><br><span class="line">                <span class="hljs-comment">// 点击允许</span></span><br><span class="line">                <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"注册成功"</span>);</span><br><span class="line">                [center getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) &#123;</span><br><span class="line">                    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, settings);</span><br><span class="line">                &#125;];</span><br><span class="line">            &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">                <span class="hljs-comment">// 点击不允许</span></span><br><span class="line">                <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"注册失败"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;];</span><br><span class="line">   &#125;<span class="hljs-keyword">else</span>  <span class="hljs-keyword">if</span> ([[<span class="hljs-built_in">UIDevice</span> currentDevice].systemVersion doubleValue] &gt;= <span class="hljs-number">8.0</span>) &#123;</span><br><span class="line">        <span class="hljs-comment">// 1.注册UserNotification,以获取推送通知的权限</span></span><br><span class="line">        <span class="hljs-built_in">UIUserNotificationSettings</span> *settings = [<span class="hljs-built_in">UIUserNotificationSettings</span> settingsForTypes:<span class="hljs-built_in">UIUserNotificationTypeSound</span> | <span class="hljs-built_in">UIUserNotificationTypeAlert</span> | <span class="hljs-built_in">UIUserNotificationTypeBadge</span> categories:<span class="hljs-literal">nil</span>];</span><br><span class="line">        [application registerUserNotificationSettings:settings];</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// 2.注册远程推送</span></span><br><span class="line">        [application registerForRemoteNotifications];</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//iOS8之前,注册远程推送的方法</span></span><br><span class="line">        [application registerForRemoteNotificationTypes:<span class="hljs-built_in">UIRemoteNotificationTypeNewsstandContentAvailability</span> | <span class="hljs-built_in">UIRemoteNotificationTypeAlert</span> | <span class="hljs-built_in">UIRemoteNotificationTypeBadge</span> | <span class="hljs-built_in">UIRemoteNotificationTypeSound</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 获得deviceToken成功</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application didRegisterForRemoteNotificationsWithDeviceToken:(<span class="hljs-built_in">NSData</span> *)deviceToken &#123;</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *deviceTokenStr = [[<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@"%@"</span>,deviceToken] stringByReplacingOccurrencesOfString:<span class="hljs-string">@" "</span> withString:<span class="hljs-string">@""</span>];</span><br><span class="line">    deviceTokenStr = [deviceTokenStr  substringWithRange:<span class="hljs-built_in">NSMakeRange</span>(<span class="hljs-number">1</span>, deviceTokenStr.length   - <span class="hljs-number">2</span> )];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// [[[UIAlertView alloc] initWithTitle:@"deviceToken" message:deviceTokenStr delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil] show];</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-built_in">NSURLSessionConfiguration</span> *config = [<span class="hljs-built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    <span class="hljs-built_in">NSURLSession</span> *session = [<span class="hljs-built_in">NSURLSession</span> sessionWithConfiguration:config];</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *path = [<span class="hljs-built_in">NSString</span> stringWithFormat:<span class="hljs-string">@"http://192.168.198.104/~Jason/remotePush/recv.php?deviceToken=%@"</span>,deviceTokenStr];</span><br><span class="line">    <span class="hljs-comment">// NSLog(@"%@",deviceTokenStr);</span></span><br><span class="line">    <span class="hljs-built_in">NSURLRequest</span> *request = [<span class="hljs-built_in">NSURLRequest</span> requestWithURL:[<span class="hljs-built_in">NSURL</span> URLWithString:path]];</span><br><span class="line">    [[session dataTaskWithRequest:request completionHandler:^(<span class="hljs-built_in">NSData</span> * _Nullable data, <span class="hljs-built_in">NSURLResponse</span> * _Nullable response, <span class="hljs-built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (!error) &#123;</span><br><span class="line">            <span class="hljs-built_in">NSDictionary</span> *result = [<span class="hljs-built_in">NSJSONSerialization</span> JSONObjectWithData:data options:<span class="hljs-number">0</span> error:<span class="hljs-literal">nil</span>];</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"成功:%@"</span>,result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;] resume];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 获得Device Token失败</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application</span><br><span class="line">didFailToRegisterForRemoteNotificationsWithError:(<span class="hljs-built_in">NSError</span> *)error &#123;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"did Fail To Register For Remote Notifications With Error: %@"</span>, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Xcode配置"><a href="#Xcode配置" class="headerlink" title="Xcode配置"></a>Xcode配置</h4><p><img src="https://ooo.0o0.ooo/2016/11/01/58186225b39f4.jpg" alt><br><img src="https://ooo.0o0.ooo/2016/11/01/5818623e969b8.jpg" alt></p>
+<h4 id="推送测试"><a href="#推送测试" class="headerlink" title="推送测试"></a>推送测试</h4><p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Warning: stream_socket_client(): SSL operation failed with code 1. OpenSSL Error messages:</span><br><span class="line">error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed in &#x2F;Users&#x2F;Jason&#x2F;Sites&#x2F;remotePush&#x2F;remotePush.php on line 19</span><br><span class="line"></span><br><span class="line">Warning: stream_socket_client(): Failed to enable crypto in &#x2F;Users&#x2F;Jason&#x2F;Sites&#x2F;remotePush&#x2F;remotePush.php on line 19</span><br><span class="line"></span><br><span class="line">Warning: stream_socket_client(): unable to connect to ssl:&#x2F;&#x2F;gateway.sandbox.push.apple.com:2195 (Unknown error) in &#x2F;Users&#x2F;Jason&#x2F;Sites&#x2F;remotePush&#x2F;remotePush.php on line 19</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>google后发现可能是mac OS Sierra的原因</p>
+</blockquote>
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 升级openssl [可选]</span><br><span class="line">2. php -r &quot;print_r(openssl_get_cert_locations());&quot;</span><br><span class="line">3. wget http:&#x2F;&#x2F;curl.haxx.se&#x2F;ca&#x2F;cacert.pem  </span><br><span class="line">&#x2F;&#x2F; 移动到2中输出的default_cert_file中</span><br><span class="line">4. sudo mv cacert.pem &#x2F;usr&#x2F;local&#x2F;libressl&#x2F;etc&#x2F;ssl&#x2F;cert.pem</span><br></pre></td></tr></table></figure></p>
+<h5 id="终端推送"><a href="#终端推送" class="headerlink" title="终端推送"></a>终端推送</h5><p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ php remotePush.php</span><br><span class="line"></span><br><span class="line">Connection OK</span><br><span class="line">sending message :&#123;&quot;aps&quot;:&#123;&quot;alert&quot;:&quot;\u63a8\u9001\u7684\u5185\u5bb9&quot;,&quot;badge&quot;:1,&quot;sound&quot;:&quot;default&quot;&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="其他脚本"><a href="#其他脚本" class="headerlink" title="其他脚本"></a>其他脚本</h4><p><a href="https://github.com/stefanhafeneger/PushMeBaby" target="_blank" rel="noopener">PushMeBaby</a><br><a href="http://pushtry.com" target="_blank" rel="noopener">pushtry网站</a></p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS Sierra Version 10.12(16A323)<br>Version 8.0 (8A218a)<br>iPhone 6s 9.3.1</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html" target="_blank" rel="noopener">What is a CSR (Certificate Signing Request)?</a></li>
+<li><a href="https://en.wikipedia.org/wiki/PKCS" target="_blank" rel="noopener">Wiki-PKCS</a></li>
+<li><a href="http://www.cnblogs.com/ttltry-air/archive/2012/08/20/2647898.html" target="_blank" rel="noopener">HTTPS的工作原理</a></li>
+<li><a href="https://coolestguidesontheplanet.com/get-apache-mysql-php-and-phpmyadmin-working-on-macos-sierra/" target="_blank" rel="noopener">Get Apache, MySQL, PHP and phpMyAdmin working on macOS Sierra</a></li>
+<li><a href="https://zh.wikipedia.org/zh-hant/傳輸層安全協議" target="_blank" rel="noopener">传输层安全协议</a></li>
+<li><a href="https://developer.apple.com/library/content/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/APNsProviderAPI.html#//apple_ref/doc/uid/TP40008194-CH101-SW1" target="_blank" rel="noopener">About Local and Remote Notifications - Apple Developer</a></li>
+<li><a href="http://www.jianshu.com/p/f5337e8f336d" target="_blank" rel="noopener">iOS开发 iOS10推送必看</a></li>
+<li><a href="http://stackoverflow.com/questions/39612022/apns-push-notification-with-macos-sierra" target="_blank" rel="noopener">APNs push notification with macOS Sierra</a></li>
+<li><a href="http://stackoverflow.com/questions/7208669/enabling-apple-push-notifications-for-ad-hoc-distribution-environment" target="_blank" rel="noopener">Enabling Apple Push Notifications for ad hoc distribution environment</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Mechanism/">#Mechanism</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2016/11/20/Free-password-to-remotely-access-iOS-devices/">免密码远程登陆iOS设备</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2016/11/20/lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/">lldb调试OC的若干辅助方法与注意</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

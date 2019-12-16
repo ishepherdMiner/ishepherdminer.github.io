@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>lldb调试OC的若干辅助方法与注意 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="lldb,OC,调试">
+
+
+
+    <meta name="description" content="输出 UIView 的层级结构输出 UIViewController 的层级结构输出类的属性与方法列表形如[0xAbc …]调用时如何出现方法提示 [161129更新]lldb 如何支持 frame 类型的输出 [161204更新]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lldb调试OC的若干辅助方法与注意">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2016&#x2F;11&#x2F;20&#x2F;lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="输出 UIView 的层级结构输出 UIViewController 的层级结构输出类的属性与方法列表形如[0xAbc …]调用时如何出现方法提示 [161129更新]lldb 如何支持 frame 类型的输出 [161204更新]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-11-20T08:13:24.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:55:44.996Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="lldb">
+<meta property="article:tag" content="OC">
+<meta property="article:tag" content="调试">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIView的层级结构">1&nbsp;&nbsp;<b>UIView的层级结构</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIView-JAlldb-h">1.1&nbsp;&nbsp;UIView+JAlldb.h</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIView-JAlldb-m">1.2&nbsp;&nbsp;UIView+JAlldb.m</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#UIViewController的层级结构">2&nbsp;&nbsp;<b>UIViewController的层级结构</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIViewController-JAlldb-h">2.1&nbsp;&nbsp;UIViewController+JAlldb.h</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIViewController-JAlldb-m">2.2&nbsp;&nbsp;UIViewController+JAlldb.m</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#类的属性与方法列表">3&nbsp;&nbsp;<b>类的属性与方法列表</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#NSObject-JAlldb-h">3.1&nbsp;&nbsp;NSObject+JAlldb.h</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#NSObject-JAlldb-m">3.2&nbsp;&nbsp;NSObject+JAlldb.m</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#0xAbc-…-调用如何出现方法提示">4&nbsp;&nbsp;<b>[0xAbc …]调用如何出现方法提示</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#lldb如何支持frame类型的输出">5&nbsp;&nbsp;<b>lldb如何支持frame类型的输出</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            lldb调试OC的若干辅助方法与注意
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2016-11-20T08:13:24.000Z" itemprop="datePublished">11月 20 2016</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            5 分钟 读完 (约 684 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <blockquote>
+<p>输出 <em>UIView</em> 的层级结构<br>输出 <em>UIViewController</em> 的层级结构<br>输出类的属性与方法列表<br>形如[0xAbc …]调用时如何出现方法提示 [161129更新]<br><em>lldb</em> 如何支持 <em>frame</em> 类型的输出 [161204更新]</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="UIView的层级结构"><a href="#UIView的层级结构" class="headerlink" title="UIView的层级结构"></a>UIView的层级结构</h2><h3 id="UIView-JAlldb-h"><a href="#UIView-JAlldb-h" class="headerlink" title="UIView+JAlldb.h"></a>UIView+JAlldb.h</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIView</span> (<span class="hljs-title">JAlldb</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> *  输出view的层级结构</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_recursiveView;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="UIView-JAlldb-m"><a href="#UIView-JAlldb-m" class="headerlink" title="UIView+JAlldb.m"></a>UIView+JAlldb.m</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"UIView+JAlldb.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">UIView</span> (<span class="hljs-title">lldb</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_recursiveView&#123;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic push</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic ignored <span class="hljs-meta-string">"-Wundeclared-selector"</span></span></span><br><span class="line">    <span class="hljs-comment">// 私有方法</span></span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(recursiveDescription)]);</span><br><span class="line">    </span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic pop</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="UIViewController的层级结构"><a href="#UIViewController的层级结构" class="headerlink" title="UIViewController的层级结构"></a>UIViewController的层级结构</h2><h3 id="UIViewController-JAlldb-h"><a href="#UIViewController-JAlldb-h" class="headerlink" title="UIViewController+JAlldb.h"></a>UIViewController+JAlldb.h</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIViewController</span> (<span class="hljs-title">JAlldb</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> *  输出指定vc的层级结构</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_recursiveController;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="UIViewController-JAlldb-m"><a href="#UIViewController-JAlldb-m" class="headerlink" title="UIViewController+JAlldb.m"></a>UIViewController+JAlldb.m</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"UIViewController+JAlldb.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">UIViewController</span> (<span class="hljs-title">JAlldb</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> DEBUG</span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_recursiveController&#123;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic push</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic ignored <span class="hljs-meta-string">"-Wundeclared-selector"</span></span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 私有方法</span></span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(_printHierarchy)]);</span><br><span class="line">    </span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> clang diagnostic pop</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="类的属性与方法列表"><a href="#类的属性与方法列表" class="headerlink" title="类的属性与方法列表"></a>类的属性与方法列表</h2><h3 id="NSObject-JAlldb-h"><a href="#NSObject-JAlldb-h" class="headerlink" title="NSObject+JAlldb.h"></a>NSObject+JAlldb.h</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">NSObject</span> (<span class="hljs-title">JAlldb</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> 属性列表</span></span><br><span class="line"><span class="hljs-comment"></span></span><br><span class="line"><span class="hljs-comment"> @param recursive 是否递归</span></span><br><span class="line"><span class="hljs-comment"> @return 属性列表</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_propertyList:(<span class="hljs-built_in">BOOL</span>)recursive;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> 变量列表</span></span><br><span class="line"><span class="hljs-comment"></span></span><br><span class="line"><span class="hljs-comment"> @param recursive 是否递归</span></span><br><span class="line"><span class="hljs-comment"> @return 变量列表</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_ivarList:(<span class="hljs-built_in">BOOL</span>)recursive;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * 方法列表</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @param recursive 是否递归</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_methodList:(<span class="hljs-built_in">BOOL</span>)recursive;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> 清空缓存列表</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_cleanCacheList;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="NSObject-JAlldb-m"><a href="#NSObject-JAlldb-m" class="headerlink" title="NSObject+JAlldb.m"></a>NSObject+JAlldb.m</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"NSObject+JAlldb.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">NSObject</span> (<span class="hljs-title">JAlldb</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* propertiesKey = <span class="hljs-string">"com.coder.lldb-exclusive.propertiesKey"</span>;</span><br><span class="line"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* ivarKey = <span class="hljs-string">"com.coder.lldb-exclusive.ivarKey"</span>;</span><br><span class="line"><span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span>* methodKey = <span class="hljs-string">"com.coder.lldb-exclusive.methodKey"</span>;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_propertyList:(<span class="hljs-built_in">BOOL</span>)recursive &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-built_in">NSArray</span> *glist = objc_getAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], propertiesKey);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> glist == <span class="hljs-literal">nil</span> ? ^&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-built_in">NSMutableArray</span> *plistM = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:count];</span><br><span class="line">        </span><br><span class="line">        Class cls = [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">do</span> &#123;</span><br><span class="line">            objc_property_t *list = class_copyPropertyList(cls, &amp;count);</span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">                objc_property_t pty = list[i];</span><br><span class="line">                <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *pname = property_getName(pty);</span><br><span class="line">                [plistM addObject:[<span class="hljs-built_in">NSString</span> stringWithUTF8String:pname]];</span><br><span class="line">            &#125;</span><br><span class="line">            free(list);</span><br><span class="line">            cls = [cls superclass];</span><br><span class="line">        &#125; <span class="hljs-keyword">while</span> (cls &amp;&amp; recursive);</span><br><span class="line">        objc_setAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>],propertiesKey, plistM, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Found %ld properties on %@"</span>,plistM.count,[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);</span><br><span class="line">        <span class="hljs-keyword">return</span> plistM.copy;</span><br><span class="line">        </span><br><span class="line">    &#125;() : glist;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_ivarList:(<span class="hljs-built_in">BOOL</span>)recursive&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-built_in">NSArray</span> *glist = objc_getAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], ivarKey);</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> glist == <span class="hljs-literal">nil</span> ? ^&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-built_in">NSMutableArray</span> *plistM = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:count];</span><br><span class="line">        </span><br><span class="line">        Class cls = [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">do</span> &#123;</span><br><span class="line">            Ivar *list = class_copyIvarList(cls, &amp;count);</span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) &#123;</span><br><span class="line">                Ivar ity = list[i];</span><br><span class="line">                <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *iname = ivar_getName(ity);</span><br><span class="line">                [plistM addObject:[<span class="hljs-built_in">NSString</span> stringWithUTF8String:iname]];</span><br><span class="line">            &#125;</span><br><span class="line">            free(list);</span><br><span class="line">            cls = [cls superclass];</span><br><span class="line">        &#125; <span class="hljs-keyword">while</span> (cls &amp;&amp; recursive);</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Found %ld ivar on %@"</span>,plistM.count,[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);</span><br><span class="line">        objc_setAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>],ivarKey, plistM, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">        <span class="hljs-keyword">return</span> plistM.copy;</span><br><span class="line">        </span><br><span class="line">    &#125;() : glist;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)p_methodList:(<span class="hljs-built_in">BOOL</span>)recursive &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-built_in">NSArray</span> *glist = objc_getAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], methodKey);</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> glist == <span class="hljs-literal">nil</span> ? ^&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> methodCount = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-built_in">NSMutableArray</span> *plistM = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:methodCount];</span><br><span class="line">        </span><br><span class="line">        Class cls = [<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">do</span> &#123;</span><br><span class="line">            Method *methods = class_copyMethodList(cls, &amp;methodCount);</span><br><span class="line">            </span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; methodCount; i++) &#123;</span><br><span class="line">                Method method = methods[i];</span><br><span class="line">            </span><br><span class="line">                <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">                printf("\t'%s'|'%s' of encoding '%s'\n",</span></span><br><span class="line"><span class="hljs-comment">                       class_getName(cls),</span></span><br><span class="line"><span class="hljs-comment">                       sel_getName(method_getName(method)),</span></span><br><span class="line"><span class="hljs-comment">                       method_getTypeEncoding(method));</span></span><br><span class="line"><span class="hljs-comment">                */</span></span><br><span class="line">                [plistM addObject:[<span class="hljs-built_in">NSString</span> stringWithUTF8String:sel_getName(method_getName(method))]];</span><br><span class="line">            &#125;</span><br><span class="line">            free(methods);</span><br><span class="line">            cls = [cls superclass];</span><br><span class="line">        &#125;<span class="hljs-keyword">while</span> (cls &amp;&amp; recursive);</span><br><span class="line">        printf(<span class="hljs-string">"Found %d methods on '%s'\n"</span>, methodCount, class_getName([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]));</span><br><span class="line">        objc_setAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>],ivarKey, plistM, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">return</span> plistM.copy;</span><br><span class="line">        </span><br><span class="line">    &#125;() : glist;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)p_cleanCacheList &#123;</span><br><span class="line">    objc_removeAssociatedObjects([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="0xAbc-…-调用如何出现方法提示"><a href="#0xAbc-…-调用如何出现方法提示" class="headerlink" title="[0xAbc …]调用如何出现方法提示"></a>[0xAbc …]调用如何出现方法提示</h2><blockquote>
+<p>类地址前加类型强转</p>
+</blockquote>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po [(<span class="hljs-built_in">UIView</span> *)<span class="hljs-number">0x117e09e80</span> backgroundColor] </span><br><span class="line"><span class="hljs-built_in">UIExtendedSRGBColorSpace</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="lldb如何支持frame类型的输出"><a href="#lldb如何支持frame类型的输出" class="headerlink" title="lldb如何支持frame类型的输出"></a>lldb如何支持frame类型的输出</h2><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ touch ~/.lldbinit</span><br><span class="line">$ <span class="hljs-built_in">echo</span> display @import UIKit &gt;&gt; ~/.lldbinit</span><br><span class="line">$ <span class="hljs-built_in">echo</span> target stop-hook add -o \”target stop-hook <span class="hljs-built_in">disable</span>\” &gt;&gt; ~/.lldbinit</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://github.com/nst/iOS-Runtime-Headers" target="_blank" rel="noopener">iOS-Runtime-Headers</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/utils/">#utils</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2016/11/20/iOS-Remote-Push-Summary/">iOS远程推送总结</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2016/11/20/Xcode8-plugin-is-invalid/">Xcode8-插件失效</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

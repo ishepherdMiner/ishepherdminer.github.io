@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>理解HTTPS协议 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="定义HTTPS*（也称为 *HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解HTTPS协议">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;03&#x2F;21&#x2F;Analysis-of-Https-protocol&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="定义HTTPS*（也称为 *HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6e00b06.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6cec082.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6acee4afc.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6d05328.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6d41247.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6d54f9a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6e1189b.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6e2c0a3.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6deb2dc.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6e24ab5.jpg">
+<meta property="article:published_time" content="2017-03-21T11:22:21.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:47:09.984Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;20&#x2F;58cf6a6e00b06.png">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#定义">1&nbsp;&nbsp;<b>定义</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#对称加密-amp-非对称加密">2&nbsp;&nbsp;<b>对称加密 &amp;amp;amp; 非对称加密</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#优缺点">2.1&nbsp;&nbsp;优缺点</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#非对称加密的用途">3&nbsp;&nbsp;<b>非对称加密的用途</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#SSL-握手流程">4&nbsp;&nbsp;<b>SSL 握手流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#协商加密算法">4.1&nbsp;&nbsp;协商加密算法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#交换证书">4.2&nbsp;&nbsp;交换证书</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#生成对称加密密钥">4.3&nbsp;&nbsp;生成对称加密密钥</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#数字证书">5&nbsp;&nbsp;<b>数字证书</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#定义-1">5.1&nbsp;&nbsp;定义</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#栗子">5.2&nbsp;&nbsp;栗子</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#CA">5.3&nbsp;&nbsp;CA</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#csr-Certificate-Signing-request">5.4&nbsp;&nbsp;csr (Certificate Signing request)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#总结">5.5&nbsp;&nbsp;总结</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#实践">6&nbsp;&nbsp;<b>实践</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-Client-Hello">6.1&nbsp;&nbsp;[实践]Client Hello</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-Server-Hello">6.2&nbsp;&nbsp;[实践]Server Hello</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-证书交换">6.3&nbsp;&nbsp;[实践]证书交换</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-生成对称加密密钥">6.4&nbsp;&nbsp;[实践]生成对称加密密钥</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            理解HTTPS协议
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-03-21T11:22:21.000Z" itemprop="datePublished">3月 21 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            24 分钟 读完 (约 3529 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><em>HTTPS*（也称为 *HTTP over TLS</em> ，<em>HTTP over SSL</em> ，和 <em>HTTP Secure</em> ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。<em>HTTPS</em> 通过 <em>TLS</em> 或其前身的 <em>SSL</em> 实现超文本传输​​协议（<em>HTTP</em>）的安全传输。</p>
+<p>在密码学中，<strong>加密</strong>（英语：<em>Encryption</em> ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有<strong>解密</strong>方法的对象，经由解密过程，才能将密文还原为正常可读的内容。</p>
+<a id="more"></a>
+
+<h2 id="对称加密-amp-非对称加密"><a href="#对称加密-amp-非对称加密" class="headerlink" title="对称加密 &amp; 非对称加密"></a>对称加密 &amp; 非对称加密</h2><p>在现代加密体制主要有两种方式:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm" target="_blank" rel="noopener">对称加密</a>,即在加密与解密的过程中使用相同的加密密钥 (<em>cryptographic keys</em>) 的算法,比如 <em>DES</em>、<em>RC4</em>、<em>AES</em>。</li>
+<li><a href="https://en.wikipedia.org/wiki/Public-key_cryptography" target="_blank" rel="noopener">非对称/公开加密</a>,会使用一对密钥，分别命名为公钥与私钥，两个密钥可以互相加解密。外部可以获取公钥，但私钥一般只有所有者才知道。我们最熟悉的非对称加密应该就是 <em>RSA</em> 吧。</li>
+</ul>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p>对称加密的缺点主要在于密钥必须双方共享，否则无法实现加解密，只要其中一方(主要指客户端)暴露了密钥，加密过程就不安全了，非对称加密克服了这一点，客户端获得的是服务器的公钥，本来就是公开的，被人获取也不影响。虽然非对称加密有这个好处,但是它的加密的效率比对称加密逊色。所以在 <em>HTTPS</em> 中两者都被使用到了。认证过程采用了非对称加密，而实际数据的传输使用了对称加密。</p>
+<h2 id="非对称加密的用途"><a href="#非对称加密的用途" class="headerlink" title="非对称加密的用途"></a>非对称加密的用途</h2><blockquote>
+<p><strong>公钥加密 + 私钥解密 用于通信加密</strong><br><strong>私钥加密 + 公钥解密 用于身份认证</strong></p>
+</blockquote>
+<p><strong>因此服务器用私钥加密的内容，只要持有公钥，都是可以解密的</strong></p>
+<h2 id="SSL-握手流程"><a href="#SSL-握手流程" class="headerlink" title="SSL 握手流程"></a>SSL 握手流程</h2><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e00b06.png" alt></p>
+<p>图片来自<a href="https://zh.wikipedia.org/zh-hant/傳輸層安全協議" target="_blank" rel="noopener">wiki - 传输层安全协议</a>，描述的是 <em>SSL</em> 的握手流程。</p>
+<h3 id="协商加密算法"><a href="#协商加密算法" class="headerlink" title="协商加密算法"></a>协商加密算法</h3><ol>
+<li>客户端发送 <em>ClientHello</em> 消息，包含支持的协议版本，加密和压缩算法等，一个客户端生成的随机数 <em>RNc</em>。</li>
+<li>服务器收到 <em>ClientHello</em> 消息后，发送 <em>ServerHello</em> 确定要采用的协议版本，加密和压缩算法等，同时生成一个随机数 <em>RNs</em>。</li>
+</ol>
+<blockquote>
+<p><em>RNc</em> 与 <em>RNs</em> 将用于参与后面的 <strong>生成对称加密密钥</strong> 过程</p>
+</blockquote>
+<h3 id="交换证书"><a href="#交换证书" class="headerlink" title="交换证书"></a>交换证书</h3><blockquote>
+<p>关于证书，在此处可理解为一种身份认证的方式，后面说明</p>
+</blockquote>
+<ol>
+<li>服务器会发送证书(包含自身的公钥)发送给客户端，并要求客户端证书</li>
+<li>客户端会校验服务器发送的证书是否可信，如果不可信，则关闭连接，若可信，继续执行</li>
+<li>客户端会发送证书(包含自身的公钥)到服务器，这在双向认证时要求，一般情况下只要发送随机生成的公钥即可，主要还是要确认服务器是安全可信的。</li>
+<li>服务器检验客户端证书，获得公钥，继续执行</li>
+<li>客户端会将刚才发送的信息进行 <em>hash</em> 并用自己的私钥进行加密/签名，</li>
+<li>服务器接收后会用得到的客户端的公钥先解密并用相同的算法进行 <em>hash</em> 比较结果</li>
+</ol>
+<p>最后的两步，我不确定用途，只能揣测是为了证明服务器已经收到了客户端的公钥同时算法都没有问题。</p>
+<h3 id="生成对称加密密钥"><a href="#生成对称加密密钥" class="headerlink" title="生成对称加密密钥"></a>生成对称加密密钥</h3><p>在<a href="https://www.ietf.org/rfc/rfc2246.txt" target="_blank" rel="noopener">RFC 2246 - The TLS Protocol Version 1.0 </a>中,有如下的一段话</p>
+<blockquote>
+<p>7.4.7.1. RSA encrypted premaster secret message<br>…<br>Structure of this message:<br>　　　struct {<br>　　　　　ProtocolVersion client_version;<br>　　　　　opaque random[46];<br>　　　} PreMasterSecret;<br>　　　client_version<br>　　　　　The latest (newest) version supported by the client. This is<br>　　　　　used to detect version roll-back attacks. Upon receiving the<br>　　　　　premaster secret, the server should check that this value<br>　　　　　matches the value transmitted by the client in the client<br>　　　　　hello message.<br>　　　random<br>　　　　　46 securely-generated random bytes.</p>
+</blockquote>
+<p>因此 <em>pre master key</em> 的结构为 <em>2</em> 字节协议版本，匹配客户端一开始发送 <em>ClientHello</em> 时所提供的信息，<em>46</em> 字节随机数。它的作用是为了与协商加密算法阶段中随机生成的两个数 <em>RNc</em> 和 <em>RNs</em> 组合，最终生成本次会话中用于对称加密的密钥( <em>Master secret</em> )。</p>
+<blockquote>
+<p>Generate a master secret from the premaster secret and exchanged random values.</p>
+</blockquote>
+<ol>
+<li>客户端生成 <em>pre master key</em>，并通过服务器的公钥加密后发送给服务器</li>
+<li>服务器用自己的私钥解密，双方现在都有 <em>pre master key</em> + <em>RNc</em> + <em>RNs</em></li>
+<li>客户端与服务器使用相同的算法将 <em>pre master key</em> + <em>RNc</em> + <em>RNs</em> 各自进行计算，生成 <em>Master secret</em> </li>
+<li>客户端通知服务器接下来的通信用 <em>Master secret</em> 做为对称加密的密钥，结束 <em>SSL</em> 握手通信</li>
+<li>服务器收到消息后，同样发送消息到客户端，确认使用 <em>Master secret</em> 为对称加密的密钥，结束 <em>SSL</em> 握手通信。</li>
+</ol>
+<h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>为什么在 <em>HTTPS</em> 会话中要用到数字证书？</p>
+<p>我们看到交换证书的过程中服务器发送的证书中包含了它的公钥，试想如果有不怀好意的<strong>中间人</strong>拦截了请求，与客户端协商了加密的算法，接收 <em>RNc</em> 并发送 <em>RNs</em> ,然后将自己的公钥发送给客户端。客户端不做校验就接收了，那后面的整个过程都是不安全的。所以<strong>需要一个凭证</strong>让客户端来验证这个公钥是不是属于与其通信的服务器。</p>
+<p><strong>数字证书就充当了这个提供凭证的角色</strong></p>
+<h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>在<a href="https://zh.wikipedia.org/zh-hans/電子證書" target="_blank" rel="noopener">wiki-电子证书</a>中表明了数字证书并非数字身份证，而是身份认证机构盖在数字身份证上的一个章或印（或者说加在数字身份证上的一个签名），这一行为表示身份认证机构已认定这个持证人。</p>
+<h3 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h3><p>打开钥匙串，查看一个数字证书</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6cec082.jpg" alt></p>
+<h3 id="CA"><a href="#CA" class="headerlink" title="CA"></a>CA</h3><p><em>CA</em> (<em>certificate authority</em>) 就是一个提供身份认证的机构，为什么信任 <em>CA*，证书的信任是链式的向上传递。在 *mac</em> 上开发者证书的信任问题最终会走到苹果的根证书上，因为我们信任了这个证书，所以后面苹果服务器( <em>CA</em> )签名的证书我们也会信任。</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6acee4afc.jpg" alt></p>
+<p>而对于 <em>12306</em> 网站浏览器之所以会弹出<br><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d05328.jpg" alt></p>
+<p>同样是因为系统不信任 <em>12306</em> 的根证书 <em>SRCA</em> ,所以由它签发的 <em>kyfw.12306.cn</em> 证书也是不受信任的。 </p>
+<h3 id="csr-Certificate-Signing-request"><a href="#csr-Certificate-Signing-request" class="headerlink" title="csr (Certificate Signing request)"></a>csr (Certificate Signing request)</h3><blockquote>
+<p>What is a CSR? A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate. It is usually generated on the server where the certificate will be installed and contains information that will be included in the certificate such as the organization name, common name (domain name), locality, and country. It also contains the public key that will be included in the certificate. A private key is usually created at the same time that you create the CSR, making a key pair. A CSR is generally encoded using ASN.1 according to the PKCS #10 specification.</p>
+</blockquote>
+<p>我们通过钥匙串创建的 <em>csr</em> 文件会包含了组织名，域名，国家等信息，同时还包含了<strong>公钥</strong>。在生成 <em>csr</em> 文件时也生成了对应的私钥，保存在钥匙串中。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们平时通过钥匙串通过创建 <em>csr</em> 请求文件的行为，实际上是将自身信息和生成的公钥放到其中，发送给苹果服务器后，苹果服务器会使用自己的私钥对其进行签名，生成 <em>cer</em> 文件，我们下载到客户端，客户端发现该证书是可信的，就从钥匙串中找到并与它的私钥一起进行配置。</p>
+<p>苹果服务器在这个场景下实际充当了 <em>CA</em> 的角色，若是服务器本身自己做 <em>CA</em> 进行签名也是可以的，这种情况下称为自签名，但是在 <em>HTTPS</em> 的会话中对证书进行校验时一般会失败，客户端需要操作信任该证书。</p>
+<p>到这里，大致可以总结出数字证书的产生过程</p>
+<p>在 <em>HTTPS</em> 协议中，客户端的证书验证与上面的场景类似，服务器预先从 <em>CA</em> 那获得数字证书，当客户端要求证书时，将该证书返回给客户端，只要客户端信任 <em>CA</em> , 就可以通过 <em>CA</em> 的公钥解密出服务器发来的证书( <em>CA</em> 用私钥签名服务器的一些信息与公钥)，从而得到公钥，同时判定公钥是来自服务器的。</p>
+<p>但是这里有一个问题，如果<strong>中间人</strong>也请求了 <em>CA</em> 生成了对应的证书，客户端依然无法确定公钥是来自服务器的，还有是否有被修改。</p>
+<p>参考 <a href="http://blog.jobbole.com/110354/" target="_blank" rel="noopener">也许，这样理解HTTPS更容易</a> 这篇文章可知，要由客户端负责去校验证书是否合法。</p>
+<p>具体方式是客户端得到证书后，根据证书的内容(比如说服务器域名)和算法，客户端再生成一遍签名的过程，然后与证书编号进行比较，因为每个证书的编号应该是唯一的，所以中间人不能创建一个和原证书内容不同，然后编号却相同。如果出现了，那也是算法出的问题，不是设计思路有漏洞。因此客户端可以通过这种方式验证当前获得的证书是否符合要求。从而得到属于服务器的公钥，接着再继续 <em>HTTPS</em> 会话。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>现在来动手操作，通过 <em>Wireshark</em> 捕获 <em>HTTPS</em> 请求来验证整个流程。<br>如果直接手动打开 <em>Wireshark</em> 然后尝试捕获 <em>eth0</em> 网卡，可能会报权限不足的方法。简单的方法就是用终端直接 <em>sudo Wireshark</em> 打开</p>
+<p>因为网络的信息非常多，需进行过滤</p>
+<blockquote>
+<p>tcp.srcport == 443 or tcp.dstport == 443</p>
+</blockquote>
+<p>我们只关注走 <em>443</em> 端口的 <em>tcp</em> 协议</p>
+<p>访问 <em><a href="https://www.baidu.com" target="_blank" rel="noopener">https://www.baidu.com</a></em></p>
+<p>出现了 <em>Client Hello</em> , <em>Server Hello</em> 等 <em>info</em> 依次到里面看看</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d41247.jpg" alt></p>
+<h3 id="实践-Client-Hello"><a href="#实践-Client-Hello" class="headerlink" title="[实践]Client Hello"></a>[实践]Client Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d54f9a.jpg" alt></p>
+<ul>
+<li>协议版本 <em>tls 1.2 (0x0303)</em> <em>2</em> 个字节</li>
+<li>随机数 <em>RNc</em> : <em>27ca27…</em></li>
+<li>客户端支持的加密方式 : <em>TLS_EMPTY_RENEGOTIATION_INFO_SCSV 0x00ff…</em></li>
+<li><em>Extension</em> : <em>server_name</em> 下有 <em><a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a></em></li>
+</ul>
+<h3 id="实践-Server-Hello"><a href="#实践-Server-Hello" class="headerlink" title="[实践]Server Hello"></a>[实践]Server Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e1189b.jpg" alt></p>
+<p>服务器确定了协议版本号,生成了 <em>RNs</em>，确定了加密的方法</p>
+<h3 id="实践-证书交换"><a href="#实践-证书交换" class="headerlink" title="[实践]证书交换"></a>[实践]证书交换</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e2c0a3.jpg" alt></p>
+<p>服务器将包含自己公钥的数字证书发送给客户端</p>
+<p>客户端验证证书通过后，将发送公钥给服务器</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6deb2dc.jpg" alt></p>
+<h3 id="实践-生成对称加密密钥"><a href="#实践-生成对称加密密钥" class="headerlink" title="[实践]生成对称加密密钥"></a>[实践]生成对称加密密钥</h3><p>双方互相通知对方，准备用加密算法对数据加密了，同时结束握手通信</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e24ab5.jpg" alt></p>
+<p>但是好像少了 <em>SSL</em> 中所谈到的生成对称密钥的过程额</p>
+<p><em>Google</em> 搜索后发现在<a href="https://www.silverf0x00.com/tls-extended-master-secret-breaking-ssl-proxies/" target="_blank" rel="noopener">TLS Extended Master Secret, Breaking SSL Proxies</a>提到了</p>
+<blockquote>
+<p>Before extended master secret extension was introduced, parties communicating under TLS protocol (RFC 5246) would compute master secret with the following formula:<br>master_secret = PRF(pre_master_secret, “master secret”,<br>　ClientHello.random + ServerHello.random)<br>　[0..47];</p>
+</blockquote>
+<p>在<a href="https://tools.ietf.org/html/rfc5246" target="_blank" rel="noopener">RFC 5246</a> 中 <em>Master secret</em> 确实是使用 <em>pre master secret</em> + <em>ClientHello.random</em> + <em>ServerHello.random</em> 计算生成的，但是在 <a href="https://tools.ietf.org/html/rfc7627#section-1" target="_blank" rel="noopener">RFC 7627</a>中描述了一种攻击。</p>
+<blockquote>
+<ol>
+<li>C sends a “ClientHello” to A, and A forwards it to S.</li>
+<li>S sends a “ServerHello” to A, and A forwards it to C.</li>
+<li>S sends a “Certificate”, containing its certificate chain, to A.<br>   A replaces it with its own certificate chain and sends it to C.</li>
+<li>S sends a “ServerHelloDone” to A, and A forwards it to C.</li>
+<li>C sends a “ClientKeyExchange” to A, containing the<br>   “pre_master_secret”, encrypted with A’s public key.  A decrypts<br>   the “pre_master_secret”, re-encrypts it with S’s public key, and<br>   sends it on to S.</li>
+<li>C sends a “Finished” to A.  A computes a “Finished” for its<br>   connection with S and sends it to S.</li>
+<li>S sends a “Finished” to A.  A computes a “Finished” for its<br>   connection with C and sends it to C.</li>
+</ol>
+</blockquote>
+<p>被攻击的主要原因是 <em>Master Secret</em> 只依赖于 <em>ClientHello.random</em> , <em>ServerHello.random</em> ,解决方案是把证书和会话的信息都参与到 <em>Master Secret</em> 的生成过程</p>
+<p>扩展类型为0x0017的扩展主密钥向客户端和服务器通知使用以下公式生成主密钥：</p>
+<blockquote>
+<p>master_secret = PRF(pre_master_secret, “extended master secret”,<br>　　session_hash)<br>　　[0..47];</p>
+</blockquote>
+<p>通过总结与实践尝试，我对 <em>HTTPS</em> 协议的认识又深刻了一点</p>
+<p><em>That’s all</em></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/HTTPS" target="_blank" rel="noopener">wiki - HTTPS</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="noopener">wiki - TLS</a></li>
+<li><a href="https://zh.wikipedia.org/zh-hans/加密" target="_blank" rel="noopener">wiki - 加密</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa380513(v=vs.85).aspx" target="_blank" rel="noopener">TLS Handshake Protocol</a></li>
+<li><a href="https://ldapwiki.com/wiki/Premaster%20Secret" target="_blank" rel="noopener">Premaster Secret</a></li>
+<li><a href="https://www.ietf.org/rfc/rfc2246.txt" target="_blank" rel="noopener">RFC 2246 - The TLS Protocol Version 1.0 </a></li>
+<li><a href="https://en.wikipedia.org/wiki/Certificate_authority" target="_blank" rel="noopener">Certificate authority</a></li>
+<li><a href="https://www.silverf0x00.com/tls-extended-master-secret-breaking-ssl-proxies/" target="_blank" rel="noopener">TLS Extended Master Secret, Breaking SSL Proxies</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack" target="_blank" rel="noopener">Man-in-the-middle attack</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/HTTP/">#HTTP</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/03/26/Understand-the-block-next/">理解Block(下)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/03/18/Realize-3d-Touch-on-iOS/">iOS上实现 3D Touch 功能</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

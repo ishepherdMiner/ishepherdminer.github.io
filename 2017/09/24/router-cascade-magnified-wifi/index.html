@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>路由器级联放大Wifi信号 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言　　Wifi 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。 环境 MERCURY xxx 路由器macOS Sierra 10.12.6  原理网上搜了下,就是下面的参考链接,提供了3种方案  WD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="路由器级联放大Wifi信号">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;09&#x2F;24&#x2F;router-cascade-magnified-wifi&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="前言　　Wifi 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。 环境 MERCURY xxx 路由器macOS Sierra 10.12.6  原理网上搜了下,就是下面的参考链接,提供了3种方案  WD">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f525482.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c767f38b14a.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f45ffda.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f4db2a8.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f6cd6f2.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f443c81.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f456338.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768fb0f5a2.jpg">
+<meta property="article:published_time" content="2017-09-24T08:17:06.000Z">
+<meta property="article:modified_time" content="2019-12-16T09:01:40.184Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="utils">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2017&#x2F;09&#x2F;24&#x2F;59c768f525482.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#原理">3&nbsp;&nbsp;<b>原理</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">4&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#准备">4.1&nbsp;&nbsp;准备</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#复位">4.2&nbsp;&nbsp;复位</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#加入子网">4.3&nbsp;&nbsp;加入子网</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#配置路由器">4.4&nbsp;&nbsp;配置路由器</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#收尾-添加-WAP2-密码-修改远程登陆密码…">4.5&nbsp;&nbsp;收尾: 添加 WAP2 密码, 修改远程登陆密码…</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#总结">5&nbsp;&nbsp;<b>总结</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            路由器级联放大Wifi信号
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-09-24T08:17:06.000Z" itemprop="datePublished">9月 24 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 652 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<code>Wifi</code> 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>MERCURY xxx 路由器<br>macOS Sierra 10.12.6</p>
+</blockquote>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>网上搜了下,就是下面的参考链接,提供了3种方案</p>
+<ol>
+<li><code>WDS</code> 无线桥接</li>
+<li>当 <code>AP</code> (无线交换机) 使用</li>
+<li>搭建新网络 (子网络)</li>
+</ol>
+<p>因为没有联通路由器的登陆的用户名密码,就选第 <code>3</code> 种方案</p>
+<a id="more"></a>
+
+<p>适用环境,组网后的效果,然后操作之类的,截图如下</p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f525482.jpg" alt></p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>把我的路由器的 <code>WAN</code> 口与联通路由器的 <code>LAN</code> 用网线连接</p>
+<h3 id="复位"><a href="#复位" class="headerlink" title="复位"></a>复位</h3><p>路由器旁边一般有个复位键(reset),长按几秒,当指示灯全亮的时候,就代表复位成功了。</p>
+<h3 id="加入子网"><a href="#加入子网" class="headerlink" title="加入子网"></a>加入子网</h3><p><img src="https://i.loli.net/2017/09/24/59c767f38b14a.jpg" alt></p>
+<p>就是上面这个</p>
+<h3 id="配置路由器"><a href="#配置路由器" class="headerlink" title="配置路由器"></a>配置路由器</h3><p> 远程登陆上去,一般为 <code>192.168.1.1</code> 路由器上一般会写<br> <img src="https://i.loli.net/2017/09/24/59c768f45ffda.jpg" alt></p>
+<p>要认证,一般路由器上会写</p>
+<p>因为是配置子网,比如联通的路由器的网段是 <code>192.168.1.x</code> 的,那我的路由器的网段不能一样,改成 <code>192.168.5.x</code> </p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f4db2a8.jpg" alt></p>
+<p>点保存后,页面会失效,因为当前的 <code>192.168.1.1</code> 已经不是当前路由器的 <code>IP</code> 地址了。关闭 <code>wifi</code> 再次连接,然后用 <code>192.168.5.1</code> 访问一下。好了,子网络已经成功了。</p>
+<h3 id="收尾-添加-WAP2-密码-修改远程登陆密码…"><a href="#收尾-添加-WAP2-密码-修改远程登陆密码…" class="headerlink" title="收尾: 添加 WAP2 密码, 修改远程登陆密码…"></a>收尾: 添加 <code>WAP2</code> 密码, 修改远程登陆密码…</h3><ul>
+<li>添加 <code>WAP2</code> 密码</li>
+</ul>
+<p><img src="https://i.loli.net/2017/09/24/59c768f6cd6f2.jpg" alt><br>每种品牌的路由器都会有点差异,随便点点找找就行。</p>
+<p>因为 <code>wifi</code> 已经密码了,所以网络又掉线了,用新密码重新登陆</p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f443c81.jpg" alt></p>
+<ul>
+<li>修改管理员账户</li>
+</ul>
+<p><img src="https://i.loli.net/2017/09/24/59c768f456338.jpg" alt></p>
+<ul>
+<li>修改 <code>wifi</code> 热点名称</li>
+</ul>
+<p><img src="https://i.loli.net/2017/09/24/59c768fb0f5a2.jpg" alt><br>改完保存即可</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>访问又变得流畅了些。机器和人一样,一直不休息,也会宕机的,因为疲劳会不断累积,总会有根稻草压垮那只骆驼,感觉写写也是蛮开心的,虽然没什么内容。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.360doc.com/content/17/0110/19/30525780_621591192.shtml" target="_blank" rel="noopener">多台路由器如何级联</a></p>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/utils/">#utils</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/11/28/Escape-iPhone-device-export-ipa-resign/">越狱 iPhone 设备导出 ipa &amp;&amp; 重签名</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/06/25/ITunes-Store-unavailable-not-resolved/">iTunes Store 不可用 (没解决)</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

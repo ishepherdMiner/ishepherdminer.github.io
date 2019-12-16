@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>理解Block(上) - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言　　整理一些概念 　 环境 Xcode 8.2.1macOS Sierra 10.12.3  是什么 Block objects are a C-level syntactic and runtime feature. They are similar to standard C functions, but in addition to executable code they may al">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解Block(上)">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;03&#x2F;03&#x2F;Understand-the-block&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="前言　　整理一些概念 　 环境 Xcode 8.2.1macOS Sierra 10.12.3  是什么 Block objects are a C-level syntactic and runtime feature. They are similar to standard C functions, but in addition to executable code they may al">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38b167ec.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38bceb74.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38bcdcc1.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38b95d45.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38b93d05.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38bce8aa.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38b6b761.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38bce373.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38c00445.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391c3b7c.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38c04d34.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f39206373.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391aebc8.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391c8bf4.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391b92e6.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391d4e14.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391ddc1d.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f391e86d4.jpg">
+<meta property="article:published_time" content="2017-03-03T04:43:02.000Z">
+<meta property="article:modified_time" content="2019-12-16T09:04:57.386Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="Mechanism">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;03&#x2F;58b8f38b167ec.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#是什么">3&nbsp;&nbsp;<b>是什么</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#用在哪">4&nbsp;&nbsp;<b>用在哪</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#优点">4.1&nbsp;&nbsp;优点</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#如果没有Block">4.2&nbsp;&nbsp;如果没有Block</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#怎么写">5&nbsp;&nbsp;<b>怎么写</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#作属性">5.1&nbsp;&nbsp;作属性</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#作参数">5.2&nbsp;&nbsp;作参数</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#作返回值">5.3&nbsp;&nbsp;作返回值</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Block的类型">6&nbsp;&nbsp;<b>Block的类型</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Block">7&nbsp;&nbsp;<b>__Block</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Block的循环引用">8&nbsp;&nbsp;<b>Block的循环引用</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#更新-170402">8.1&nbsp;&nbsp;更新: 170402</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原来的">8.2&nbsp;&nbsp;原来的</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">9&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            理解Block(上)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-03-03T04:43:02.000Z" itemprop="datePublished">3月 3 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            22 分钟 读完 (约 3296 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　整理一些概念
+　</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>Xcode 8.2.1<br>macOS Sierra 10.12.3</p>
+</blockquote>
+<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><blockquote>
+<p>Block objects are a <strong>C-level syntactic and runtime feature</strong>. They are similar to <strong>standard C functions</strong>, but in addition to executable code they may also contain variable <strong>bindings</strong> to automatic (stack) or managed (heap) memory. A block can therefore maintain a set of state (data) that it can use to impact behavior when executed.</p>
+</blockquote>
+<a id="more"></a>
+
+<p><em>Block</em>是个<em>C</em>语言级别的语法与运行时特性。它和函数类似,能执行代码,但更重要的是能<strong>绑定</strong>堆栈中的变量,通过设置这些变量来改变代码的行为。</p>
+<h2 id="用在哪"><a href="#用在哪" class="headerlink" title="用在哪"></a>用在哪</h2><blockquote>
+<p>You can use blocks to compose function expressions that can be passed to API, optionally stored, and <strong>used by multiple threads</strong>. Blocks are particularly useful as a callback because the block carries both the code to be executed on callback and the data needed during that execution.</p>
+</blockquote>
+<p><em>Block</em>常被用在多线程中,在应用开发时,大多数情况下不能因为网络请求而阻塞与用户的交互,待响应返回后,又需要根据响应的结果对页面进行调整。在这种场景下,可以让主线程可以提供一个<em>Block</em>到子线程。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>主线程:实现异步,无需关注网络请求的细节部分,只要考虑请求结果对界面的影响,预先做好处理方式。</li>
+<li>子线程:负责网络请求,它清楚网络请求何时完成,由它来通知主线程进行页面刷新操作是比较合适的。</li>
+</ul>
+<p>而它们的联结点就是<em>Block</em>,主线程提供<em>Block</em>,子线程负责在合适时机调用<em>Block</em></p>
+<h3 id="如果没有Block"><a href="#如果没有Block" class="headerlink" title="如果没有Block"></a>如果没有<em>Block</em></h3><p>因为<em>Block</em>和函数类似,用函数来实现回调功能,同时因为<em>OC</em>是面向对象的编程语言,为了能与其他方法交互,更贴近现实情形,写了如下代码</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 主线程 .m 函数定义</span></span><br><span class="line"><span class="hljs-keyword">void</span> completedFunc(<span class="hljs-built_in">NSString</span> *response) &#123;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello %@"</span>,response);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-comment">// 函数调用</span></span><br><span class="line">SubViewController *subVC = [[SubViewController alloc] init];</span><br><span class="line">[subVC setCompletedFunc:completedFunc];</span><br><span class="line"></span><br><span class="line">sleep(<span class="hljs-number">3</span>);</span><br><span class="line">    </span><br><span class="line">[<span class="hljs-keyword">self</span>.navigationController pushViewController:subVC animated:<span class="hljs-literal">true</span>];</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 子线程.h</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)setCompletedFunc:(<span class="hljs-keyword">void</span> (<span class="hljs-built_in">NSString</span> *))r;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 子线程.m</span></span><br><span class="line"><span class="hljs-comment">// 接收函数指针</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSString</span> *httpResponse;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">assign</span>) Response reponser;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)setCompletedFunc:(<span class="hljs-keyword">void</span> (<span class="hljs-built_in">NSString</span> *))r &#123;</span><br><span class="line">    _reponser = r;</span><br><span class="line">    <span class="hljs-comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 在合适的时机调用回调方法比如viewDidLoad</span></span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"发送网络请求"</span>);</span><br><span class="line"><span class="hljs-comment">// 接收网络请求数据</span></span><br><span class="line">_httpResponse = <span class="hljs-string">@"test,test,test"</span>;</span><br><span class="line"><span class="hljs-comment">// 执行回调</span></span><br><span class="line">_reponser(_httpResponse);</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38b167ec.jpg" alt></p>
+<p>如果用<em>Block</em>方式改写,可以将函数的定义与函数参数的传递结合在一起,和匿名函数差不多,因为主线程中并不关心函数的名称,主要还是其中执行的代码,子线程中是要属性引用来执行,还是直接执行,那是子线程需要考虑的事情。而<em>httpResponse</em>是子线程中的变量,被传递到主线程的函数中进行执行了。因此<em>Block</em>和通知,代理等一样都具有传递数据的能力。</p>
+<blockquote>
+<p>这里所说的子线程和主线程只是为了区分文件,不是说有什么主线程的<em>.m</em>。</p>
+</blockquote>
+<h2 id="怎么写"><a href="#怎么写" class="headerlink" title="怎么写"></a>怎么写</h2><p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38bceb74.jpg" alt></p>
+<ul>
+<li><em>int</em>是返回值</li>
+<li><em>^</em>是声明<em>block</em>的语法</li>
+<li><em>myBlock<em>是</em>block*变量的名称,它的值为</em>{return num * multiplier;}*</li>
+<li><em>int num</em>是参数名</li>
+<li><em>{return num \</em> multiplier;}<em>是</em>block*的内容</li>
+</ul>
+<p><em>Xcode<em>的</em>block<em>代码块提示为:</em>inlineBlock</em></p>
+<h3 id="作属性"><a href="#作属性" class="headerlink" title="作属性"></a>作属性</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) <span class="hljs-keyword">void</span> (^responser)(<span class="hljs-built_in">NSString</span> *res);</span><br></pre></td></tr></table></figure></p>
+<p>如果觉得不好看,可以<em>typedef</em>定义一个别名类型</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">void</span> (^Responser)(<span class="hljs-built_in">NSString</span> *);</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) Responser req;</span><br></pre></td></tr></table></figure></p>
+<h3 id="作参数"><a href="#作参数" class="headerlink" title="作参数"></a>作参数</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)setReq:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSString</span> *))req &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)setReq:(Responser)req &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="作返回值"><a href="#作返回值" class="headerlink" title="作返回值"></a>作返回值</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSString</span> *))req &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (Responser)req &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h2><blockquote>
+<p>属性:是<em>OC</em>的一项特性,用于封装对象中的数据。</p>
+</blockquote>
+<ul>
+<li>原子性([<em>no<em>]</em>atomatic</em>)</li>
+<li>读写权限(<em>readwrite/readonly</em>)</li>
+<li>内存管理语义(<em>retain,copy,assign,weak,strong,unsafe_unretained</em>)</li>
+<li>方法名(<em>getter,setter</em>)</li>
+</ul>
+<p><strong>strong</strong>:为该种属性设置新值时,设置方法会先保留新值并释放旧值,然后再将新值设置上去<br><strong>copy</strong>:与strong类似,但是不保留新值,而是将其”拷贝”。当属性类型为<em>NSString</em>时,常用该特质来保护其封装性</p>
+<p>详情可以参考书籍<em>Effective Objective C 2.0</em> 第二章第<em>6</em>条</p>
+<p>通过<a href="http://blog.parse.com/2013/02/05/objective-c-blocks-quiz/" target="_blank" rel="noopener">这儿</a>的<em>5</em>道题可知</p>
+<p><em>Block<em>可根据存储的区域分为3种类型:</em>NSGlobalBlock</em>,<em>NSStackBlock</em>,<em>NSMallocBlock</em></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">void</span> (^dBlock)();</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">MRCViewController</span> ()</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) dBlock dB;</span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">MRCViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line"> </span><br><span class="line">    dBlock b = ^&#123;</span><br><span class="line">        printf(<span class="hljs-string">"666"</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b=%@"</span>,b);</span><br><span class="line">    <span class="hljs-keyword">char</span> d = <span class="hljs-string">'D'</span>;</span><br><span class="line">    printf(<span class="hljs-string">"d的addr:%p\n"</span>, &amp;d);</span><br><span class="line">    dBlock b2 = ^&#123;</span><br><span class="line">        printf(<span class="hljs-string">"d的addr:%p\n"</span>, &amp;d);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b2=%@"</span>,b2);</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">self</span>.dB = b2;</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b2=%@"</span>,b2);</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dB=%@"</span>,<span class="hljs-keyword">self</span>.dB);</span><br><span class="line">    <span class="hljs-keyword">self</span>.dB();</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// MRC环境下</span></span><br><span class="line">    dBlock dB2 = [[b2 <span class="hljs-keyword">copy</span>] autorelease];</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dB2=%@"</span>,dB2);</span><br><span class="line">    dB2();</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>输出结果为</p>
+<p><em>MRC</em><br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38bcdcc1.jpg" alt></p>
+<p><em>ARC</em><br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38b95d45.jpg" alt></p>
+<p>目前结论:<br>　　不绑定变量时,<em>MRC<em>和</em>ARC*环境下都是</em><strong>NSGlobalBlock</strong><em>类型。<br>　　绑定非对象变量的情况下,被绑定的变量都是传值的,在<em>MRC</em>环境下,创建<em>Block</em>默认会存储在栈中,即为</em><strong>NSStackBlock</strong><em>类型,生命周期为函数或方法体内有效,当使用<em>copy</em>修饰的属性对其进行引用或对<em>Block</em>调用<em>copy + autorelease</em>时,将会拷贝一个新的<em>Block</em>到堆中,即为</em><strong>NSMallocBlock</strong><em>类型,生命周期将会被延长。在</em>ARC<em>环境下,~~创建</em>Block<em>默认存储在堆中,即为</em>NSMallocBlock<em>类型~~,当使用</em>copy*修饰的属性对其接收时,因为内存地址没变,所以只进行了浅拷贝。</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38b93d05.jpg" alt></p>
+<p>但是,根据<a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/" target="_blank" rel="noopener">谈Objective-C block的实现</a>中的评论,在<em>ARC</em>环境下照着操作后,输出确实如此。因此又进行了以下的代码测试</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">id</span> arr;</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, ^()&#123;<span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>, arr); &#125;);</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">// 如果绑定的不是对象会有影响吗?</span></span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,^&#123;printf(<span class="hljs-string">"d的addr:%p\n"</span>, &amp;d);&#125;);</span><br><span class="line">    </span><br><span class="line">dBlock b3 = <span class="hljs-literal">nil</span>;</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,b3 = ^&#123;printf(<span class="hljs-string">"d的addr:%p\n"</span>, &amp;d);&#125;);</span><br><span class="line">b3();</span><br></pre></td></tr></table></figure></p>
+<p>输出结果:<br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38bce8aa.jpg" alt></p>
+<p>不论<em>Block*绑定的是对象还是非对象数据类型,结果都是一样的,直接输出都是</em><strong>NSStackBlock</strong><em>类型的,但是当进行赋值操作后,在上面的情况下,用<em>b3</em>去接收<em>Block</em>类型时,<em>ARC</em>发现这个<em>Block</em>的生命周期变了,在输出后,依然应该存在,所以对其进行拷贝一份到堆中,因此<em>b3</em>类型变为</em><strong>NSMallocBlock</strong>*。</p>
+<p>通过<em>b3</em>执行输出的地址,也不是原来的地址了,因为非对象数据类型是传值的,那么如果换成对象,会有不同吗?再分别写了如下测试代码:</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSString</span> *d2 = <span class="hljs-string">@"123"</span>;</span><br><span class="line">printf(<span class="hljs-string">"d2的addr%p\n"</span>,d2);</span><br><span class="line">dBlock b4 = ^ &#123;</span><br><span class="line">   printf(<span class="hljs-string">"d2的addr:%p\n"</span>, d2);</span><br><span class="line">&#125;;</span><br><span class="line">b4();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b4=%@"</span>,b4);</span><br><span class="line"><span class="hljs-keyword">self</span>.dB = b4;</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dB=%@"</span>,<span class="hljs-keyword">self</span>.dB);</span><br></pre></td></tr></table></figure></p>
+<p><em>MRC</em>环境下输出</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38b6b761.jpg" alt></p>
+<p><em>ARC</em>环境下输出<br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38bce373.jpg" alt></p>
+<p>可以得到结果,对于对象的绑定在<em>MRC</em>和<em>ARC</em>都只是进行了浅拷贝</p>
+<p>现在绑定的是局部变量,如果是对象的属性,会有变化吗?</p>
+<p>进行如下代码测试:</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSArray</span> *dBTestArr;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">self</span>.dBTestArr = @[<span class="hljs-string">@"456"</span>];</span><br><span class="line">printf(<span class="hljs-string">"dBTestArr:%p"</span>,<span class="hljs-keyword">self</span>.dBTestArr);</span><br><span class="line">dBlock b5 = ^ &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dBTestArr:%p"</span>,<span class="hljs-keyword">self</span>.dBTestArr);</span><br><span class="line">&#125;;</span><br><span class="line">b5();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b5=%@"</span>,b5);</span><br></pre></td></tr></table></figure></p>
+<p><em>MRC</em>环境输出</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38c00445.jpg" alt></p>
+<p><em>ARC</em>环境输出<br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391c3b7c.jpg" alt></p>
+<p>同样也是对变量进行浅拷贝。</p>
+<p>如果是静态变量呢,会有变化吗?</p>
+<p>代码</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-built_in">NSArray</span> *dBTestArr2;</span><br><span class="line"></span><br><span class="line">dBTestArr2 = @[<span class="hljs-string">@"789"</span>];</span><br><span class="line">printf(<span class="hljs-string">"dBTestArr2:%p\n"</span>,dBTestArr2);</span><br><span class="line">dBlock b6 = ^ &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dBTestArr2:%p"</span>,dBTestArr2);</span><br><span class="line">&#125;;</span><br><span class="line">b6();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b6=%@"</span>,b6);</span><br></pre></td></tr></table></figure></p>
+<p><em>MRC</em>环境输出</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f38c04d34.jpg" alt></p>
+<p><em>ARC</em>环境输出<br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f39206373.jpg" alt></p>
+<p>变量是浅拷贝的,同时<em>Block*统一都是</em><strong>NSGlobalBlock</strong>*,这也很好理解,因为静态变量在内存中是分配在全局区的。</p>
+<p><em>OC</em>没有类属性,但是有关联属性,如果关联到类对象上,用<em>Block</em>进行绑定,会怎么样呢?</p>
+<p>代码</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *dBTest3 = <span class="hljs-string">"dbTest3"</span>; <span class="hljs-comment">// static const char *dBTest4 = "dbTest4";</span></span><br><span class="line">objc_setAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], dBTest3, @[<span class="hljs-string">@"0"</span>], OBJC_ASSOCIATION_RETAIN);</span><br><span class="line">printf(<span class="hljs-string">"dBTest3:%p\n"</span>,objc_getAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], dBTest3));</span><br><span class="line">dBlock b7 = ^ &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"dBTest3:%p"</span>,objc_getAssociatedObject([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>], dBTest3));</span><br><span class="line">&#125;;</span><br><span class="line">b7();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"b7=%@"</span>,b7);</span><br></pre></td></tr></table></figure></p>
+<p><em>MRC</em>环境</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391aebc8.jpg" alt></p>
+<p><em>ARC</em>环境</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391c8bf4.jpg" alt></p>
+<p>同样也是对变量浅拷贝,<em>MRC*下是</em><strong>NSStackBlock</strong><em>,</em>ARC<em>下是</em><strong>NSMallocBlock</strong>*</p>
+<p>总结一下,大概如下表:</p>
+<table>
+<thead>
+<tr>
+<th align="center">绑定变量类型</th>
+<th align="center"><em>MRC</em></th>
+<th align="center"><em>ARC</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">不绑定</td>
+<td align="center"><em><strong>NSGlobalBlock</strong></em></td>
+<td align="center"><em><strong>NSGlobalBlock</strong></em></td>
+</tr>
+<tr>
+<td align="center">局部变量</td>
+<td align="center"><em><strong>NSStackBlock</strong></em>,<em>copy*属性赋值修饰拷贝一个</em><strong>NSMallocBlock</strong>*对象,非对象传值,对象传址</td>
+<td align="center"><em><strong>NSStackBlock</strong></em>,赋值后拷贝一个为<em><strong>NSMallocBlock</strong></em>对象,非对象传值,对象传址</td>
+</tr>
+<tr>
+<td align="center">属性</td>
+<td align="center"><em><strong>NSStackBlock</strong></em>,非对象传值,对象传址</td>
+<td align="center"><em><strong>NSStackBlock</strong></em>,赋值后拷贝一个为<em><strong>NSMallocBlock</strong></em>对象,非对象传值,对象传址</td>
+</tr>
+<tr>
+<td align="center">静态变量</td>
+<td align="center"><em><strong>NSGlobalBlock</strong></em>,变量地址</td>
+<td align="center"><em><strong>NSGlobalBlock</strong></em>,变量地址</td>
+</tr>
+<tr>
+<td align="center">关联对象</td>
+<td align="center"><em><strong>NSStackBlock</strong></em>,对象传址</td>
+<td align="center"><em><strong>NSMallocBlock</strong></em>,对象传址</td>
+</tr>
+</tbody></table>
+<p>到这里,先停一下,说明两个问题</p>
+<blockquote>
+<p>在5道练习题中的<em>Example B</em>有</p>
+</blockquote>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">void</span> exampleB_addBlockToArray(<span class="hljs-built_in">NSMutableArray</span> *array) &#123;</span><br><span class="line">  <span class="hljs-keyword">char</span> b = <span class="hljs-string">'B'</span>;</span><br><span class="line">  [array addObject:^&#123;</span><br><span class="line">    printf(<span class="hljs-string">"%cn"</span>, b);</span><br><span class="line">  &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">void</span> exampleB() &#123;</span><br><span class="line">  <span class="hljs-built_in">NSMutableArray</span> *array = [<span class="hljs-built_in">NSMutableArray</span> array];</span><br><span class="line">  exampleB_addBlockToArray(array);</span><br><span class="line">  <span class="hljs-keyword">void</span> (^block)() = [array objectAtIndex:<span class="hljs-number">0</span>];</span><br><span class="line">  block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>能把<em>Block</em>添加到数组中,那么<em>Block</em>应该是一个对象吧。</p>
+<p>在<a href="https://github.com/JaviSoto/iOS10-Runtime-Headers/" target="_blank" rel="noopener">JaviSoto/iOS10-Runtime-Headers</a>工程中,查找发现<em>Block</em>对象的继承关系为</p>
+<p><em><strong>NSStackBlock</strong></em>  =&gt; <em>__NSStackBlock</em>  =&gt; <em>NSBlock</em> =&gt; <em>NSObject</em><br><em><strong>NSGlobalBlock</strong></em> =&gt; <em>__NSGlobalBlock</em> =&gt; <em>NSBlock</em> =&gt; <em>NSObject</em><br><em><strong>NSMallocBlock</strong></em> =&gt; <em>__NSMallocBlock</em> =&gt; <em>NSBlock</em> =&gt; <em>NSObject</em></p>
+<p>可知OC中的<em>Block</em>确实是一个对象</p>
+<blockquote>
+<p>还有一个小问题就是存在的到底是<em>NSConcreteGlobalBlock</em>,<em>NSConcreteStackBlock</em>,还是<em><strong>NSMallocBlock</strong></em>这种类型的?</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391b92e6.jpg" alt><br>在13年发表的,猜测可能苹果对<em>Block</em>应该进行修改了,又根据<a href="https://clang.llvm.org/docs/Block-ABI-Apple.html" target="_blank" rel="noopener">clang-do</a></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391d4e14.jpg" alt></p>
+<p>又觉得偏向于<em>NSConcreteGlobalBlock</em>,我暂时认为在底层实际上是<em>NSConcreteGlobalBlock<em>这种的,然后在</em>OC*上表现为</em><strong>NSMallocBlock</strong>*</p>
+<h2 id="Block"><a href="#Block" class="headerlink" title="__Block"></a>__Block</h2><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSString</span> *d2 = <span class="hljs-string">@"123"</span>;</span><br><span class="line">printf(<span class="hljs-string">"d2的addr%p\n"</span>,d2);</span><br><span class="line">dBlock b4 = ^ &#123;</span><br><span class="line">   printf(<span class="hljs-string">"d2的addr:%p\n"</span>, d2);</span><br><span class="line">   d2 = <span class="hljs-string">@"777"</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>以上代码将会报<em>Variable is not assignable (missing __block type specifier)</em></p>
+<blockquote>
+<p>为什么呢?</p>
+</blockquote>
+<p>同样根据<a href="https://clang.llvm.org/docs/Block-ABI-Apple.html" target="_blank" rel="noopener">clang-doc</a>,里面有这样的说明</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391ddc1d.jpg" alt></p>
+<p>因为如果变量不用<em>__block</em>修饰,那么默认在拷贝时,会添加<em>const</em>进行修饰</p>
+<h2 id="Block的循环引用"><a href="#Block的循环引用" class="headerlink" title="Block的循环引用"></a>Block的循环引用</h2><h3 id="更新-170402"><a href="#更新-170402" class="headerlink" title="更新: 170402"></a>更新: 170402</h3><p>在 <a href="http://mp.weixin.qq.com/s/f1VB0-go0WDUil2zmPVJfA" target="_blank" rel="noopener">5个动画,理解常用垃圾回收算法的执行过程</a> 中有这样一段话</p>
+<blockquote>
+<p>引用计数算法存在很多问题。最大的一个问题是，它无法解决循环引用问题。这种情况很常见，<strong>父对象和反向引用会形成引用环</strong>。</p>
+</blockquote>
+<hr>
+<h3 id="原来的"><a href="#原来的" class="headerlink" title="原来的"></a>原来的</h3><p>先构造一个简单的循环引用</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) dBlock dBCycle;</span><br><span class="line"><span class="hljs-keyword">self</span>.dBCycle = ^ &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,<span class="hljs-keyword">self</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>　　正常情况下,<em>self<em>是</em>VC</em>,被导航控制器的<em>viewControllers</em>属性持有,而<em>self</em>持有<em>dBCycle</em>这个<em>Block</em>属性,当<em>pop</em>控制器后,<em>self</em>的引用计数为0,被释放,然后<em>dBCycle</em>计数也为0,也能被顺利释放<br>　　<br><img src="https://ooo.0o0.ooo/2017/03/03/58b8f391e86d4.jpg" alt></p>
+<p>在上面的循环引用代码中,当<em>pop<em>控制器后,</em>self<em>被</em>dBCycle<em>属性持有,所以不能被回收,</em>dBCycle<em>指向的</em>Block<em>的内存地址,在执行完</em>Block<em>后,因为它的引用计数还是至少为</em>1</em>(<em>self</em>持有),所以也不会被释放,有点类似死锁的概念,双方互相依赖对象。<em>dealloc</em>方法不会被调用。</p>
+<p>知道原理之后,关注一下<em>AFNetworking<em>中的</em>success<em>回调</em>Block</em></p>
+<p>进入</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURLSessionDataTask</span> *)GET:(<span class="hljs-built_in">NSString</span> *)URLString</span><br><span class="line">                   parameters:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span>)parameters</span><br><span class="line">                      success:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> *task, <span class="hljs-keyword">id</span> _Nullable responseObject))success</span><br><span class="line">                      failure:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> * _Nullable task, <span class="hljs-built_in">NSError</span> *error))failure DEPRECATED_ATTRIBUTE;</span><br></pre></td></tr></table></figure></p>
+<p>再进入</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">NSURLSessionDataTask</span> *)GET:(<span class="hljs-built_in">NSString</span> *)URLString</span><br><span class="line">                   parameters:(<span class="hljs-keyword">id</span>)parameters</span><br><span class="line">                     progress:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> * _Nonnull))downloadProgress</span><br><span class="line">                      success:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> * _Nonnull, <span class="hljs-keyword">id</span> _Nullable))success</span><br><span class="line">                      failure:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> * _Nullable, <span class="hljs-built_in">NSError</span> * _Nonnull))failure</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTaskWithHTTPMethod:(<span class="hljs-built_in">NSString</span> *)method</span><br><span class="line">                                       URLString:(<span class="hljs-built_in">NSString</span> *)URLString</span><br><span class="line">                                      parameters:(<span class="hljs-keyword">id</span>)parameters</span><br><span class="line">                                  uploadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *uploadProgress)) uploadProgress</span><br><span class="line">                                downloadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *downloadProgress)) downloadProgress</span><br><span class="line">                                         success:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> *, <span class="hljs-keyword">id</span>))success</span><br><span class="line">                                         failure:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLSessionDataTask</span> *, <span class="hljs-built_in">NSError</span> *))failure</span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">dataTask = [<span class="hljs-keyword">self</span> dataTaskWithRequest:request</span><br><span class="line">                          uploadProgress:uploadProgress</span><br><span class="line">                        downloadProgress:downloadProgress</span><br><span class="line">                       completionHandler:^(<span class="hljs-built_in">NSURLResponse</span> * __unused response, <span class="hljs-keyword">id</span> responseObject, <span class="hljs-built_in">NSError</span> *error) &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (error) &#123;</span><br><span class="line">            <span class="hljs-keyword">if</span> (failure) &#123;</span><br><span class="line">                failure(dataTask, error);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">if</span> (success) &#123;</span><br><span class="line">                success(dataTask, responseObject);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure></p>
+<p><em>success</em>回调的<em>Block</em>作参数传递到<em>completionHander</em>中</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTaskWithRequest:(<span class="hljs-built_in">NSURLRequest</span> *)request</span><br><span class="line">                               uploadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *uploadProgress)) uploadProgressBlock</span><br><span class="line">                             downloadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *downloadProgress)) downloadProgressBlock</span><br><span class="line">                            completionHandler:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLResponse</span> *response, <span class="hljs-keyword">id</span> _Nullable responseObject,  <span class="hljs-built_in">NSError</span> * _Nullable error))completionHandler &#123;</span><br><span class="line"></span><br><span class="line">    __block <span class="hljs-built_in">NSURLSessionDataTask</span> *dataTask = <span class="hljs-literal">nil</span>;</span><br><span class="line">    url_session_manager_create_task_safely(^&#123;</span><br><span class="line">        dataTask = [<span class="hljs-keyword">self</span>.session dataTaskWithRequest:request];</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 添加代理对象</span></span><br><span class="line">    [<span class="hljs-keyword">self</span> addDelegateForDataTask:dataTask uploadProgress:uploadProgressBlock downloadProgress:downloadProgressBlock completionHandler:completionHandler];</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> dataTask;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>传递到</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)addDelegateForDataTask:(<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTask</span><br><span class="line">                uploadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *uploadProgress)) uploadProgressBlock</span><br><span class="line">              downloadProgress:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSProgress</span> *downloadProgress)) downloadProgressBlock</span><br><span class="line">             completionHandler:(<span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSURLResponse</span> *response, <span class="hljs-keyword">id</span> responseObject, <span class="hljs-built_in">NSError</span> *error))completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    AFURLSessionManagerTaskDelegate *delegate = [[AFURLSessionManagerTaskDelegate alloc] init];</span><br><span class="line">    delegate.manager = <span class="hljs-keyword">self</span>;</span><br><span class="line">    delegate.completionHandler = completionHandler;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
+<p><em>delegate.completionHandler<em>这</em>block<em>持有了我们传递的</em>success<em>回调的</em>Block</em></p>
+<p><em>delegate<em>被</em>self</em>(<em>AFHTTPSessionManager</em>)对象的<em>mutableTaskDelegatesKeyedByTaskIdentifier</em>属性持有</p>
+<p>大致理解如下</p>
+<p><em>AFHTTPSessionManager_Obj.mutableTaskDelegatesKeyedByTaskIdentifier.delegate.completionHandler</em> = ^ {<br>　　<em>succcess()</em><br>}</p>
+<p>若你在<em>success()<em>中使用了</em>VC<em>的</em>self</em>,因为</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="hljs-keyword">instancetype</span>)manager &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> [[[<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>] alloc] initWithBaseURL:<span class="hljs-literal">nil</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithBaseURL:(<span class="hljs-built_in">NSURL</span> *)url &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> initWithBaseURL:url sessionConfiguration:<span class="hljs-literal">nil</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithBaseURL:(<span class="hljs-built_in">NSURL</span> *)url</span><br><span class="line">           sessionConfiguration:(<span class="hljs-built_in">NSURLSessionConfiguration</span> *)configuration</span><br><span class="line">&#123;</span><br><span class="line">    <span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> initWithSessionConfiguration:configuration];</span><br><span class="line">    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">self</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Ensure terminal slash for baseURL path, so that NSURL +URLWithString:relativeToURL: works as expected</span></span><br><span class="line">    <span class="hljs-keyword">if</span> ([[url path] length] &gt; <span class="hljs-number">0</span> &amp;&amp; ![[url absoluteString] hasSuffix:<span class="hljs-string">@"/"</span>]) &#123;</span><br><span class="line">        url = [url URLByAppendingPathComponent:<span class="hljs-string">@""</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">self</span>.baseURL = url;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">self</span>.requestSerializer = [AFHTTPRequestSerializer serializer];</span><br><span class="line">    <span class="hljs-keyword">self</span>.responseSerializer = [AFJSONResponseSerializer serializer];</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><em>AFHTTPSessionManager_Obj</em>等价于局部变量,当方法执行完后,变量会被释放,紧接着<em>Block</em>执行完后,会被回收,对VC的<em>self</em>持有会被释放,当<em>pop</em>后,<em>self</em>对象也会被释放。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html#//apple_ref/doc/uid/TP40007502" target="_blank" rel="noopener">Blocks Programming Topics</a></li>
+<li>Effective Objective C 2.0</li>
+<li><a href="http://blog.parse.com/2013/02/05/objective-c-blocks-quiz/" target="_blank" rel="noopener">http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/</a></li>
+<li><a href="http://blog.devtang.com/2013/07/28/a-look-inside-blocks/" target="_blank" rel="noopener">谈Objective-C block的实现</a></li>
+<li><a href="https://github.com/JaviSoto/iOS10-Runtime-Headers/" target="_blank" rel="noopener">JaviSoto/iOS10-Runtime-Headers</a></li>
+<li><a href="https://clang.llvm.org/docs/Block-ABI-Apple.html" target="_blank" rel="noopener">clang-doc</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Mechanism/">#Mechanism</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/03/06/FFmpeg-study-notes-01-environmental-building/">FFmpeg学习笔记01(环境搭建)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/03/01/UIView-init-and-initWithFrame-call-relationship/">UIView的init与initWithFrame:的调用关系</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

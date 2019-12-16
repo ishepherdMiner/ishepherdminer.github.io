@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>喜马拉雅音频文件导出 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言　　平时喜欢用喜马拉雅听广播一般都离线下载后听,但是手机的空间不足,有些音频又不想删,因此想把音频文件导出,然后就可以任性删啦。 　　 环境 iPad Mini 2(8.4,已越狱)macOS Sierra 10.12.3喜马拉雅v5.4.57  流程 ssh登录到iPad上 cycripyt寻找喜马拉雅的进程并注入 寻找沙盒路径 寻找音频文件 导出音频文件 后续处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="喜马拉雅音频文件导出">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;02&#x2F;18&#x2F;Himalayan-audio-file-export&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="前言　　平时喜欢用喜马拉雅听广播一般都离线下载后听,但是手机的空间不足,有些音频又不想删,因此想把音频文件导出,然后就可以任性删啦。 　　 环境 iPad Mini 2(8.4,已越狱)macOS Sierra 10.12.3喜马拉雅v5.4.57  流程 ssh登录到iPad上 cycripyt寻找喜马拉雅的进程并注入 寻找沙盒路径 寻找音频文件 导出音频文件 后续处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86bc47ef.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86a492f7.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a869df04b.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86b9b149.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86ca71f1.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86a3289d.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86d29102.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86e0f423.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a83c2aba367.jpg">
+<meta property="article:published_time" content="2017-02-18T01:51:47.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:50:52.150Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;02&#x2F;18&#x2F;58a7a86bc47ef.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#准备">3.1&nbsp;&nbsp;准备</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#ssh登录">3.2&nbsp;&nbsp;ssh登录</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#cycripyt找进程">3.3&nbsp;&nbsp;cycripyt找进程</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#寻找沙盒路径">3.4&nbsp;&nbsp;寻找沙盒路径</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#寻找音频路径">3.5&nbsp;&nbsp;寻找音频路径</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导出音频文件">3.6&nbsp;&nbsp;导出音频文件</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#后续处理">3.7&nbsp;&nbsp;后续处理</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#效果图">4&nbsp;&nbsp;<b>效果图</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            喜马拉雅音频文件导出
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-02-18T01:51:47.000Z" itemprop="datePublished">2月 18 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            9 分钟 读完 (约 1395 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　平时喜欢用喜马拉雅听广播一般都离线下载后听,但是手机的空间不足,有些音频又不想删,因此想把音频文件导出,然后就可以任性删啦。
+　　</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p><em>iPad Mini 2</em>(8.4,已越狱)<br><em>macOS Sierra 10.12.3</em><br>喜马拉雅<em>v5.4.57</em></p>
+</blockquote>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ul>
+<li><em>ssh</em>登录到<em>iPad</em>上</li>
+<li><em>cycripyt</em>寻找喜马拉雅的进程并注入</li>
+<li>寻找沙盒路径</li>
+<li>寻找音频文件</li>
+<li>导出音频文件</li>
+<li>后续处理</li>
+</ul>
+<a id="more"></a>
+
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>先用喜马拉雅下载一些感兴趣的音频</p>
+<h3 id="ssh登录"><a href="#ssh登录" class="headerlink" title="ssh登录"></a><em>ssh</em>登录</h3><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@your_device_ip</span><br></pre></td></tr></table></figure></p>
+<h3 id="cycripyt找进程"><a href="#cycripyt找进程" class="headerlink" title="cycripyt找进程"></a>cycripyt找进程</h3><p>为避免干扰,先关闭其他进程,打开喜马拉雅应用,用<em>ps</em>指令获取当前运行进程列表</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86bc47ef.jpg" alt></p>
+<p>根据路径加名字判断那个<em>ting</em>进程即为喜马拉雅的进程</p>
+<p>使用<em>cycript</em>注入</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iPad:~ root<span class="hljs-comment"># cycript -p ting</span></span><br></pre></td></tr></table></figure></p>
+<p>直接输出<em>UIApp</em> 看应用单例对象是什么</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cy<span class="hljs-comment"># UIApp</span></span><br><span class="line"><span class="hljs-comment">#"&lt;XMUIApplication: 0x144e228a0&gt;"</span></span><br></pre></td></tr></table></figure></p>
+<p>是喜马拉雅的全拼,应该就是这个了,如果还要确定,可以输入<em>exit(0)</em>就会发现喜马拉雅被关闭了。</p>
+<h3 id="寻找沙盒路径"><a href="#寻找沙盒路径" class="headerlink" title="寻找沙盒路径"></a>寻找沙盒路径</h3><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="hljs-built_in">NSFileManager</span> defaultManager] URLsForDirectory:<span class="hljs-built_in">NSDocumentDirectory</span> inDomains:<span class="hljs-built_in">NSUserDomainMask</span>][<span class="hljs-number">0</span>]</span><br></pre></td></tr></table></figure></p>
+<p>结果如下</p>
+<p><figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&quot;file:&#x2F;&#x2F;&#x2F;var&#x2F;mobile&#x2F;Containers&#x2F;Data&#x2F;Application&#x2F;88888888-0E68-49E6-AB14-457891C5BCFF&#x2F;Documents&#x2F;&quot;</span><br></pre></td></tr></table></figure></p>
+<p>沙盒路径找到了,接下来找音频路径</p>
+<p>可以离开<em>cycript</em>了</p>
+<h3 id="寻找音频路径"><a href="#寻找音频路径" class="headerlink" title="寻找音频路径"></a>寻找音频路径</h3><p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86a492f7.jpg" alt></p>
+<p>我们知道<em>iOS</em>沙盒一般包含了3个目录</p>
+<ul>
+<li><em>Documents</em></li>
+<li><em>Library</em></li>
+<li><em>tmp</em></li>
+</ul>
+<p><em>StoreKit</em>应该是内购而创建的</p>
+<p>排除<em>tmp</em>,<em>StoreKit</em>,第一感觉是音频文件在<em>Documents</em>,<em>cd</em>到该目录查看,反正错了也不要紧,再试就好了</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a869df04b.jpg" alt></p>
+<p><em>.db</em>数据库文件排除,<em>umengrt</em>应该是友盟统计,分享之类的,<em>chat</em>聊天的</p>
+<p>有一个<em>iDoc</em>的目录,尝试进入,</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86b9b149.jpg" alt></p>
+<p>有<em>Download</em>目录,那应该很明显了,进去</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86ca71f1.jpg" alt></p>
+<p>尝试过直接发送到电脑,确实是音频</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file /Users/Jason/Desktop/Download/00a6b52f49f757bece6676c658789222</span><br><span class="line">/Users/Jason/Desktop/Download/00a6b52f49f757bece6676c658789222: ISO Media, Apple iTunes ALAC/AAC-LC (.M4A) Audio</span><br></pre></td></tr></table></figure></p>
+<p>但音频文件的命名是确有点奇怪,应该是使用了类似<em>SDWebImage</em>那种网络图片缓存框架,音频名可能用了<em>md5</em>之类避免冲突,没关系,在应用显示出正常的音频名称,所以肯定会有地方保存映射关系的,上一级在<em>Documents</em>中,发现了名为<em>ting.sqlite</em>的文件,是个<em>sqlite</em>文件,看是不是在数据库保存着映射关系</p>
+<p>因为手机上不太好执行<em>sqlite</em>,先用<em>cat</em>看看数据库文件大概的内容</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86a3289d.jpg" alt></p>
+<p>看上去应该是是在该文件中映射关系</p>
+<h3 id="导出音频文件"><a href="#导出音频文件" class="headerlink" title="导出音频文件"></a>导出音频文件</h3><p>关于导出音频文件,可以使用<em>iTools</em>或直接使用终端先打包再使用<em>scp</em>发送</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iPad:xxx<span class="hljs-comment"># tar -cvzf apps.tar.gz ./Download</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>在<em>mac</em>上执行</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~  scp root@192.168.1.174:/var/mobile/Containers/Data/Application/88888888-0E68-49E6-AB14-45710CC5BCFF/Documents/iDoc/apps.tar.gz ~/Desktop/apps.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>传输成功到<em>mac</em>上,接着就进入后续处理操作</p>
+<p>类似的得到<em>ting.sqlite</em>文件</p>
+<h3 id="后续处理"><a href="#后续处理" class="headerlink" title="后续处理"></a>后续处理</h3><p>主要是根据根据<em>ting.sqlite</em>处理音频的文件名</p>
+<p>打开终端</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">» ~/Desktop  sqlite3 ting.sqlite</span><br><span class="line">Enter <span class="hljs-string">".help"</span> <span class="hljs-keyword">for</span> usage hints.</span><br><span class="line">sqlite&gt; .tables</span><br><span class="line">adData_table    download_table</span><br><span class="line">sqlite&gt;</span><br></pre></td></tr></table></figure></p>
+<p>查询<em>download_table</em></p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlite&gt; select * from download_table;</span><br></pre></td></tr></table></figure></p>
+<p>记录的格式如下:</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86d29102.jpg" alt></p>
+<p>里面确实包含的文件名</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/18/58a7a86e0f423.jpg" alt></p>
+<p>证明:<strong>映射关系确实存在</strong></p>
+<p>先要了解<em>sqlite3</em>与<em>shell</em>的脚本怎么交互,即从<em>sqlite中</em>得到的数据如何传递到<em>shell</em>中</p>
+<p>查了一下</p>
+<p><em>sqlite3</em> 与 <em>shell</em>交互大概 有两种方式</p>
+<ul>
+<li><p><em>echo</em> / <em>cat</em> 通过管道传输进去 此时<em>sqlite3</em> 作为 接收端</p>
+</li>
+<li><p><em>sqlite3 xxx</em> ‘查表语句’  直接s<em>qlite3</em>执行查表语句,最后可以通过管道传给<em>shell</em>处理</p>
+</li>
+</ul>
+<p>在这里选择了第2种</p>
+<p><a href="https://sqlite.org/cli.html" target="_blank" rel="noopener">sqlite3文档</a></p>
+<p>大致思路是用<em>awk</em> + <em>sed</em>得到音频名与乱码名,在用<em>mv</em>去修改名称</p>
+<p>参考脚本如下</p>
+<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## modify the path when you change the place which to store the music file</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 工程目录,自定义</span></span><br><span class="line">music_file_path=<span class="hljs-string">"xxx_Path"</span></span><br><span class="line"><span class="hljs-built_in">cd</span>  <span class="hljs-variable">$&#123;music_file_path&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## obtain datas</span></span><br><span class="line">sqlite3 ting.sqlite <span class="hljs-string">'select * from download_table'</span> | awk -F <span class="hljs-string">"|"</span> -v OFS=<span class="hljs-string">'|'</span> <span class="hljs-string">'&#123;print $18,$3,$2&#125;'</span> &gt; mapper</span><br><span class="line"></span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/ /_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/：/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/:/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/-/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/，/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/－/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/？/_/g"</span> ./mapper</span><br><span class="line">sed -i <span class="hljs-string">""</span> <span class="hljs-string">"s/、/_/g"</span> ./mapper</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## foreach the download directory to find the music name</span></span><br><span class="line"><span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> ./download/*</span><br><span class="line"><span class="hljs-keyword">do</span></span><br><span class="line">  <span class="hljs-comment">## .download文件 代表还未下载 过掉</span></span><br><span class="line">  <span class="hljs-comment"># echo $&#123;f##*.&#125;</span></span><br><span class="line">  <span class="hljs-keyword">if</span> [ <span class="hljs-variable">$&#123;f##*.&#125;</span>x != <span class="hljs-string">"download"</span>x ]; <span class="hljs-keyword">then</span></span><br><span class="line">    cache_name=`basename <span class="hljs-variable">$&#123;f&#125;</span>`</span><br><span class="line">    music_name=$(grep -r <span class="hljs-variable">$&#123;cache_name&#125;</span> ./mapper | awk -F <span class="hljs-string">"|"</span> -v OFS=<span class="hljs-string">'|'</span> <span class="hljs-string">'&#123;print $3&#125;'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;cache_name&#125;</span></span><br><span class="line">    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$&#123;music_name&#125;</span></span><br><span class="line">    <span class="hljs-comment"># echo ./download/$&#123;music_name&#125;.mp3</span></span><br><span class="line">    mv ./download/<span class="hljs-variable">$&#123;cache_name&#125;</span> ./download/<span class="hljs-variable">$&#123;music_name&#125;</span>.mp3  </span><br><span class="line">    </span><br><span class="line">  <span class="hljs-keyword">fi</span></span><br><span class="line"><span class="hljs-keyword">done</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="https://ooo.0o0.ooo/2017/02/18/58a83c2aba367.jpg" alt></p>
+<p>最后试听了一下,音频文件能正常播放,没有问题</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://blog.csdn.net/yusiguyuan/article/details/17054231" target="_blank" rel="noopener">shell脚本–if判断（数字条件、字符串条件）</a></li>
+<li><a href="http://evc-cit.info/cit052/pass_to_awk.html" target="_blank" rel="noopener">Passing Command Line Variables to awk</a></li>
+<li>[simple awk tutorial](<a href="http://www.hcs.harvard.edu/" target="_blank" rel="noopener">http://www.hcs.harvard.edu/</a> ~dholland/computers/awk.html)</li>
+<li><a href="http://stackoverflow.com/questions/38262285/how-to-pass-variables-from-awk-to-shell" target="_blank" rel="noopener">How to pass variables from awk to shell</a></li>
+<li><a href="http://bbs.chinaunix.net/thread-1028681-1-1.html" target="_blank" rel="noopener">awk变量传递给SHELL</a></li>
+<li><a href="http://stackoverflow.com/questions/14505026/set-variable-in-current-shell-from-awk" target="_blank" rel="noopener">Set variable in current shell from awk</a></li>
+<li><a href="http://blog.csdn.net/rainharder/article/details/6030255" target="_blank" rel="noopener">Shell获取文件后缀名</a></li>
+<li><a href="http://blog.csdn.net/ljianhui/article/details/43128465" target="_blank" rel="noopener">Linux shell 之 提取文件名和目录名的一些方法</a></li>
+<li><a href="http://stackoverflow.com/questions/13538772/how-to-replace-space-with-comma-using-sed" target="_blank" rel="noopener">How to replace space with comma using sed?</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Reverse/">#Reverse</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/02/19/Mac-terminal-environment/">Mac终端环境走代理</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/02/14/CentOS-remote-login-SSH-configuration/">CentOS远程登陆SSH配置</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>iOS上实现 3D Touch 功能 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言在 WWDC 2016 - Session 228    - iOS 中提到了 3D Touch,对它简单定义是  3D Touch 为 iOS 用户界面添加了一个全新的维度，并引入了一种全新的与 iPhone 交互的方式。   设备限制: iPhone 6s+  系统限制: iOS 9+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS上实现 3D Touch 功能">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;03&#x2F;18&#x2F;Realize-3d-Touch-on-iOS&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="前言在 WWDC 2016 - Session 228    - iOS 中提到了 3D Touch,对它简单定义是  3D Touch 为 iOS 用户界面添加了一个全新的维度，并引入了一种全新的与 iPhone 交互的方式。   设备限制: iPhone 6s+  系统限制: iOS 9+">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd140f3ec07.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd14156dd71.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd1411ab54d.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd1411ac296.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd1412d5e61.jpg">
+<meta property="article:published_time" content="2017-03-18T11:05:21.000Z">
+<meta property="article:modified_time" content="2019-12-16T09:01:11.090Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="UI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;03&#x2F;18&#x2F;58cd140f3ec07.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#应用场景">3&nbsp;&nbsp;<b>应用场景</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#主屏快速启动-Home-Screen-Quick-Actions">3.1&nbsp;&nbsp;主屏快速启动(Home Screen Quick Actions)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#预览与弹出窗口-Peek-and-Pop">3.2&nbsp;&nbsp;预览与弹出窗口(Peek and Pop)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#按压属性-force-properties">3.3&nbsp;&nbsp;按压属性(force properties)</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#实现">4&nbsp;&nbsp;<b>实现</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#关于主屏快速启动">4.1&nbsp;&nbsp;关于主屏快速启动</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#静态">4.1.1&nbsp;&nbsp;静态</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#动态">4.1.2&nbsp;&nbsp;动态</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#关于预览与弹出窗口">4.2&nbsp;&nbsp;关于预览与弹出窗口</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#流程">4.2.1&nbsp;&nbsp;流程</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#关于按压属性">5&nbsp;&nbsp;<b>关于按压属性</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            iOS上实现 3D Touch 功能
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-03-18T11:05:21.000Z" itemprop="datePublished">3月 18 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            19 分钟 读完 (约 2843 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 <a href="https://developer.apple.com/videos/play/wwdc2016/228/" target="_blank" rel="noopener"><em>WWDC 2016 - Session 228    - iOS</em></a> 中提到了 <em>3D Touch</em>,对它简单定义是</p>
+<blockquote>
+<p><em>3D Touch</em> 为 <em>iOS</em> 用户界面添加了一个全新的维度，并引入了一种全新的与 <em>iPhone</em> 交互的方式。</p>
+</blockquote>
+<ul>
+<li>设备限制: <em>iPhone 6s+</em> </li>
+<li>系统限制: <em>iOS 9+</em></li>
+</ul>
+<a id="more"></a>
+
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS Sierra 10.12.3<br>Xcode 8.2.1<br>iPhone 6s 10.1.1</p>
+</blockquote>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>在 <a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/Adopting3DTouchOniPhone/3DTouchAPIs.html" target="_blank" rel="noopener"><em>3d Touch APIs</em></a> 文档中,提到了</p>
+<blockquote>
+<p>The Home screen quick action API is for adding shortcuts to your app icon that anticipate and accelerate a user’s interaction with your app.<br>The UIKit peek and pop API lets you provide easy access, within your app, to additional content while maintaining the user’s context. Use the peek quick actions API to provide a press-enabled replacement to your app’s touch-and-hold actions.<br>The Web view peek and pop API lets you enable system-mediated previews of HTML link destinations.<br>The UITouch force properties let you add customized force-based user interaction to your app.</p>
+</blockquote>
+<p><em>3d Touch</em> 大概有 <em>3</em> 个应用场景,主屏快速启动,而 <em>UIKit peek and pop</em> 和 <em>Web view peek and pop</em> 可以合并为一个预览的功能， 可以根据 <em>force properties</em> 按压属性值做其它交互上的操作。</p>
+<h3 id="主屏快速启动-Home-Screen-Quick-Actions"><a href="#主屏快速启动-Home-Screen-Quick-Actions" class="headerlink" title="主屏快速启动(Home Screen Quick Actions)"></a>主屏快速启动(Home Screen Quick Actions)</h3><p>关于这个功能,很多应用都是有的，长按并保持几秒就可以触发，算是一个应用功能的快速入口，当你觉得应用的某些功能很重要时，让用户能快速定位到这个功能，就可以添加到这儿。</p>
+<p>关于数量上的限制，我查了一下资料，在 <a href="https://developer.apple.com/reference/uikit/uiapplicationshortcutitem" target="_blank" rel="noopener">Class - UIApplication​Shortcut​Item</a> 中有如下内容</p>
+<blockquote>
+<p>The system limits the number quick actions displayed when a user presses a Home screen app icon. Within the limited set of displayed quick action titles, your* <strong>static quick actions</strong> are shown first, starting at the topmost position in the list. If your static items do not consume the permissible number for display and you have also defined dynamic quick actions using this class, then one or more of your <strong>dynamic quick actions</strong> is displayed.</p>
+</blockquote>
+<p><strong>结论:</strong></p>
+<ul>
+<li>系统会限制 <em>Quick Actions</em> 的显示数量，</li>
+<li>在 <em>iOS 9</em> 上最多显示 <em>4</em> 个，有些应用确实可以显示5个。</li>
+</ul>
+<p><em>Quick Actions</em> 截图</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/18/58cd140f3ec07.jpg" alt></p>
+<h3 id="预览与弹出窗口-Peek-and-Pop"><a href="#预览与弹出窗口-Peek-and-Pop" class="headerlink" title="预览与弹出窗口(Peek and Pop)"></a>预览与弹出窗口(Peek and Pop)</h3><p><em>Peek and Pop</em> 让 <em>Google</em> 直接翻译意思是偷看和流行，很明显不是苹果想表达的意思。<br><em>Peek</em> 英文解释为 <em>look quickly or furtively</em> 快速偷偷的瞥一眼，大约就是预览的意思，<em>doc</em> 上有的这一句</p>
+<blockquote>
+<p>Optional navigation to the view shown in the preview—known as a pop</p>
+</blockquote>
+<p>大概明白是什么意思了。就像微信中这个这个样子</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/18/58cd14156dd71.png" alt="IMG_0978"></p>
+<p>上面这个效果在未联网状态下不受影响，而</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/18/58cd1411ab54d.png" alt="IMG_0980"></p>
+<p>加载的是网络资源,当未联网时,就无法实现预览功能, 属于 <em>Web view peek and pop</em></p>
+<h3 id="按压属性-force-properties"><a href="#按压属性-force-properties" class="headerlink" title="按压属性(force properties)"></a>按压属性(force properties)</h3><p><em>iOS9.0</em> 为我们提供了一个新的交互参数:力度。我们可以检测某一交互的力度值，来做相应的交互处理</p>
+<p>比如系统的联系人</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/18/58cd1411ac296.png" alt="IMG_0981"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="关于主屏快速启动"><a href="#关于主屏快速启动" class="headerlink" title="关于主屏快速启动"></a>关于主屏快速启动</h3><p>上面引用的一段话提到了 <em>static quick actions</em> 和 <em>dynamic quick actions</em> ，也就是说快速启动的设置方法有静态和动态。</p>
+<h4 id="静态"><a href="#静态" class="headerlink" title="静态"></a>静态</h4><blockquote>
+<p>配置 <em>info.plist</em> 文件</p>
+</blockquote>
+<p>摘一段酷狗的 <em>info.plist</em> 的配置方法，应该就一目了然了</p>
+<p><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItems<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemTitle<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>听歌识曲<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>com.kugou.shortcut.recognize<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemIconFile<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3d_touch_recognize.png<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemTitle<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>继续播放<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>com.kugou.shortcut.playmusic<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemIconFile<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3d_touch_playmusic.png<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemTitle<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>搜索<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>com.kugou.shortcut.search<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemIconFile<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3d_touch_search.png<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemTitle<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>播放本地音乐<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>com.kugou.shortcut.local<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UIApplicationShortcutItemIconFile<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3d_touch_localmusic.png<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>UIApplicationShortcutItems 数组类型 快捷启动的 <em>key</em></li>
+<li>UIApplicationShortcutItemTitle 标题(必填) [可监听该项判断用户是从哪一个标签进入App]</li>
+<li>UIApplicationShortcutItemType 类型(必填 [可监听该项判断用户是从哪一个标签进入App]</li>
+<li>UIApplicationShortcutItemIconFile 图标(默认是一个黑色的圆点)</li>
+</ul>
+<h4 id="动态"><a href="#动态" class="headerlink" title="动态"></a>动态</h4><p>每一项快速启动对应一个 <em>UIApplicationShortcutItem</em> 对象</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NS_CLASS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0) __TVOS_PROHIBITED</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIApplicationShortcutItem</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">NSCopying</span>, <span class="hljs-title">NSMutableCopying</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)init <span class="hljs-built_in">NS_UNAVAILABLE</span>;</span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithType:(<span class="hljs-built_in">NSString</span> *)type localizedTitle:(<span class="hljs-built_in">NSString</span> *)localizedTitle localizedSubtitle:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> *)localizedSubtitle icon:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIApplicationShortcutIcon</span> *)icon userInfo:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSDictionary</span> *)userInfo <span class="hljs-built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithType:(<span class="hljs-built_in">NSString</span> *)type localizedTitle:(<span class="hljs-built_in">NSString</span> *)localizedTitle;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// An application-specific string that identifies the type of action to perform.</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">NSString</span> *type;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Properties controlling how the item should be displayed on the home screen.</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">NSString</span> *localizedTitle;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">NSString</span> *localizedSubtitle;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">UIApplicationShortcutIcon</span> *icon;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Application-specific information needed to perform the action.</span></span><br><span class="line"><span class="hljs-comment">// Will throw an exception if the NSDictionary is not plist-encodable.</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">NSString</span> *, <span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">NSSecureCoding</span>&gt;&gt; *userInfo;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>快速启动项的图标对应的是 <em>UIApplicationShortcutIcon</em> 类</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NS_CLASS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0) __TVOS_PROHIBITED</span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIApplicationShortcutIcon</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">NSCopying</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Create an icon using a system-defined image.</span></span><br><span class="line">+ (<span class="hljs-keyword">instancetype</span>)iconWithType:(<span class="hljs-built_in">UIApplicationShortcutIconType</span>)type;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Create an icon from a custom image.</span></span><br><span class="line"><span class="hljs-comment">// The provided image named will be loaded from the app's bundle</span></span><br><span class="line"><span class="hljs-comment">// and will be masked to conform to the system-defined icon style.</span></span><br><span class="line">+ (<span class="hljs-keyword">instancetype</span>)iconWithTemplateImageName:(<span class="hljs-built_in">NSString</span> *)templateImageName;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>创建 <em>UIApplicationShortcutItem</em> 对象后，可以通过 <em>UIApplication</em> 的 <em>shortcutItems</em> 属性进行关联。</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIApplication</span> (<span class="hljs-title">UIShortcutItems</span>)</span></span><br><span class="line"><span class="hljs-comment">// Register shortcuts to display on the home screen, or retrieve currently registered shortcuts.</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSArray</span>&lt;<span class="hljs-built_in">UIApplicationShortcutItem</span> *&gt; *shortcutItems <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0) __TVOS_PROHIBITED;</span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>比如用如下代码动态创建酷狗的第 <em>5</em> 个 分享”酷狗”音乐</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">BOOL</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="hljs-built_in">NSDictionary</span> *)launchOptions &#123;</span><br><span class="line">	...</span><br><span class="line">	</span><br><span class="line">	 <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     *  通过代码实现动态菜单</span></span><br><span class="line"><span class="hljs-comment">     *  一般情况下设置主标题、图标、type等，副标题是不设置的 - 简约原则</span></span><br><span class="line"><span class="hljs-comment">     *  iconWithTemplateImageName 自定义的icon</span></span><br><span class="line"><span class="hljs-comment">     *  iconWithType 系统的icon</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">	 <span class="hljs-built_in">UIApplicationShortcutIcon</span> *share = [<span class="hljs-built_in">UIApplicationShortcutIcon</span> iconWithType:<span class="hljs-built_in">UIApplicationShortcutIconTypeFavorite</span>];</span><br><span class="line"></span><br><span class="line">    <span class="hljs-built_in">UIApplicationShortcutItem</span> *itemShare = [[<span class="hljs-built_in">UIApplicationShortcutItem</span> alloc] initWithType:<span class="hljs-string">@"share"</span> localizedTitle:<span class="hljs-string">@"分享 “酷狗”音乐"</span> localizedSubtitle:<span class="hljs-literal">nil</span> icon:share userInfo:<span class="hljs-literal">nil</span>];</span><br><span class="line">	</span><br><span class="line">	[<span class="hljs-built_in">UIApplication</span> sharedApplication].shortcutItems = @[itemShare];</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是最后发现还是只有 <em>4</em> 个,看来快速启动的数量确实是有限制。</p>
+<blockquote>
+<p>问题: 如何区分点击具体要跳转到哪个功能界面?</p>
+</blockquote>
+<p>必定存在信息的传递</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Called when the user activates your application by selecting a shortcut on the home screen,</span></span><br><span class="line"><span class="hljs-comment">// except when -application:willFinishLaunchingWithOptions: or -application:didFinishLaunchingWithOptions returns NO.</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)application:(<span class="hljs-built_in">UIApplication</span> *)application performActionForShortcutItem:(<span class="hljs-built_in">UIApplicationShortcutItem</span> *)shortcutItem completionHandler:(<span class="hljs-keyword">void</span>(^)(<span class="hljs-built_in">BOOL</span> succeeded))completionHandler <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0) __TVOS_PROHIBITED;</span><br></pre></td></tr></table></figure></p>
+<p>当用户通过快速启动的方式激活应用时，会触发 <em>UIApplicationDelegate</em> 的这个方法</p>
+<p>实现该方法,并设置断点，通过快速启动激活应用，输出 <em>shortcutItem</em> 参数</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="hljs-built_in">UIApplicationShortcutItem</span>: <span class="hljs-number">0x17026f380</span>; type: com.kugou.shortcut.local, title: 播放本地音乐&gt;</span><br></pre></td></tr></table></figure></p>
+<p>我们可以知道至少可以通过 <em>type</em> 和 <em>title</em> 去区分不同的快速启动按钮。</p>
+<h3 id="关于预览与弹出窗口"><a href="#关于预览与弹出窗口" class="headerlink" title="关于预览与弹出窗口"></a>关于预览与弹出窗口</h3><p>经过授权的应用视图控制器可响应用户不同的按压力量，随着按压力量的增加，<br>会有三个交互阶段：</p>
+<blockquote>
+<p>暗示预览功能可用，会有一个虚化的效果<br>Peek：重按一下后出现的预览，展示预览的视图以及快捷菜单<br>Pop：跳转到预览的视图控制器，是在Peek后进一步按压后进入预览的视图控制器</p>
+</blockquote>
+<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ul>
+<li>主视图控制器 用于显示 <em>Peek</em> 弹窗的视图控制器</li>
+<li><em>Peek</em> 视图控制器，用于提供预览的弹窗视图</li>
+</ul>
+<p>主视图</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"ViewController.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"PreviewViewController.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> () &lt;<span class="hljs-title">UIViewControllerPreviewingDelegate</span>,<span class="hljs-title">UITableViewDataSource</span>,<span class="hljs-title">UITableViewDelegate</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UITableView</span> *tableView;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSArray</span> *datas;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    _tableView = [[<span class="hljs-built_in">UITableView</span> alloc] initWithFrame:<span class="hljs-keyword">self</span>.view.bounds style:<span class="hljs-built_in">UITableViewStylePlain</span>];</span><br><span class="line">    _tableView.dataSource = <span class="hljs-keyword">self</span>;</span><br><span class="line">    _tableView.delegate = <span class="hljs-keyword">self</span>;</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:_tableView];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">NSInteger</span>)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView numberOfRowsInSection:(<span class="hljs-built_in">NSInteger</span>)section &#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">UITableViewCell</span> *)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView cellForRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath &#123;</span><br><span class="line">    <span class="hljs-built_in">UITableViewCell</span> *cell = [tableView dequeueReusableCellWithIdentifier:<span class="hljs-string">@"peekpop"</span>];</span><br><span class="line">    <span class="hljs-keyword">if</span> (cell == <span class="hljs-literal">nil</span>) &#123;</span><br><span class="line">        cell = [[<span class="hljs-built_in">UITableViewCell</span> alloc] initWithStyle:<span class="hljs-built_in">UITableViewCellStyleDefault</span> reuseIdentifier:<span class="hljs-string">@"peekpop"</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cell.textLabel.text = <span class="hljs-keyword">self</span>.datas[indexPath.row];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     *  UIForceTouchCapability 检测是否支持3D Touch</span></span><br><span class="line"><span class="hljs-comment">     *  支持3D Touch</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.traitCollection.forceTouchCapability == <span class="hljs-built_in">UIForceTouchCapabilityAvailable</span>) &#123;</span><br><span class="line">        <span class="hljs-comment">// 系统所有cell可实现预览（peek）</span></span><br><span class="line">        [<span class="hljs-keyword">self</span> registerForPreviewingWithDelegate:<span class="hljs-keyword">self</span> sourceView:cell]; <span class="hljs-comment">// 注册cell</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> cell;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">- (<span class="hljs-keyword">void</span>)tableView:(<span class="hljs-built_in">UITableView</span> *)tableView didSelectRowAtIndexPath:(<span class="hljs-built_in">NSIndexPath</span> *)indexPath&#123;</span><br><span class="line">    [tableView deselectRowAtIndexPath:indexPath animated:<span class="hljs-literal">YES</span>];</span><br><span class="line">    </span><br><span class="line">    PreviewViewController *webVC = [[PreviewViewController alloc] init];</span><br><span class="line">    webVC.webUrl = <span class="hljs-keyword">self</span>.datas[indexPath.row];</span><br><span class="line">    </span><br><span class="line">    webVC.hidesBottomBarWhenPushed = <span class="hljs-literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    [<span class="hljs-keyword">self</span>.navigationController pushViewController:webVC animated:<span class="hljs-literal">true</span>];</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> mark - UIViewControllerPreviewingDelegate</span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIViewController</span> *)previewingContext:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)previewingContext viewControllerForLocation:(<span class="hljs-built_in">CGPoint</span>)location&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="hljs-comment">// 转化坐标</span></span><br><span class="line">    location = [<span class="hljs-keyword">self</span>.tableView convertPoint:location fromView:[previewingContext sourceView]];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 根据locaton获取位置</span></span><br><span class="line">    <span class="hljs-built_in">NSIndexPath</span> *indexPath = [<span class="hljs-keyword">self</span>.tableView indexPathForRowAtPoint:location];</span><br><span class="line">    </span><br><span class="line">    PreviewViewController *webVC = [[PreviewViewController alloc] init];</span><br><span class="line">    webVC.webUrl = <span class="hljs-keyword">self</span>.datas[indexPath.row];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> webVC;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">- (<span class="hljs-keyword">void</span>)previewingContext:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)previewingContext commitViewController:(<span class="hljs-built_in">UIViewController</span> *)viewControllerToCommit&#123;</span><br><span class="line">    </span><br><span class="line">    viewControllerToCommit.hidesBottomBarWhenPushed = <span class="hljs-literal">YES</span>;</span><br><span class="line">    </span><br><span class="line">    [<span class="hljs-keyword">self</span>.navigationController pushViewController:viewControllerToCommit animated:<span class="hljs-literal">YES</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta"># <span class="hljs-meta-keyword">pragma</span> mark - 懒加载</span></span><br><span class="line">- (<span class="hljs-built_in">NSArray</span> *)datas &#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (_datas == <span class="hljs-literal">nil</span>) &#123;</span><br><span class="line">        <span class="hljs-built_in">NSMutableArray</span> *dataM = [<span class="hljs-built_in">NSMutableArray</span> arrayWithCapacity:<span class="hljs-number">30</span>];</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; ++i) &#123;</span><br><span class="line">            [dataM addObject:<span class="hljs-string">@"https://www.baidu.com"</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        _datas = [dataM <span class="hljs-keyword">copy</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> _datas;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p><em>Peek</em> 视图控制器</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"PreviewViewController.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">PreviewViewController</span> ()</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) <span class="hljs-built_in">UIWebView</span> *webView;</span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">PreviewViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    _webView = [[<span class="hljs-built_in">UIWebView</span> alloc] initWithFrame:<span class="hljs-keyword">self</span>.view.bounds];</span><br><span class="line">    [_webView loadRequest:[<span class="hljs-built_in">NSURLRequest</span> requestWithURL:[<span class="hljs-built_in">NSURL</span> URLWithString:_webUrl]]];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:_webView];</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">- (<span class="hljs-built_in">NSArray</span>&lt;<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIPreviewActionItem</span>&gt;&gt; *)previewActionItems&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 赞</span></span><br><span class="line">    <span class="hljs-built_in">UIPreviewAction</span> *admire = [<span class="hljs-built_in">UIPreviewAction</span> actionWithTitle:<span class="hljs-string">@"赞"</span> style:<span class="hljs-built_in">UIPreviewActionStyleDefault</span> handler:^(<span class="hljs-built_in">UIPreviewAction</span> * _Nonnull action, <span class="hljs-built_in">UIViewController</span> * _Nonnull previewViewController) &#123;</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"点赞成功"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 举报</span></span><br><span class="line">    <span class="hljs-built_in">UIPreviewAction</span> *report = [<span class="hljs-built_in">UIPreviewAction</span> actionWithTitle:<span class="hljs-string">@"举报"</span> style:<span class="hljs-built_in">UIPreviewActionStyleDestructive</span> handler:^(<span class="hljs-built_in">UIPreviewAction</span> * _Nonnull action, <span class="hljs-built_in">UIViewController</span> * _Nonnull previewViewController) &#123;</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"举报成功"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 收藏</span></span><br><span class="line">    <span class="hljs-built_in">UIPreviewAction</span> *collect = [<span class="hljs-built_in">UIPreviewAction</span> actionWithTitle:<span class="hljs-string">@"收藏"</span> style:<span class="hljs-built_in">UIPreviewActionStyleSelected</span> handler:^(<span class="hljs-built_in">UIPreviewAction</span> * _Nonnull action, <span class="hljs-built_in">UIViewController</span> * _Nonnull previewViewController) &#123;</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"收藏成功"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> @[admire,report,collect];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>对以上的代码进行简答说明：</p>
+<ol>
+<li>主视图遵守 <em>UIViewControllerPreviewingDelegate</em></li>
+<li>注册触发 <em>Peek</em> 的视图对象</li>
+<li>设置 <em>Peek</em> 视图控制器的操作 (可选)</li>
+</ol>
+<p>该协议有两个方法</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NS_CLASS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0) <span class="hljs-class"><span class="hljs-keyword">@protocol</span> <span class="hljs-title">UIViewControllerPreviewingDelegate</span> &lt;<span class="hljs-title">NSObject</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// If you return nil, a preview presentation will not be performed</span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIViewController</span> *)previewingContext:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)previewingContext viewControllerForLocation:(<span class="hljs-built_in">CGPoint</span>)location <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line">- (<span class="hljs-keyword">void</span>)previewingContext:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)previewingContext commitViewController:(<span class="hljs-built_in">UIViewController</span> *)viewControllerToCommit <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>根据<a href="https://developer.apple.com/reference/uikit/uiviewcontrollerpreviewingdelegate?language=objc" target="_blank" rel="noopener">API-UIView​Controller​Previewing​Delegate</a>,中可知</p>
+<blockquote>
+<p>previewing​Context:​view​Controller​For​Location:​<br>Called when the user has pressed a source view in a previewing view controller, thereby obtaining a surrounding blur to indicate that a preview (peek) is available.</p>
+</blockquote>
+<blockquote>
+<p>previewing​Context:​commit​View​Controller:​<br>Called to let you prepare the presentation of a commit (pop) view from your commit view controller.</p>
+</blockquote>
+<p>这两个方法将会分别在用户按压操作注册了 <em>Peek</em> 的视图对象与 <em>Peek</em> 视图即将从主视图 <em>Pop</em> 时触发。</p>
+<p>参数说明</p>
+<blockquote>
+<p>previewingContext<br>The context object for the previewing view controller.</p>
+</blockquote>
+<p>预览视图控制器的上下文对象，负责实现一系列预览的效果，其中的 <em>sourceView</em> 属性指向主视图中触发预览操作的视图对象</p>
+<blockquote>
+<p>location<br>The location of the touch in the source view’s coordinate system.</p>
+</blockquote>
+<p><em>location</em> 在 <em>sourceView</em> 视图的坐标系中触摸的位置，比如在下面那张截图中代理方法传递进来的 <em>locaiton</em> 参数的值为 <em>(x = 95, y = 33.5)</em> 这个是相对于点击的 <em>cell</em> 为了确定点击的具体是哪个 <em>cell</em> 需要对进行转换，转换后的结果为 <em>(x = 95, y = 77.5)</em></p>
+<p>将来自于 <em>fromView:</em> 视图的坐标 <em>location</em> 转为相对于 <em>self.tableView</em> 的 <em>location</em></p>
+<blockquote>
+<p>Return<br>The view controller whose view you want to provide as the preview (peek), or nil to disable preview..</p>
+</blockquote>
+<p><em>Peek</em> 预览的视图控制器</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/18/58cd1412d5e61.jpg" alt></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">*  UIForceTouchCapability 检测是否支持3D Touch</span></span><br><span class="line"><span class="hljs-comment">*  支持3D Touch</span></span><br><span class="line"><span class="hljs-comment">*/</span></span><br><span class="line"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.traitCollection.forceTouchCapability == <span class="hljs-built_in">UIForceTouchCapabilityAvailable</span>) &#123;</span><br><span class="line">   <span class="hljs-comment">// 系统所有cell可实现预览（peek）</span></span><br><span class="line">   [<span class="hljs-keyword">self</span> registerForPreviewingWithDelegate:<span class="hljs-keyword">self</span> sourceView:cell]; <span class="hljs-comment">// 注册cell</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注册与取消注册 <em>API</em></p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIViewController</span> (<span class="hljs-title">UIViewControllerPreviewingRegistration</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Registers a view controller to participate with 3D Touch preview (peek) and commit (pop).</span></span><br><span class="line">- (<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)registerForPreviewingWithDelegate:(<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIViewControllerPreviewingDelegate</span>&gt;)delegate sourceView:(<span class="hljs-built_in">UIView</span> *)sourceView <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line">- (<span class="hljs-keyword">void</span>)unregisterForPreviewingWithContext:(<span class="hljs-keyword">id</span> &lt;<span class="hljs-built_in">UIViewControllerPreviewing</span>&gt;)previewing <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>在 <em>Peek</em> 视图控制器中添加代码</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">NSArray</span>&lt;<span class="hljs-keyword">id</span>&lt;<span class="hljs-built_in">UIPreviewActionItem</span>&gt;&gt; *)previewActionItems&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 赞</span></span><br><span class="line">    <span class="hljs-built_in">UIPreviewAction</span> *admire = [<span class="hljs-built_in">UIPreviewAction</span> actionWithTitle:<span class="hljs-string">@"赞"</span> style:<span class="hljs-built_in">UIPreviewActionStyleDefault</span> handler:^(<span class="hljs-built_in">UIPreviewAction</span> * _Nonnull action, <span class="hljs-built_in">UIViewController</span> * _Nonnull previewViewController) &#123;</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"点赞成功"</span>);</span><br><span class="line">    &#125;];</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> @[admire,report,collect];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为对预览的视图的操作写在 <em>Peek</em> 视图控制器是很正常</p>
+<p><em>Swift</em> 的实现风格的可以参考文章后的链接 <em>ViewControllerPreviews: Using the UIViewController previewing APIs</em>。</p>
+<h2 id="关于按压属性"><a href="#关于按压属性" class="headerlink" title="关于按压属性"></a>关于按压属性</h2><p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Force of the touch, where 1.0 represents the force of an average touch</span></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">CGFloat</span> force <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line"><span class="hljs-comment">// Maximum possible force with this input mechanism</span></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">CGFloat</span> maximumPossibleForce <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br></pre></td></tr></table></figure></p>
+<p>按压实现预览本质上也是一种根据按压实现的交互。在此就不在赘述了。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://stackoverflow.com/questions/32904809/is-there-a-limit-to-how-many-uiapplicationshortcutitems-you-can-have" target="_blank" rel="noopener">Is there a limit to how many UIApplicationShortcutItems you can have?</a></li>
+<li><a href="http://stackoverflow.com/questions/34643054/3d-touch-quick-action-4-item-limit" target="_blank" rel="noopener">3D Touch Quick Action 4 Item Limit?</a></li>
+<li><a href="http://www.jianshu.com/p/018d0c226134" target="_blank" rel="noopener">iOS之实现3D Touch</a></li>
+<li><a href="https://developer.apple.com/reference/uikit/uiviewcontrollerpreviewingdelegate?language=objc" target="_blank" rel="noopener">API-UIView​Controller​Previewing​Delegate</a></li>
+<li><a href="https://developer.apple.com/library/content/samplecode/ViewControllerPreviews/Introduction/Intro.html" target="_blank" rel="noopener">ViewControllerPreviews: Using the UIViewController previewing APIs</a></li>
+<li><a href="http://stackoverflow.com/questions/15109958/understanding-convertpointtoview" target="_blank" rel="noopener">Understanding convertPoint:toView:</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/UI/">#UI</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/03/21/Analysis-of-Https-protocol/">理解HTTPS协议</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/03/12/IntelliJ-IDEA-main-function-pass/">IntelliJ IDEA Main函数传参</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

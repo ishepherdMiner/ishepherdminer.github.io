@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Swift 3上的String和Character - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="概览 字符串如何遍历?字符串如何操作(增删改)?字符串如何比较?  本文主要关注的就是字符串的上面3点操作 环境说明 macOS Sierra 10.12.2Xcode Version 8.2.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift 3上的String和Character">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;01&#x2F;30&#x2F;String-and-Character-on-Swift-3&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="概览 字符串如何遍历?字符串如何操作(增删改)?字符串如何比较?  本文主要关注的就是字符串的上面3点操作 环境说明 macOS Sierra 10.12.2Xcode Version 8.2.1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-30T09:00:08.000Z">
+<meta property="article:modified_time" content="2017-03-18T16:24:26.000Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="Swift">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#概览">1&nbsp;&nbsp;<b>概览</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境说明">2&nbsp;&nbsp;<b>环境说明</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#如何遍历">3&nbsp;&nbsp;<b>如何遍历?</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#OC">3.1&nbsp;&nbsp;OC</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Swift">3.2&nbsp;&nbsp;Swift</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#与NSString类无缝桥接">3.2.1&nbsp;&nbsp;与NSString类无缝桥接</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#用字面量初始化">3.2.2&nbsp;&nbsp;用字面量初始化</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#String的characters是一个字符集合">3.2.3&nbsp;&nbsp;String的characters是一个字符集合</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#如何操作-增删改">4&nbsp;&nbsp;<b>如何操作(增删改)?</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#增">4.1&nbsp;&nbsp;增</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#删">4.2&nbsp;&nbsp;删</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#改">4.3&nbsp;&nbsp;改</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#如何比较">5&nbsp;&nbsp;<b>如何比较?</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Swift 3上的String和Character
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-01-30T09:00:08.000Z" itemprop="datePublished">1月 30 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            7 分钟 读完 (约 1111 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><blockquote>
+<p>字符串如何遍历?<br>字符串如何操作(增删改)?<br>字符串如何比较?</p>
+</blockquote>
+<p>本文主要关注的就是字符串的上面3点操作</p>
+<h2 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h2><blockquote>
+<p><em>macOS Sierra 10.12.2</em><br><em>Xcode Version 8.2.1</em></p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="如何遍历"><a href="#如何遍历" class="headerlink" title="如何遍历?"></a>如何遍历?</h2><h3 id="OC"><a href="#OC" class="headerlink" title="OC"></a>OC</h3><p>先看看<em>OC</em>中如何对集合进行遍历</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSArray</span> *ss = @[@<span class="hljs-number">1</span>,@<span class="hljs-number">2</span>,@<span class="hljs-number">3</span>];</span><br><span class="line"><span class="hljs-comment">// forI 提供外部索引,通过索引遍历集合</span></span><br><span class="line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; ss.count; ++i) &#123;</span><br><span class="line">	<span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"forI:%@"</span>,ss[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// forin 通过内部迭代集合,不需要索引</span></span><br><span class="line"><span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSNumber</span> *s <span class="hljs-keyword">in</span> ss) &#123;</span><br><span class="line">	<span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"forin:%@"</span>,s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// block方式迭代</span></span><br><span class="line">[ss enumerateObjectsUsingBlock:^(<span class="hljs-keyword">id</span>  _Nonnull s, <span class="hljs-built_in">NSUInteger</span> idx, <span class="hljs-built_in">BOOL</span> * _Nonnull stop) &#123;</span><br><span class="line">	<span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"enumerate:%@"</span>,s);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<p>遍历<em>OC</em>字符串的方式</p>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSString</span> *s = <span class="hljs-string">@"testString"</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// forI</span></span><br><span class="line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; s.length; ++i) &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%c"</span>,[s characterAtIndex:i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Collection expression type 'NSString *' may not respond to 'countByEnumeratingWithState:objects:count:'</span></span><br><span class="line"><span class="hljs-comment">// NSString并没有实现NSFastEnumeration协议</span></span><br><span class="line"><span class="hljs-comment">// for (NSString *subs in s) &#123;</span></span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">// &#125;</span></span><br><span class="line">    </span><br><span class="line">[s enumerateSubstringsInRange:<span class="hljs-built_in">NSMakeRange</span>(<span class="hljs-number">0</span>, s.length) options:<span class="hljs-built_in">NSStringEnumerationByComposedCharacterSequences</span> usingBlock:^(<span class="hljs-built_in">NSString</span> * _Nullable substring, <span class="hljs-built_in">NSRange</span> substringRange, <span class="hljs-built_in">NSRange</span> enclosingRange, <span class="hljs-built_in">BOOL</span> * _Nonnull stop) &#123;</span><br><span class="line">   <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,substring);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure></p>
+<h3 id="Swift"><a href="#Swift" class="headerlink" title="Swift"></a>Swift</h3><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// - 摘自String.h iOS10.2</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">String</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// Creates an empty string.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">init</span>()</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由上可知:<em>Swift</em>中的字符串是一个结构体</p>
+<p>结构体是值类型,作参数传递时是拷贝副本进行传递,保证原字符串不会被改变</p>
+<p>查看上面的注释可以了解到<em>String</em>的一些知识点</p>
+<h4 id="与NSString类无缝桥接"><a href="#与NSString类无缝桥接" class="headerlink" title="与NSString类无缝桥接"></a>与<em>NSString</em>类无缝桥接</h4><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// A Unicode string value.</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">/// A string is a series of characters, such as `"Swift"`. Strings in Swift are</span></span><br><span class="line"><span class="hljs-comment">/// Unicode correct, locale insensitive, and designed to be efficient. The</span></span><br><span class="line"><span class="hljs-comment">/// `String` type bridges with the Objective-C class `NSString` and offers</span></span><br><span class="line"><span class="hljs-comment">/// interoperability with C functions that works with strings.</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="用字面量初始化"><a href="#用字面量初始化" class="headerlink" title="用字面量初始化"></a>用字面量初始化</h4><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// You can create new strings using string literals or string interpolations.</span></span><br><span class="line"><span class="hljs-comment">/// A string literal is a series of characters enclosed in quotes.</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     let greeting = "Welcome!"</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Character View</span></span><br><span class="line"><span class="hljs-comment">/// --------------</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">/// A string's `characters` property is a collection of *extended grapheme</span></span><br><span class="line"><span class="hljs-comment">/// clusters*, which approximate human-readable characters. Many individual</span></span><br><span class="line"><span class="hljs-comment">/// characters, such as "é", "김", and "🇮🇳", can be made up of multiple Unicode</span></span><br><span class="line"><span class="hljs-comment">/// code points. These code points are combined by Unicode's boundary</span></span><br><span class="line"><span class="hljs-comment">/// algorithms into extended grapheme clusters, represented by Swift's</span></span><br><span class="line"><span class="hljs-comment">/// `Character` type. Each element of the `characters` view is represented by</span></span><br><span class="line"><span class="hljs-comment">/// a `Character` instance.</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     print(cafe.characters.count)</span></span><br><span class="line"><span class="hljs-comment">///     // Prints "9"</span></span><br><span class="line"><span class="hljs-comment">///     print(Array(cafe.characters))</span></span><br><span class="line"><span class="hljs-comment">///     // Prints "["C", "a", "f", "é", " ", "d", "u", " ", "🌍"]"</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">/// Each visible character in the `cafe` string is a separate element of the</span></span><br><span class="line"><span class="hljs-comment">/// `characters` view.</span></span><br></pre></td></tr></table></figure></p>
+<p>查看<em>String</em>的<em>characters</em>属性</p>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CharacterView</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">/// Creates a view of the given string.</span></span><br><span class="line">   <span class="hljs-keyword">public</span> <span class="hljs-keyword">init</span>(<span class="hljs-number">_</span> text: <span class="hljs-type">String</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/// A view of the string's contents as a collection of characters.</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> characters: <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="String的characters是一个字符集合"><a href="#String的characters是一个字符集合" class="headerlink" title="String的characters是一个字符集合"></a><em>String</em>的<em>characters</em>是一个字符集合</h4><p>可以根据<em>characters</em>对<em>String</em>进行遍历操作</p>
+<h5 id="String-CharacterView"><a href="#String-CharacterView" class="headerlink" title="String.CharacterView"></a><em>String.CharacterView</em></h5><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// `String.CharacterView` is a collection of `Character`.</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">String</span>.<span class="hljs-title">CharacterView</span> : <span class="hljs-title">BidirectionalCollection</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// A position in a string's `CharacterView` instance.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// You can convert between indices of the different string views by using</span></span><br><span class="line">    <span class="hljs-comment">/// conversion initializers and the `samePosition(in:)` method overloads.</span></span><br><span class="line">    <span class="hljs-comment">/// The following example finds the index of the first space in the string's</span></span><br><span class="line">    <span class="hljs-comment">/// character view and then converts that to the same position in the UTF-8</span></span><br><span class="line">    <span class="hljs-comment">/// view:</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">///     let hearts = "Hearts &lt;3 ♥︎ 💘"</span></span><br><span class="line">    <span class="hljs-comment">///     if let i = hearts.characters.index(of: " ") &#123;</span></span><br><span class="line">    <span class="hljs-comment">///         let j = i.samePosition(in: hearts.utf8)</span></span><br><span class="line">    <span class="hljs-comment">///         print(Array(hearts.utf8.prefix(upTo: j)))</span></span><br><span class="line">    <span class="hljs-comment">///     &#125;</span></span><br><span class="line">    <span class="hljs-comment">///     // Prints "[72, 101, 97, 114, 116, 115]"</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Index</span> : <span class="hljs-title">Comparable</span>, <span class="hljs-title">CustomPlaygroundQuickLookable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">/// A custom playground Quick Look for this instance.</span></span><br><span class="line">        <span class="hljs-comment">///</span></span><br><span class="line">        <span class="hljs-comment">/// If this type has value semantics, the `PlaygroundQuickLook` instance</span></span><br><span class="line">        <span class="hljs-comment">/// should be unaffected by subsequent mutations.</span></span><br><span class="line">        <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> customPlaygroundQuickLook: <span class="hljs-type">PlaygroundQuickLook</span> &#123; <span class="hljs-keyword">get</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// A type used to represent the number of steps between two indices, where</span></span><br><span class="line">    <span class="hljs-comment">/// one value is reachable from the other.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// In Swift, *reachability* refers to the ability to produce one value from</span></span><br><span class="line">    <span class="hljs-comment">/// the other through zero or more applications of `index(after:)`.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">typealias</span> <span class="hljs-type">IndexDistance</span> = <span class="hljs-type">Int</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// The position of the first character in a nonempty character view.</span></span><br><span class="line">    <span class="hljs-comment">/// </span></span><br><span class="line">    <span class="hljs-comment">/// In an empty character view, `startIndex` is equal to `endIndex`.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> startIndex: <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span>.<span class="hljs-type">Index</span> &#123; <span class="hljs-keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// A character view's "past the end" position---that is, the position one</span></span><br><span class="line">    <span class="hljs-comment">/// greater than the last valid subscript argument.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// In an empty character view, `endIndex` is equal to `startIndex`.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">var</span> endIndex: <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span>.<span class="hljs-type">Index</span> &#123; <span class="hljs-keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// Returns the next consecutive position after `i`.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// - Precondition: The next position is valid.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">index</span><span class="hljs-params">(after i: String.CharacterView.Index)</span></span> -&gt; <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span>.<span class="hljs-type">Index</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// Returns the previous consecutive position before `i`.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// - Precondition: The previous position is valid.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">index</span><span class="hljs-params">(before i: String.CharacterView.Index)</span></span> -&gt; <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span>.<span class="hljs-type">Index</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// Accesses the character at the given position.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// The following example searches a string's character view for a capital</span></span><br><span class="line">    <span class="hljs-comment">/// letter and then prints the character at the found index:</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">///     let greeting = "Hello, friend!"</span></span><br><span class="line">    <span class="hljs-comment">///     if let i = greeting.characters.index(where: &#123; "A"..."Z" ~= $0 &#125;) &#123;</span></span><br><span class="line">    <span class="hljs-comment">///         print("First capital letter: \(greeting.characters[i])")</span></span><br><span class="line">    <span class="hljs-comment">///     &#125;</span></span><br><span class="line">    <span class="hljs-comment">///     // Prints "First capital letter: H"</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// - Parameter position: A valid index of the character view. `position`</span></span><br><span class="line">    <span class="hljs-comment">///   must be less than the view's end index.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">subscript</span>(i: <span class="hljs-type">String</span>.<span class="hljs-type">CharacterView</span>.<span class="hljs-type">Index</span>) -&gt; <span class="hljs-type">Character</span> &#123; <span class="hljs-keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由上面可以得知,<em>forI<em>方式的索引的数据类型由原来的</em>int<em>改成了</em>String.CharacterView.Index</em></p>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> s = <span class="hljs-string">"Swift"</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>forI方式</em></li>
+</ul>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..&lt;s.characters.<span class="hljs-built_in">count</span> &#123;</span><br><span class="line">  <span class="hljs-built_in">print</span>(s.characters[s.characters.index(s.startIndex, offsetBy: i)])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>for-in方式</em></li>
+</ul>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">for</span> <span class="hljs-built_in">c</span> <span class="hljs-keyword">in</span> s.characters &#123;</span><br><span class="line">  <span class="hljs-built_in">print</span>(<span class="hljs-built_in">c</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>block方式</em></li>
+</ul>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s.characters.forEach &#123; (<span class="hljs-built_in">c</span>) <span class="hljs-keyword">in</span></span><br><span class="line">  <span class="hljs-built_in">print</span>(<span class="hljs-built_in">c</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="如何操作-增删改"><a href="#如何操作-增删改" class="headerlink" title="如何操作(增删改)?"></a>如何操作(增删改)?</h2><h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><ul>
+<li>可以用<em>\(String)</em>组合字符串</li>
+</ul>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// String interpolations are string literals that evaluate any included</span></span><br><span class="line"><span class="hljs-comment">/// expressions and convert the results to string form. String interpolations</span></span><br><span class="line"><span class="hljs-comment">/// are an easy way to build a string from multiple pieces. Wrap each</span></span><br><span class="line"><span class="hljs-comment">/// expression in a string interpolation in parentheses, prefixed by a</span></span><br><span class="line"><span class="hljs-comment">/// backslash.</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     let name = "Rosa"</span></span><br><span class="line"><span class="hljs-comment">///     let personalizedGreeting = "Welcome, \(name)!"</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     let price = 2</span></span><br><span class="line"><span class="hljs-comment">///     let number = 3</span></span><br><span class="line"><span class="hljs-comment">///     let cookiePrice = "\(number) cookies: $\(price * number)."</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>可以用*”+”*连接字符串</li>
+</ul>
+<p><figure class="highlight objc hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Combine strings using the concatenation operator (`+`).</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     let longerGreeting = greeting + " We're glad you're here!"</span></span><br><span class="line"><span class="hljs-comment">///     print(longerGreeting)</span></span><br><span class="line"><span class="hljs-comment">///     // Prints "Welcome! We're glad you're here!"</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>append…</em></li>
+</ul>
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><ul>
+<li><em>removeAll( ) remove(at:…) …</em> </li>
+</ul>
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 直接赋值</span></span><br><span class="line">s = <span class="hljs-string">"swift"</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 替换</span></span><br><span class="line">s.replaceSubrange(s.index(s.startIndex,offsetBy:<span class="hljs-number">1</span>)...s.index(s.startIndex, offsetBy: <span class="hljs-number">4</span>), with: <span class="hljs-string">"WIFT"</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="如何比较"><a href="#如何比较" class="headerlink" title="如何比较?"></a>如何比较?</h2><p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Comparing strings for equality using the equal-to operator (`==`) or a</span></span><br><span class="line"><span class="hljs-comment">/// relational operator (like `&lt;` and `&gt;=`) is always performed using the</span></span><br><span class="line"><span class="hljs-comment">/// Unicode canonical representation. This means that different</span></span><br><span class="line"><span class="hljs-comment">/// representations of a string compare as being equal.</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">///     let cafe1 = "Cafe\u&#123;301&#125;"</span></span><br><span class="line"><span class="hljs-comment">///     let cafe2 = "Café"</span></span><br><span class="line"><span class="hljs-comment">///     print(cafe1 == cafe2)</span></span><br><span class="line"><span class="hljs-comment">///     // Prints "true"</span></span><br><span class="line"><span class="hljs-comment">///</span></span><br><span class="line"><span class="hljs-comment">/// The Unicode code point `"\u&#123;301&#125;"` modifies the preceding character to</span></span><br><span class="line"><span class="hljs-comment">/// include an accent, so `"e\u&#123;301&#125;"` has the same canonical representation</span></span><br><span class="line"><span class="hljs-comment">/// as the single Unicode code point `"é"`.</span></span><br></pre></td></tr></table></figure></p>
+<p><figure class="highlight swift hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">extension</span> <span class="hljs-title">String</span> : <span class="hljs-title">Equatable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">/// Returns a Boolean value indicating whether two values are equal.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// Equality is the inverse of inequality. For any values `a` and `b`,</span></span><br><span class="line">    <span class="hljs-comment">/// `a == b` implies that `a != b` is `false`.</span></span><br><span class="line">    <span class="hljs-comment">///</span></span><br><span class="line">    <span class="hljs-comment">/// - Parameters:</span></span><br><span class="line">    <span class="hljs-comment">///   - lhs: A value to compare.</span></span><br><span class="line">    <span class="hljs-comment">///   - rhs: Another value to compare.</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-function"><span class="hljs-keyword">func</span> ==<span class="hljs-params">(lhs: String, rhs: String)</span></span> -&gt; <span class="hljs-type">Bool</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>Unicode</em>编码</li>
+<li>使用<em>==</em>进行比较</li>
+<li>内容比较</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://wiki.jikexueyuan.com/project/swift/chapter2/03_Strings_and_Characters.html" target="_blank" rel="noopener">字符串和字符（Strings and Characters）</a></li>
+</ul>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Swift/">#Swift</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/02/04/MWeb-map-bed-configuration/">MWeb图床配置</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/01/27/Understand-objc-runtime-4-runtime-process-analysis/">理解objc运行时四-运行时流程分析</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

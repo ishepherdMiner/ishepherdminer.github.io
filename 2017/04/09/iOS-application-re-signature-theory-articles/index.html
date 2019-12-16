@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>理论篇：iOS 应用重签名 - 光阴的故事</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　　　在整理阅读:iOS App签名的原理了解了签名的过程，现在重新回头整理一下 iOS 重签名的一些内容。 　　 环境 &amp; 工具　  macOS Sierra 10.12.4Xcode 8.3.1  数字签名　　　数位签章（又称公钥数位签章，英语：Digital Signature ）是一种类似写在纸上的普通的物理签名，但是使用了公钥加密领域的技术实现，用于鉴别数字信息的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理论篇：iOS 应用重签名">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;04&#x2F;09&#x2F;iOS-application-re-signature-theory-articles&#x2F;index.html">
+<meta property="og:site_name" content="光阴的故事">
+<meta property="og:description" content="导语　　　在整理阅读:iOS App签名的原理了解了签名的过程，现在重新回头整理一下 iOS 重签名的一些内容。 　　 环境 &amp; 工具　  macOS Sierra 10.12.4Xcode 8.3.1  数字签名　　　数位签章（又称公钥数位签章，英语：Digital Signature ）是一种类似写在纸上的普通的物理签名，但是使用了公钥加密领域的技术实现，用于鉴别数字信息的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;04&#x2F;09&#x2F;58ea2208de356.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;04&#x2F;09&#x2F;58ea2207aadc4.jpg">
+<meta property="article:published_time" content="2017-04-09T11:58:31.000Z">
+<meta property="article:modified_time" content="2019-12-16T08:52:49.216Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="Reverse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;04&#x2F;09&#x2F;58ea2208de356.png">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 4.1.1"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    Shepherd
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/archives">Archives</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境-amp-工具">2&nbsp;&nbsp;<b>环境 &amp;amp;amp; 工具</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#数字签名">3&nbsp;&nbsp;<b>数字签名</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Entitlement">4&nbsp;&nbsp;<b>Entitlement</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#描述文件">5&nbsp;&nbsp;<b>描述文件</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#总结">6&nbsp;&nbsp;<b>总结</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#过程分析">7&nbsp;&nbsp;<b>过程分析</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#“预处理”">7.1&nbsp;&nbsp;“预处理”</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#正文-codesign">7.2&nbsp;&nbsp;正文: codesign</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#embedded-mobileprovision-描述文件">7.3&nbsp;&nbsp;embedded.mobileprovision (描述文件)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#总结-1">7.4&nbsp;&nbsp;总结</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#方案">8&nbsp;&nbsp;<b>方案</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#说明">9&nbsp;&nbsp;<b>说明</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">10&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" href="https://github.com/ishepherdMiner" target="_blank" rel="noopener">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            理论篇：iOS 应用重签名
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-04-09T11:58:31.000Z" itemprop="datePublished">4月 9 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            12 分钟 读完 (约 1873 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　<br>　　在整理<a href="http://www.iosugar.com/2017/03/28/Readers-iOS-App-signature-principle/" target="_blank" rel="noopener">阅读:iOS App签名的原理</a>了解了签名的过程，现在重新回头整理一下 <em>iOS</em> 重签名的一些内容。
+　　</p>
+<h2 id="环境-amp-工具"><a href="#环境-amp-工具" class="headerlink" title="环境 &amp; 工具"></a>环境 &amp; 工具</h2><p>　</p>
+<blockquote>
+<p>macOS Sierra 10.12.4<br>Xcode 8.3.1</p>
+</blockquote>
+<h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>　<br>　　数位签章（又称公钥数位签章，英语：<em>Digital Signature</em> ）是一种类似写在纸上的普通的物理签名，但是使用了公钥加密领域的技术实现，用于鉴别数字信息的方法。</p>
+<p>　　在这里指 <em>codesign</em> 的参数 <em>identity</em> ，它的生成是用 <em>SHA-1</em> 算法对整个<a href="https://zh.wikipedia.org/wiki/電子證書" target="_blank" rel="noopener">数字证书</a>内容进行摘要生成的 <em>40</em> 位的 <em>16</em> 进制的字符序列。</p>
+<h2 id="Entitlement"><a href="#Entitlement" class="headerlink" title="Entitlement"></a><code>Entitlement</code></h2><p>　<br>在 《深入解析Mac OS X &amp; iOS 操作系统》一书中提到:
+　　</p>
+<p>　</p>
+<blockquote>
+<p>　　<em>Entitlement</em> 是一种权限声明机制，从概念上非常像 <em>.Net</em> 和 <em>Java</em> 中使用的声明式权限机制。在 <em>iOS</em> 中 <em>entitlement plist</em> 是直接嵌入在应用程序的二进制中的，并且由苹果进行数字签名</p>
+</blockquote>
+<p>　</p>
+<a id="more"></a>
+<p>关于 <em>Entitlement</em> 文件是嵌入到应用程序的二进制中的论断，已进行验证。</p>
+<h2 id="描述文件"><a href="#描述文件" class="headerlink" title="描述文件"></a>描述文件</h2><p>　<br>　　<em>Apple</em> 用于描述与管理应用安装的文件，其中包含了证书，包名，可安装设备等信息。
+　　</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>数字签名: 用于解决已获得授权的应用的完整性 (是否完整)</li>
+<li>描述文件: 用于解决应用是否能被授权安装 (是否安装)</li>
+<li><em>Entitlement</em>: 用于解决该应用的权限 (是否有权限)</li>
+</ul>
+<h2 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h2><p>　<br>　　一开始不明白没事，总有明白的。关于签名这件事，<em>Xcode</em> 是了解的，因此考虑从它入手。<br>　　<br>　　在 <em>Xcode</em> 上用 <em>⌘ B</em> 去编译一个 <em>iOS</em> 的工程，通过查看本次运行的日志信息中的签名（Sign）部分。我们可以了解到 <em>iOS</em> 应用开发时的签名工作是由 <em>macOS</em> 上的 <em>codesign</em> 负责的。<br>　　<br><img src="https://ooo.0o0.ooo/2017/04/09/58ea2208de356.png" alt="Snip20170409_4"></p>
+<h3 id="“预处理”"><a href="#“预处理”" class="headerlink" title="“预处理”"></a>“预处理”</h3><ol>
+<li><code>cd</code> 到工程目录</li>
+<li><code>export CODESIGN_ALLOCATE</code> 定义 <code>CODESIGN_ALLOCATE</code> 环境变量</li>
+<li><code>export PATH</code> : 临时添加 <code>PATH</code> 环境变量，主要为了让 <code>Xcode</code> 中的一些指令能被找到</li>
+<li>读取描述文件。</li>
+</ol>
+<h3 id="正文-codesign"><a href="#正文-codesign" class="headerlink" title="正文: codesign"></a>正文: <code>codesign</code></h3><p>　<br>通过查看 <em>codesign</em> 的 <em>man</em> 手册来确定参数的具体含义 </p>
+<p>　</p>
+<blockquote>
+<p>-f, –force<br>　When signing, causes codesign to replace any existing signature on the path(s) given. Without this option, existing signatures will not be replaced, and the signing oper-ation fails.</p>
+</blockquote>
+<p>　</p>
+<p>使用 <code>-f，--force</code> 参数会在签名时替换掉原有的签名，大约就是个是否进行覆盖操作的意思。</p>
+<p>　</p>
+<blockquote>
+<p>-s, –sign identity<br>　Sign the code at the path(s) given using this identity. See SIGNING IDENTITIES below.</p>
+</blockquote>
+<blockquote>
+<p>SIGNING IDENTITIES<br>     To be used for code signing, a digital identity must be stored in a keychain that is on the calling user’s keychain search list.  All keychain sources are supported if properly<br>     configured. In particular, it is possible to sign code with an identity stored on a supported smart card.  If your signing identity is stored in a different form, you need to<br>     make it available in keychain form to sign code with it.<br>…</p>
+</blockquote>
+<p>　</p>
+<p>打开钥匙串， 找到签名的数字证书，指令中 <em>identity</em> 的值是 <em>Fingerprints</em> 中 <em>40</em> 位的 <em>16</em> 进制 <em>SHA-1</em> 值。</p>
+<p>关于 <em>SHA-1</em> 和 <em>MD5</em> 都是数字签名算法。</p>
+<p><em>Fingerprints</em> 是指纹的意思，算隐含唯一性。</p>
+<p>　</p>
+<blockquote>
+<p>–entitlements path<br>   When signing, take the file at the given path and embed its con-<br>   tents in the signature as entitlement data. If the data at path<br>   does not already begin with a suitable binary (“blob”) header,<br>   one is attached automatically.</p>
+</blockquote>
+<p>　</p>
+<p>找到对应路径下的 <code>xxx.app.xcent</code> 文件，具体内容大概如下</p>
+<p><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">plist</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">"-//Apple//DTD PLIST 1.0//EN"</span> <span class="hljs-meta-string">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">plist</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>application-identifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>XXX.包名<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>com.apple.developer.team-identifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>XXX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>get-task-allow<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">true</span>/&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>keychain-access-groups<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>XXX.包名<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><code>get-task-allow</code> ：允许其他进程附上该进程，比如开发环境下 <em>Xcode</em> 会用 <em>lldb</em> 附上进程进行调试。已验证过在 <em>AdHoc</em> 包中的该字段也确实会变成 <em>false</em>。</p>
+<p><code>keychain-access-groups</code> ： 为了开发者能用钥匙串在自己的应用间传递信息（比如:密码）。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/09/58ea2207aadc4.jpg" alt></p>
+<h3 id="embedded-mobileprovision-描述文件"><a href="#embedded-mobileprovision-描述文件" class="headerlink" title="embedded.mobileprovision (描述文件)"></a><code>embedded.mobileprovision</code> (描述文件)</h3><p>　<br>　　最后生成的包中有 <em>embedded.mobileprovision</em> 文件，这个就是我们从苹果后台下载的描述文件，其中包含了应用的包名，证书，可安装设备，过期时间等等信息，在签名时会被打包到应用中。因为不签名<em>Xcode</em> 无法通过编译，无法验证，因此只是觉得应该是签名操作时生成的。</p>
+<p>　　在重签名过程中，网上会说从自己以前打包的应用里面拷贝，当然是可以的，但是从苹果后台下载要重签名的描述文件，然后重新命名为 <em>embedded.mobileprovision</em> 也是一个方案。</p>
+<p>　　下面是一个 <em>embedded.mobileprovision</em>　的示例</p>
+<p><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">plist</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">"-//Apple//DTD PLIST 1.0//EN"</span> <span class="hljs-meta-string">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">plist</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>AppIDName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>XC Wildcard<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>ApplicationIdentifierPrefix<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ZEY3XXXXXX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>CreationDate<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">date</span>&gt;</span>2017-03-08T06:25:32Z<span class="hljs-tag">&lt;/<span class="hljs-name">date</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>Platform<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>iOS<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>DeveloperCertificates<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>MIIF...fA=<span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">data</span>&gt;</span>MIIF...94=<span class="hljs-tag">&lt;/<span class="hljs-name">data</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>Entitlements<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>keychain-access-groups<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">			<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ZEY3XXXXXX.*<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>get-task-allow<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">true</span>/&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>application-identifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ZEY3XXXXXX.*<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>com.apple.developer.team-identifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ZEY3XXXXXX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>ExpirationDate<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">date</span>&gt;</span>2018-03-08T06:25:32Z<span class="hljs-tag">&lt;/<span class="hljs-name">date</span>&gt;</span></span><br><span class="line"></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>Name<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>iOS Team Provisioning Profile: *<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>ProvisionedDevices<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>2b8ffa94ec91d9ce9c94da9ad423b88888888888<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>TeamIdentifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">		<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ZEY3XXXXXX<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>TeamName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Deliang Wang<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>TimeToLive<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>365<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>UUID<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>Version<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>“预处理” 做好一些前期的处理工作（设置环境变量，读取描述文件等）</li>
+<li><code>-sign</code> 的 <code>SHA-1</code> 值 ，从钥匙串中找到对应的数字证书</li>
+<li><code>--entitlements</code> 确定应用的权限</li>
+<li><code>codesign</code> 指令对应用的二进制文件，资源，动态库进行签名（二进制的签名保存在自己内部）</li>
+</ol>
+<p>　<br>安装过程：</p>
+<p>　　<em>iOS</em> 设备用验证 <em>embedded.mobileprovision</em> 文件的数字证书，取出其中的公钥，能取出证明经过了苹果服务器的授权，即该公钥是有效的，用该公钥去解密本地私钥加密的信息(<em>_CodeSignature</em>)，得到真实签名值，然后同样计算，验证文件的完整性，完整性通过后就可以安装。</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>　<br>重签名一般就是在苹果认可的体系下:</p>
+<ul>
+<li><em>AppStore</em> 分发</li>
+<li>开发者调试安装</li>
+<li><em>AdHoc</em> / 企业包分发</li>
+</ul>
+<p>让应用顺利安装。</p>
+<p><strong>主要是让 iOS 设备认为完整性没有被破坏</strong></p>
+<p>关于工具 <em>Apple</em> 已经提供了，就是 <em>codesign</em> 。</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>　<br>　　一开始我以为重签名并没有太多可以写的内容，毕竟网上关于如何重签名的资料还是挺多的，也有不少优秀的工具可以很方便的完成重签名的操作。<br>　　<br>　　为了让自己确定知道哪些因素会影响重签名，测试(折腾)了挺久才大致了解了点，因为这部分目前比较乱，需要时间去整理，而且实际重签名操作还有一些情况需要考虑: 多 <em>target*，注入 *dylib</em> ，所以打算拆成两篇，把具体的如何重签名的操作在实践篇中再谈谈。</p>
+<p>　　</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="https://zh.wikipedia.org/zh-hans/數位簽章" target="_blank" rel="noopener">Wiki - 数字签名</a></li>
+<li><a href="http://stackoverflow.com/questions/1003066/what-does-get-task-allow-do-in-xcode" target="_blank" rel="noopener">What does get-task-allow do in Xcode?</a></li>
+<li><a href="https://bencoding.com/2016/12/31/simplifying-using-keychain-access-groups/" target="_blank" rel="noopener">Simplifying using Keychain Access Groups</a> </li>
+</ol>
+
+    
+    </div>
+    
+    <div class="columns is-variable is-1 is-multiline is-mobile">
+    
+        <span class="column is-narrow"><a class="tag is-light article-tag" href="/tags/Reverse/">#Reverse</a></span>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/04/10/Practice-articles-iOS-application-re-signature/">实践篇：iOS 应用重签名(上)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/04/07/Full-width-spaces-used-in-Markdown/">全角空格在Markdown中的使用</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2019 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/" target="_blank" rel="noopener">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
