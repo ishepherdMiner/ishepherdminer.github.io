@@ -152,35 +152,17 @@
         <span class="column is-narrow">
             
             
-            2 分钟 读完 (约 297 字)
+            2 分钟 读完 (约 305 字)
         </span>
         
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该分类用于记录主题网站变更的一些过程。</p>
-<h2 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h2><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener"><code>Hexo</code></a>,安装完<code>Hexo</code>后</p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init &lt;folder&gt;</span><br><span class="line">$ <span class="hljs-built_in">cd</span> &lt;folder&gt;</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure></p>
-<p>新建文件</p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Usage: hexo new [layout] &lt;title&gt;</span><br><span class="line"></span><br><span class="line">Description:</span><br><span class="line">Create a new post.</span><br></pre></td></tr></table></figure></p>
-<p>写完后</p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 启动本地服务器</span></span><br><span class="line">$ hexo s</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 发布到线上服务器</span></span><br><span class="line"><span class="hljs-comment"># 安装 npm install hexo-deployer-git --save</span></span><br><span class="line"><span class="hljs-comment"># 配置 hexo的 _config.yml 配置远程服务器的路径</span></span><br><span class="line"><span class="hljs-comment"># Deployment</span></span><br><span class="line"><span class="hljs-comment">## Docs: https://hexo.io/docs/deployment.html</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># deploy:</span></span><br><span class="line"><span class="hljs-comment">#  type: git</span></span><br><span class="line"><span class="hljs-comment">#  repo: git@github.com:username/username.github.io.git</span></span><br><span class="line"><span class="hljs-comment"># branch: master</span></span><br><span class="line"></span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure></p>
-<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p>采用<a href="https://github.com/ppoffice/hexo-theme-minos" target="_blank" rel="noopener"><code>Minos</code></a>这个主题</p>
-<p>需要额外安装</p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install save hexo-renderer-sass</span><br></pre></td></tr></table></figure></p>
-<h3 id="Minos主题下的-config-yml"><a href="#Minos主题下的-config-yml" class="headerlink" title="Minos主题下的 _config.yml"></a><code>Minos</code>主题下的 <code>_config.yml</code></h3><h4 id="配置导航栏标签"><a href="#配置导航栏标签" class="headerlink" title="配置导航栏标签"></a>配置导航栏标签</h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Navigation bar menu links.</span></span><br><span class="line">menu:</span><br><span class="line">  Archives: /archives</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
-<h4 id="分享与评论"><a href="#分享与评论" class="headerlink" title="分享与评论"></a>分享与评论</h4><p>暂时隐藏注释掉</p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Share plugin settings.</span></span><br><span class="line"><span class="hljs-comment">#share:</span></span><br><span class="line"><span class="hljs-comment">#  type: sharethis</span></span><br><span class="line"><span class="hljs-comment">#  install_url:</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># Comment plugin settings.</span></span><br><span class="line"><span class="hljs-comment">#comment:</span></span><br><span class="line"><span class="hljs-comment">#  type: disqus</span></span><br><span class="line"><span class="hljs-comment">#  shortname:</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">article:</span><br><span class="line">  <span class="hljs-comment"># Show word count and estimated reading time.</span></span><br><span class="line">  readtime: <span class="hljs-literal">true</span></span><br><span class="line">  <span class="hljs-comment"># Code highlight theme, please see https://highlightjs.org/static/demo/</span></span><br><span class="line">  highlight: github</span><br></pre></td></tr></table></figure></p>
-<p>通过<code>minos/layout/common/head.ejs</code></p>
-<p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel=<span class="hljs-string">"stylesheet"</span> href=<span class="hljs-string">"//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/&lt;%= get_config('article.highlight', 'atom-one-light') %&gt;.min.css"</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>支持的主题</p>
-<blockquote class="colorquote info"><p><a href="https://highlightjs.org/static/demo/" target="_blank" rel="noopener">https://highlightjs.org/static/demo/</a></p>
-</blockquote>
-
-<p>命名的规则是小写,用”-“进行连接</p>
-<h4 id="导航栏上的连接"><a href="#导航栏上的连接" class="headerlink" title="导航栏上的连接"></a>导航栏上的连接</h4><p><figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># example of setting plain text links.</span></span><br><span class="line">navbar_links:</span><br><span class="line">  GitHub:</span><br><span class="line">    icon: fab fa-github <span class="hljs-comment"># fontawesome 字体</span></span><br><span class="line">    url: your/github/homepage_url</span><br></pre></td></tr></table></figure></p>
-
+        <p><img src="/gallery/animal/kate-stone-matheson-uy5t-CJuIK4-unsplash.jpg" alt></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>该分类用于记录网站变更的一些过程,</p>
+        <p class="article-more-link">
+            <a href="/2019/12/16/Site-001-md/#more">阅读更多</a>
+        </p>
     
     </div>
     
