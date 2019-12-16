@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+<url>
+  <loc>http://www.iosugar.com/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/archives/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/06/04/Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/iOSer/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/05/29/Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/05/20/Analysis-of-UIButton-s-imageEdgeInsets-with-titleEdgeInsets/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/05/13/WKWebView-UIWebView-progress-monitoring/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/05/05/objc-709-project-structures/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/29/Practice-Touch-ID-unlock-function/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/27/Small-note-Apple-developer-renewal/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/Tips/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/25/OC-Swift-Mixed/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/21/FFmpeg-video-interception-command/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/17/Practice-articles-iOS-application-re-signature-next/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/iOSre/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/page/2/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/page/5/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/archives/page/2/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/archives/page/5/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Block/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/FFmpeg/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Job/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/ObjC/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Principle/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Reader/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Script/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Security/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Swift/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/Tools/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/blogger/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/macOS/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/tags/runtime/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/10/WoSign-CA-signed-digital-certificate-is-invalid/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/04/Understand-iOS-event-delivery-and-response-mechanisms/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/iOSer/page/2/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/iOSer/page/3/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/11/objc-706-project-structures/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/07/Full-width-spaces-used-in-Markdown/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/28/How-to-create-URL-shortcuts-on-macOS/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/10/Practice-articles-iOS-application-re-signature/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/04/09/iOS-application-re-signature-theory-articles/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/18/Himalayan-audio-file-export/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/07/How-to-create-a-deb-type-of-application-in-iOS/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/30/View-the-Info.plist-of-the-.ipa-file/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/20/Free-password-to-remotely-access-iOS-devices/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/28/Readers-iOS-App-signature-principle/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/26/Understand-the-block-next/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/21/Analysis-of-Https-protocol/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/Network/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/18/Realize-3d-Touch-on-iOS/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/page/3/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/12/25/Understand-objc-runtime-2-class-structure-runtime-h/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/12/08/Quickly-generate-icons-for-iOS-apps/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/24/Hexo-commit-exists-Permission-denied-publickey/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/Mix-in/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/22/Understand-objc-runtime-1-what-is-the-class/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/20/iOS-Remote-Push-Summary/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/20/lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/11/20/Xcode8-plugin-is-invalid/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/page/4/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/archives/page/3/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/archives/page/4/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/03/Understand-the-block/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/06/FFmpeg-study-notes-01-environmental-building/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/01/UIView-init-and-initWithFrame-call-relationship/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/01/21/An-Analysis-of-iOS-Animation/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/25/Automated-Git-Submitted/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/24/Building-a-Web-server-by-nginx/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/19/Mac-terminal-environment/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/14/CentOS-remote-login-SSH-configuration/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/01/30/String-and-Character-on-Swift-3/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/12/IntelliJ-IDEA-main-function-pass/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/11/Something-about-Charles/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/02/04/MWeb-map-bed-configuration/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/01/01/Hexo-domain-binding/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/01/27/Understand-objc-runtime-4-runtime-process-analysis/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2016/12/25/Understand-objc-runtime-3-method-encoding-execution-etc/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/03/10/iOS-Shake/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/2017/01/21/How-to-export-the-ipa-file-for-other-apps-on-iOS9/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>http://www.iosugar.com/categories/Unix-like/</loc>
+  <lastmod>2017-06-04T13:14:24+00:00</lastmod>
+  <changefreq>weekly</changefreq>
+  <priority>0.51</priority>
+</url>
+</urlset>
