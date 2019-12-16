@@ -98,6 +98,9 @@
             <a class="navbar-item "
                href="/categories/Technology">Technology</a>
             
+            <a class="navbar-item "
+               href="/categories/Site">Sites</a>
+            
         </div>
         
         <div class="navbar-menu navbar-end">
@@ -121,6 +124,55 @@
 
     <section class="section">
     <div class="container">
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/06/04/Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (中)</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            <time datetime="2017-06-04T13:04:19.000Z" itemprop="datePublished">6月 4 2017</time>
+        </span>
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+        
+        
+        <span class="column is-narrow">
+            
+            
+            25 分钟 读完 (约 3675 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>在上一篇中简单分析了 <code>Weak</code> 属性是如何被存储，获取和销毁的，其中的 <code>SideTable</code> 结构体当做黑盒进行处理。本文尝试对 <code>SideTable</code> 的结构进行一些分析。</p>
+<h2 id="观察"><a href="#观察" class="headerlink" title="观察"></a>观察</h2><p>　</p>
+<p><epacse hidden>147</epacse></p>
+<p><code>SideTable</code> 主要分为 <code>3</code> 部分</p>
+<ul>
+<li><code>weak_table_t</code>: <code>weak</code> 引用的全局 <code>hash</code> 表</li>
+<li><code>RefcountMap</code> : 引用计数的 <code>hash</code> 表</li>
+<li><code>slock</code>: 保证原子操作的自旋锁</li>
+</ul>
+        <p class="article-more-link">
+            <a href="/2017/06/04/Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
     
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
@@ -520,50 +572,6 @@
 </blockquote>
         <p class="article-more-link">
             <a href="/2017/04/17/Practice-articles-iOS-application-re-signature-next/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/04/10/WoSign-CA-signed-digital-certificate-is-invalid/" itemprop="url">WoSign CA 签名的数字证书失效</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            <time datetime="2017-04-10T09:37:40.000Z" itemprop="datePublished">4月 10 2017</time>
-        </span>
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-        
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 563 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
-<p>　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 <em>WoSign</em> 签名的。<br>　　<br>　　在证书交换阶段时报错了，<em>Google</em> 后找到一篇 <a href="https://support.apple.com/en-us/HT204132" target="_blank" rel="noopener"><em>Apple</em> 官方的声明</a>。</p>
-<h2 id="PKI"><a href="#PKI" class="headerlink" title="PKI"></a><code>PKI</code></h2><p>　</p>
-<p>　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。
-　</p>
-        <p class="article-more-link">
-            <a href="/2017/04/10/WoSign-CA-signed-digital-certificate-is-invalid/#more">阅读更多</a>
         </p>
     
     </div>
