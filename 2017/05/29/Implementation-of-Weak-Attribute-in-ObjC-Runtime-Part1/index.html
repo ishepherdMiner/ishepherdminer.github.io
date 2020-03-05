@@ -2,7 +2,7 @@
 <html class="has-navbar-fixed-top">
 <head>
     <meta charset="utf-8">
-<title>ObjC Runtime 中 Weak 属性的实现 (上) - 光阴的故事</title>
+<title>ObjC Runtime 中 Weak 属性的实现 (上) - 牧羊人</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="ObjC Runtime 中 Weak 属性的实现 (上)">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;05&#x2F;29&#x2F;Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1&#x2F;index.html">
-<meta property="og:site_name" content="光阴的故事">
+<meta property="og:site_name" content="牧羊人">
 <meta property="og:description" content="前言　 OC 中的 weak 属性是怎么实现的，为什么在对象释放后会自动变成 nil？本文对这个问题进行了一点探讨。 环境　  mac OS Sierra 10.12.4objc709  参考答案　 搜索后发现runtime 如何实现 weak 属性给出了一个参考答案。  runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;ooo.0o0.ooo&#x2F;2017&#x2F;05&#x2F;29&#x2F;592bf9410efbb.jpg">
@@ -429,7 +429,7 @@
     <div class="container">
         <div class="columns content">
             <div class="column is-narrow has-text-centered">
-                &copy; 2019 Shepherd&nbsp;
+                &copy; 2020 Shepherd&nbsp;
                 Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
                         href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
             </div>
