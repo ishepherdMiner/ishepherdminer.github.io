@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>理解iOS事件传递与响应机制 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语说说 iOS 中关于事件是如何传递与响应的。    因素 iOS 关键词    时间 点击&#x2F;长按&#x2F;摇一摇&#x2F;音乐暂停&#x2F;播放时    地点 响应者 UIButton&#x2F;UIView… 事件派发 &amp; 响应者链条   人物 用户&#x2F;运行循环 NSRunLoop &amp; UIApplication   事件 UITapGestureRecognizer&#x2F;UITouchUpInside… UIEv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解iOS事件传递与响应机制">
+<meta property="og:url" content="http://yoursite.com/2017/04/04/iOSer-Understand-iOS-event-delivery-and-response-mechanisms/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="导语说说 iOS 中关于事件是如何传递与响应的。    因素 iOS 关键词    时间 点击&#x2F;长按&#x2F;摇一摇&#x2F;音乐暂停&#x2F;播放时    地点 响应者 UIButton&#x2F;UIView… 事件派发 &amp; 响应者链条   人物 用户&#x2F;运行循环 NSRunLoop &amp; UIApplication   事件 UITapGestureRecognizer&#x2F;UITouchUpInside… UIEv">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b6b3605f.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b6ab1bca.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b6adacd2.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b6eb9217.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b73522e8.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b7a4103b.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b7384da1.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b7eb8b1a.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b7673931.jpg">
+<meta property="article:published_time" content="2017-04-04T09:46:00.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:06:49.467Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/04/58e36b6b3605f.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境-amp-工具">2&nbsp;&nbsp;<b>环境 &amp;amp; 工具</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#例子">3&nbsp;&nbsp;<b>例子</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#调用堆栈">3.1&nbsp;&nbsp;调用堆栈</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小结">3.2&nbsp;&nbsp;小结</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#相关的类-UIEvent">4&nbsp;&nbsp;<b>相关的类: UIEvent</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#触屏事件">5&nbsp;&nbsp;<b>触屏事件</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#事件类型">5.1&nbsp;&nbsp;事件类型</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#响应者">5.2&nbsp;&nbsp;响应者</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#响应者链条">5.3&nbsp;&nbsp;响应者链条</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#UIView-不能接收触屏事件的三种情况：">5.4&nbsp;&nbsp;UIView 不能接收触屏事件的三种情况：</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#事件分发">5.5&nbsp;&nbsp;事件分发</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小结-1">5.6&nbsp;&nbsp;小结</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#手势">5.7&nbsp;&nbsp;手势</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小结-2">5.8&nbsp;&nbsp;小结</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#总结">5.9&nbsp;&nbsp;总结</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            理解iOS事件传递与响应机制
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-04-04T09:46:00.000Z" itemprop="datePublished">4月 4 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            13 分钟 读完 (约 1968 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>说说 <em>iOS</em> 中关于事件是如何传递与响应的。</p>
+<table>
+<thead>
+<tr>
+<th align="center">因素</th>
+<th align="left">iOS</th>
+<th align="left">关键词</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">时间</td>
+<td align="left">点击/长按/摇一摇/音乐暂停/播放时</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">地点</td>
+<td align="left">响应者 <code>UIButton/UIView</code>…</td>
+<td align="left">事件派发 &amp; 响应者链条</td>
+</tr>
+<tr>
+<td align="center">人物</td>
+<td align="left">用户/运行循环</td>
+<td align="left"><code>NSRunLoop</code> &amp; <code>UIApplication</code></td>
+</tr>
+<tr>
+<td align="center">事件</td>
+<td align="left"><code>UITapGestureRecognizer/UITouchUpInside</code>…</td>
+<td align="left"><code>UIEvent</code></td>
+</tr>
+<tr>
+<td align="center">如何</td>
+<td align="left">执行的具体操作</td>
+<td align="left">外部业务实现</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<h2 id="环境-amp-工具"><a href="#环境-amp-工具" class="headerlink" title="环境 &amp; 工具"></a>环境 &amp; 工具</h2><blockquote>
+<p>macOS Sierra 10.12.3<br>Xcode 8.2.1<br><a target="_blank" rel="noopener" href="https://github.com/facebook/chisel">chisel</a></p>
+</blockquote>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"ViewController.h"</span></span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="hljs-comment">// 手势</span></span><br><span class="line">    <span class="hljs-built_in">UIView</span> *v = [[<span class="hljs-built_in">UIView</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>)];</span><br><span class="line">    v.backgroundColor = [<span class="hljs-built_in">UIColor</span> redColor];</span><br><span class="line">    <span class="hljs-built_in">UITapGestureRecognizer</span> *tap = [[<span class="hljs-built_in">UITapGestureRecognizer</span> alloc] initWithTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(tapAction:)];</span><br><span class="line">    [v addGestureRecognizer:tap];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:v];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 点击</span></span><br><span class="line">    <span class="hljs-built_in">UIButton</span> *btn = [[<span class="hljs-built_in">UIButton</span> alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">200</span>, <span class="hljs-number">100</span>, <span class="hljs-number">30</span>)];</span><br><span class="line">    btn.backgroundColor = [<span class="hljs-built_in">UIColor</span> grayColor];</span><br><span class="line">    [btn setTitle:<span class="hljs-string">@"测试"</span> forState:<span class="hljs-built_in">UIControlStateNormal</span>];</span><br><span class="line">    [btn addTarget:<span class="hljs-keyword">self</span> action:<span class="hljs-keyword">@selector</span>(btnAction:) forControlEvents:<span class="hljs-built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:btn];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// Timer</span></span><br><span class="line">    <span class="hljs-built_in">NSTimer</span> *timer = [<span class="hljs-built_in">NSTimer</span> scheduledTimerWithTimeInterval:<span class="hljs-number">5.0</span> target:<span class="hljs-keyword">self</span> selector:<span class="hljs-keyword">@selector</span>(timerAction:) userInfo:<span class="hljs-literal">nil</span> repeats:<span class="hljs-literal">true</span>];</span><br><span class="line">    </span><br><span class="line">    [[<span class="hljs-built_in">NSRunLoop</span> currentRunLoop] addTimer:timer forMode:<span class="hljs-built_in">NSRunLoopCommonModes</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// CADisplay</span></span><br><span class="line">	<span class="hljs-built_in">CADisplayLink</span> *link = [<span class="hljs-built_in">CADisplayLink</span> displayLinkWithTarget:<span class="hljs-keyword">self</span> selector:<span class="hljs-keyword">@selector</span>(displayLinkAction:)];</span><br><span class="line">    [link addToRunLoop:[<span class="hljs-built_in">NSRunLoop</span> mainRunLoop] forMode:<span class="hljs-built_in">NSDefaultRunLoopMode</span>];</span><br><span class="line">    link.preferredFramesPerSecond = <span class="hljs-number">6</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)btnAction:(<span class="hljs-built_in">UIButton</span> *)btn {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"点击事件"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)tapAction:(<span class="hljs-built_in">UITapGestureRecognizer</span> *)tap {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"触摸事件"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)timerAction:(<span class="hljs-built_in">NSTimer</span> *)timer {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"timer事件"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)displayLinkAction:(<span class="hljs-built_in">CADisplayLink</span> *)link {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"displayLink事件"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="调用堆栈"><a href="#调用堆栈" class="headerlink" title="调用堆栈"></a>调用堆栈</h3><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">截图</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">点击</td>
+<td align="center"><img src="https://ooo.0o0.ooo/2017/04/04/58e36b6b3605f.jpg" alt=""></td>
+</tr>
+<tr>
+<td align="center">手势</td>
+<td align="center"><img src="https://ooo.0o0.ooo/2017/04/04/58e36b6ab1bca.jpg" alt=""></td>
+</tr>
+<tr>
+<td align="center"><code>Timer</code></td>
+<td align="center"><img src="https://ooo.0o0.ooo/2017/04/04/58e36b6adacd2.jpg" alt=""></td>
+</tr>
+<tr>
+<td align="center"><code>CADisplayLink</code></td>
+<td align="center"><img src="https://ooo.0o0.ooo/2017/04/04/58e36b6eb9217.jpg" alt=""></td>
+</tr>
+</tbody></table>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>各种类型的事件都是由 <code>RunLoop</code> 接收。触屏事件由 <code>UIApplication</code> 通过队列的方式<br>进行派发。</p>
+<h2 id="相关的类-UIEvent"><a href="#相关的类-UIEvent" class="headerlink" title="相关的类: UIEvent"></a>相关的类: <code>UIEvent</code></h2><p>类 <code>UIEvent</code> 是事件派发中的基本单元</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NS_CLASS_AVAILABLE_IOS</span>(<span class="hljs-number">2</span>_0) <span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIEvent</span> : <span class="hljs-title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">UIEventType</span>     type <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_0);</span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">UIEventSubtype</span>  subtype <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">readonly</span>) <span class="hljs-built_in">NSTimeInterval</span>  timestamp;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> UIKIT_DEFINE_AS_PROPERTIES</span></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">NSSet</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *allTouches;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSSet</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)allTouches;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSSet</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touchesForWindow:(<span class="hljs-built_in">UIWindow</span> *)window;</span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSSet</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touchesForView:(<span class="hljs-built_in">UIView</span> *)view;</span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSSet</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touchesForGestureRecognizer:(<span class="hljs-built_in">UIGestureRecognizer</span> *)gesture <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_2);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// An array of auxiliary UITouch’s for the touch events that did not get delivered for a given main touch. This also includes an auxiliary version of the main touch itself.</span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSArray</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)coalescedTouchesForTouch:(<span class="hljs-built_in">UITouch</span> *)touch <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// An array of auxiliary UITouch’s for touch events that are predicted to occur for a given main touch. These predictions may not exactly match the real behavior of the touch as it moves, so they should be interpreted as an estimate.</span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSArray</span> &lt;<span class="hljs-built_in">UITouch</span> *&gt; *)predictedTouchesForTouch:(<span class="hljs-built_in">UITouch</span> *)touch <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="触屏事件"><a href="#触屏事件" class="headerlink" title="触屏事件"></a>触屏事件</h2><h3 id="事件类型"><a href="#事件类型" class="headerlink" title="事件类型"></a>事件类型</h3><blockquote>
+<p>事件驱动应用程序的主要职责是处理用户事件，即由鼠标，键盘，跟踪器和平板电脑等设备生成的事件。</p>
+</blockquote>
+<p>到 <em>iOS</em> 应用中相应的成了触屏、加速计、远程控制等事件。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NS_CLASS_AVAILABLE_IOS</span>(<span class="hljs-number">2</span>_0) <span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIResponder</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">UIResponderStandardEditActions</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> UIKIT_DEFINE_AS_PROPERTIES</span></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">UIResponder</span> *nextResponder;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span></span><br><span class="line">- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIResponder</span>*)nextResponder;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 触屏事件 (Multitouch)</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)touchesBegan:(<span class="hljs-built_in">NSSet</span>&lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event;</span><br><span class="line">- (<span class="hljs-keyword">void</span>)touchesMoved:(<span class="hljs-built_in">NSSet</span>&lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event;</span><br><span class="line">- (<span class="hljs-keyword">void</span>)touchesEnded:(<span class="hljs-built_in">NSSet</span>&lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event;</span><br><span class="line">- (<span class="hljs-keyword">void</span>)touchesCancelled:(<span class="hljs-built_in">NSSet</span>&lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event;</span><br><span class="line">- (<span class="hljs-keyword">void</span>)touchesEstimatedPropertiesUpdated:(<span class="hljs-built_in">NSSet</span>&lt;<span class="hljs-built_in">UITouch</span> *&gt; *)touches <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">9</span>_1);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 加速器事件 (Motion Events)</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionBegan:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_0);</span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionEnded:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_0);</span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionCancelled:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 远程事件 (Remote Control Events)</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)remoteControlReceivedWithEvent:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIEvent</span> *)event <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">4</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="响应者"><a href="#响应者" class="headerlink" title="响应者"></a>响应者</h3><blockquote>
+<p>应用程序使用响应者对象接收和处理事件。响应者对象是 <strong><code>UIResponder</code></strong> 类的任何实例，常见的子类包括 <strong><code>UIView</code></strong> ，<strong><code>UIViewController</code></strong> 和 <strong><code>UIApplication</code></strong> 。 <code>UIKit</code> 自动管理大多数响应者相关的行为，包括事件如何从一个响应者传递到下一个。但是，您可以修改默认行为来更改事件在应用程序中的传送方式。</p>
+</blockquote>
+<h3 id="响应者链条"><a href="#响应者链条" class="headerlink" title="响应者链条"></a>响应者链条</h3><p><img src="https://ooo.0o0.ooo/2017/04/04/58e36b73522e8.png" alt=""></p>
+<p>在当前场景下的 <em>btn</em> 的响应者链条如下</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(lldb) presponder btn</span><br><span class="line">&lt;<span class="hljs-built_in">UIButton</span>: <span class="hljs-number">0x115e0fea0</span>; frame = (<span class="hljs-number">0</span> <span class="hljs-number">200</span>; <span class="hljs-number">100</span> <span class="hljs-number">30</span>); opaque = <span class="hljs-literal">NO</span>; layer = &lt;<span class="hljs-built_in">CALayer</span>: <span class="hljs-number">0x1702214a0</span>&gt;&gt;</span><br><span class="line">   | &lt;<span class="hljs-built_in">UIView</span>: <span class="hljs-number">0x115d07820</span>; frame = (<span class="hljs-number">0</span> <span class="hljs-number">0</span>; <span class="hljs-number">375</span> <span class="hljs-number">667</span>); autoresize = W+H; layer = &lt;<span class="hljs-built_in">CALayer</span>: <span class="hljs-number">0x17403df00</span>&gt;&gt;</span><br><span class="line">   |    | &lt;ViewController: <span class="hljs-number">0x115e0d720</span>&gt;</span><br><span class="line">   |    |    | &lt;<span class="hljs-built_in">UIWindow</span>: <span class="hljs-number">0x115e0de20</span>; frame = (<span class="hljs-number">0</span> <span class="hljs-number">0</span>; <span class="hljs-number">375</span> <span class="hljs-number">667</span>); autoresize = W+H; gestureRecognizers = &lt;<span class="hljs-built_in">NSArray</span>: <span class="hljs-number">0x170245d90</span>&gt;; layer = &lt;<span class="hljs-built_in">UIWindowLayer</span>: <span class="hljs-number">0x170220e00</span>&gt;&gt;</span><br><span class="line">   |    |    |    | &lt;<span class="hljs-built_in">UIApplication</span>: <span class="hljs-number">0x115e007f0</span>&gt;</span><br><span class="line">   |    |    |    |    | &lt;AppDelegate: <span class="hljs-number">0x17403b6a0</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>通过 <em>UIApplication.h</em> 文件中的注释与下面 <em>lldb</em> 调试的结果</p>
+<blockquote>
+<p>action<br>A selector identifying an action method. See the discussion for information on the permitted selector forms.<br>target<br>The object to receive the action message. If target is nil, the app sends the message to the first responder, from whence it progresses up the responder chain until it is handled.<br>sender<br>The object that is sending the action message. The default sender is the UIControl object that invokes this method.<br>event<br>A UIEvent object that encapsulates information about the event originating the action message.</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/04/04/58e36b7a4103b.jpg" alt=""></p>
+<p>比较容易推断出</p>
+<table>
+<thead>
+<tr>
+<th align="center">描述</th>
+<th align="center">值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>sendAction</code></td>
+<td align="center"><code>btnAction:</code></td>
+</tr>
+<tr>
+<td align="center"><code>to</code></td>
+<td align="center"><code>ViewController</code></td>
+</tr>
+<tr>
+<td align="center"><code>from</code></td>
+<td align="center"><code>UIButton</code></td>
+</tr>
+<tr>
+<td align="center"><code>forEvent</code></td>
+<td align="center"><code>UITounesEvent</code></td>
+</tr>
+</tbody></table>
+<h3 id="UIView-不能接收触屏事件的三种情况："><a href="#UIView-不能接收触屏事件的三种情况：" class="headerlink" title="UIView 不能接收触屏事件的三种情况："></a><code>UIView</code> 不能接收触屏事件的三种情况：</h3><ol>
+<li>不接受用户交互：<code>userInteractionEnabled = NO;</code></li>
+<li>隐藏：<code>hidden = YES;</code></li>
+<li>透明：<code>alpha = 0.0~0.01</code></li>
+</ol>
+<h3 id="事件分发"><a href="#事件分发" class="headerlink" title="事件分发"></a>事件分发</h3><ol>
+<li>发生触摸事件后，系统会将该事件加入到一个由 <code>UIApplication</code> 管理的队列事件中(从上面的调用堆栈中可知)。</li>
+<li><code>UIApplication</code> 会从事件队列中取出最前面的事件，并将事件分发下去以便处理，通常会先发送事件给应用程序的主窗口(<code>keyWindow</code>)</li>
+<li>主窗口 (<code>keyWindow</code>) 对象首先会使用 <code>hitTest:withEvent:</code> 方法寻找此次 <code>Touch</code> 操作初始点所在的视图(<code>View</code>)，即需要将触摸事件传递给最合适的视图，这个过程称之为 <code>hit-test view</code></li>
+</ol>
+<blockquote>
+<p>应用如何找到最合适的控件来处理事件？有以下准则</p>
+</blockquote>
+<ol>
+<li>首先判断主窗口（<code>keyWindow</code>）自己是否能接受触摸事件</li>
+<li>触摸点是否在自己身上</li>
+<li>从后往前遍历子控件，重复前面的两个步骤（首先查找数组中最后一个元素）</li>
+<li>如果没有符合条件的子控件，那么就认为自己最合适处理<br>注意：之所以会采取从后往前遍历子控件的方式寻找最合适的view只是为了做一些循环优化。因为相比较之下，后添加的view在上面，降低循环次数。</li>
+</ol>
+<p><strong>事件分发 &amp;&amp; 响应者链条都是为了找出合适的响应者</strong></p>
+<h3 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h3><p><code>hit-test view</code> 确定最合适的视图，若该视图如果不能响应该事件时，可通过响应者链条找到合适的响应者。</p>
+<p>在当前场景下， <code>UIButton</code> 作为第一响应者能响应当前的点击事件，触发 <code>UIResponser</code> 协议的 <code>touchesEnded:withEvent</code> 代理方法，最后作为 <code>sender</code> 参数传递给 <code>ViewController</code> 的 <code>btnAction:</code> 方法。</p>
+<h3 id="手势"><a href="#手势" class="headerlink" title="手势"></a>手势</h3><p><code>UIView</code> 中有</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">UIView</span> (<span class="hljs-title">UIViewGestureRecognizers</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span>(<span class="hljs-keyword">nullable</span>, <span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSArray</span>&lt;__kindof <span class="hljs-built_in">UIGestureRecognizer</span> *&gt; *gestureRecognizers <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_2);</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)addGestureRecognizer:(<span class="hljs-built_in">UIGestureRecognizer</span>*)gestureRecognizer <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_2);</span><br><span class="line">- (<span class="hljs-keyword">void</span>)removeGestureRecognizer:(<span class="hljs-built_in">UIGestureRecognizer</span>*)gestureRecognizer <span class="hljs-built_in">NS_AVAILABLE_IOS</span>(<span class="hljs-number">3</span>_2);</span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>The gesture-recognizer objects currently attached to the view.</p>
+</blockquote>
+<p><code>gestureRecognizers</code> 保存着与当前的视图对象相关联的 <code>UIGestureRecognizer</code> 类型对象</p>
+<p>为视图添加手势<br><img src="https://ooo.0o0.ooo/2017/04/04/58e36b7384da1.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/04/58e36b7eb8b1a.jpg" alt=""></p>
+<p>为视图添加 <code>addTarget:Action:</code>，将 <strong>响应者链条</strong> 部分稍作处理可得<br><img src="https://ooo.0o0.ooo/2017/04/04/58e36b7673931.jpg" alt=""></p>
+<h3 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h3><p>无论是用 <code>addTarget:Action:</code> 还是将手势添加到视图对象上，最终都是创建了 <code>UIEvent</code> 这个事件单元对象。</p>
+<p>手势相比触碰事件的好处是可以直接使用已经定义好的手势，开发者不用自己计算手指移动轨迹。缺点就是没办法自定义手势，只能用系统已经实现的手势。如果想实现自己发明的某种手势还得去用触摸。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>当事件发生时，<code>RunLoop</code> 接收到外部或内部注册的事件，将其传递给 <code>UIApplication</code> 对象，<code>UIApplication</code> 封装成 <code>UIEvent</code> 类型的对象并将其分发给应用程序的主窗口(<code>keyWindow</code>)，主窗口对象使用 <code>hit-test view</code> 的流程找到响应当前事件最合适的视图，若该视图无法响应事件，则通过响应者链条向上传递，直到找到合适的响应者,该响应者需要实现了 <code>touchesBegan:withEvent:</code> 等代理方法，若没找到就将事件抛弃，最终会将响应者传递给外部的调用者。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/f55b613b564e">iOS 点击事件传递及响应</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/EventHandling/Conceptual/EventHandlingiPhoneOS/HandlngEventsUsingtheResponderChain.html">Understanding Responders and the Responder Chain</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/EventOverview/Introduction/Introduction.html">Cocoa Event Handling Guide</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/857fcac46464">iOS手势（UIGestureRecognizer）和触摸（touche event）的区别和联系</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/04/07/Technology-Full-width-spaces-used-in-Markdown/">全角空格在Markdown中的使用</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/03/28/Technology-How-to-create-URL-shortcuts-on-macOS/">macOS上如何创建网址快捷方式</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

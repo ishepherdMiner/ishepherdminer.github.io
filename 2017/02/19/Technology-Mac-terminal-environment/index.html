@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Mac终端环境走代理 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言　　作为程序员,有时候在终端环境下也需要翻墙的能力,因此继续折腾一下。 环境 macOS Sierra 10.12.3  流程安装privoxy　　通过Wiki-Shadowsocks可知,ss使用的是Socks5代理方式。网上搜索的得到的结果是在mac环境下推荐使用privoxy这个的工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac终端环境走代理">
+<meta property="og:url" content="http://yoursite.com/2017/02/19/Technology-Mac-terminal-environment/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="前言　　作为程序员,有时候在终端环境下也需要翻墙的能力,因此继续折腾一下。 环境 macOS Sierra 10.12.3  流程安装privoxy　　通过Wiki-Shadowsocks可知,ss使用的是Socks5代理方式。网上搜索的得到的结果是在mac环境下推荐使用privoxy这个的工具。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/19/58a8eb60ca68c.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/19/58a8eb6097b87.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/19/58a8eb63e4fc7.jpg">
+<meta property="article:published_time" content="2017-02-19T00:49:07.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:09:28.473Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/02/19/58a8eb60ca68c.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#安装privoxy">3.1&nbsp;&nbsp;安装privoxy</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#配置privoxy">3.2&nbsp;&nbsp;配置privoxy</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#为什么是8118">3.2.1&nbsp;&nbsp;为什么是8118</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#开启privoxy">3.3&nbsp;&nbsp;开启privoxy</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#设置代理服务器">3.4&nbsp;&nbsp;设置代理服务器</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#效果图">3.5&nbsp;&nbsp;效果图</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#关于原理">3.6&nbsp;&nbsp;关于原理</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#副产品">4&nbsp;&nbsp;<b>副产品</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Mac终端环境走代理
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-02-19T00:49:07.000Z" itemprop="datePublished">2月 19 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 657 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　作为程序员,有时候在终端环境下也需要翻墙的能力,因此继续折腾一下。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p><em>macOS Sierra 10.12.3</em></p>
+</blockquote>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="安装privoxy"><a href="#安装privoxy" class="headerlink" title="安装privoxy"></a>安装privoxy</h3><p>　　通过<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/Shadowsocks">Wiki-Shadowsocks</a>可知,<em>ss</em>使用的是<em>Socks5</em>代理方式。网上搜索的得到的结果是在<em>mac</em>环境下推荐使用<em>privoxy</em>这个的工具。</p>
+<span id="more"></span>
+
+<p>使用<em>brew<em>安装</em>privoxy</em></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~  brew install privotxy</span><br></pre></td></tr></tbody></table></figure>
+
+<p>会提示权限问题</p>
+<blockquote>
+<p>install: /usr/local/etc/…: Permission denied</p>
+</blockquote>
+<p>可使用以下指令修改<em>/usr/local</em>目录的所有者与组</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ sudo chown -R <span class="hljs-string">"<span class="hljs-variable">$USER</span>"</span>:admin /usr/<span class="hljs-built_in">local</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>但这么做合适吗?</p>
+<p>根据<a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/02/a_history_of_unix_directory_structure.html">Unix目录结构的来历</a></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/19/58a8eb60ca68c.jpg" alt=""></p>
+<p>因为<em>/usr/local</em>是用来存放用户自己安装的程序,我认为应该没问题</p>
+<p>重新执行安装<em>privoxy</em>的指令。</p>
+<p>安装成功</p>
+<h3 id="配置privoxy"><a href="#配置privoxy" class="headerlink" title="配置privoxy"></a>配置privoxy</h3><p>打开配置文件<em>/usr/local/etc/privoxy/config</em></p>
+<p>到添加以下两行配置</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listen-address 0.0.0.0:8118</span><br><span class="line">forward-socks5 / localhost:1080 .</span><br></pre></td></tr></tbody></table></figure>
+
+<p>注意不要忘了后面的 <strong>.</strong> , <em>ss</em>的默认端口为1080</p>
+<h4 id="为什么是8118"><a href="#为什么是8118" class="headerlink" title="为什么是8118"></a>为什么是8118</h4><p><img src="https://ooo.0o0.ooo/2017/02/19/58a8eb6097b87.jpg" alt=""></p>
+<p>从上图可知<em>privoxy</em>的默认端口为8118</p>
+<h3 id="开启privoxy"><a href="#开启privoxy" class="headerlink" title="开启privoxy"></a>开启privoxy</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ /usr/<span class="hljs-built_in">local</span>/sbin/privoxy /usr/<span class="hljs-built_in">local</span>/etc/privoxy/config</span><br></pre></td></tr></tbody></table></figure>
+
+<p>查看是否成功开启<em>8118</em>端口进行监听</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">» ~ netstat -na | grep 8118</span><br><span class="line">tcp4       0      0  *.8118                 *.*                    LISTEN</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="设置代理服务器"><a href="#设置代理服务器" class="headerlink" title="设置代理服务器"></a>设置代理服务器</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">export</span> http_proxy=<span class="hljs-string">'http://localhost:8118'</span></span><br><span class="line"><span class="hljs-built_in">export</span> https_proxy=<span class="hljs-string">'http://localhost:8118'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>为了避免每次开机都能生效,可以将上面两句配置添加到<em>.zshrc</em>/<em>.bashrc_profile</em>中</p>
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p>用<em>curl<em>访问</em>google</em></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/19/58a8eb63e4fc7.jpg" alt=""></p>
+<h3 id="关于原理"><a href="#关于原理" class="headerlink" title="关于原理"></a>关于原理</h3><blockquote>
+<p><em>Socks5</em>代理转化成<em>http</em>代理给命令行终端使用?</p>
+</blockquote>
+<p>根据整个流程的配置下来,我觉得这样的描述好像有哪儿说不通。</p>
+<ul>
+<li>用终端<em>curl <a target="_blank" rel="noopener" href="http://www.google.com">www.google.com</a></em>,终端走的是<em>https</em>请求</li>
+<li>因为配置<em>https_proxy</em>所以会走本机的<em>8118</em>端口</li>
+<li>而<em>privoxy<em>监听了</em>8118<em>又会把请求派发(</em>Forwarding</em>)给<em>1080<em>的</em>ss</em>,让<em>ss</em>去请求</li>
+</ul>
+<p>通过<em>privoxy</em>将原来走<em>http</em>的请求变成了走<em>Socks5</em>代理</p>
+<h2 id="副产品"><a href="#副产品" class="headerlink" title="副产品"></a>副产品</h2><p>　　在<em>/usr/local/etc/privoxy/config<em>配置文件中有</em>listen-address 0.0.0.0:8118</em>,表明<em>ip</em>是不限制的,手机只要设置了代理,也可以使用。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/Shadowsocks">Wiki-Shadowsocks</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/16432071/how-to-fix-homebrew-permissions/16450503">How to fix homebrew permissions?</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cashqian.net/blog/001486989831982332565298e4942a2bb8f56b08f9d2475000">Mac命令行终端下使用shadowsocks翻墙</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2012/02/a_history_of_unix_directory_structure.html">Unix目录结构的来历</a></li>
+<li><a target="_blank" rel="noopener" href="http://tblog.im/2015/09/23/shi-yong-privoxyzhong-zhuan/">Mac OS下使用Privoxy做中转代理</a></li>
+<li><a target="_blank" rel="noopener" href="http://tblog.im/2015/09/23/shi-yong-privoxyzhong-zhuan/">Mac OS下使用Privoxy做中转代理</a></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/02/24/Technology-Building-a-Web-server-by-nginx/">搭建Web服务器(nginx)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/02/18/iOSer-Himalayan-audio-file-export/">喜马拉雅音频文件导出</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

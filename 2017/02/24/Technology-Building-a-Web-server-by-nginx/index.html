@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>搭建Web服务器(nginx) - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言　　DNSPod域名解析有一天多都失败了,服务器也宕机了,公众号也没办法获得情况,提示暂时无法服务,不知道出什么问题了,上网查了一下,DNSPod如果解析失败,可以指向另一个备用ip,正好VPS提供独立ip,想尝试在VPS提供的服务器上搭建Web服务器。　　Mac自带了apache服务器,考虑换一种服务器来试试,比如nginx。 　　 环境 CentOS release 6.6 (Final)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建Web服务器(nginx)">
+<meta property="og:url" content="http://yoursite.com/2017/02/24/Technology-Building-a-Web-server-by-nginx/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="前言　　DNSPod域名解析有一天多都失败了,服务器也宕机了,公众号也没办法获得情况,提示暂时无法服务,不知道出什么问题了,上网查了一下,DNSPod如果解析失败,可以指向另一个备用ip,正好VPS提供独立ip,想尝试在VPS提供的服务器上搭建Web服务器。　　Mac自带了apache服务器,考虑换一种服务器来试试,比如nginx。 　　 环境 CentOS release 6.6 (Final)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4bd17cd.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4f9b5a0.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4b79991.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01dd89f598.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4b75356.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01e00aecf2.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4b75d13.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f51accc1.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f511e180.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f5aae5df.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f50447b4.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f5346bdb.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f52b89a3.jpg">
+<meta property="article:published_time" content="2017-02-24T12:00:23.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:08:15.379Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#流程">3&nbsp;&nbsp;<b>流程</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#配置">3.1&nbsp;&nbsp;配置</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#安装">3.2&nbsp;&nbsp;安装</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#启动服务">3.3&nbsp;&nbsp;启动服务</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#nginx的目录">4&nbsp;&nbsp;<b>nginx的目录</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#失败">4.1&nbsp;&nbsp;失败</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#成功">4.2&nbsp;&nbsp;成功</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#DNSPod">5&nbsp;&nbsp;<b>DNSPod</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            搭建Web服务器(nginx)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-02-24T12:00:23.000Z" itemprop="datePublished">2月 24 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            7 分钟 读完 (约 982 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<em>DNSPod<em>域名解析有一天多都失败了,服务器也宕机了,公众号也没办法获得情况,提示暂时无法服务,不知道出什么问题了,上网查了一下,</em>DNSPod<em>如果解析失败,可以指向另一个备用</em>ip</em>,正好<em>VPS<em>提供独立</em>ip</em>,想尝试在<em>VPS</em>提供的服务器上搭建<em>Web</em>服务器。<br>　　<em>Mac</em>自带了<em>apache</em>服务器,考虑换一种服务器来试试,比如<em>nginx</em>。
+　　</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p><em>CentOS release 6.6 (Final)</em><br><em>macOS Sierra 10.12.3</em></p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p><em>nginx</em>安装非常简单</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">$ vim nginx.repo</span><br></pre></td></tr></tbody></table></figure>
+
+<p>因为我不是用<em>root<em>登陆,所以后面创建</em>nginx.repo<em>文件是无法写入目录的,修改一下,前面添加</em>sudo</em></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim nginx.repo</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在新建的<em>nginx.repo</em>文件中,添加</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/<span class="hljs-variable">$releasever</span>/<span class="hljs-variable">$basearch</span>/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></tbody></table></figure>
+
+<p>保存后<em>yum.repos.d</em>目录下会出现<em>nginx.repo</em>文件</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>然后执行</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install nginx -y</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg" alt=""></p>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/nginx start</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>现在<em>nginx</em>已经启动了，直接访问服务器就能看到<em>nginx</em>欢迎页面了的。</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4bd17cd.jpg" alt=""></p>
+<h2 id="nginx的目录"><a href="#nginx的目录" class="headerlink" title="nginx的目录"></a>nginx的目录</h2><p>上面的效果图的实际页面在 <em>/usr/share/nginx/html/index.html</em></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4f9b5a0.jpg" alt=""></p>
+<p>我使用的<em>blog<em>引擎是</em>Hexo</em>,它是把<em>blog</em>路径下的<em>public</em>目录的内容提交到服务器,所以先慢慢来,我先把<em>public</em>目录的内容传到远程服务器,测试一下效果</p>
+<h3 id="失败"><a href="#失败" class="headerlink" title="失败"></a>失败</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0)scp -i ~/.ssh/id_vps -P xxxx ./public/*  Jason@xxx.xxx.xxx.xxx:/usr/share/nginx/html/</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b79991.jpg" alt=""></p>
+<ul>
+<li>不能传递文件夹</li>
+<li>权限问题</li>
+</ul>
+<h3 id="成功"><a href="#成功" class="headerlink" title="成功"></a>成功</h3><p>好吧,先压缩</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0) tar -cvzf blog.tar.gz ./public</span><br></pre></td></tr></tbody></table></figure>
+
+<p>权限问题,因为不是<em>root</em>,所以要么修改远程服务器的目录权限,或者是我先把包传到<em>/tmp</em>选择了后者</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0)sudo scp -i ~/.ssh/id_vps -P xxxxx blog.tar.gz Jason@xxx.xxx.xxx.xxx:/tmp</span><br></pre></td></tr></tbody></table></figure>
+
+<p>发送成功<br><img src="https://ooo.0o0.ooo/2017/02/24/58b01dd89f598.jpg" alt="成功截图"></p>
+<p>到远程目录,解压,复制,粘贴到<em>/usr/share/nginx/html/</em></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xvf blog.tar.gz</span><br><span class="line">$ sudo cp ./public/* /usr/share/nginx/html/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>访问远程服务器</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75356.jpg" alt=""></p>
+<h2 id="DNSPod"><a href="#DNSPod" class="headerlink" title="DNSPod"></a>DNSPod</h2><p>刚刚测试了一下,居然已经恢复了,不过没事儿,它恢复它的,我设置我的。</p>
+<p>登陆<em>DNSPod</em>官网</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01e00aecf2.jpg" alt=""></p>
+<blockquote>
+<p>选择<em>D</em>监控 </p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75d13.jpg" alt=""></p>
+<blockquote>
+<p>选择监控设置(已添加了<em>D</em>监控)</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f51accc1.jpg" alt=""></p>
+<blockquote>
+<p>点击修改设置</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f511e180.jpg" alt=""></p>
+<blockquote>
+<p>点击修改按钮</p>
+</blockquote>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5aae5df.jpg" alt=""></p>
+<p>　　但是没办法点击,我以为是我的操作有问题。在网上找了一下,<a target="_blank" rel="noopener" href="http://qingcaiye0.blog.163.com/blog/static/206672158201324105151306/">DNSPOD设置自动切换IP</a>也是这么操作的,看<a target="_blank" rel="noopener" href="https://support.dnspod.cn/Kb/showarticle/tsid/179">D监控切换规则</a>,也没有提到这一茬。<br>　　查看了一下网页源代码</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f50447b4.jpg" alt=""></p>
+<p>去掉<em>disabled=“disabled”</em>,选中后,界面变成</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5346bdb.jpg" alt=""></p>
+<p>就能输入了,不知道啥情况,输入远程服务器的ip,点击确定</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f52b89a3.jpg" alt=""></p>
+<p>好吧,看来免费的用户是不允许设置备用<em>ip</em>,文档中也没说明<strong>差评</strong>。</p>
+<p>当然现在这样的体验还不好,还需要用<em>ssh</em>把<em>public</em>目录提交到远程服务器的指定目录,本来<em>sudo hexo d</em>一句话的事情,要变成好几件,略微麻烦些,而且因为域名解析的问题,不能流畅的切换,打算过些时间找到合适的<em>DNS</em>服务器再继考虑。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://gist.github.com/ifels/c8cfdfe249e27ffa9ba1">centos 6.5 nginx安装与配置</a></li>
+<li><a target="_blank" rel="noopener" href="https://support.dnspod.cn/Kb/showarticle/tsid/179">D监控切换规则</a></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/02/25/Technology-Automated-Git-Submitted/">自动化Git提交</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/02/19/Technology-Mac-terminal-environment/">Mac终端环境走代理</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

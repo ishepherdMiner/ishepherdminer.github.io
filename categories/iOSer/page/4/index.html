@@ -96,7 +96,7 @@
                href="/categories/Technology">技术</a>
             
             <a class="navbar-item "
-               href="/categories/Topic">主题</a>
+               href="/categories">主题</a>
             
             <a class="navbar-item "
                href="/archives">时间流</a>
@@ -128,7 +128,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2017/01/21/iOSer_How-to-export-the-ipa-file-for-other-apps-on-iOS9/" itemprop="url">iOS9上如何导出其他应用的.ipa文件</a>
+            <a href="/2017/01/21/iOSer-How-to-export-the-ipa-file-for-other-apps-on-iOS9/" itemprop="url">iOS9上如何导出其他应用的.ipa文件</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -158,7 +158,7 @@
         <html><head></head><body><p>　　在<em>iOS9<em>以下,可以用</em>iTools</em>,<em>PP助手<em>等工具导出其他应用的</em>iPa</em>,但是iOS9开始就不行了<br>　　搜索后,根据<a target="_blank" rel="noopener" href="http://bbs.feng.com/read-htm-tid-10672615-page-2.html">ios9越狱后如何备份ipa？</a>这篇帖子,尝试用mac版的<em>PP助手<em>在越狱的5s(9.3.2)上导出</em>iPa</em></p>
 <p></p></body></html>
         <p class="article-more-link">
-            <a href="/2017/01/21/iOSer_How-to-export-the-ipa-file-for-other-apps-on-iOS9/#more">阅读更多</a>
+            <a href="/2017/01/21/iOSer-How-to-export-the-ipa-file-for-other-apps-on-iOS9/#more">阅读更多</a>
         </p>
     
     </div>
@@ -173,7 +173,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/12/25/iOSer_Understand-objc-runtime-3-method-encoding-execution-etc/" itemprop="url">理解objc运行时三:方法编码,执行,转发,交换</a>
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-3-method-encoding-execution-etc/" itemprop="url">理解objc运行时三:方法编码,执行,转发,交换</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -205,7 +205,7 @@
 </blockquote>
 <p>为了辅助运行时系统，编译器对字符串中每个方法的返回和参数类型进行编码，并将字符串与方法选择器相关联</p></body></html>
         <p class="article-more-link">
-            <a href="/2016/12/25/iOSer_Understand-objc-runtime-3-method-encoding-execution-etc/#more">阅读更多</a>
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-3-method-encoding-execution-etc/#more">阅读更多</a>
         </p>
     
     </div>
@@ -220,7 +220,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/12/25/iOSer_Understand-objc-runtime-2-class-structure-runtime-h/" itemprop="url">理解objc运行时二:类的结构(runtime.h)</a>
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/" itemprop="url">理解objc运行时二:类的结构(runtime.h)</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -249,7 +249,7 @@
     
         <html><head></head><body><h2 id="类的数据结构-runtime-h"><a href="#类的数据结构-runtime-h" class="headerlink" title="类的数据结构(runtime.h)"></a>类的数据结构(runtime.h)</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> objc_class {</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">} OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-comment">/* Use `Class` instead of `struct objc_class *` */</span></span><br></pre></td></tr></tbody></table></figure></body></html>
         <p class="article-more-link">
-            <a href="/2016/12/25/iOSer_Understand-objc-runtime-2-class-structure-runtime-h/#more">阅读更多</a>
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/#more">阅读更多</a>
         </p>
     
     </div>
@@ -264,7 +264,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/12/08/iOSer_Quickly-generate-icons-for-iOS-apps/" itemprop="url">快速生成iOS应用的图标</a>
+            <a href="/2016/12/08/iOSer-Quickly-generate-icons-for-iOS-apps/" itemprop="url">快速生成iOS应用的图标</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -299,7 +299,7 @@
 <li>应用的图标尺寸是可预先确定</li>
 </ul></body></html>
         <p class="article-more-link">
-            <a href="/2016/12/08/iOSer_Quickly-generate-icons-for-iOS-apps/#more">阅读更多</a>
+            <a href="/2016/12/08/iOSer-Quickly-generate-icons-for-iOS-apps/#more">阅读更多</a>
         </p>
     
     </div>
@@ -314,7 +314,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/11/22/iOSer_Understand-objc-runtime-1-what-is-the-class/" itemprop="url">理解objc运行时一:类是什么</a>
+            <a href="/2016/11/22/iOSer-Understand-objc-runtime-1-what-is-the-class/" itemprop="url">理解objc运行时一:类是什么</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -346,7 +346,7 @@
 </blockquote>
 <h2 id="获得可运行的objc源码"><a href="#获得可运行的objc源码" class="headerlink" title="获得可运行的objc源码"></a>获得可运行的objc源码</h2><p>一个可以编译并运行的<em>objc</em>源码才能更好的理解运行时<br> <a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/objc-706">objc-706</a></p></body></html>
         <p class="article-more-link">
-            <a href="/2016/11/22/iOSer_Understand-objc-runtime-1-what-is-the-class/#more">阅读更多</a>
+            <a href="/2016/11/22/iOSer-Understand-objc-runtime-1-what-is-the-class/#more">阅读更多</a>
         </p>
     
     </div>
@@ -361,7 +361,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/11/20/iOSer_Free-password-to-remotely-access-iOS-devices/" itemprop="url">免密码远程登陆iOS设备</a>
+            <a href="/2016/11/20/iOSer-Free-password-to-remotely-access-iOS-devices/" itemprop="url">免密码远程登陆iOS设备</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -399,7 +399,7 @@
 <li>远程SSH登陆</li>
 </ol></body></html>
         <p class="article-more-link">
-            <a href="/2016/11/20/iOSer_Free-password-to-remotely-access-iOS-devices/#more">阅读更多</a>
+            <a href="/2016/11/20/iOSer-Free-password-to-remotely-access-iOS-devices/#more">阅读更多</a>
         </p>
     
     </div>
@@ -414,7 +414,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/11/20/iOSer_iOS-Remote-Push-Summary/" itemprop="url">iOS远程推送总结</a>
+            <a href="/2016/11/20/iOSer-iOS-Remote-Push-Summary/" itemprop="url">iOS远程推送总结</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -445,7 +445,7 @@
 <p><a href="#1">远程推送的原理</a><br><a href="#2">远程推送证书格式及其转换(.pem/.p12)</a><br><a href="#3">远程推送证书的制作流程</a><br><a href="#4">实例与环境</a></p>
 </blockquote></body></html>
         <p class="article-more-link">
-            <a href="/2016/11/20/iOSer_iOS-Remote-Push-Summary/#more">阅读更多</a>
+            <a href="/2016/11/20/iOSer-iOS-Remote-Push-Summary/#more">阅读更多</a>
         </p>
     
     </div>
@@ -460,7 +460,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/11/20/Technology_lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/" itemprop="url">lldb调试OC的若干辅助方法与注意</a>
+            <a href="/2016/11/20/Technology-lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/" itemprop="url">lldb调试OC的若干辅助方法与注意</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -491,7 +491,7 @@
 <p>输出 <em>UIView</em> 的层级结构<br>输出 <em>UIViewController</em> 的层级结构<br>输出类的属性与方法列表<br>形如[0xAbc …]调用时如何出现方法提示 [161129更新]<br><em>lldb</em> 如何支持 <em>frame</em> 类型的输出 [161204更新]</p>
 </blockquote></body></html>
         <p class="article-more-link">
-            <a href="/2016/11/20/Technology_lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/#more">阅读更多</a>
+            <a href="/2016/11/20/Technology-lldb-debugging-OC-a-number-of-auxiliary-methods-and-attention/#more">阅读更多</a>
         </p>
     
     </div>
@@ -506,7 +506,7 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2016/11/20/iOSer_Xcode8-plugin-is-invalid/" itemprop="url">Xcode8-插件失效</a>
+            <a href="/2016/11/20/iOSer-Xcode8-plugin-is-invalid/" itemprop="url">Xcode8-插件失效</a>
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -537,7 +537,7 @@
 <p><em>Xcode8</em> 出于安全原因,禁止了第三方插件,改为 <em>Xcode Source Editor</em></p>
 </blockquote></body></html>
         <p class="article-more-link">
-            <a href="/2016/11/20/iOSer_Xcode8-plugin-is-invalid/#more">阅读更多</a>
+            <a href="/2016/11/20/iOSer-Xcode8-plugin-is-invalid/#more">阅读更多</a>
         </p>
     
     </div>

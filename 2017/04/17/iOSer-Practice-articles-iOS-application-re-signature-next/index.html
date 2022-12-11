@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>实践篇：iOS 应用重签名 (下) - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　 　　本文主要描述了在包含多 target 与 注入 dylib 的场景下该如何进行重签名的操作。 环境 &amp; 工具　  macOS Sierra 10.12.4Xcode 8.3.1Jailbreak     iPad 8.4No Jailbreak  iPhone 10.1.1yololibtheosmobiledeviceWechat 6.5.7">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实践篇：iOS 应用重签名 (下)">
+<meta property="og:url" content="http://yoursite.com/2017/04/17/iOSer-Practice-articles-iOS-application-re-signature-next/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="导语　 　　本文主要描述了在包含多 target 与 注入 dylib 的场景下该如何进行重签名的操作。 环境 &amp; 工具　  macOS Sierra 10.12.4Xcode 8.3.1Jailbreak     iPad 8.4No Jailbreak  iPhone 10.1.1yololibtheosmobiledeviceWechat 6.5.7">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e90ca0e.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e909288.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e9124d2.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e9dde10.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e8bbe92.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e930b64.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e912151.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e9936c3.jpg">
+<meta property="article:published_time" content="2017-04-17T05:24:04.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:06:07.171Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境-amp-工具">2&nbsp;&nbsp;<b>环境 &amp;amp; 工具</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#多-target">3&nbsp;&nbsp;<b>多 target</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#注入-dylib">4&nbsp;&nbsp;<b>注入 dylib</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#错误一-dylib-未重签名">4.1&nbsp;&nbsp;错误一: dylib 未重签名</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#解决方法">4.2&nbsp;&nbsp;解决方法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#错误二-dylib-路径错误">4.3&nbsp;&nbsp;错误二: dylib 路径错误</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#解决方法-1">4.4&nbsp;&nbsp;解决方法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#结果">4.5&nbsp;&nbsp;结果</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#总结">5&nbsp;&nbsp;<b>总结</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            实践篇：iOS 应用重签名 (下)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-04-17T05:24:04.000Z" itemprop="datePublished">4月 17 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            10 分钟 读完 (约 1487 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>　　本文主要描述了在包含多 <em>target</em> 与 注入 <em>dylib</em> 的场景下该如何进行重签名的操作。</p>
+<h2 id="环境-amp-工具"><a href="#环境-amp-工具" class="headerlink" title="环境 &amp; 工具"></a>环境 &amp; 工具</h2><p>　</p>
+<blockquote>
+<p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Jailbreak     iPad 8.4<br>No Jailbreak  iPhone 10.1.1<br><a target="_blank" rel="noopener" href="https://github.com/KJCracks/yololib">yololib</a><br><a target="_blank" rel="noopener" href="https://github.com/theos/theos">theos</a><br><a target="_blank" rel="noopener" href="https://github.com/imkira/mobiledevice">mobiledevice</a><br>Wechat 6.5.7</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="多-target"><a href="#多-target" class="headerlink" title="多 target"></a>多 <code>target</code></h2><p>　</p>
+<p>　　在 <em>Apple</em> 官方的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html">Code Signing Guide</a> 中提到参与签名的有二进制文件，库文件，资源文件。微信的 <em>.ipa</em> 包中包含了 <em>PlugIns</em> 目录，里面包含了插件的二进制文件，<em>Watch</em> 目录，其中包含了应用在 <em>Watch OS</em> 平台下的二进制文件。</p>
+<p>　　该如何签名呢? 创建一个工程，添加了 <em>ShareExtension</em> + <em>Watch OS</em> 的 <em>target*，然后 *Archive</em> 看看 <em>Xcode</em> 是如何执行签名流程的。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e90ca0e.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e909288.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9124d2.jpg" alt=""></p>
+<p>　</p>
+<p>　　从上面的截图可知 <code>Xcode</code> 签名的所需要的内容，还是和上篇中说的一致，但是多 <code>target</code> 环境下需要对二进制由内到外进行签名操作，同时每个 <code>target</code> 都需要有各自的描述文件。</p>
+<p>　　用 <code>otool -l path/to/unix_exec_file | grep -B 2 crypt</code> 来确定是否被加壳了。经过测试发现 <em>Plugins</em> 目录下的二进制是加密的，而 <em>Watch</em> 目录下的二进制并没有被加密</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9dde10.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bbe92.jpg" alt=""></p>
+<p>　　<br>　　因为加壳的代码要脱壳才能进行重签名，一般会用类似 <em>dumpdecrypted</em> 的工具在运行时通过 <em>dump</em> 的方式来获得脱壳后的文件，因此在这里可以将 <em>Plugins</em> 和 <em>Watch</em> 目录删除，这样处理后，应用就从多 <em>target</em> 就转换为单 <em>target</em> 了。</p>
+<p>以微信 <em>6.5.7</em> 版本为例，准备好 <em>AdHoc</em> 类型的描述文件之后，进行如下操作:</p>
+<ol>
+<li>删除应用中的 <em>_CodeSignature</em> 目录</li>
+<li>用脱壳后的二进制文件替换掉原应用的二进制文件</li>
+<li><em>copy</em> 描述文件到应用目录中</li>
+<li>修改 <em>info.plist</em> 中的包名替换为重签名的描述文件对应的包名</li>
+<li>对整个应用的二进制进行签名（ <code>codesign ...</code>）</li>
+<li>拖拽到 <em>iTunes</em> 生成 <em>.ipa</em> 文件</li>
+</ol>
+<p>安装 <em>.ipa</em> 结果成功。</p>
+<h2 id="注入-dylib"><a href="#注入-dylib" class="headerlink" title="注入 dylib"></a>注入 <code>dylib</code></h2><p>　</p>
+<p>　　用 <em>Xcode</em> 中的 <em>OpenDev</em> 模板(需要单独下载)，生成要注入到微信中的 <em>dylib</em>，在生成的工程中添加类似下面的方法。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e930b64.jpg" alt=""></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Dylib</span></span></span><br><span class="line"></span><br><span class="line">__attribute__((constructor))</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> entry() {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"hello, world!"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　<em>⌘ B</em> 编译生成动态库,用 <em>yololib</em> 将动态库注入到微信的二进制。同时将该动态库拷贝到微信应用的目录中</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./yololib 目标可执行文件 需注入的dylib</span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　同样进行重签名操作，拖到 <code>iTunes</code> 中生成 <code>.ipa</code> 文件。用 <code>mobiledevice</code> 工具进行安装操作。</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mobiledevice install_app /path/to/.ipa</span><br></pre></td></tr></tbody></table></figure>
+
+<p>❎ 安装失败</p>
+<h3 id="错误一-dylib-未重签名"><a href="#错误一-dylib-未重签名" class="headerlink" title="错误一: dylib 未重签名"></a>错误一: <code>dylib</code> 未重签名</h3><p>　</p>
+<p>　　查看设备日志,发现如下输出,可以看出是动态库没有进行签名操作</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Notice&gt;: SystemUI unknown identifier: 'com.coder.demo'</span><br><span class="line">Apr 17 10:53:17 xiaoguai amfid[12845] &lt;Notice&gt;: /private/var/containers/Bundle/Application/89E48C85-CC8E-4A9E-B6C0-9E1329DDF2AD/WeChat.app/Dylib.dylib not valid: 0xe800801c: No code signature found.</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># codesign --force --sign xxxxxx -a arm64 Dylib.dylib </span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>因为我脱壳的是 <em>arm64</em> 的二进制,所以可以通过 <em>-a</em> 指定对动态库的具体架构进行签名操作。</p>
+<h3 id="错误二-dylib-路径错误"><a href="#错误二-dylib-路径错误" class="headerlink" title="错误二: dylib 路径错误"></a>错误二: <code>dylib</code> 路径错误</h3><p>　</p>
+<p>　　因为 <em>yololib</em> 注入后动态库的执行路径由 <em>@executable_path</em> 指明，所以要确认在执行时能找到对应的动态库二进制。下面就是一个错误的路径</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e912151.png" alt="Snip20170417_19"></p>
+<p>　　如果动态库执行路径错误时，可以安装，但是运行就会闪退</p>
+<h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><p>　</p>
+<p>　　<em>cd</em> 到 <em>WeChat.app</em> 目录下,确保 <em>yololib</em> 注入后，动态库的执行路径为 <em>@executable_path /Dylib.dylib</em> </p>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>　　查看设备日志，可以看到动态库已成功注入</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9936c3.jpg" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　</p>
+<blockquote>
+<p>要注意的是，由于中国的开发者利用免费的证书大量对应用进行重签名，所以目前苹果加上了许多限制，免费开发者的provisioning证书有效时间从之前的30天改为7天，过期后需要重新签名。另外就是一个星期内最多只能申请到10个证书。</p>
+</blockquote>
+<p>　</p>
+<p>　　本文通过 <em>Xcode</em> 的一次多 <em>target</em> 的工程签名流程入手，了解多 <em>target</em> 的签名顺序。因为重签名需要进行脱壳的操作，因此对多 <em>target</em> 的应用，在不影响的情况下，可删除其他 <em>target</em> 文件，将其转换为单 <em>target*。注入的 *dylib</em> 需要独立签名，同时使用 <em>yololib</em> 时需要注意执行路径的问题。<br>　　<br>最后把整体流程再整理下:</p>
+<ol>
+<li>删除应用中的 <em>_CodeSignature</em> 目录</li>
+<li>用脱壳后的二进制文件替换掉原应用的二进制文件</li>
+<li><em>copy</em> 描述文件到应用目录中</li>
+<li>修改 <em>info.plist</em> 中的包名替换为重签名的描述文件对应的包名</li>
+<li>使用 <em>Xcode</em> 的 <em>OpenDev</em> 模板生成 <em>dylib</em> 文件</li>
+<li>对动态库进行签名 </li>
+<li>使用 <em>yololib</em> 将动态库注入到二进制文件中</li>
+<li>对整个应用的二进制进行签名（ <code>codesign ...</code>）</li>
+<li>拖拽到 <em>iTunes</em> 生成 <em>.ipa</em> 文件</li>
+<li>使用 <em>mobiledevice</em> 安装 <em>ipa</em> 文件</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/189afbe3b429">一步一步实现iOS微信自动抢红包(非越狱)</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.smemo.info/104.html">linux连接iOS设备并且安装ipa应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/libimobiledevice/libimobiledevice">libimobiledevice</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Urinx/iOSAppHook">iOSAppHook</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/04/21/Technology-FFmpeg-video-interception-command/">FFmpeg指令-视频截取</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/04/10/Technology-WoSign-CA-signed-digital-certificate-is-invalid/">WoSign CA 签名的数字证书失效</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

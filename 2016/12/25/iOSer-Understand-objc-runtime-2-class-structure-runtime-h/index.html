@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>理解objc运行时二:类的结构(runtime.h) - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="OC,运行时">
+
+
+
+    <meta name="description" content="类的数据结构(runtime.h)1234567891011121314151617struct objc_class {    Class isa  OBJC_ISA_AVAILABILITY;#if !__OBJC2__    Class super_class                                        OBJC2_UNAVAILABLE;    const">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解objc运行时二:类的结构(runtime.h)">
+<meta property="og:url" content="http://yoursite.com/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="类的数据结构(runtime.h)1234567891011121314151617struct objc_class {    Class isa  OBJC_ISA_AVAILABILITY;#if !__OBJC2__    Class super_class                                        OBJC2_UNAVAILABLE;    const">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/11/23/58362adb8aa83.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/19/58578ba44458d.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/20/5858a90b0ad97.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/20/5858c527170ab.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/20/5859575b60c83.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/21/585ab6d323860.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/21/585b164bcca2f.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/21/585b169bbd3d4.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/25/585f439b48dbc.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/25/585f3e6d1ef9a.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/12/25/585f450ba5324.png">
+<meta property="article:published_time" content="2016-12-25T02:59:22.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:07:01.975Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2016/11/23/58362adb8aa83.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#类的数据结构-runtime-h">1&nbsp;&nbsp;<b>类的数据结构(runtime.h)</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#OBJC2">1.1&nbsp;&nbsp;__OBJC2__</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#OBJC2-UNAVAILABLE">1.2&nbsp;&nbsp;OBJC2_UNAVAILABLE</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#objc-class结构体">1.3&nbsp;&nbsp;objc_class结构体</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Q-isa指针指向哪">1.3.1&nbsp;&nbsp;Q: isa指针指向哪?</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#元类-metaClass">1.3.2&nbsp;&nbsp;元类(metaClass)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#方法调用">1.3.3&nbsp;&nbsp;方法调用</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#A-总结">1.3.4&nbsp;&nbsp;A:总结</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#验证">1.3.5&nbsp;&nbsp;验证</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Q-如何获得super-class-version-name-instance-size的值">1.3.6&nbsp;&nbsp;Q: 如何获得super_class,version,name,instance_size的值</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Q-如何获得ivars-methodLists-protocols">1.3.7&nbsp;&nbsp;Q:如何获得ivars,methodLists,protocols</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">2&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            理解objc运行时二:类的结构(runtime.h)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2016-12-25T02:59:22.000Z" itemprop="datePublished">12月 25 2016</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            16 分钟 读完 (约 2433 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="类的数据结构-runtime-h"><a href="#类的数据结构-runtime-h" class="headerlink" title="类的数据结构(runtime.h)"></a>类的数据结构(runtime.h)</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> objc_class {</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">} OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-comment">/* Use `Class` instead of `struct objc_class *` */</span></span><br></pre></td></tr></tbody></table></figure>
+
+<span id="more"></span>
+
+<h3 id="OBJC2"><a href="#OBJC2" class="headerlink" title="__OBJC2__"></a><code>__OBJC2__</code></h3><blockquote>
+<p>If you are running 10.5 or later, or any version of iOS, your computer is running Objective-C 2. If you are writing code which you want to work on systems before this, you can check for the <strong>OBJC2</strong> macro, <strong>which will be defined only for Objective-C 2 and later systems</strong>.</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/7115325/how-do-i-know-what-version-of-objc-language-am-i-using/7115351#7115351">参考</a></p>
+<h3 id="OBJC2-UNAVAILABLE"><a href="#OBJC2-UNAVAILABLE" class="headerlink" title="OBJC2_UNAVAILABLE"></a>OBJC2_UNAVAILABLE</h3><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/* OBJC2_UNAVAILABLE: unavailable in objc 2.0, deprecated in Leopard */</span></span><br><span class="line"><span class="hljs-comment">/*主要是为了兼容以前的OC版本,目前条件下,可忽略 */</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> !defined(OBJC2_UNAVAILABLE) </span></span><br><span class="line"><span class="hljs-meta">#   <span class="hljs-meta-keyword">if</span> __OBJC2__</span></span><br><span class="line"><span class="hljs-meta">#       <span class="hljs-meta-keyword">define</span> OBJC2_UNAVAILABLE UNAVAILABLE_ATTRIBUTE</span></span><br><span class="line"><span class="hljs-meta">#   <span class="hljs-meta-keyword">else</span></span></span><br><span class="line">        <span class="hljs-comment">/* plain C code also falls here, but this is close enough */</span></span><br><span class="line"><span class="hljs-meta">#       <span class="hljs-meta-keyword">define</span> OBJC2_UNAVAILABLE                                       \</span></span><br><span class="line"><span class="hljs-meta">            __OSX_DEPRECATED(10.5, 10.5, <span class="hljs-meta-string">"not available in __OBJC2__"</span>) \</span></span><br><span class="line"><span class="hljs-meta">            __IOS_DEPRECATED(2.0, 2.0, <span class="hljs-meta-string">"not available in __OBJC2__"</span>)   \</span></span><br><span class="line"><span class="hljs-meta">            __TVOS_UNAVAILABLE __WATCHOS_UNAVAILABLE</span></span><br><span class="line"><span class="hljs-meta">#   <span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2016/11/23/58362adb8aa83.jpg" alt=""></p>
+<p>因此可直接忽略掉<em><strong>OBJC2</strong><em>和</em>OBJC2_UNAVAILABLE</em></p>
+<!-- more -->
+
+<h3 id="objc-class结构体"><a href="#objc-class结构体" class="headerlink" title="objc_class结构体"></a>objc_class结构体</h3><table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">isa</td>
+<td align="center">isa指针</td>
+</tr>
+<tr>
+<td align="center">super_class</td>
+<td align="center">父类</td>
+</tr>
+<tr>
+<td align="center">name</td>
+<td align="center">类名</td>
+</tr>
+<tr>
+<td align="center">version</td>
+<td align="center">类的版本号</td>
+</tr>
+<tr>
+<td align="center">instance_size</td>
+<td align="center">类的大小</td>
+</tr>
+<tr>
+<td align="center">ivars</td>
+<td align="center">变量列表</td>
+</tr>
+<tr>
+<td align="center">methodLists</td>
+<td align="center">方法列表</td>
+</tr>
+<tr>
+<td align="center">cache</td>
+<td align="center">方法缓存列表</td>
+</tr>
+<tr>
+<td align="center">protocols</td>
+<td align="center">协议列表</td>
+</tr>
+</tbody></table>
+<h4 id="Q-isa指针指向哪"><a href="#Q-isa指针指向哪" class="headerlink" title="Q: isa指针指向哪?"></a>Q: isa指针指向哪?</h4><p>先了解下OC的类的继承体系</p>
+<ul>
+<li><strong>isa指针与superclass</strong></li>
+</ul>
+<p><img src="https://ooo.0o0.ooo/2016/12/19/58578ba44458d.png" alt=""></p>
+<p>要知道isa指针的指向,需要先了解元类,</p>
+<h4 id="元类-metaClass"><a href="#元类-metaClass" class="headerlink" title="元类(metaClass)"></a>元类(metaClass)</h4><p>因为类也是对象(<em>struct objc_class : objc_object {…}</em>), 元类可近似认为是类对象的<em>isa</em>指针所指向的类</p>
+<h4 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h4><p>对象封装了变量和方法,变量是数据,每个对象都不尽相同,但方法是操作,每个对象应该都一样,所有的对象共享一份方法的代码,放在类中,而因为类本身也是一个对象,当向类发送消息时,该类的<em>isa</em>指针应该指向保存类方法的地址,由上可得,元类中保存着类方法</p>
+<p>对象方法的查找顺序:<br>当前类 -&gt; 父类 -&gt; … -&gt; 根类 </p>
+<p>类方法的查找顺序:<br>当前类的元类 -&gt; 元类父类 -&gt; 根元类</p>
+<h4 id="A-总结"><a href="#A-总结" class="headerlink" title="A:总结"></a>A:总结</h4><ul>
+<li>对象的<em>isa</em>指针指向类对象</li>
+<li>类对象的<em>isa</em>指针指向该类对象对应的元类对象</li>
+<li>所有元类对象的<em>isa</em>指针统一指向<em>NSObject</em>元类对象</li>
+</ul>
+<hr>
+<ul>
+<li>类对象的<em>superclass</em>指向父类的类对象,回溯而上直到<em>NSObject</em>类对象</li>
+<li><em>NSObject<em>的</em>superclass<em>指向</em>nil</em></li>
+</ul>
+<hr>
+<ul>
+<li><em>NSObject</em>元类对象的父类为<em>NSObject</em>类对象</li>
+<li><em>NSObject</em>类对象的<em>isa</em>指针指向<em>NSObject</em>元类对象</li>
+</ul>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>在<em>objc-706</em>工程中,在<em>debug-objc target</em>的<em>main.mm</em>添加测试代码</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_class *cls_a_s = (objc_class *)[<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">objc_class *cls_b_s = (objc_class *)cls_a_s-&gt;getMeta();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%p,%p"</span>,cls_a_s,cls_b_s);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>输出结果:<br><img src="https://ooo.0o0.ooo/2016/12/20/5858a90b0ad97.png" alt=""></p>
+<p>观察 + 计算 </p>
+<p>0x1dffffb6c19d89 = 0x1d8001004a10f1 - 0x1004a10f0 + 0x7fffb6c19d88</p>
+<p>类对象的isa指针指向地址满足下面的等式</p>
+<p><em>addr(class-&gt;isa) = addr(metaclass-&gt;isa) - addr(metaclass-&gt;superclass) + addr(metaclass)</em> </p>
+<p>另一个测试用例</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_class *cls_a = (objc_class *)[<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">objc_class *cls_b = (objc_class *)cls_a-&gt;getMeta();</span><br><span class="line"><span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%p,%p"</span>,cls_a,cls_b);</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2016/12/20/5858c527170ab.png" alt=""></p>
+<p>0x1d8001004a10f1 = 0x1d8001004a10f1 - addr(NSObject) + 0x1004a1140</p>
+<p><em>NSObject<em>类地址是</em>0x1004a1140</em>,上式也成立</p>
+<h4 id="Q-如何获得super-class-version-name-instance-size的值"><a href="#Q-如何获得super-class-version-name-instance-size的值" class="headerlink" title="Q: 如何获得super_class,version,name,instance_size的值"></a>Q: 如何获得<em>super_class</em>,<em>version</em>,<em>name</em>,<em>instance_size</em>的值</h4><p>获取<em>super_class</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Returns the superclass of a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls A class object.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return The superclass of the class, or \c Nil if</span></span><br><span class="line"><span class="hljs-comment"> *  \e cls is a root class, or \c Nil if \e cls is \c Nil.</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @note You should usually use \c NSObject's \c superclass method instead of this function.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT Class class_getSuperclass(Class cls) </span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<em>version</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Returns the version number of a class definition.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls A pointer to a \c Class data structure. Pass</span></span><br><span class="line"><span class="hljs-comment"> *  the class definition for which you wish to obtain the version.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return An integer indicating the version number of the class definition.</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @see class_setVersion</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT <span class="hljs-keyword">int</span> class_getVersion(Class cls)</span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<em>name</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Returns the name of a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls A class object.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return The name of the class, or the empty string if \e cls is \c Nil.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *class_getName(Class cls) </span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<em>instance_size</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Returns the size of instances of a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls A class object.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return The size in bytes of instances of the class \e cls, or \c 0 if \e cls is \c Nil.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT size_t class_getInstanceSize(Class cls) </span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试代码</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"NSString类的super_class是%@"</span>,class_getSuperclass([<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>]));</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"NSString类的version是%d"</span>,class_getVersion([<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>]));</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"NSString类的name是%s"</span>,class_getName([<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>]));</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"NSString类的instance_size是%ld"</span>,class_getInstanceSize([<span class="hljs-built_in">NSString</span> <span class="hljs-keyword">class</span>]));</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>输出结果:<br><img src="https://ooo.0o0.ooo/2016/12/20/5859575b60c83.png" alt="Snip20161221_1.png"></p>
+<h4 id="Q-如何获得ivars-methodLists-protocols"><a href="#Q-如何获得ivars-methodLists-protocols" class="headerlink" title="Q:如何获得ivars,methodLists,protocols"></a>Q:如何获得<em>ivars</em>,<em>methodLists</em>,<em>protocols</em></h4><p>获得<em>ivars</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Describes the instance variables declared by a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class to inspect.</span></span><br><span class="line"><span class="hljs-comment"> * @param outCount On return, contains the length of the returned array. </span></span><br><span class="line"><span class="hljs-comment"> *  If outCount is NULL, the length is not returned.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return An array of pointers of type Ivar describing the instance variables declared by the class. </span></span><br><span class="line"><span class="hljs-comment"> *  Any instance variables declared by superclasses are not included. The array contains *outCount </span></span><br><span class="line"><span class="hljs-comment"> *  pointers followed by a NULL terminator. You must free the array with free().</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> *  If the class declares no instance variables, or cls is Nil, NULL is returned and *outCount is 0.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT Ivar *class_copyIvarList(Class cls, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> *outCount) </span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获得<em>methodLists</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Describes the instance methods implemented by a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class you want to inspect.</span></span><br><span class="line"><span class="hljs-comment"> * @param outCount On return, contains the length of the returned array. </span></span><br><span class="line"><span class="hljs-comment"> *  If outCount is NULL, the length is not returned.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return An array of pointers of type Method describing the instance methods </span></span><br><span class="line"><span class="hljs-comment"> *  implemented by the class—any instance methods implemented by superclasses are not included. </span></span><br><span class="line"><span class="hljs-comment"> *  The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> *  If cls implements no instance methods, or cls is Nil, returns NULL and *outCount is 0.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @note To get the class methods of a class, use \c class_copyMethodList(object_getClass(cls), &amp;count).</span></span><br><span class="line"><span class="hljs-comment"> * @note To get the implementations of methods that may be implemented by superclasses, </span></span><br><span class="line"><span class="hljs-comment"> *  use \c class_getInstanceMethod or \c class_getClassMethod.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT Method *class_copyMethodList(Class cls, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> *outCount) </span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获得<em>protocols</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Describes the protocols adopted by a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class you want to inspect.</span></span><br><span class="line"><span class="hljs-comment"> * @param outCount On return, contains the length of the returned array. </span></span><br><span class="line"><span class="hljs-comment"> *  If outCount is NULL, the length is not returned.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return An array of pointers of type Protocol* describing the protocols adopted </span></span><br><span class="line"><span class="hljs-comment"> *  by the class. Any protocols adopted by superclasses or other protocols are not included. </span></span><br><span class="line"><span class="hljs-comment"> *  The array contains *outCount pointers followed by a NULL terminator. You must free the array with free().</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> *  If cls adopts no protocols, or cls is Nil, returns NULL and *outCount is 0.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">OBJC_EXPORT Protocol * __<span class="hljs-keyword">unsafe_unretained</span> *class_copyProtocolList(Class cls, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> *outCount)</span><br><span class="line">    OBJC_AVAILABLE(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试代码</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"objc-private.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        Class cls = [<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        Ivar *list = class_copyIvarList(cls, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {</span><br><span class="line">            Ivar ity = list[i];</span><br><span class="line">            <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *iname = ivar_getName(ity);</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@\n"</span>,[<span class="hljs-built_in">NSString</span> stringWithUTF8String:iname]);</span><br><span class="line">        }</span><br><span class="line">        free(list);</span><br><span class="line">        </span><br><span class="line">        objc_property_t *list2 = class_copyPropertyList(cls, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {</span><br><span class="line">            objc_property_t ity = list2[i];</span><br><span class="line">            <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *iname = property_getName(ity);</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@\n"</span>,[<span class="hljs-built_in">NSString</span> stringWithUTF8String:iname]);</span><br><span class="line">        }</span><br><span class="line">        free(list2);</span><br><span class="line">        </span><br><span class="line">        Method *methods = class_copyMethodList(cls, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) {</span><br><span class="line">            Method method = methods[i];</span><br><span class="line">             printf(<span class="hljs-string">"\t'%s'|'%s' of encoding '%s'\n"</span>,</span><br><span class="line">             class_getName(cls),</span><br><span class="line">             sel_getName(method_getName(method)),</span><br><span class="line">             method_getTypeEncoding(method));</span><br><span class="line">             </span><br><span class="line">        }</span><br><span class="line">        free(methods);</span><br><span class="line">        </span><br><span class="line">        Protocol * __<span class="hljs-keyword">unsafe_unretained</span> * protocols = class_copyProtocolList(cls, &amp;count);</span><br><span class="line">        Protocol * protocol;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) {</span><br><span class="line">            protocol = protocols[i];</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"protocol name: %s"</span>, protocol_getName(protocol));</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>输出效果</p>
+<p><img src="https://ooo.0o0.ooo/2016/12/21/585ab6d323860.png" alt=""></p>
+<p>获得<em>cache</em></p>
+<p><img src="https://ooo.0o0.ooo/2016/12/21/585b164bcca2f.png" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2016/12/21/585b169bbd3d4.png" alt=""></p>
+<p>为已有类添加<del><em>ivar</em></del>,<em>property</em>,<em>method</em>,<em>protocol</em></p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Adds a new instance variable to a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return YES if the instance variable was added successfully, otherwise NO </span></span><br><span class="line"><span class="hljs-comment"> *         (for example, the class already contains an instance variable with that name).</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @note This function may only be called after objc_allocateClassPair and before objc_registerClassPair.  需要在obj_allocateClassPair与objc_registerClassPair之间调用</span></span><br><span class="line"><span class="hljs-comment"> *       Adding an instance variable to an existing class is not supported. 不支持为已有的类添加实例变量</span></span><br><span class="line"><span class="hljs-comment"> * @note The class must not be a metaclass. Adding an instance variable to a metaclass is not supported. 不支持为元类添加实例变量</span></span><br><span class="line"><span class="hljs-comment"> * @note The instance variable's minimum alignment in bytes is 1&lt;&lt;align. The minimum alignment of an instance </span></span><br><span class="line"><span class="hljs-comment"> *       variable depends on the ivar's type and the machine architecture. </span></span><br><span class="line"><span class="hljs-comment"> *       For variables of any pointer type, pass log2(sizeof(pointer_type)).</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-function">OBJC_EXPORT BOOL <span class="hljs-title">class_addIvar</span><span class="hljs-params">(Class cls, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name, <span class="hljs-keyword">size_t</span> size, </span></span></span><br><span class="line"><span class="hljs-params"><span class="hljs-function">                               <span class="hljs-keyword">uint8_t</span> alignment, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *types)</span> </span></span><br><span class="line"><span class="hljs-function">    <span class="hljs-title">OBJC_AVAILABLE</span><span class="hljs-params">(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Adds a property to a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class to modify.</span></span><br><span class="line"><span class="hljs-comment"> * @param name The name of the property.</span></span><br><span class="line"><span class="hljs-comment"> * @param attributes An array of property attributes.</span></span><br><span class="line"><span class="hljs-comment"> * @param attributeCount The number of attributes in \e attributes.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return \c YES if the property was added successfully, otherwise \c NO</span></span><br><span class="line"><span class="hljs-comment"> *  (for example, the class already has that property).</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-function">OBJC_EXPORT BOOL <span class="hljs-title">class_addProperty</span><span class="hljs-params">(Class cls, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name, <span class="hljs-keyword">const</span> <span class="hljs-keyword">objc_property_attribute_t</span> *attributes, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> attributeCount)</span></span></span><br><span class="line"><span class="hljs-function">    <span class="hljs-title">OBJC_AVAILABLE</span><span class="hljs-params">(<span class="hljs-number">10.7</span>, <span class="hljs-number">4.3</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Adds a new method to a class with a given name and implementation.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class to which to add a method.</span></span><br><span class="line"><span class="hljs-comment"> * @param name A selector that specifies the name of the method being added.</span></span><br><span class="line"><span class="hljs-comment"> * @param imp A function which is the implementation of the new method. The function must take at least two arguments—self and _cmd.</span></span><br><span class="line"><span class="hljs-comment"> * @param types An array of characters that describe the types of the arguments to the method. </span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return YES if the method was added successfully, otherwise NO </span></span><br><span class="line"><span class="hljs-comment"> *  (for example, the class already contains a method implementation with that name).</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @note class_addMethod will add an override of a superclass's implementation, </span></span><br><span class="line"><span class="hljs-comment"> *  but will not replace an existing implementation in this class. </span></span><br><span class="line"><span class="hljs-comment"> *  To change an existing implementation, use method_setImplementation.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-function">OBJC_EXPORT BOOL <span class="hljs-title">class_addMethod</span><span class="hljs-params">(Class cls, SEL name, IMP imp, </span></span></span><br><span class="line"><span class="hljs-params"><span class="hljs-function">                                 <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *types)</span> </span></span><br><span class="line"><span class="hljs-function">    <span class="hljs-title">OBJC_AVAILABLE</span><span class="hljs-params">(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Adds a protocol to a class.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param cls The class to modify.</span></span><br><span class="line"><span class="hljs-comment"> * @param protocol The protocol to add to \e cls.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return \c YES if the method was added successfully, otherwise \c NO </span></span><br><span class="line"><span class="hljs-comment"> *  (for example, the class already conforms to that protocol).</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-function">OBJC_EXPORT BOOL <span class="hljs-title">class_addProtocol</span><span class="hljs-params">(Class cls, Protocol *protocol)</span> </span></span><br><span class="line"><span class="hljs-function">    <span class="hljs-title">OBJC_AVAILABLE</span><span class="hljs-params">(<span class="hljs-number">10.5</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">9.0</span>, <span class="hljs-number">1.0</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>测试代码</p>
+<p>添加<em>proerty</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        Class cls = [<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">         Defines a property attribute</span></span><br><span class="line"><span class="hljs-comment">         typedef struct {</span></span><br><span class="line"><span class="hljs-comment">            const char *name;           *&lt; The name of the attribute</span></span><br><span class="line"><span class="hljs-comment">            const char *value;          *&lt; The value of the attribute (usually empty)</span></span><br><span class="line"><span class="hljs-comment">         } objc_property_attribute_t;</span></span><br><span class="line"><span class="hljs-comment">         */</span></span><br><span class="line">        objc_property_attribute_t t = {<span class="hljs-string">"T"</span>,<span class="hljs-string">"123"</span>};</span><br><span class="line">        class_addProperty(cls, <span class="hljs-string">"newProperty"</span>,&amp;t, <span class="hljs-number">1</span>);</span><br><span class="line">        objc_property_t *list2 = class_copyPropertyList(cls, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {</span><br><span class="line">            objc_property_t ity = list2[i];</span><br><span class="line">            <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *iname = property_getName(ity);</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@\n"</span>,[<span class="hljs-built_in">NSString</span> stringWithUTF8String:iname]);</span><br><span class="line">        }</span><br><span class="line">        free(list2);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2016/12/25/585f439b48dbc.png" alt=""></p>
+<p>添加<em>method</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        Class cls = [<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        IMP imp = imp_implementationWithBlock(^{ <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"add a new method"</span>); });</span><br><span class="line">        <span class="hljs-built_in">BOOL</span> r = class_addMethod(cls, <span class="hljs-keyword">@selector</span>(newMethod), imp, <span class="hljs-literal">nil</span>);</span><br><span class="line">        Method *methods = class_copyMethodList(cls, &amp;count);</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) {</span><br><span class="line">            Method method = methods[i];</span><br><span class="line">            printf(<span class="hljs-string">"\t'%s'|'%s' of encoding '%s'\n"</span>,</span><br><span class="line">                   class_getName(cls),</span><br><span class="line">                   sel_getName(method_getName(method)),</span><br><span class="line">                   method_getTypeEncoding(method));</span><br><span class="line">            </span><br><span class="line">        }</span><br><span class="line">        free(methods);</span><br><span class="line">        [(<span class="hljs-keyword">id</span>)cls performSelector:<span class="hljs-keyword">@selector</span>(newMethod)];</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2016/12/25/585f3e6d1ef9a.png" alt=""></p>
+<p>添加<em>protocol</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        Class cls = [<span class="hljs-built_in">NSObject</span> <span class="hljs-keyword">class</span>];</span><br><span class="line">        <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;</span><br><span class="line">        <span class="hljs-comment">// objc_addProtocol();</span></span><br><span class="line">        Protocol *p = objc_allocateProtocol(<span class="hljs-string">"newProtocol"</span>);</span><br><span class="line">        objc_registerProtocol(p);</span><br><span class="line">        class_addProtocol(cls,p);</span><br><span class="line">        </span><br><span class="line">        Protocol * __<span class="hljs-keyword">unsafe_unretained</span> * protocols = class_copyProtocolList(cls, &amp;count);</span><br><span class="line">        Protocol * protocol;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++) {</span><br><span class="line">            protocol = protocols[i];</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"protocol name: %s"</span>, protocol_getName(protocol));</span><br><span class="line">        }</span><br><span class="line"> </span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2016/12/25/585f450ba5324.png" alt=""></p>
+<p><strong>注</strong>:以上函数声明摘自于<em>iOS10.1<em>的</em>runtime.h</em></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://southpeak.github.io/2014/10/25/objective-c-runtime-1/">南峰子 - Objective-C Runtime 运行时之一：类与对象</a></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-3-method-encoding-execution-etc/">理解objc运行时三:方法编码,执行,转发,交换</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2016/12/08/iOSer-Quickly-generate-icons-for-iOS-apps/">快速生成iOS应用的图标</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
