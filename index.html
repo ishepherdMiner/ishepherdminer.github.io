@@ -93,13 +93,13 @@
                href="/categories/iOSer">iOSer</a>
             
             <a class="navbar-item "
-               href="/categories/Technology">Technology</a>
+               href="/categories/Technology">技术</a>
             
             <a class="navbar-item "
-               href="/categories/Topic">Topic</a>
+               href="/categories/Topic">主题</a>
             
             <a class="navbar-item "
-               href="/archives">Timeline</a>
+               href="/archives">时间流</a>
             
         </div>
         
@@ -124,6 +124,59 @@
 
     <section class="section">
     <div class="container">
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2022/12/11/Technology_Hexo_push_error/" itemprop="url">hexo deploy 命令执行失败</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2022-12-11T12:12:27.000Z" itemprop="datePublished">12月 11 2022</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 193 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><div class="gallery-item">
+
+<p><img src="/images/gallery/pexels-lumn-167699.jpg" alt=""></p>
+</div>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
+<p>按要求<code>eval "$(ssh-agent -s)"</code></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent yes</span><br><span class="line">  UseKeychain yes</span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
+
+<p>指定github.com使用该公钥,但是还是失败。</p></body></html>
+        <p class="article-more-link">
+            <a href="/2022/12/11/Technology_Hexo_push_error/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
     
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
@@ -561,60 +614,6 @@
 
 
     
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/09/24/Technology_router-cascade-magnified-wifi/" itemprop="url">路由器级联放大Wifi信号</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-09-24T08:17:06.000Z" itemprop="datePublished">9月 24 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 652 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<code>Wifi</code> 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>MERCURY xxx 路由器<br>macOS Sierra 10.12.6</p>
-</blockquote>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>网上搜了下,就是下面的参考链接,提供了3种方案</p>
-<ol>
-<li><code>WDS</code> 无线桥接</li>
-<li>当 <code>AP</code> (无线交换机) 使用</li>
-<li>搭建新网络 (子网络)</li>
-</ol>
-<p>因为没有联通路由器的登陆的用户名密码,就选第 <code>3</code> 种方案</p></body></html>
-        <p class="article-more-link">
-            <a href="/2017/09/24/Technology_router-cascade-magnified-wifi/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
     
         
 <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
@@ -632,7 +631,7 @@
         
         <li><span class="pagination-ellipsis">&hellip;</span></li>
         
-        <li><a class="pagination-link" href="/page/6/">6</a></li>
+        <li><a class="pagination-link" href="/page/7/">7</a></li>
         
     </ul>
 </nav>
