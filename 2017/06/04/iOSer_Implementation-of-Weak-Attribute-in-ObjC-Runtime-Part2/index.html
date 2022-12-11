@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>ObjC Runtime 中 Weak 属性的实现 (中) - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　 在上一篇中简单分析了 Weak 属性是如何被存储，获取和销毁的，其中的 SideTable 结构体当做黑盒进行处理。本文尝试对 SideTable 的结构进行一些分析。 观察　 123456789101112131415161718192021222324struct SideTable {    spinlock_t slock;    RefcountMap refcnts;    w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ObjC Runtime 中 Weak 属性的实现 (中)">
+<meta property="og:url" content="http://yoursite.com/2017/06/04/iOSer_Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="导语　 在上一篇中简单分析了 Weak 属性是如何被存储，获取和销毁的，其中的 SideTable 结构体当做黑盒进行处理。本文尝试对 SideTable 的结构进行一些分析。 观察　 123456789101112131415161718192021222324struct SideTable {    spinlock_t slock;    RefcountMap refcnts;    w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/5934050e4a1ff.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/593405137b377.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/593405103b320.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/59340513c3fe8.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/59340511e3b8b.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/06/04/5934050fe1851.jpg">
+<meta property="article:published_time" content="2017-06-04T13:04:19.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:05:19.391Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/06/04/5934050e4a1ff.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+            <a class="navbar-item "
+               href="/categories/Topic">Topic</a>
+            
+            <a class="navbar-item "
+               href="/archives">Timeline</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#观察">2&nbsp;&nbsp;<b>观察</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#测试代码">3&nbsp;&nbsp;<b>测试代码</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#结构体-weak-table-t">4&nbsp;&nbsp;<b>结构体: weak_table_t</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#结构体-weak-entry-t">4.1&nbsp;&nbsp;结构体: weak_entry_t</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#类-DisguisedPtr">4.1.1&nbsp;&nbsp;类: DisguisedPtr</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小结">4.2&nbsp;&nbsp;小结</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#函数-weak-register-no-lock">4.3&nbsp;&nbsp;函数: weak_register_no_lock</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#函数-weak-grow-maybe">4.3.1&nbsp;&nbsp;函数: weak_grow_maybe</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#函数-weak-entry-insert">4.3.2&nbsp;&nbsp;函数: weak_entry_insert</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#函数-weak-unregister-no-lock">4.4&nbsp;&nbsp;函数: weak_unregister_no_lock</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#函数-weak-clear-no-lock">4.5&nbsp;&nbsp;函数: weak_clear_no_lock</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#总结">5&nbsp;&nbsp;<b>总结</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            ObjC Runtime 中 Weak 属性的实现 (中)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-06-04T13:04:19.000Z" itemprop="datePublished">6月 4 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            25 分钟 读完 (约 3675 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>在上一篇中简单分析了 <code>Weak</code> 属性是如何被存储，获取和销毁的，其中的 <code>SideTable</code> 结构体当做黑盒进行处理。本文尝试对 <code>SideTable</code> 的结构进行一些分析。</p>
+<h2 id="观察"><a href="#观察" class="headerlink" title="观察"></a>观察</h2><p>　</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> SideTable {</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts;</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line"></span><br><span class="line">    SideTable() {</span><br><span class="line">        memset(&amp;weak_table, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(weak_table));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    ~SideTable() {</span><br><span class="line">        _objc_fatal(<span class="hljs-string">"Do not delete SideTable."</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">void</span> lock() { slock.lock(); }</span><br><span class="line">    <span class="hljs-keyword">void</span> unlock() { slock.unlock(); }</span><br><span class="line">    <span class="hljs-keyword">void</span> forceReset() { slock.forceReset(); }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Address-ordered lock discipline for a pair of side tables.</span></span><br><span class="line"></span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> lockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> unlockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>SideTable</code> 主要分为 <code>3</code> 部分</p>
+<ul>
+<li><code>weak_table_t</code>: <code>weak</code> 引用的全局 <code>hash</code> 表</li>
+<li><code>RefcountMap</code> : 引用计数的 <code>hash</code> 表</li>
+<li><code>slock</code>: 保证原子操作的自旋锁</li>
+</ul>
+<span id="more"></span>
+
+<p>在 <code>static id storeWeak(id *location, objc_object *newObj)</code> 方法中有</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Assign new value, if any.</span></span><br><span class="line"><span class="hljs-keyword">if</span> (haveNew) {</span><br><span class="line">   newObj = (objc_object *)</span><br><span class="line">       weak_register_no_lock(&amp;newTable-&gt;weak_table, (<span class="hljs-keyword">id</span>)newObj, location, </span><br><span class="line">                             crashIfDeallocating);</span><br><span class="line">   <span class="hljs-comment">// weak_register_no_lock returns nil if weak store should be rejected</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// Set is-weakly-referenced bit in refcount table.</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (newObj  &amp;&amp;  !newObj-&gt;isTaggedPointer()) {</span><br><span class="line">       newObj-&gt;setWeaklyReferenced_nolock();</span><br><span class="line">   }</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// Do not set *location anywhere else. That would introduce a race.</span></span><br><span class="line">   *location = (<span class="hljs-keyword">id</span>)newObj;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>可知对于弱引用变量的保存，主要还是看 <code>weak_table</code> 这个属性</p>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><p>　</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">WeakProperty</span> : <span class="hljs-title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj2;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj3;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj4;</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj5;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">WeakProperty</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)dealloc {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%s"</span>,__func__);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">int</span> main(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        WeakProperty *property = [[WeakProperty alloc] init];</span><br><span class="line">        <span class="hljs-built_in">NSObject</span> *obj = [[<span class="hljs-built_in">NSObject</span> alloc] init];</span><br><span class="line">        property.obj = obj;</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,property.obj);</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// [1]</span></span><br><span class="line">        property.obj2 = obj;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// [2]</span></span><br><span class="line">        property.obj3 = obj;</span><br><span class="line">        property.obj4 = obj;</span><br><span class="line">        property.obj5 = obj;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// [3]</span></span><br><span class="line">        property.obj = <span class="hljs-literal">nil</span>;        </span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="结构体-weak-table-t"><a href="#结构体-weak-table-t" class="headerlink" title="结构体: weak_table_t"></a>结构体: <code>weak_table_t</code></h2><p>　</p>
+<p><code>weak_table_t</code> 的定义在 <code>objc-weak.h</code> 中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * The global weak references table. Stores object ids as keys,</span></span><br><span class="line"><span class="hljs-comment"> * and weak_entry_t structs as their values.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">struct</span> weak_table_t {</span><br><span class="line">    weak_entry_t *weak_entries;</span><br><span class="line">    size_t    num_entries;</span><br><span class="line">    uintptr_t mask;</span><br><span class="line">    uintptr_t max_hash_displacement;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p>说明:</p>
+<ul>
+<li>一个指向 <code>weak_entry_t</code> 的指针</li>
+<li><code>size_t(即 unsigned )</code> 类型的 <code>num_entries</code> ，用于描述 <code>hash</code> 表的长度</li>
+<li><code>uintptr_t(即 unsigned long)</code> 类型的 <code>mask</code>(掩码) </li>
+<li><code>uintptr_t(即 unsigned long)</code> 类型的 <code>max_hash_displacement</code></li>
+</ul>
+<h3 id="结构体-weak-entry-t"><a href="#结构体-weak-entry-t" class="headerlink" title="结构体: weak_entry_t"></a>结构体: <code>weak_entry_t</code></h3><p>　</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> weak_entry_t {</span><br><span class="line">    DisguisedPtr&lt;objc_object&gt; referent;</span><br><span class="line">    <span class="hljs-keyword">union</span> {</span><br><span class="line">        <span class="hljs-keyword">struct</span> {</span><br><span class="line">            weak_referrer_t *referrers;</span><br><span class="line">            uintptr_t        out_of_line_ness : <span class="hljs-number">2</span>;</span><br><span class="line">            uintptr_t        num_refs : PTR_MINUS_2;</span><br><span class="line">            uintptr_t        mask;</span><br><span class="line">            uintptr_t        max_hash_displacement;</span><br><span class="line">        };</span><br><span class="line">        <span class="hljs-keyword">struct</span> {</span><br><span class="line">            <span class="hljs-comment">// out_of_line_ness field is low bits of inline_referrers[1]</span></span><br><span class="line">            weak_referrer_t  inline_referrers[WEAK_INLINE_COUNT];</span><br><span class="line">        };</span><br><span class="line">    };</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">bool</span> out_of_line() {</span><br><span class="line">        <span class="hljs-keyword">return</span> (out_of_line_ness == REFERRERS_OUT_OF_LINE);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    weak_entry_t&amp; operator=(<span class="hljs-keyword">const</span> weak_entry_t&amp; other) {</span><br><span class="line">        memcpy(<span class="hljs-keyword">this</span>, &amp;other, <span class="hljs-keyword">sizeof</span>(other));</span><br><span class="line">        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    weak_entry_t(objc_object *newReferent, objc_object **newReferrer)</span><br><span class="line">        : referent(newReferent)</span><br><span class="line">    {</span><br><span class="line">        inline_referrers[<span class="hljs-number">0</span>] = newReferrer;</span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">            inline_referrers[i] = <span class="hljs-literal">nil</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>在 <code>C++</code> 中，结构体是由关键词 <code>struct</code> 定义的一种数据类型。他的成员和基类默认为公有的（<code>public</code>）。由关键词 <code>class</code> 定义的成员和基类默认为私有的（<code>private</code>）。这是 <code>C++</code> 中 <strong>结构体和类仅有的区别</strong>。</p>
+</blockquote>
+<h4 id="类-DisguisedPtr"><a href="#类-DisguisedPtr" class="headerlink" title="类: DisguisedPtr"></a>类: <code>DisguisedPtr</code></h4><p>　</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// DisguisedPtr&lt;T&gt; acts like pointer type T*, except the </span></span><br><span class="line"><span class="hljs-comment">// stored value is disguised to hide it from tools like `leaks`.</span></span><br><span class="line"><span class="hljs-comment">// nil is disguised as itself so zero-filled memory works as expected, </span></span><br><span class="line"><span class="hljs-comment">// which means 0x80..00 is also disguised as itself but we don't care.</span></span><br><span class="line"><span class="hljs-comment">// Note that weak_entry_t knows about this encoding.</span></span><br><span class="line">template &lt;<span class="hljs-keyword">typename</span> T&gt;</span><br><span class="line"><span class="hljs-keyword">class</span> DisguisedPtr {</span><br><span class="line">    uintptr_t value; <span class="hljs-comment">// unsigned long</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">static</span> uintptr_t disguise(T* ptr) {</span><br><span class="line">        <span class="hljs-keyword">return</span> -(uintptr_t)ptr;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">static</span> T* undisguise(uintptr_t val) {</span><br><span class="line">        <span class="hljs-keyword">return</span> (T*)-val;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"> public:</span><br><span class="line">    DisguisedPtr() { }</span><br><span class="line">    DisguisedPtr(T* ptr) </span><br><span class="line">        : value(disguise(ptr)) { }</span><br><span class="line">    DisguisedPtr(<span class="hljs-keyword">const</span> DisguisedPtr&lt;T&gt;&amp; ptr) </span><br><span class="line">        : value(ptr.value) { }</span><br><span class="line"></span><br><span class="line">    DisguisedPtr&lt;T&gt;&amp; operator = (T* rhs) {</span><br><span class="line">        value = disguise(rhs);</span><br><span class="line">        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;</span><br><span class="line">    }</span><br><span class="line">    DisguisedPtr&lt;T&gt;&amp; operator = (<span class="hljs-keyword">const</span> DisguisedPtr&lt;T&gt;&amp; rhs) {</span><br><span class="line">        value = rhs.value;</span><br><span class="line">        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">	 <span class="hljs-comment">// 重载了一些指针的运算符</span></span><br><span class="line">    operator T* () <span class="hljs-keyword">const</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> undisguise(value);</span><br><span class="line">    }</span><br><span class="line">    T* operator -&gt; () <span class="hljs-keyword">const</span> { </span><br><span class="line">        <span class="hljs-keyword">return</span> undisguise(value);</span><br><span class="line">    }</span><br><span class="line">    T&amp; operator * () <span class="hljs-keyword">const</span> { </span><br><span class="line">        <span class="hljs-keyword">return</span> *undisguise(value);</span><br><span class="line">    }</span><br><span class="line">    T&amp; operator [] (size_t i) <span class="hljs-keyword">const</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> undisguise(value)[i];</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// pointer arithmetic operators omitted </span></span><br><span class="line">    <span class="hljs-comment">// because we don't currently use them anywhere</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// The address of a __weak variable.</span></span><br><span class="line"><span class="hljs-comment">// These pointers are stored disguised so memory analysis tools</span></span><br><span class="line"><span class="hljs-comment">// don't see lots of interior pointers from the weak table into objects.</span></span><br><span class="line"><span class="hljs-keyword">typedef</span> DisguisedPtr&lt;objc_object *&gt; weak_referrer_t;</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>　</p>
+<p><code>weak_entry_t</code> 包含一个 <code>DisguisedPtr&lt;objc_object&gt;</code>,<code>Disguised</code> 是伪装的意思，根据注释可知，可以将 <code>DisguisedPtr&lt;T&gt;</code> 当成 <code>T</code> * 指针类型即可，在当前场景可看作是一个指向 <code>objc_object</code> 的指针类型</p>
+<p><code>weak_referrer_t</code> 是 <code>DisguisedPtr&lt;objc_object *&gt;</code> 可以看成是 <code>objc_object</code> 指针的地址</p>
+<p>接着是一个 <code>union</code> ，<code>out_of_line_ness</code> 与 <code>inline_referrers[1]</code> 共用了低 <code>2</code> 位，因为</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// out_of_line_ness field overlaps with the low two bits of inline_referrers[1].</span></span><br><span class="line"><span class="hljs-comment">// inline_referrers[1] is a DisguisedPtr of a pointer-aligned address.</span></span><br><span class="line"><span class="hljs-comment">// The low two bits of a pointer-aligned DisguisedPtr will always be 0b00</span></span><br><span class="line"><span class="hljs-comment">// (disguised nil or 0x80..00) or 0b11 (any other address).</span></span><br><span class="line"><span class="hljs-comment">// Therefore out_of_line_ness == 0b10 is used to mark the out-of-line state.</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> REFERRERS_OUT_OF_LINE 2</span></span><br></pre></td></tr></tbody></table></figure>
+<p>注释说明了 <code>DisuisedPtr</code> 的低 <code>2</code> 位不是 <code>0b00</code> 就是 <code>0b11</code>，所以要表示 <code>out-of-line</code> 只能使用 <code>out_of_line_ness == 0b10</code> (当 <code>out_of_line_ness</code> 为 <code>0b01</code> 或 <code>0b10</code> 会分别得到 <code>false</code> 和 <code>true</code> ) </p>
+<p><code>num_refs</code> 占 <code>30 (32位系统)</code> / <code>62(64位系统)</code> 位<br><code>mask</code> 和 <code>max_hash_displacement</code> 在 <code>weak_table_t</code> 中也有。</p>
+<p><code>out_of_line()</code> 方法在上面算是已经说过了</p>
+<p><code>weak_entry_t&amp; operator=(const weak_entry_t&amp; other) {...}</code> 重载运算符 <code>=</code></p>
+<blockquote>
+<p>The  memcpy() function copies n bytes from memory area src<br>to memory area dest.  The memory areas  may  not  overlap.<br>Use memmove(3) if the memory areas do overlap.</p>
+</blockquote>
+<p>从参数 <code>other</code> 所指的内存地址的起始位置开始拷贝 <code>sizeof(other)</code> 字节到 <code>this</code> 指针指向的当前对象的起始地址。</p>
+<p><code>weak_entry_t(objc_object *newReferent, objc_object **newReferrer)
+: referent(newReferent)</code></p>
+<p><code>: referent(newReferent)</code> 是初始化列表，代表用参数 <code>newReferent</code>来初始化结构体中的 <code>referent</code> 属性。联合类型中的 <code>inline_referrers[0]</code> 接收参数 <code>newReferrer</code> ，并将剩下的 <code>1，2，3</code> 都置为 <code>nil</code></p>
+<h3 id="函数-weak-register-no-lock"><a href="#函数-weak-register-no-lock" class="headerlink" title="函数: weak_register_no_lock"></a>函数: <code>weak_register_no_lock</code></h3><p>　</p>
+<p>注释 <code>[2] &amp; [3]</code></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Adds an (object, weak pointer) pair to the weak table.</span></span><br><span class="line"><span class="hljs-comment">/// 添加一个 (对象，弱引用指针）到 weak hash 表中</span></span><br><span class="line"><span class="hljs-keyword">id</span> weak_register_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent, </span><br><span class="line">                         <span class="hljs-keyword">id</span> *referrer, <span class="hljs-keyword">bool</span> crashIfDeallocating);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>具体实现如下:</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Registers a new (object, weak pointer) pair. Creates a new weak</span></span><br><span class="line"><span class="hljs-comment"> * object entry if it does not exist.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param weak_table The global weak table.</span></span><br><span class="line"><span class="hljs-comment"> * @param referent The object pointed to by the weak reference.</span></span><br><span class="line"><span class="hljs-comment"> * @param referrer The weak pointer address.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">id</span> </span><br><span class="line">weak_register_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent_id, </span><br><span class="line">                      <span class="hljs-keyword">id</span> *referrer_id, <span class="hljs-keyword">bool</span> crashIfDeallocating)</span><br><span class="line">{</span><br><span class="line">    objc_object *referent = (objc_object *)referent_id;</span><br><span class="line">    objc_object **referrer = (objc_object **)referrer_id;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (!referent  ||  referent-&gt;isTaggedPointer()) <span class="hljs-keyword">return</span> referent_id;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// ensure that the referenced object is viable</span></span><br><span class="line">    <span class="hljs-keyword">bool</span> deallocating;</span><br><span class="line">    <span class="hljs-keyword">if</span> (!referent-&gt;ISA()-&gt;hasCustomRR()) {</span><br><span class="line">        deallocating = referent-&gt;rootIsDeallocating();</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">else</span> {</span><br><span class="line">        <span class="hljs-built_in">BOOL</span> (*allowsWeakReference)(objc_object *, SEL) = </span><br><span class="line">            (<span class="hljs-built_in">BOOL</span>(*)(objc_object *, SEL))</span><br><span class="line">            object_getMethodImplementation((<span class="hljs-keyword">id</span>)referent, </span><br><span class="line">                                           SEL_allowsWeakReference);</span><br><span class="line">        <span class="hljs-keyword">if</span> ((IMP)allowsWeakReference == _objc_msgForward) {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">        }</span><br><span class="line">        deallocating =</span><br><span class="line">            ! (*allowsWeakReference)(referent, SEL_allowsWeakReference);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (deallocating) {</span><br><span class="line">        <span class="hljs-keyword">if</span> (crashIfDeallocating) {</span><br><span class="line">            _objc_fatal(<span class="hljs-string">"Cannot form weak reference to instance (%p) of "</span></span><br><span class="line">                        <span class="hljs-string">"class %s. It is possible that this object was "</span></span><br><span class="line">                        <span class="hljs-string">"over-released, or is in the process of deallocation."</span>,</span><br><span class="line">                        (<span class="hljs-keyword">void</span>*)referent, object_getClassName((<span class="hljs-keyword">id</span>)referent));</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// now remember it and where it is being stored</span></span><br><span class="line">    weak_entry_t *entry;</span><br><span class="line">    <span class="hljs-keyword">if</span> ((entry = weak_entry_for_referent(weak_table, referent))) {</span><br><span class="line">        append_referrer(entry, referrer);</span><br><span class="line">    } </span><br><span class="line">    <span class="hljs-keyword">else</span> {    		</span><br><span class="line">        weak_entry_t new_entry(referent, referrer);</span><br><span class="line">        weak_grow_maybe(weak_table);</span><br><span class="line">        weak_entry_insert(weak_table, &amp;new_entry);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Do not set *referrer. objc_storeWeak() requires that the </span></span><br><span class="line">    <span class="hljs-comment">// value not change.</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> referent_id;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2017/06/04/5934050e4a1ff.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/06/04/593405137b377.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/06/04/593405103b320.jpg" alt=""></p>
+<p>弱引用属性 <code>obj</code> 在函数 <code>weak_register_no_lock</code> 中传递给行参 <code>referent_id</code>， 赋值给局部变量 <code>referent</code> ，<code>location</code> 传递给形参 <code>referrer_id</code>，赋值给局部变量 <code>referrer</code>。</p>
+<p>经过一些检查，比如是否允许弱引用，弱引用对象是否可用。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Return the weak reference table entry for the given referent. </span></span><br><span class="line"><span class="hljs-comment"> * If there is no entry for referent, return NULL. </span></span><br><span class="line"><span class="hljs-comment"> * Performs a lookup.</span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @param weak_table </span></span><br><span class="line"><span class="hljs-comment"> * @param referent The object. Must not be nil.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return The table of weak referrers to this object. </span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">static</span> weak_entry_t *</span><br><span class="line">weak_entry_for_referent(weak_table_t *weak_table, objc_object *referent)</span><br><span class="line">{</span><br><span class="line">    assert(referent);</span><br><span class="line"></span><br><span class="line">    weak_entry_t *weak_entries = weak_table-&gt;weak_entries;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (!weak_entries) <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line"></span><br><span class="line">    size_t begin = hash_pointer(referent) &amp; weak_table-&gt;mask;</span><br><span class="line">    size_t index = begin;</span><br><span class="line">    size_t hash_displacement = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (weak_table-&gt;weak_entries[index].referent != referent) {</span><br><span class="line">        index = (index+<span class="hljs-number">1</span>) &amp; weak_table-&gt;mask;</span><br><span class="line">        <span class="hljs-keyword">if</span> (index == begin) bad_weak_table(weak_table-&gt;weak_entries);</span><br><span class="line">        hash_displacement++;</span><br><span class="line">        <span class="hljs-keyword">if</span> (hash_displacement &gt; weak_table-&gt;max_hash_displacement) {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> &amp;weak_table-&gt;weak_entries[index];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据 <code>referent</code> 为 <code>key</code> ，在 <code>weak_table</code> 中通过遍历 <code>weak_entries</code> 数组，对<code>referent</code> 属性值进行比较的方式来查找元素，未找到，走 <code>else</code></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">weak_entry_t(objc_object *newReferent, objc_object **newReferrer)</span><br><span class="line">   : referent(newReferent)</span><br><span class="line">{</span><br><span class="line">   inline_referrers[<span class="hljs-number">0</span>] = newReferrer;</span><br><span class="line">   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">       inline_referrers[i] = <span class="hljs-literal">nil</span>;</span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>执行 <code>weak_entry_t</code> 结构体的初始化</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/04/59340513c3fe8.jpg" alt=""></p>
+<p>通过强转操作来伪装指针。接收 <code>newReferrer</code> 即 <code>referrer</code> 为 <code>inline_referrers[0]</code> 在这里 <code>*referrer</code> 等于 <code>nil</code> 所以 <code>inline_referres</code> 数组元素全指向 <code>nil</code>，因为是无符号长整数，因此就是 <code>0</code>。</p>
+<h4 id="函数-weak-grow-maybe"><a href="#函数-weak-grow-maybe" class="headerlink" title="函数: weak_grow_maybe"></a>函数: <code>weak_grow_maybe</code></h4><p>　</p>
+<p>当弱引用的 <code>hash</code> 表的空间使用率达到 <code>3/4</code> 后，扩充 <code>hash</code> 表</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Grow the given zone's table of weak references if it is full.</span></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> weak_grow_maybe(weak_table_t *weak_table)</span><br><span class="line">{</span><br><span class="line">    size_t old_size = TABLE_SIZE(weak_table);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Grow if at least 3/4 full.</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (weak_table-&gt;num_entries &gt;= old_size * <span class="hljs-number">3</span> / <span class="hljs-number">4</span>) {</span><br><span class="line">        weak_resize(weak_table, old_size ? old_size*<span class="hljs-number">2</span> : <span class="hljs-number">64</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="函数-weak-entry-insert"><a href="#函数-weak-entry-insert" class="headerlink" title="函数: weak_entry_insert"></a>函数: <code>weak_entry_insert</code></h4><p>　</p>
+<p>添加元素到弱引用的 <code>hash</code> 表中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Add new_entry to the object's table of weak references.</span></span><br><span class="line"><span class="hljs-comment"> * Does not check whether the referent is already in the table.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> weak_entry_insert(weak_table_t *weak_table, weak_entry_t *new_entry)</span><br><span class="line">{</span><br><span class="line">    weak_entry_t *weak_entries = weak_table-&gt;weak_entries;</span><br><span class="line">    assert(weak_entries != <span class="hljs-literal">nil</span>);</span><br><span class="line"></span><br><span class="line">    size_t begin = hash_pointer(new_entry-&gt;referent) &amp; (weak_table-&gt;mask);</span><br><span class="line">    size_t index = begin;</span><br><span class="line">    size_t hash_displacement = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (weak_entries[index].referent != <span class="hljs-literal">nil</span>) {</span><br><span class="line">        index = (index+<span class="hljs-number">1</span>) &amp; weak_table-&gt;mask;</span><br><span class="line">        <span class="hljs-keyword">if</span> (index == begin) bad_weak_table(weak_entries);</span><br><span class="line">        hash_displacement++;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    weak_entries[index] = *new_entry;</span><br><span class="line">    weak_table-&gt;num_entries++;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (hash_displacement &gt; weak_table-&gt;max_hash_displacement) {</span><br><span class="line">        weak_table-&gt;max_hash_displacement = hash_displacement;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取 <code>new_entry</code> 的 <code>referent</code> 属性，即弱引用的 <code>obj</code> 属性，以其地址的无符号长整数取相反数来做参数，通过移位与位移进行 <code>hash</code> 操作，通过 <code>weak_table-&gt;mask(63 = 0b111111)</code> 掩码保留 <code>hash</code> 操作后的低 <code>6</code> 位( <code>64</code> 位系统),作为索引，接下来用 <code>while (weak_entries[index].referent != nil) {...}</code> ，解决 <code>hash</code> 碰撞的问题。然后添加到 <code>hash</code> 表中，修改表的长度</p>
+<p><img src="https://ooo.0o0.ooo/2017/06/04/59340511e3b8b.jpg" alt=""></p>
+<p>效果如上图所示，<code>static id storeWeak(id *location, objc_object *newObj)</code> 的 <code>location</code> 和 <code>newObj</code> 分别被保存到 <code>weak_table_t</code> 结构体的 <code>referent</code> ，<code>inline_referrers</code> 数组的首位。 </p>
+<p>查找 <code>referent</code> 是否存在的条件是</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">while</span> (weak_table-&gt;weak_entries[index].referent != referent) {</span><br><span class="line">   index = (index+<span class="hljs-number">1</span>) &amp; weak_table-&gt;mask;</span><br><span class="line">   <span class="hljs-keyword">if</span> (index == begin) bad_weak_table(weak_table-&gt;weak_entries);</span><br><span class="line">   hash_displacement++;</span><br><span class="line">   <span class="hljs-keyword">if</span> (hash_displacement &gt; weak_table-&gt;max_hash_displacement) {</span><br><span class="line">       <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;</span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>注释 <code>[2] &amp; [3]</code> </p>
+<p>进入 <code>append_referrer</code> 函数后</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">if</span> (! entry-&gt;out_of_line()) {</span><br><span class="line">   <span class="hljs-comment">// Try to insert inline.</span></span><br><span class="line">   <span class="hljs-keyword">for</span> (size_t i = <span class="hljs-number">0</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">       <span class="hljs-keyword">if</span> (entry-&gt;inline_referrers[i] == <span class="hljs-literal">nil</span>) {</span><br><span class="line">           entry-&gt;inline_referrers[i] = new_referrer;</span><br><span class="line">           <span class="hljs-keyword">return</span>;</span><br><span class="line">       }</span><br><span class="line">   }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>因为 <code>entry-&gt; out_of_line()</code> 等于 <code>false</code> 会尝试添加到 <code>(entry-&gt;inline_referrers</code> 数组中。</p>
+<p>取消 <code>[2]</code> 的注释，因为已经达到 <code>4</code> 个，所以在 <code>obj5</code> 时，会扩充。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Couldn't insert inline. Allocate out of line.</span></span><br><span class="line">weak_referrer_t *new_referrers = (weak_referrer_t *)</span><br><span class="line">  calloc(WEAK_INLINE_COUNT, <span class="hljs-keyword">sizeof</span>(weak_referrer_t));</span><br><span class="line"><span class="hljs-comment">// This constructed table is invalid, but grow_refs_and_insert</span></span><br><span class="line"><span class="hljs-comment">// will fix it and rehash it.</span></span><br><span class="line"><span class="hljs-keyword">for</span> (size_t i = <span class="hljs-number">0</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">  new_referrers[i] = entry-&gt;inline_referrers[i];</span><br><span class="line">}</span><br><span class="line">entry-&gt;referrers = new_referrers;</span><br><span class="line">entry-&gt;num_refs = WEAK_INLINE_COUNT;</span><br><span class="line">entry-&gt;out_of_line_ness = REFERRERS_OUT_OF_LINE;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>会设置 <code>entry-&gt;out_of_line_ness</code> 为 <code>REFERRERS_OUT_OF_LINE</code></p>
+<p>结合注释</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * The internal structure stored in the weak references table. </span></span><br><span class="line"><span class="hljs-comment"> * It maintains and stores</span></span><br><span class="line"><span class="hljs-comment"> * a hash set of weak references pointing to an object.</span></span><br><span class="line"><span class="hljs-comment"> * If out_of_line_ness != REFERRERS_OUT_OF_LINE then the set</span></span><br><span class="line"><span class="hljs-comment"> * is instead a small inline array.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>可知当 <code>weak</code> 变量引用数量不多于 <code>4</code> 个时，会使用数组方式进行存储，而多于 <code>4</code> 个后会用 <code>hash</code> 表的方式进行存储。</p>
+<h3 id="函数-weak-unregister-no-lock"><a href="#函数-weak-unregister-no-lock" class="headerlink" title="函数: weak_unregister_no_lock"></a>函数: <code>weak_unregister_no_lock</code></h3><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Removes an (object, weak pointer) pair from the weak table.</span></span><br><span class="line"><span class="hljs-comment">/// 从 weak hash 表中移除一个(对象，弱引用指针）</span></span><br><span class="line"><span class="hljs-keyword">void</span> weak_unregister_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent, <span class="hljs-keyword">id</span> *referrer);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>具体实现如下:</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Unregister an already-registered weak reference.</span></span><br><span class="line"><span class="hljs-comment"> * This is used when referrer's storage is about to go away, but referent</span></span><br><span class="line"><span class="hljs-comment"> * isn't dead yet. (Otherwise, zeroing referrer later would be a</span></span><br><span class="line"><span class="hljs-comment"> * bad memory access.)</span></span><br><span class="line"><span class="hljs-comment"> * Does nothing if referent/referrer is not a currently active weak reference.</span></span><br><span class="line"><span class="hljs-comment"> * Does not zero referrer.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * FIXME currently requires old referent value to be passed in (lame)</span></span><br><span class="line"><span class="hljs-comment"> * FIXME unregistration should be automatic if referrer is collected</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param weak_table The global weak table.</span></span><br><span class="line"><span class="hljs-comment"> * @param referent The object.</span></span><br><span class="line"><span class="hljs-comment"> * @param referrer The weak reference.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">void</span></span><br><span class="line">weak_unregister_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent_id, </span><br><span class="line">                        <span class="hljs-keyword">id</span> *referrer_id)</span><br><span class="line">{</span><br><span class="line">    objc_object *referent = (objc_object *)referent_id;</span><br><span class="line">    objc_object **referrer = (objc_object **)referrer_id;</span><br><span class="line"></span><br><span class="line">    weak_entry_t *entry;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (!referent) <span class="hljs-keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> ((entry = weak_entry_for_referent(weak_table, referent))) {</span><br><span class="line">        remove_referrer(entry, referrer);</span><br><span class="line">        <span class="hljs-keyword">bool</span> empty = <span class="hljs-literal">true</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (entry-&gt;out_of_line()  &amp;&amp;  entry-&gt;num_refs != <span class="hljs-number">0</span>) {</span><br><span class="line">            empty = <span class="hljs-literal">false</span>;</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">for</span> (size_t i = <span class="hljs-number">0</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">                <span class="hljs-keyword">if</span> (entry-&gt;inline_referrers[i]) {</span><br><span class="line">                    empty = <span class="hljs-literal">false</span>; </span><br><span class="line">                    <span class="hljs-keyword">break</span>;</span><br><span class="line">                }</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (empty) {</span><br><span class="line">            weak_entry_remove(weak_table, entry);</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Do not set *referrer = nil. objc_storeWeak() requires that the </span></span><br><span class="line">    <span class="hljs-comment">// value not change.</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>同样是使用 <code>weak_entry_for_referent</code> 函数查找弱引用是否存在</p>
+<p>注释 <code>[1]</code> &amp; <code>[2]</code> ，取消注释 <code>[3]</code></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Remove old_referrer from set of referrers, if it's present.</span></span><br><span class="line"><span class="hljs-comment"> * Does not remove duplicates, because duplicates should not exist. </span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @todo this is slow if old_referrer is not present. Is this ever the case? </span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * @param entry The entry holding the referrers.</span></span><br><span class="line"><span class="hljs-comment"> * @param old_referrer The referrer to remove. </span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> remove_referrer(weak_entry_t *entry, objc_object **old_referrer)</span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">if</span> (! entry-&gt;out_of_line()) {</span><br><span class="line">        <span class="hljs-keyword">for</span> (size_t i = <span class="hljs-number">0</span>; i &lt; WEAK_INLINE_COUNT; i++) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (entry-&gt;inline_referrers[i] == old_referrer) {</span><br><span class="line">                entry-&gt;inline_referrers[i] = <span class="hljs-literal">nil</span>;</span><br><span class="line">                <span class="hljs-keyword">return</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        ...</span><br><span class="line">        objc_weak_error();</span><br><span class="line">        <span class="hljs-keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    size_t begin = w_hash_pointer(old_referrer) &amp; (entry-&gt;mask);</span><br><span class="line">    size_t index = begin;</span><br><span class="line">    size_t hash_displacement = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-keyword">while</span> (entry-&gt;referrers[index] != old_referrer) {</span><br><span class="line">        index = (index+<span class="hljs-number">1</span>) &amp; entry-&gt;mask;</span><br><span class="line">        <span class="hljs-keyword">if</span> (index == begin) bad_weak_table(entry);</span><br><span class="line">        hash_displacement++;</span><br><span class="line">        <span class="hljs-keyword">if</span> (hash_displacement &gt; entry-&gt;max_hash_displacement) {</span><br><span class="line">            ...</span><br><span class="line">            <span class="hljs-keyword">return</span>;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    entry-&gt;referrers[index] = <span class="hljs-literal">nil</span>;</span><br><span class="line">    entry-&gt;num_refs--;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://ooo.0o0.ooo/2017/06/04/5934050fe1851.jpg" alt=""></p>
+<p>移除时，是以 <code>referrer</code> 属性来比较，发现地址相同，将其置为 <code>nil</code> 来实现移除的效果。</p>
+<h3 id="函数-weak-clear-no-lock"><a href="#函数-weak-clear-no-lock" class="headerlink" title="函数: weak_clear_no_lock"></a>函数: <code>weak_clear_no_lock</code></h3><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// Called on object destruction. Sets all remaining weak pointers to nil.</span></span><br><span class="line"><span class="hljs-comment">/// 在对象调用析构方法时，设置所有留下的弱引用指针为nil</span></span><br><span class="line"><span class="hljs-keyword">void</span> weak_clear_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>具体实现如下:</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Called by dealloc; nils out all weak pointers that point to the </span></span><br><span class="line"><span class="hljs-comment"> * provided object so that they can no longer be used.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param weak_table </span></span><br><span class="line"><span class="hljs-comment"> * @param referent The object being deallocated. </span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">void</span> </span><br><span class="line">weak_clear_no_lock(weak_table_t *weak_table, <span class="hljs-keyword">id</span> referent_id) </span><br><span class="line">{</span><br><span class="line">    objc_object *referent = (objc_object *)referent_id;</span><br><span class="line"></span><br><span class="line">    weak_entry_t *entry = weak_entry_for_referent(weak_table, referent);</span><br><span class="line">    <span class="hljs-keyword">if</span> (entry == <span class="hljs-literal">nil</span>) {</span><br><span class="line">        <span class="hljs-comment">/// XXX shouldn't happen, but does with mismatched CF/objc</span></span><br><span class="line">        <span class="hljs-comment">//printf("XXX no entry for clear deallocating %p\n", referent);</span></span><br><span class="line">        <span class="hljs-keyword">return</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// zero out references</span></span><br><span class="line">    weak_referrer_t *referrers;</span><br><span class="line">    size_t count;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">if</span> (entry-&gt;out_of_line()) {</span><br><span class="line">        referrers = entry-&gt;referrers;</span><br><span class="line">        count = TABLE_SIZE(entry);</span><br><span class="line">    } </span><br><span class="line">    <span class="hljs-keyword">else</span> {</span><br><span class="line">        referrers = entry-&gt;inline_referrers;</span><br><span class="line">        count = WEAK_INLINE_COUNT;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">for</span> (size_t i = <span class="hljs-number">0</span>; i &lt; count; ++i) {</span><br><span class="line">        objc_object **referrer = referrers[i];</span><br><span class="line">        <span class="hljs-keyword">if</span> (referrer) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (*referrer == referent) {</span><br><span class="line">                *referrer = <span class="hljs-literal">nil</span>;</span><br><span class="line">            }</span><br><span class="line">            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (*referrer) {</span><br><span class="line">                _objc_inform(<span class="hljs-string">"__weak variable at %p holds %p instead of %p. "</span></span><br><span class="line">                             <span class="hljs-string">"This is probably incorrect use of "</span></span><br><span class="line">                             <span class="hljs-string">"objc_storeWeak() and objc_loadWeak(). "</span></span><br><span class="line">                             <span class="hljs-string">"Break on objc_weak_error to debug.\n"</span>, </span><br><span class="line">                             referrer, (<span class="hljs-keyword">void</span>*)*referrer, (<span class="hljs-keyword">void</span>*)referent);</span><br><span class="line">                objc_weak_error();</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    weak_entry_remove(weak_table, entry);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>会被 <code>dealloc</code> 调用，根据注释和代码可知同样以 <code>referent</code> 为 <code>key</code> 遍历,然后依次将置为 <code>nil</code>，但是测试时，走的都是 <code>if (entry == nil)</code> 然后直接 <code>return</code>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　</p>
+<p>弱引用查找根据 <code>referent</code> 属性，首次会被存储到 <code>weak_table_t</code> 结构体 <code>referent</code> 和 <code>inline_referrers[0]</code>,当继续添加时，如果引用次数不大于 <code>4</code> 个保存在数组<code>inline_referrers</code> 中，当超过 <code>4</code> 个后以 <code>hash</code> 表的形式进行存储。移除时，根据 <code>referrer</code> 从 <code>inline_referrers</code> 中移除。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/2550774/what-is-size-t-in-c">int - What is size_t in C? - Stack Overflow</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/C%2B%2B类">wiki - C++类</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/位段">wiki - 位段</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.skrenta.com/rt/man/memcpy.3.html">Linux Programmer’s Manual memcpy</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/40200818/inline-bool-objc-objectistaggedpointer-how-does-the-function-work">inline bool objc_object::isTaggedPointer(); How does the function work?</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/掩码">wiki - 掩码</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/哈希表">wiki - 哈希表</a></li>
+<li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/573294/when-to-use-reinterpret-cast">When to use reinterpret_cast?</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/reference/kernel/osobject?language=objc">OSObject</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/yangxudong/p/3872053.html">c++ operator操作符的两种用法：重载和隐式类型转换，string转其他基本数据类型的简洁实现string_cast</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000000345680">c++中冒号（:）和双冒号（::）的用法</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/200d26f2c447">ARC 引用计数之weak</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/06/25/Technology_ITunes-Store-unavailable-not-resolved/">iTunes Store 不可用 (没解决)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/05/29/iOSer_Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/">ObjC Runtime 中 Weak 属性的实现 (上)</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

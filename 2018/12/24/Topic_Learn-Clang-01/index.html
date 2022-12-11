@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Clang学习历程 概述 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="介绍ClangClang是LLVM(Low Level Virtual Machine)项目提供的工具链中的编译器的前端部分 LLVM项目是模块化和可重用的编译器和工具链技术的集合,LLVM的一大特色就是，有着独立的、完善的、严格约束的中间代码表示。这种中间代码，就是LLVM的字节码，是LLVM抽象的精髓，前端生成这种中间代码，后端自动进行各类优化分析，让用LLVM开发的编译器，都能用上最先见的后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Clang学习历程 概述">
+<meta property="og:url" content="http://yoursite.com/2018/12/24/Topic_Learn-Clang-01/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="介绍ClangClang是LLVM(Low Level Virtual Machine)项目提供的工具链中的编译器的前端部分 LLVM项目是模块化和可重用的编译器和工具链技术的集合,LLVM的一大特色就是，有着独立的、完善的、严格约束的中间代码表示。这种中间代码，就是LLVM的字节码，是LLVM抽象的精髓，前端生成这种中间代码，后端自动进行各类优化分析，让用LLVM开发的编译器，都能用上最先见的后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c209307bec78.png">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c209307e1a8a.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c2093083e804.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c209307ec195.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c2093088c2d6.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c2093081db5b.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c2093087ddbf.jpg">
+<meta property="og:image" content="https://i.loli.net/2018/12/24/5c209308d624f.jpg">
+<meta property="article:published_time" content="2018-12-24T08:02:38.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:10:47.589Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2018/12/24/5c209307bec78.png">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+            <a class="navbar-item "
+               href="/categories/Topic">Topic</a>
+            
+            <a class="navbar-item "
+               href="/archives">Timeline</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#介绍">1&nbsp;&nbsp;<b>介绍</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Clang">1.1&nbsp;&nbsp;Clang</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#编译">3&nbsp;&nbsp;<b>编译</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#替换Clang">4&nbsp;&nbsp;<b>替换Clang</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#代码">5&nbsp;&nbsp;<b>代码</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Clang学习历程 概述
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2018-12-24T08:02:38.000Z" itemprop="datePublished">12月 24 2018</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Topic/">Topic</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            8 分钟 读完 (约 1249 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="Clang"><a href="#Clang" class="headerlink" title="Clang"></a>Clang</h3><p><code>Clang</code>是<code>LLVM</code>(Low Level Virtual Machine)项目提供的工具链中的编译器的前端部分</p>
+<p>LLVM项目是模块化和可重用的编译器和工具链技术的集合,LLVM的一大特色就是，有着独立的、完善的、严格约束的中间代码表示。这种中间代码，就是LLVM的字节码，是LLVM抽象的精髓，前端生成这种中间代码，后端自动进行各类优化分析，让用LLVM开发的编译器，都能用上最先见的后端优化技术。</p>
+<span id="more"></span>
+
+<p>编译器编译流程如下</p>
+<center>
+
+<p><img src="https://i.loli.net/2018/12/24/5c209307bec78.png" alt="编译流程"></p>
+</center>
+
+<p>来自《编译原理》</p>
+<p>编译器分成前端与后端两部分</p>
+<p>前端负责处理源代码，后端负责生成目标代码</p>
+<p><img src="https://i.loli.net/2018/12/24/5c209307e1a8a.jpg" alt=""><br>来自<a href="#refer3">参考链接3</a></p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS Hign Sierra 10.13.6<br>Xcode10.1</p>
+</blockquote>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>获取<code>llvm</code>源代码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/llvm.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<code>Clang</code>源代码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% <span class="hljs-built_in">cd</span> llvm/tools</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/clang.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<code>compiler-rt</code>源代码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## 定位到llvm工程目录下</span></span><br><span class="line">% <span class="hljs-built_in">cd</span> llvm</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/compiler-rt.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<code>libomp</code>源代码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% <span class="hljs-built_in">cd</span> llvm</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/openmp.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取<code>libcxx</code>和<code>libcxxabi</code>源代码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">% <span class="hljs-built_in">cd</span> llvm</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/libcxx.git/</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/libcxxabi.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p>获取测试用例</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">% <span class="hljs-built_in">cd</span> llvm</span><br><span class="line">% git <span class="hljs-built_in">clone</span> https://git.llvm.org/git/test-suite.git/</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Clang</code> 使用<code>CMake</code>(一个用于构建，测试和打包软件的开源跨平台工具系列)进行构建</p>
+<p><span id="cmake"></span></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># LLVM 禁止源码内编译(in-tree build is not supported),创建一个与llvm工程同级的build目录</span></span><br><span class="line">% <span class="hljs-built_in">cd</span> src/</span><br><span class="line">% mkdir build</span><br><span class="line">% <span class="hljs-built_in">cd</span> build </span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 安装cmake</span></span><br><span class="line">% brew install cmake</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## -G &lt;generator-name&gt;</span></span><br><span class="line"><span class="hljs-comment">##             Specify a build system generator.</span></span><br><span class="line"><span class="hljs-comment">## cmake [{-D &lt;var&gt;=&lt;value&gt;}...] -P &lt;cmake-script-file&gt;</span></span><br><span class="line"><span class="hljs-comment">## Create or update a cmake cache entry.</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">##              When cmake is first run in an empty build tree, it ## creates a CMakeCache.txt file and populates it with customizable settings for</span></span><br><span class="line"><span class="hljs-comment">##              the project.  This option may be used to specify a setting that takes priority over the projectas default value.  The option may</span></span><br><span class="line"><span class="hljs-comment">##              be repeated for as many cache entries as desired.</span></span><br><span class="line"><span class="hljs-comment">## 会被存在build目录下的CMakeCache.txt中</span></span><br><span class="line"><span class="hljs-comment">## -Wno-dev 忽略开发警告</span></span><br><span class="line">% cmake -G Ninja ../llvm/ \</span><br><span class="line">  	-DCMAKE_INSTALL_PREFIX=/opt/llvm  \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=Release \</span><br><span class="line">    -DLLVM_ENABLE_FFI=ON \</span><br><span class="line">    -DLLVM_BUILD_LLVM_DYLIB=ON \</span><br><span class="line">    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \</span><br><span class="line">    -DLLVM_TARGETS_TO_BUILD=<span class="hljs-string">"host;AMDGPU"</span> \</span><br><span class="line">    -Wno-dev</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 安装 ninja</span></span><br><span class="line"><span class="hljs-comment">## Ninja is a small build system with a focus on speed. </span></span><br><span class="line"><span class="hljs-comment">## It differs from other build systems in two major respects: it is designed to have its input files generated by a higher-level build system, and it is designed to run builds as fast as possible.</span></span><br><span class="line">% brew install ninja</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## -j N     run N jobs in parallel [default=6, derived from CPUs available]</span></span><br><span class="line"><span class="hljs-comment">## CMake Error at cmake_install.cmake:36 (file):</span></span><br><span class="line"><span class="hljs-comment">##  file INSTALL cannot set permissions on "/opt/llvm/include/llvm"</span></span><br><span class="line"><span class="hljs-comment">## 加上sudo</span></span><br><span class="line">% sudo ninja -j4 install</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h2 id="替换Clang"><a href="#替换Clang" class="headerlink" title="替换Clang"></a>替换<code>Clang</code></h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## 查看系统的Clang的位置</span></span><br><span class="line">~% <span class="hljs-built_in">which</span> clang</span><br><span class="line">/usr/bin/clang</span><br><span class="line"></span><br><span class="line">~% clang -v </span><br><span class="line">Apple LLVM version 10.0.0 (clang-1000.11.45.5)</span><br><span class="line">Target: x86_64-apple-darwin17.7.0</span><br><span class="line">Thread model: posix</span><br><span class="line">InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据<a href="#refer7">参考链接7</a></p>
+<p>新建<code>Xcode</code>工程</p>
+<p><img src="https://i.loli.net/2018/12/24/5c2093083e804.jpg" alt=""></p>
+<p>创建用户自定义配置<code>CC</code>,并设置<code>DEBUG</code>时的值为编译完成后<code>Clang</code>二进制的位置。</p>
+<p><img src="https://i.loli.net/2018/12/24/5c209307ec195.jpg" alt=""></p>
+<p><code>⌘ B</code> 编译,查看编译输出的日志,证明已经使用了编译的<code>Clang</code></p>
+<p><img src="https://i.loli.net/2018/12/24/5c2093088c2d6.jpg" alt=""></p>
+<p>错误原因:</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Unknown argument: '-index-store-path'</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据<a href="#refer10">参考链接10</a>,在<code>Build Setting</code> 中搜索<code>index</code>并将<code>Enable Index-While-Building Functionality</code>选项设置为<code>NO</code></p>
+<p><img src="https://i.loli.net/2018/12/24/5c2093081db5b.jpg" alt=""></p>
+<p><code>⌘ B</code><br><img src="https://i.loli.net/2018/12/24/5c2093087ddbf.jpg" alt=""></p>
+<p>错误原因: </p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fatal error: error in backend: No available targets are compatible with triple "arm64-apple-ios9.0.0"</span><br><span class="line">clang-8: error: clang frontend command failed with exit code 70 (use -v to see invocation)</span><br><span class="line">clang version 8.0.0 (https://git.llvm.org/git/clang.git/ a6eb16ed631365f3bbadd0450ab52746c151794d) (https://git.llvm.org/git/llvm.git/ 1c98a2b870d058132698ae4d67ef954b13dc41b4)</span><br><span class="line">Target: aarch64-apple-darwin17.7.0</span><br><span class="line">Thread model: posix</span><br><span class="line">InstalledDir: /opt/llvm/bin</span><br></pre></td></tr></tbody></table></figure>
+
+<p>分析: 因为该手机架构是<code>arm64</code>而<a href="#cmake"><code>cmake</code>编译时</a>指定的是 <code>-DLLVM_TARGETS_TO_BUILD="host;AMDGPU"</code>,并没有对应的架构</p>
+<p><a target="_blank" rel="noopener" href="https://llvm.org/docs/HowToBuildOnARM.html">HowToBuildOnARM</a></p>
+<blockquote>
+<p>cmake $LLVM_SRC_DIR -DCMAKE_BUILD_TYPE=Release <br>                    -DLLVM_TARGETS_TO_BUILD=”ARM;X86;AArch64”</p>
+</blockquote>
+<p>操作</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## 重新编译</span></span><br><span class="line">% cmake -G Ninja ../llvm/ \</span><br><span class="line">  	-DCMAKE_INSTALL_PREFIX=/opt/llvm  \</span><br><span class="line">    -DCMAKE_BUILD_TYPE=Release \</span><br><span class="line">    -DLLVM_ENABLE_FFI=ON \</span><br><span class="line">    -DLLVM_BUILD_LLVM_DYLIB=ON \</span><br><span class="line">    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \</span><br><span class="line">    -DLLVM_TARGETS_TO_BUILD=<span class="hljs-string">"host;ARM;X86;AArch64"</span> \</span><br><span class="line">    -Wno-dev</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 确认</span></span><br><span class="line">% grep -r <span class="hljs-string">"LLVM_TARGETS_TO_BUILD"</span> CMakeCache.txt</span><br><span class="line">CMakeCache.txt:LLVM_TARGETS_TO_BUILD:STRING=host;ARM;X86;AArch64</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 安装 只会处理有变更的部分</span></span><br><span class="line">% sudo ninja -j4 install</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>⌘ B</code> 成功</p>
+<p><img src="https://i.loli.net/2018/12/24/5c209308d624f.jpg" alt=""></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/TryLLVM">TryLLVM</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://llvm.org/">llvm.org</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/opensource/os-cn-clang/index.html">结构化编译器前端 Clang 介绍</a></li>
+<li><span id="refer3"><a target="_blank" rel="noopener" href="https://www.kancloud.cn/digest/xf-llvm/162258">编译器架构的王者LLVM</a></span></li>
+<li><a target="_blank" rel="noopener" href="https://cmake.org/">cmake.org</a></li>
+<li><a target="_blank" rel="noopener" href="https://trac.macports.org/wiki/XcodeVersionInfo">wiki-XcodeVersionInfo</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_23599965/article/details/83891692">下载标准库libcxx出现svn: E000104: Error running context: Connection reset by peer的解决方案</a></li>
+<li><span id="refer7"><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/598b7094b8c1">安装 LLVM + Clang</a></span></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverrun.com/cn/q/6317801">如何让Xcode使用clang的替代版本</a></li>
+<li><a target="_blank" rel="noopener" href="https://apple.stackexchange.com/questions/254925/why-cant-i-create-a-directory-under-opt-without-sudo">Why can’t I create a directory under /opt without sudo</a></li>
+<li><span id="refer10"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/46331918/compilation-error-when-using-xcode-9-0-with-clang-cannot-specify-o-when-genera">compilation-error-when-using-xcode-9-0-with-clang-cannot-specify-o-when-genera</a></span></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2018/12/28/Topic_Learn-Clang-02/">Clang学习历程 编译过程-词法分析</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/11/28/iOSer_Escape-iPhone-device-export-ipa-resign/">越狱 iPhone 设备导出 ipa &amp;&amp; 重签名</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

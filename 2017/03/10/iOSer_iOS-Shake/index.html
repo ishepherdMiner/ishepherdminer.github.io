@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>iOS摇一摇 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言简单实现摇一摇功能 环境 &amp; 工具 macOS Sierra 10.12.3Xcode 8.2.1cartool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS摇一摇">
+<meta property="og:url" content="http://yoursite.com/2017/03/10/iOSer_iOS-Shake/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="前言简单实现摇一摇功能 环境 &amp; 工具 macOS Sierra 10.12.3Xcode 8.2.1cartool">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/03/10/58c21f4e9b536.gif">
+<meta property="article:published_time" content="2017-03-10T03:09:37.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:05:37.617Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/03/10/58c21f4e9b536.gif">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+            <a class="navbar-item "
+               href="/categories/Topic">Topic</a>
+            
+            <a class="navbar-item "
+               href="/archives">Timeline</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境-amp-工具">2&nbsp;&nbsp;<b>环境 &amp;amp; 工具</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#理论">3&nbsp;&nbsp;<b>理论</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#实践">4&nbsp;&nbsp;<b>实践</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#效果图">4.1&nbsp;&nbsp;效果图</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            iOS摇一摇
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-03-10T03:09:37.000Z" itemprop="datePublished">3月 10 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            3 分钟 读完 (约 477 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>简单实现摇一摇功能</p>
+<h2 id="环境-amp-工具"><a href="#环境-amp-工具" class="headerlink" title="环境 &amp; 工具"></a>环境 &amp; 工具</h2><blockquote>
+<p>macOS Sierra 10.12.3<br>Xcode 8.2.1<br>cartool </p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><ol>
+<li>设置引用允许摇一摇</li>
+<li>设置第一响应者</li>
+<li>在触发摇一摇后的事件中添加代码即可</li>
+</ol>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>　　先从<em>iTunes<em>中下载一个有摇一摇功能的</em>App</em>,拆包找资源,发现图片资源放在<em>Assets.car</em>中了<em>Google</em>后,发现这个<a target="_blank" rel="noopener" href="https://github.com/steventroughtonsmith/cartool">cartool</a>可以,原理是使用了<em>CoreUI.framework</em>中私有方法,因为不管怎么加密,最终的工程中要引用正常的图片,那必定有解密的方法,<em>git</em>下源代码,编译后得到二进制的可执行文件<br>　　使用如下指令导出<em>Assets.car</em>中的图片资源</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 桌面上新建了Assets目录</span></span><br><span class="line">» ~/Desktop  ./cartool Assets.car Assets</span><br></pre></td></tr></tbody></table></figure>
+
+<p>找到我需要的图片资源</p>
+<p>新建工程,编写相应的代码</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="hljs-keyword">self</span>.view.backgroundColor = [<span class="hljs-built_in">UIColor</span> whiteColor];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 允许摇一摇</span></span><br><span class="line">    [<span class="hljs-built_in">UIApplication</span> sharedApplication].applicationSupportsShakeToEdit = <span class="hljs-literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 成为第一响应者</span></span><br><span class="line">    [<span class="hljs-keyword">self</span> becomeFirstResponder];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 获得图片</span></span><br><span class="line">    _shakeImageView = [[<span class="hljs-built_in">UIImageView</span> alloc] initWithImage:[<span class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@"shakeImage"</span>]];</span><br><span class="line">    _shakeImageView.frame = <span class="hljs-keyword">self</span>.view.bounds;</span><br><span class="line">    _shakeImageView.contentMode = <span class="hljs-built_in">UIViewContentModeScaleAspectFit</span>;</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:_shakeImageView];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 自动触发摇一摇</span></span><br><span class="line">    [<span class="hljs-keyword">self</span> performSelector:<span class="hljs-keyword">@selector</span>(motionBegan:withEvent:) withObject:<span class="hljs-literal">nil</span>];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionBegan:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-built_in">UIEvent</span> *)event {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"开始摇动"</span>);</span><br><span class="line">    [<span class="hljs-keyword">self</span> shakeSender];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionCancelled:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-built_in">UIEvent</span> *)event {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"取消摇动"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)motionEnded:(<span class="hljs-built_in">UIEventSubtype</span>)motion withEvent:(<span class="hljs-built_in">UIEvent</span> *)event {</span><br><span class="line">    <span class="hljs-keyword">if</span> (event.subtype == <span class="hljs-built_in">UIEventSubtypeMotionShake</span>) { <span class="hljs-comment">// 判断是否是摇动结束</span></span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"摇动结束"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)shakeSender {</span><br><span class="line">    <span class="hljs-comment">// 绕着垂直于手机的z轴旋转,呈现的就是摇一摇动画</span></span><br><span class="line">    <span class="hljs-built_in">CABasicAnimation</span>* shake = [<span class="hljs-built_in">CABasicAnimation</span> animationWithKeyPath:<span class="hljs-string">@"transform.rotation.z"</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 设置抖动幅度</span></span><br><span class="line">    shake.fromValue = [<span class="hljs-built_in">NSNumber</span> numberWithFloat:<span class="hljs-number">-0.2</span>];</span><br><span class="line">    </span><br><span class="line">    shake.toValue = [<span class="hljs-built_in">NSNumber</span> numberWithFloat:+<span class="hljs-number">0.2</span>];</span><br><span class="line">    </span><br><span class="line">    shake.duration = <span class="hljs-number">0.2</span>;</span><br><span class="line">    </span><br><span class="line">    shake.autoreverses = <span class="hljs-literal">YES</span>; <span class="hljs-comment">//是否重复</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// 测试时</span></span><br><span class="line">    shake.repeatCount = <span class="hljs-number">99</span>;</span><br><span class="line">    </span><br><span class="line">    [_shakeImageView.layer addAnimation:shake forKey:<span class="hljs-string">@"imageView"</span>];</span><br><span class="line">    </span><br><span class="line">    _shakeImageView.alpha = <span class="hljs-number">1.0</span>;</span><br><span class="line">    </span><br><span class="line">    [<span class="hljs-built_in">UIView</span> animateWithDuration:<span class="hljs-number">2.0</span> delay:<span class="hljs-number">2.0</span> options:<span class="hljs-built_in">UIViewAnimationOptionCurveEaseIn</span> animations:^{} completion:<span class="hljs-literal">nil</span>];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h3><p><img src="https://ooo.0o0.ooo/2017/03/10/58c21f4e9b536.gif" alt=""></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/Daily_modules">工程Demo</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/4f2d1791505f">iOS「摇一摇」功能的实现</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/donwei8/article/details/52161384">提取assets.car中的图片 .car文件的解压</a></li>
+</ul>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/03/11/Technology_Something-about-Charles/">Charles使用二三事</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/03/06/Technology_FFmpeg-study-notes-01-environmental-building/">FFmpeg学习笔记01(环境搭建)</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

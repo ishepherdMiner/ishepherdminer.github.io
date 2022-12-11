@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>WKWebView &amp; UIWebView 进度条动画 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　 本文目的是实现一个网络请求进度条的动画效果，主要结构分为以下三个部分  JAProgressWKWebView : 使用 WKWebView 的场景 JAProgressUIWebView : 使用 UIWebView 的场景 JAProgressView : 一般情况下使用 NSURLSession 的场景  环境　  macOS Sierra 10.12.4Xcode 8.3.2iPh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WKWebView &amp; UIWebView 进度条动画">
+<meta property="og:url" content="http://yoursite.com/2017/05/13/iOSer_WKWebView-UIWebView-progress-monitoring/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="导语　 本文目的是实现一个网络请求进度条的动画效果，主要结构分为以下三个部分  JAProgressWKWebView : 使用 WKWebView 的场景 JAProgressUIWebView : 使用 UIWebView 的场景 JAProgressView : 一般情况下使用 NSURLSession 的场景  环境　  macOS Sierra 10.12.4Xcode 8.3.2iPh">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/05/13/5916e500b91bb.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/05/13/5916e4f730186.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/05/13/5916e5003f081.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/05/13/5916e5c5a6442.gif">
+<meta property="article:published_time" content="2017-05-13T10:48:11.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:07:35.015Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/05/13/5916e500b91bb.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+            <a class="navbar-item "
+               href="/categories/Topic">Topic</a>
+            
+            <a class="navbar-item "
+               href="/archives">Timeline</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#WKWebView">3&nbsp;&nbsp;<b>WKWebView</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原理">3.1&nbsp;&nbsp;原理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践">3.2&nbsp;&nbsp;实践</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#UIWebView">4&nbsp;&nbsp;<b>UIWebView</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原理-1">4.1&nbsp;&nbsp;原理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Transfer-Encoding">4.1.1&nbsp;&nbsp;Transfer-Encoding</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#我的方案">4.1.2&nbsp;&nbsp;我的方案</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-1">4.2&nbsp;&nbsp;实践</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#UIView">5&nbsp;&nbsp;<b>UIView</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原理-2">5.1&nbsp;&nbsp;原理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#实践-2">5.2&nbsp;&nbsp;实践</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#效果图">6&nbsp;&nbsp;<b>效果图</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            WKWebView &amp; UIWebView 进度条动画
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-05-13T10:48:11.000Z" itemprop="datePublished">5月 13 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            24 分钟 读完 (约 3556 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>本文目的是实现一个网络请求进度条的动画效果，主要结构分为以下三个部分</p>
+<ul>
+<li><em>JAProgressWKWebView</em> : 使用 <em>WKWebView</em> 的场景</li>
+<li><em>JAProgressUIWebView</em> : 使用 <em>UIWebView</em> 的场景</li>
+<li><em>JAProgressView</em> : 一般情况下使用 <em>NSURLSession</em> 的场景</li>
+</ul>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
+<blockquote>
+<p>macOS Sierra 10.12.4<br>Xcode 8.3.2<br>iPhone 6S (10.1.1)<br>iPad Mini 2 (8.4)</p>
+</blockquote>
+<span id="more"></span>
+
+<h2 id="WKWebView"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</h2><p>　</p>
+<blockquote>
+<p>A WKWebView object displays interactive web content, such as for an in-app browser. You can use the WKWebView class to embed web content in your app. To do so, create a WKWebView object, set it as the view, and send it a request to load web content.<br>Important<br>Starting in iOS 8.0 and OS X 10.10, use WKWebView to add web content to your app. Do not use UIWebView or WebView.</p>
+</blockquote>
+<p><em>WKWebView</em> 是 <em>Apple</em> 在 <em>iOS 8</em> 时用于替代 <em>UIWebView</em> 的控件</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>　</p>
+<p> <em>WKWebView</em> 控件提供了如下的属性,用于描述当前页面的加载进度，采用 <em>KVO</em> 的方式，获得进度值并进行相应的操作。</p>
+<p> 　</p>
+ <figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> <span class="hljs-built_in">WKWebView</span>.h</span><br><span class="line"> </span><br><span class="line"> <span class="hljs-comment">/*! @abstract An estimate of what fraction of the current navigation has been completed.</span></span><br><span class="line"><span class="hljs-comment"> @discussion This value ranges from 0.0 to 1.0 based on the total number of</span></span><br><span class="line"><span class="hljs-comment"> bytes expected to be received, including the main document and all of its</span></span><br><span class="line"><span class="hljs-comment"> potential subresources. After a navigation completes, the value remains at 1.0</span></span><br><span class="line"><span class="hljs-comment"> until a new navigation starts, at which point it is reset to 0.0.</span></span><br><span class="line"><span class="hljs-comment"> @link WKWebView @/link is key-value observing (KVO) compliant for this</span></span><br><span class="line"><span class="hljs-comment"> property.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readonly</span>) <span class="hljs-keyword">double</span> estimatedProgress;</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>　</p>
+<p>添加观察者</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">instancetype</span>)initWithFrame:(<span class="hljs-built_in">CGRect</span>)frame configuration:(<span class="hljs-built_in">WKWebViewConfiguration</span> *)configuration {</span><br><span class="line">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> initWithFrame:frame configuration:configuration]) {</span><br><span class="line">        [<span class="hljs-keyword">self</span> setup];</span><br><span class="line">        [<span class="hljs-keyword">self</span> addObserver:<span class="hljs-keyword">self</span> forKeyPath:JAkEstimatedProgress options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> | <span class="hljs-built_in">NSKeyValueObservingOptionOld</span> context:<span class="hljs-literal">nil</span>];</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>刷新进度</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">NSKeyValueChangeKey</span>,<span class="hljs-keyword">id</span>&gt; *)change context:(<span class="hljs-keyword">void</span> *)context {</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">double</span> newKey = [[change objectForKey:<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] doubleValue];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.progressBarlayer flush:newKey];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>移除观察者</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)dealloc {</span><br><span class="line">    <span class="hljs-keyword">@try</span> {</span><br><span class="line">        [<span class="hljs-keyword">self</span> removeObserver:<span class="hljs-keyword">self</span> forKeyPath:JAkEstimatedProgress];</span><br><span class="line">    } <span class="hljs-keyword">@catch</span> (<span class="hljs-built_in">NSException</span> *exception) {</span><br><span class="line">        <span class="hljs-comment">// NSLog(@"%@",exception);</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"JAWKViewController.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"JAProgressView.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">JAWKViewController</span> () &lt;<span class="hljs-title">WKNavigationDelegate</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) JAProgressWKWebView *webView;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">JAWKViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="hljs-keyword">self</span>.view.backgroundColor = [<span class="hljs-built_in">UIColor</span> colorWithWhite:<span class="hljs-number">0.92</span> alpha:<span class="hljs-number">1.0</span>];</span><br><span class="line">    <span class="hljs-keyword">self</span>.automaticallyAdjustsScrollViewInsets = <span class="hljs-literal">false</span>;</span><br><span class="line">    <span class="hljs-built_in">WKWebViewConfiguration</span> *theConfiguration = [[<span class="hljs-built_in">WKWebViewConfiguration</span> alloc] init];</span><br><span class="line">    JAProgressWKWebView *webView = [[JAProgressWKWebView alloc] initWithFrame:<span class="hljs-built_in">CGRectMake</span>(<span class="hljs-number">0</span>, <span class="hljs-number">64</span>, [<span class="hljs-built_in">UIScreen</span> mainScreen].bounds.size.width, [<span class="hljs-built_in">UIScreen</span> mainScreen].bounds.size.height - <span class="hljs-number">64</span>) configuration:theConfiguration];</span><br><span class="line">    webView.backgroundColor = [<span class="hljs-built_in">UIColor</span> groupTableViewBackgroundColor];</span><br><span class="line">    webView.opaque = <span class="hljs-literal">false</span>;</span><br><span class="line">    webView.navigationDelegate = <span class="hljs-keyword">self</span>;</span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:_webView = webView];</span><br><span class="line">    <span class="hljs-comment">// [self.navigationController.navigationBar addSubview:webView.progressView];</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewWillAppear:(<span class="hljs-built_in">BOOL</span>)animated {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewWillAppear:animated];</span><br><span class="line">    <span class="hljs-built_in">NSURL</span> *nsurl=[<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-keyword">self</span>.urlString];</span><br><span class="line">    <span class="hljs-built_in">NSURLRequest</span> *nsrequest=[<span class="hljs-built_in">NSURLRequest</span> requestWithURL:nsurl];</span><br><span class="line">    [_webView loadRequest:nsrequest];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)webView:(<span class="hljs-built_in">WKWebView</span> *)webView didFinishNavigation:(<span class="hljs-built_in">WKNavigation</span> *)navigation {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"加载完成"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)webView:(<span class="hljs-built_in">WKWebView</span> *)webView didFailNavigation:(<span class="hljs-built_in">WKNavigation</span> *)navigation withError:(<span class="hljs-built_in">NSError</span> *)error {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"加载失败"</span>);</span><br><span class="line">    [_webView finish];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)didReceiveMemoryWarning {</span><br><span class="line">    [<span class="hljs-keyword">super</span> didReceiveMemoryWarning];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="UIWebView"><a href="#UIWebView" class="headerlink" title="UIWebView"></a>UIWebView</h2><p>　</p>
+<blockquote>
+<p>You can use the UIWebView class to embed web content in your app. To do so, create a UIWebView object, attach it to a window, and send it a request to load web content. You can also use this class to move back and forward in the history of webpages, and you can even set some web content properties programmatically.<br>Note<br>In apps that run in iOS 8 and later, use the WKWebView class instead of using UIWebView. Additionally, consider setting the WKPreferences property javaScriptEnabled to NO if you render files that are not supposed to run JavaScript.</p>
+</blockquote>
+<h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>　</p>
+<p>先叉开一下话题，看看造好的轮子是如何实现检测网络进度的。下面以 <a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking">AFNetworking</a> 为例进行说明</p>
+<p>在 <em>AFN</em> 中有一个 <em>UIWebView+AFNetworking.h</em> 文件，是为 <em>UIWebView</em> 添加的分类，里面有</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)loadRequest:(<span class="hljs-built_in">NSURLRequest</span> *)request</span><br><span class="line">           progress:(<span class="hljs-built_in">NSProgress</span> * _Nullable __autoreleasing * _Nullable)progress</span><br><span class="line">            success:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> * (^)(<span class="hljs-built_in">NSHTTPURLResponse</span> *response, <span class="hljs-built_in">NSString</span> *HTML))success</span><br><span class="line">            failure:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSError</span> *error))failure;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>最终调用的是调用了下面的方法</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)loadRequest:(<span class="hljs-built_in">NSURLRequest</span> *)request</span><br><span class="line">           MIMEType:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> *)MIMEType</span><br><span class="line">   textEncodingName:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> *)textEncodingName</span><br><span class="line">           progress:(<span class="hljs-built_in">NSProgress</span> * _Nullable __autoreleasing * _Nullable)progress</span><br><span class="line">            success:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSData</span> * (^)(<span class="hljs-built_in">NSHTTPURLResponse</span> *response, <span class="hljs-built_in">NSData</span> *data))success</span><br><span class="line">            failure:(<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">void</span> (^)(<span class="hljs-built_in">NSError</span> *error))failure; </span><br></pre></td></tr></tbody></table></figure>
+
+<p>关注 <em>progress</em> 参数，要求传递的是一个 <em>progress</em> 对象的地址</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSURLSessionDataTask</span> *dataTask;</span><br><span class="line">...</span><br><span class="line"><span class="hljs-keyword">self</span>.af_URLSessionTask = dataTask;</span><br><span class="line"><span class="hljs-keyword">if</span> (progress != <span class="hljs-literal">nil</span>) {</span><br><span class="line">   *progress = [<span class="hljs-keyword">self</span>.sessionManager downloadProgressForTask:dataTask];</span><br><span class="line">}</span><br><span class="line">[<span class="hljs-keyword">self</span>.af_URLSessionTask resume];</span><br></pre></td></tr></tbody></table></figure>
+
+<p>顾名思义 <em>progress</em> 会接收 <em>downloadProgressForTask:</em> 方法的返回值，即本次请求的进度</p>
+<p>进到 <em>downloadProgressForTask:</em> 方法中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-built_in">NSProgress</span> *)downloadProgressForTask:(<span class="hljs-built_in">NSURLSessionTask</span> *)task {</span><br><span class="line">    <span class="hljs-keyword">return</span> [[<span class="hljs-keyword">self</span> delegateForTask:task] downloadProgress];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>查看 <em>downloadProgress</em> 属性在哪个类中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">AFURLSessionManagerTaskDelegate</span> : <span class="hljs-title">NSObject</span> &lt;<span class="hljs-title">NSURLSessionTaskDelegate</span>, <span class="hljs-title">NSURLSessionDataDelegate</span>, <span class="hljs-title">NSURLSessionDownloadDelegate</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">strong</span>) <span class="hljs-built_in">NSProgress</span> *downloadProgress;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在文件中以 <em>downloadProgress</em> 进行搜索会发现</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> mark - NSProgress Tracking</span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)setupProgressForTask:(<span class="hljs-built_in">NSURLSessionTask</span> *)task {</span><br><span class="line">    __<span class="hljs-keyword">weak</span> __typeof__(task) weakTask = task;</span><br><span class="line">...    </span><br><span class="line">    [task addObserver:<span class="hljs-keyword">self</span></span><br><span class="line">           forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesReceived))</span><br><span class="line">              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span></span><br><span class="line">              context:<span class="hljs-literal">NULL</span>];</span><br><span class="line">              </span><br><span class="line">    [task addObserver:<span class="hljs-keyword">self</span></span><br><span class="line">         forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesExpectedToReceive))</span><br><span class="line">              options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span></span><br><span class="line">              context:<span class="hljs-literal">NULL</span>];</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    [<span class="hljs-keyword">self</span>.downloadProgress addObserver:<span class="hljs-keyword">self</span></span><br><span class="line">                            forKeyPath:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(fractionCompleted))</span><br><span class="line">                               options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span></span><br><span class="line">                               context:<span class="hljs-literal">NULL</span>];</span><br><span class="line">...                               </span><br></pre></td></tr></tbody></table></figure>
+
+<p>找到响应的方法</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">NSString</span> *,<span class="hljs-keyword">id</span>&gt; *)change context:(<span class="hljs-keyword">void</span> *)context {</span><br><span class="line">    <span class="hljs-keyword">if</span> ([object isKindOfClass:[<span class="hljs-built_in">NSURLSessionTask</span> <span class="hljs-keyword">class</span>]] || [object isKindOfClass:[<span class="hljs-built_in">NSURLSessionDownloadTask</span> <span class="hljs-keyword">class</span>]]) {</span><br><span class="line">        <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesReceived))]) {</span><br><span class="line">            <span class="hljs-keyword">self</span>.downloadProgress.completedUnitCount = [change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] longLongValue];</span><br><span class="line">        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesExpectedToReceive))]) {</span><br><span class="line">            <span class="hljs-keyword">self</span>.downloadProgress.totalUnitCount = [change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] longLongValue];</span><br><span class="line">        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesSent))]) {</span><br><span class="line">            <span class="hljs-keyword">self</span>.uploadProgress.completedUnitCount = [change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] longLongValue];</span><br><span class="line">        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([keyPath isEqualToString:<span class="hljs-built_in">NSStringFromSelector</span>(<span class="hljs-keyword">@selector</span>(countOfBytesExpectedToSend))]) {</span><br><span class="line">            <span class="hljs-keyword">self</span>.uploadProgress.totalUnitCount = [change[<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] longLongValue];</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    ...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>进度的计算是根据 <em>NSURLSession</em>  的两个只读的属性 <em>countOfBytesReceived</em> &amp; <em>countOfBytesExpectedToReceive</em> ，前者是已接收到的数据长度，后者是期望接收到的总长度，来自于 <em>Http</em> 头中的 <em>Content-Length</em> 字段，通过接收这两个值的变化对应去修改 <em>NSProgress</em> 中的 <em>completedUnitCount</em> &amp; <em>totalUnitCount</em> 这两个值</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/* The size of the job whose progress is being reported, and how much of it has been completed so far, respectively. For an NSProgress with a kind of NSProgressKindFile, the unit of these properties is bytes while the NSProgressFileTotalCountKey and NSProgressFileCompletedCountKey keys in the userInfo dictionary are used for the overall count of files. For any other kind of NSProgress, the unit of measurement you use does not matter as long as you are consistent. The values may be reported to the user in the localizedDescription and localizedAdditionalDescription.</span></span><br><span class="line"><span class="hljs-comment"> </span></span><br><span class="line"><span class="hljs-comment">   If the receiver NSProgress object is a "leaf progress" (no children), then the fractionCompleted is generally completedUnitCount / totalUnitCount. If the receiver NSProgress has children, the fractionCompleted will reflect progress made in child objects in addition to its own completedUnitCount. As children finish, the completedUnitCount of the parent will be updated.</span></span><br><span class="line"><span class="hljs-comment">*/</span></span><br><span class="line"><span class="hljs-keyword">@property</span> int64_t totalUnitCount;</span><br><span class="line"><span class="hljs-keyword">@property</span> int64_t completedUnitCount;</span><br></pre></td></tr></tbody></table></figure>
+
+<p><em>fractionCompleted</em> 属性是根据 <em>completedUnitCount</em> / <em>totalUnitCount</em> 得到的。</p>
+<p><del>因此很自然的一种思路是去监听传递的 <em>progress</em> 参数的 <em>fractionCompleted</em></del></p>
+<p>再此之前先设断点证明下确实走了 <em>setupProgressForTask:</em></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/13/5916e500b91bb.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/13/5916e4f730186.jpg" alt=""></p>
+<p>同时因为 <em>AFURLSessionManagerTaskDelegate</em> 并没有暴露给外部，不去修改框架比较好 <em>KVO</em> 是一对多的，也算比较合适。</p>
+<p>可添加类似如下的代码对 <em>progress</em> 参数的 <em>fractionCompleted</em> 属性进行观察</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)viewWillAppear:(<span class="hljs-built_in">BOOL</span>)animated {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewWillAppear:animated];</span><br><span class="line">    <span class="hljs-built_in">NSURL</span> *nsurl=[<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-keyword">self</span>.urlString];</span><br><span class="line">    <span class="hljs-built_in">NSURLRequest</span> *nsrequest=[<span class="hljs-built_in">NSURLRequest</span> requestWithURL:nsurl];</span><br><span class="line">    <span class="hljs-built_in">NSProgress</span> *progress = [[<span class="hljs-built_in">NSProgress</span> alloc] init];</span><br><span class="line">    [_webView loadRequest:nsrequest progress:&amp;progress success:^<span class="hljs-built_in">NSString</span> * _Nonnull(<span class="hljs-built_in">NSHTTPURLResponse</span> * _Nonnull response, <span class="hljs-built_in">NSString</span> * _Nonnull HTML) {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">@""</span>;</span><br><span class="line">    } failure:^(<span class="hljs-built_in">NSError</span> * _Nonnull error) {</span><br><span class="line">        </span><br><span class="line">    }];</span><br><span class="line">    </span><br><span class="line">    [progress addObserver:_webView forKeyPath:<span class="hljs-string">@"fractionCompleted"</span> options:<span class="hljs-built_in">NSKeyValueObservingOptionNew</span> context:<span class="hljs-literal">NULL</span>];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> mark - UIWebViewDelegate</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)webViewDidFinishLoad:(<span class="hljs-built_in">UIWebView</span> *)webView {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"加载完成"</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>但是会发现 <em>_webView</em> 对象中的方法</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">NSKeyValueChangeKey</span>,<span class="hljs-keyword">id</span>&gt; *)change context:(<span class="hljs-keyword">void</span> *)context {</span><br><span class="line">    <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{</span><br><span class="line">        <span class="hljs-keyword">double</span> newKey = [[change objectForKey:<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] doubleValue];        </span><br><span class="line">        [<span class="hljs-keyword">self</span>.progressBarlayer flush:newKey];</span><br><span class="line">        <span class="hljs-keyword">if</span> (<span class="hljs-number">1</span> - newKey &lt; <span class="hljs-number">0.01</span>) {</span><br><span class="line">            [<span class="hljs-keyword">self</span> finish];</span><br><span class="line">        }</span><br><span class="line">    });</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>并没有被执行，跟踪 <em>AFNetowrking</em></p>
+<p><img src="https://ooo.0o0.ooo/2017/05/13/5916e5003f081.jpg" alt=""></p>
+<p><em>progress</em> 的 <em>fractionCompleted</em> 一直都为 <em>0</em> 因为 <em>countOfBytesExpectedToReceive</em> 的总长度是 <em>-1</em> (<em>0xffffffffffffffff</em>) 这一点可以在 <a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking/issues/1844">issues - Progress and KVO never called</a> 得到佐证，主要是因为请求头的 <em>Content-Length</em> 字段未设置。</p>
+<p>访问 <em><a target="_blank" rel="noopener" href="https://www.baidu.com">https://www.baidu.com</a></em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-number">0x0000000000000b6d</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-number">2925</span></span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.response</span><br><span class="line">&lt;<span class="hljs-built_in">NSHTTPURLResponse</span>: <span class="hljs-number">0x174030160</span>&gt; { URL: https:<span class="hljs-comment">//www.baidu.com/ } { status code: 200, headers {</span></span><br><span class="line">    Connection = <span class="hljs-string">"keep-alive"</span>;</span><br><span class="line">    <span class="hljs-string">"Content-Encoding"</span> = gzip;</span><br><span class="line">    <span class="hljs-string">"Content-Type"</span> = <span class="hljs-string">"text/html"</span>;</span><br><span class="line">    Date = <span class="hljs-string">"Sat, 13 May 2017 09:14:00 GMT"</span>;</span><br><span class="line">    P3p = <span class="hljs-string">"CP=\" OTI DSP COR IVA OUR IND COM \""</span>;</span><br><span class="line">    Server = <span class="hljs-string">"bfe/1.0.8.18"</span>;</span><br><span class="line">    <span class="hljs-string">"Set-Cookie"</span> = <span class="hljs-string">"BAIDUID=623A610A25264EC09CC77FECD44A7CE4:FG=1; max-age=31536000; expires=Sun, 13-May-18 09:14:00 GMT; domain=.baidu.com; path=/; version=1, H_WISE_SIDS=102431; path=/; domain=.baidu.com, BDSVRTM=9; path=/, __bsi=13135479753770821857_00_33_N_N_11_0303_C02F_N_N_Y_0; expires=Sat, 13-May-17 09:14:05 GMT; domain=www.baidu.com; path=/"</span>;</span><br><span class="line">    Traceid = <span class="hljs-number">149466684009534243944441198276626132688</span>;</span><br><span class="line">    <span class="hljs-string">"Transfer-Encoding"</span> = Identity;</span><br><span class="line">    Vary = <span class="hljs-string">"Accept-Encoding"</span>;</span><br><span class="line">} }</span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.countOfBytesExpectedToReceive</span><br><span class="line"><span class="hljs-number">2925</span></span><br><span class="line"></span><br><span class="line">(lldb) </span><br></pre></td></tr></tbody></table></figure>
+
+<p>访问 <em><a target="_blank" rel="noopener" href="https://www.bing.com">https://www.bing.com</a></em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-number">0xffffffffffffffff</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-number">-1</span></span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.response</span><br><span class="line">&lt;<span class="hljs-built_in">NSHTTPURLResponse</span>: <span class="hljs-number">0x17022c6c0</span>&gt; { URL: https:<span class="hljs-comment">//www.bing.com/ } { status code: 200, headers {</span></span><br><span class="line">    <span class="hljs-string">"Cache-Control"</span> = <span class="hljs-string">"private, max-age=0"</span>;</span><br><span class="line">    <span class="hljs-string">"Content-Encoding"</span> = gzip;</span><br><span class="line">    <span class="hljs-string">"Content-Length"</span> = <span class="hljs-number">32317</span>;</span><br><span class="line">    <span class="hljs-string">"Content-Type"</span> = <span class="hljs-string">"text/html; charset=utf-8"</span>;</span><br><span class="line">    Date = <span class="hljs-string">"Sat, 13 May 2017 09:16:11 GMT"</span>;</span><br><span class="line">    P3P = <span class="hljs-string">"CP=\"NON UNI COM NAV STA LOC CURa DEVa PSAa PSDa OUR IND\""</span>;</span><br><span class="line">    Server = <span class="hljs-string">"Microsoft-IIS/10.0"</span>;</span><br><span class="line">    <span class="hljs-string">"Set-Cookie"</span> = <span class="hljs-string">"_SS=SID=3C3C051FE4516B5A18710F9EE5F06A6F; domain=.bing.com; path=/, _EDGE_S=SID=3C3C051FE4516B5A18710F9EE5F06A6F; path=/; httponly; domain=bing.com"</span>;</span><br><span class="line">    Vary = <span class="hljs-string">"Accept-Encoding"</span>;</span><br><span class="line">    <span class="hljs-string">"X-MSEdge-Ref"</span> = <span class="hljs-string">"Ref A: 0505C24953B941CA96CF74FAE726B298 Ref B: BJ1EDGE0322 Ref C: Sat May 13 02:16:11 2017 PST"</span>;</span><br><span class="line">} }</span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.countOfBytesExpectedToReceive</span><br><span class="line"><span class="hljs-number">-1</span></span><br><span class="line"></span><br><span class="line">(lldb) </span><br></pre></td></tr></tbody></table></figure>
+
+<p>访问 <em><a target="_blank" rel="noopener" href="https://www.google.com">https://www.google.com</a></em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-number">0xffffffffffffffff</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-number">-1</span></span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.response</span><br><span class="line">&lt;<span class="hljs-built_in">NSHTTPURLResponse</span>: <span class="hljs-number">0x170033180</span>&gt; { URL: https:<span class="hljs-comment">//www.google.com/ } { status code: 200, headers {</span></span><br><span class="line">    <span class="hljs-string">"Alt-Svc"</span> = <span class="hljs-string">"quic=\":443\"; ma=2592000; v=\"37,36,35\""</span>;</span><br><span class="line">    <span class="hljs-string">"Cache-Control"</span> = private;</span><br><span class="line">    <span class="hljs-string">"Content-Encoding"</span> = gzip;</span><br><span class="line">    <span class="hljs-string">"Content-Type"</span> = <span class="hljs-string">"text/html; charset=Big5"</span>;</span><br><span class="line">    Date = <span class="hljs-string">"Sat, 13 May 2017 09:24:46 GMT"</span>;</span><br><span class="line">    Expires = <span class="hljs-string">"Sat, 13 May 2017 09:24:46 GMT"</span>;</span><br><span class="line">    P3P = <span class="hljs-string">"CP=\"This is not a P3P policy! See https://www.google.com/support/accounts/answer/151657?hl=en for more info.\""</span>;</span><br><span class="line">    Server = gws;</span><br><span class="line">    <span class="hljs-string">"Set-Cookie"</span> = <span class="hljs-string">"NID=103=adCbLI6_cKax8zD5WTTC6Xq-Vviron4fGJDZeVf1OEiQhvSD9L3Q53n8HrmZS8--BUJIIAbR_cb5UwweP0nvyOKD0J4tbOLf6tr-p_Vva5mnAiYyWKKzsOhqtc9SjBhW; expires=Sun, 12-Nov-2017 09:24:46 GMT; path=/; domain=.google.com; HttpOnly"</span>;</span><br><span class="line">    <span class="hljs-string">"Transfer-Encoding"</span> = Identity;</span><br><span class="line">    <span class="hljs-string">"X-Frame-Options"</span> = SAMEORIGIN;</span><br><span class="line">    <span class="hljs-string">"X-XSS-Protection"</span> = <span class="hljs-string">"1; mode=block"</span>;</span><br><span class="line">} }</span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.countOfBytesExpectedToReceive</span><br><span class="line"><span class="hljs-number">-1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>第二次</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-number">0x0000000000002ae7</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- Hook <span class="hljs-number">1</span> (expr -- <span class="hljs-keyword">@import</span> <span class="hljs-built_in">UIKit</span>)</span><br><span class="line"></span><br><span class="line">- Hook <span class="hljs-number">2</span> ( target stop-hook disable)</span><br><span class="line"><span class="hljs-number">10983</span></span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.response</span><br><span class="line">&lt;<span class="hljs-built_in">NSHTTPURLResponse</span>: <span class="hljs-number">0x17003cd60</span>&gt; { URL: https:<span class="hljs-comment">//www.google.com/ } { status code: 200, headers {</span></span><br><span class="line">    <span class="hljs-string">"Alt-Svc"</span> = <span class="hljs-string">"quic=\":443\"; ma=2592000; v=\"37,36,35\""</span>;</span><br><span class="line">    <span class="hljs-string">"Cache-Control"</span> = private;</span><br><span class="line">    <span class="hljs-string">"Content-Encoding"</span> = gzip;</span><br><span class="line">    <span class="hljs-string">"Content-Type"</span> = <span class="hljs-string">"text/html; charset=Big5"</span>;</span><br><span class="line">    Date = <span class="hljs-string">"Sat, 13 May 2017 10:09:01 GMT"</span>;</span><br><span class="line">    Expires = <span class="hljs-string">"Sat, 13 May 2017 10:09:01 GMT"</span>;</span><br><span class="line">    P3P = <span class="hljs-string">"CP=\"This is not a P3P policy! See https://www.google.com/support/accounts/answer/151657?hl=en for more info.\""</span>;</span><br><span class="line">    Server = gws;</span><br><span class="line">    <span class="hljs-string">"Set-Cookie"</span> = <span class="hljs-string">"NID=103=f7RScaRo91vaPuGoStsjYJrDLUSANq6fwzBypLCvMeUasdsx443kwCfnzioj167ke0Buh6c6qVsA_xiT8olCjCvOtOd4P9drblpB5PkDMGiWg0J6qJnBuhoeFQIREDVT; expires=Sun, 12-Nov-2017 10:09:01 GMT; path=/; domain=.google.com; HttpOnly"</span>;</span><br><span class="line">    <span class="hljs-string">"Transfer-Encoding"</span> = Identity;</span><br><span class="line">    <span class="hljs-string">"X-Frame-Options"</span> = SAMEORIGIN;</span><br><span class="line">    <span class="hljs-string">"X-XSS-Protection"</span> = <span class="hljs-string">"1; mode=block"</span>;</span><br><span class="line">} }</span><br><span class="line"></span><br><span class="line">(lldb) po dataTask.countOfBytesExpectedToReceive</span><br><span class="line"><span class="hljs-number">10983</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center"><em>Content-Length</em></th>
+<th align="center"><em>countOfBytesExpectedToReceive</em></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><em><a target="_blank" rel="noopener" href="https://www.baidu.com">https://www.baidu.com</a></em></td>
+<td align="center">❎</td>
+<td align="center">✔️</td>
+</tr>
+<tr>
+<td align="center"><em><a target="_blank" rel="noopener" href="https://www.bing.com">https://www.bing.com</a></em></td>
+<td align="center">✔️</td>
+<td align="center">❎</td>
+</tr>
+<tr>
+<td align="center"><em><a target="_blank" rel="noopener" href="https://www.google.com">https://www.google.com</a></em></td>
+<td align="center">❎</td>
+<td align="center">❎ / ✔️</td>
+</tr>
+</tbody></table>
+<p>搜索 <em>Content-Length</em> 字段的相关内容</p>
+<p><a target="_blank" rel="noopener" href="http://greenbytes.de/tech/webdav/rfc2616.html#header.content-length">rfc2616.html#header.content-length</a></p>
+<p><a target="_blank" rel="noopener" href="http://greenbytes.de/tech/webdav/rfc2616.html#message.length">rfc2616.html#message.length</a></p>
+<p>在 <em>HTTP 1.1</em> 中应用可以通过 <em>Content-Lenght</em> 字段确定消息的长度，</p>
+<p><em>Content-Length</em> 失效的几种情况</p>
+<ul>
+<li>状态码为 <em>1xx</em>,<em>204</em> 和 <em>304</em></li>
+<li>设置了 <em>Transfer-Encoding</em> 且该值不等于 <em>identity</em></li>
+<li>同时存在 <em>Transfer-Encoding</em> 和 <em>Content-Length</em> </li>
+<li>响应的数据类型为 <em>multipart/byteranges</em> 且没有指定 <em>transfer-length</em> </li>
+<li>服务器关闭连接 </li>
+</ul>
+<p>在 <a target="_blank" rel="noopener" href="http://blog.csdn.net/yankai0219/article/details/8269922">这里</a></p>
+<blockquote>
+<p>1、在Http 1.0及之前版本中，content-length字段可有可无。<br>2、在http1.1及之后版本。如果是keep alive，则content-length和chunk必然是二选一。若是非keep alive，则和http1.0一样。content-length可有可无。</p>
+</blockquote>
+<h4 id="Transfer-Encoding"><a href="#Transfer-Encoding" class="headerlink" title="Transfer-Encoding"></a><code>Transfer-Encoding</code></h4><p>　</p>
+<p>用来指定数据传输的格式，有如下的格式</p>
+<blockquote>
+<p>Transfer-Encoding: chunked<br>Transfer-Encoding: compress<br>Transfer-Encoding: deflate<br>Transfer-Encoding: gzip<br>Transfer-Encoding: identity</p>
+</blockquote>
+<p><em>chunked</em> 的格式详情可以参考 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/分块传输编码">Wiki-分块传输编码</a></p>
+<blockquote>
+<p>如果一个HTTP消息（请求消息或应答消息）的Transfer-Encoding消息头的值为chunked，那么，消息体由数量未定的块组成，并以最后一个大小为0的块为结束。<br>每一个非空的块都以该块包含数据的字节数（字节数以十六进制表示）开始，跟随一个CRLF （回车及换行），然后是数据本身，最后块CRLF结束。在一些实现中，块大小和CRLF之间填充有白空格（0x20）。<br>最后一块是单行，由块大小（0），一些可选的填充白空格，以及CRLF。最后一块不再包含任何数据，但是可以发送可选的尾部，包括消息头字段。<br>消息最后以CRLF结尾。</p>
+</blockquote>
+<p>但是到这里依然没完全解决我的困惑，在 <em>iOS</em> 中如何比较获得网络请求的总长度？</p>
+<p>寻找头文件后发现，在 <em>NSURLResponse</em> 对象中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*! </span></span><br><span class="line"><span class="hljs-comment">    @method expectedContentLength</span></span><br><span class="line"><span class="hljs-comment">    @abstract Returns the expected content length of the receiver.</span></span><br><span class="line"><span class="hljs-comment">    @discussion Some protocol implementations report a content length</span></span><br><span class="line"><span class="hljs-comment">    as part of delivering load metadata, but not all protocols</span></span><br><span class="line"><span class="hljs-comment">    guarantee the amount of data that will be delivered in actuality.</span></span><br><span class="line"><span class="hljs-comment">    Hence, this method returns an expected amount. Clients should use</span></span><br><span class="line"><span class="hljs-comment">    this value as an advisory, and should be prepared to deal with</span></span><br><span class="line"><span class="hljs-comment">    either more or less data.</span></span><br><span class="line"><span class="hljs-comment">    @result The expected content length of the receiver, or -1 if</span></span><br><span class="line"><span class="hljs-comment">    there is no expectation that can be arrived at regarding expected</span></span><br><span class="line"><span class="hljs-comment">    content length.</span></span><br><span class="line"><span class="hljs-comment">*/</span></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">readonly</span>) <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> expectedContentLength;</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="我的方案"><a href="#我的方案" class="headerlink" title="我的方案"></a>我的方案</h4><p>　</p>
+<p>经过测试,在 <em>NSURLSessionDataDelegate</em> 的代理方法<em>URLSession:dataTask:didReceiveData:</em> , <em>data</em> 即为每次获取的数据,而 <em>dataTask</em> 中的 <em>response</em> 属性的 <em>expectedContentLength</em> 有时会在数据并没有完全接收到时就可以获得长度,因此对 <em>UIWebView</em> 用这个值来获取网络请求进度,采用的主要思路是</p>
+<ul>
+<li>在未获得 <em>expectedContentLength</em> 长度时，用数组保存每次 <em>data</em> 的值</li>
+<li>获取到 <em>expectedContentLength</em> ， 根据数组中的值算出进度，在本地实现动画。</li>
+</ul>
+<p>网络请求暂时决定还是依赖 <em>AFNetworking</em> , 添加了一个分类，在运行时替换 <em>URLSession:dataTask:didReceiveData:</em> 方法来实现</p>
+<h3 id="实践-1"><a href="#实践-1" class="headerlink" title="实践"></a>实践</h3><p>　</p>
+<p>分类 <em>AFHTTPSessionManager+JACoder.h</em></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"AFHTTPSessionManager+JACoder.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;objc/message.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">NSString</span> *kAFJAReceiveDataNotification =  <span class="hljs-string">@"kAFNReceiveDataNotification"</span>;</span><br><span class="line"><span class="hljs-built_in">NSString</span> *kAFJAReceiveResponseNotification = <span class="hljs-string">@"kAFJAReceiveResponseNotification"</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">AFHTTPSessionManager</span> (<span class="hljs-title">JACoder</span>)</span></span><br><span class="line"></span><br><span class="line">+ (<span class="hljs-keyword">void</span>)load {</span><br><span class="line">    Method originalMethod = class_getInstanceMethod(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">@selector</span>(URLSession:dataTask:didReceiveData:));</span><br><span class="line">    Method swizzledMethod = class_getInstanceMethod(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">@selector</span>(ja_URLSession:dataTask:didReceiveData:));</span><br><span class="line">    <span class="hljs-built_in">BOOL</span> didAddMethod =</span><br><span class="line">    class_addMethod(<span class="hljs-keyword">self</span>,</span><br><span class="line">                    <span class="hljs-keyword">@selector</span>(URLSession:dataTask:didReceiveData:),</span><br><span class="line">                    method_getImplementation(swizzledMethod),</span><br><span class="line">                    method_getTypeEncoding(swizzledMethod));</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">if</span> (didAddMethod) {</span><br><span class="line">        class_replaceMethod(<span class="hljs-keyword">self</span>,</span><br><span class="line">                            <span class="hljs-keyword">@selector</span>(ja_URLSession:dataTask:didReceiveData:),</span><br><span class="line">                            method_getImplementation(originalMethod),</span><br><span class="line">                            method_getTypeEncoding(originalMethod));</span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)ja_URLSession:(<span class="hljs-built_in">NSURLSession</span> *)session</span><br><span class="line">             dataTask:(<span class="hljs-built_in">NSURLSessionDataTask</span> *)dataTask</span><br><span class="line">       didReceiveData:(<span class="hljs-built_in">NSData</span> *)data {</span><br><span class="line">    </span><br><span class="line">    [<span class="hljs-keyword">self</span> ja_URLSession:session dataTask:dataTask didReceiveData:data];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// ...</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (dataTask.response.expectedContentLength != <span class="hljs-number">-1</span> &amp;&amp; <span class="hljs-keyword">self</span>.isLock == <span class="hljs-literal">false</span>) {</span><br><span class="line"><span class="hljs-comment">//        NSLog(@"data = %ld",data.length);</span></span><br><span class="line"><span class="hljs-comment">//        NSLog(@"dataTask = %lld",dataTask.response.expectedContentLength);</span></span><br><span class="line">        [[<span class="hljs-built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:kAFJAReceiveDataNotification object:data];</span><br><span class="line">        [[<span class="hljs-built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:kAFJAReceiveResponseNotification object:dataTask];</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">self</span>.lock = <span class="hljs-literal">true</span>;</span><br><span class="line">        </span><br><span class="line">    }<span class="hljs-keyword">else</span> {</span><br><span class="line">        </span><br><span class="line"><span class="hljs-comment">//        NSLog(@"data = %ld",data.length);</span></span><br><span class="line">        [[<span class="hljs-built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:kAFJAReceiveDataNotification object:data];</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-built_in">BOOL</span>)isLock {</span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-built_in">BOOL</span>)[objc_getAssociatedObject(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">@selector</span>(isLock)) doubleValue];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)setLock:(<span class="hljs-built_in">BOOL</span>)lock {</span><br><span class="line">    objc_setAssociatedObject(<span class="hljs-keyword">self</span>, <span class="hljs-keyword">@selector</span>(setLock:), @(lock), OBJC_ASSOCIATION_ASSIGN);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>接收到已获取总长度的通知后的相应处理,为了和 <em>WKWebView</em> 统一，在继承 <em>UIWebView</em> 的子类中添加了 <em>estimatedProgress</em> 属性，同样用 <em>KVO</em> 去处理。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)receiveWithNotification:(<span class="hljs-built_in">NSNotification</span> *)noti {</span><br><span class="line">    <span class="hljs-keyword">if</span> ([noti.object isKindOfClass:[<span class="hljs-built_in">NSURLSessionDataTask</span> <span class="hljs-keyword">class</span>]]) {</span><br><span class="line">        <span class="hljs-built_in">NSURLSessionDataTask</span> *dataTask = (<span class="hljs-built_in">NSURLSessionDataTask</span> *)noti.object;</span><br><span class="line">        <span class="hljs-keyword">self</span>.expectedContentLength = dataTask.response.expectedContentLength;</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.estimatedProgress == <span class="hljs-number">0</span> ) {</span><br><span class="line">            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.records.count == <span class="hljs-number">0</span>) {</span><br><span class="line">                <span class="hljs-keyword">self</span>.estimatedProgress = <span class="hljs-number">1.0</span>;</span><br><span class="line">            }<span class="hljs-keyword">else</span> {</span><br><span class="line">                <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSData</span> *record <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.records) {</span><br><span class="line">                    <span class="hljs-keyword">self</span>.estimatedProgress += (<span class="hljs-built_in">CGFloat</span>)record.length / <span class="hljs-keyword">self</span>.expectedContentLength;</span><br><span class="line">                }</span><br><span class="line">                <span class="hljs-keyword">self</span>.records = [<span class="hljs-built_in">NSArray</span> array];</span><br><span class="line">            }</span><br><span class="line">        }<span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSData</span> *record <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.records) {</span><br><span class="line">                <span class="hljs-keyword">self</span>.estimatedProgress += (<span class="hljs-built_in">CGFloat</span>)record.length / <span class="hljs-keyword">self</span>.expectedContentLength;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-comment">// NSLog(@"noti dataTask:%f",self.estimatedProgress);</span></span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">if</span> ([noti.object isKindOfClass:[<span class="hljs-built_in">NSData</span> <span class="hljs-keyword">class</span>]]) {</span><br><span class="line">        <span class="hljs-built_in">NSData</span> *data = (<span class="hljs-built_in">NSData</span> *)noti.object;</span><br><span class="line">        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.expectedContentLength != <span class="hljs-number">-1</span> &amp;&amp; <span class="hljs-keyword">self</span>.expectedContentLength != <span class="hljs-number">0</span>) {</span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSData</span> *record <span class="hljs-keyword">in</span> <span class="hljs-keyword">self</span>.records) {</span><br><span class="line">                <span class="hljs-keyword">self</span>.estimatedProgress += (<span class="hljs-built_in">CGFloat</span>)record.length / <span class="hljs-keyword">self</span>.expectedContentLength;</span><br><span class="line">            }</span><br><span class="line">            <span class="hljs-keyword">self</span>.estimatedProgress += (<span class="hljs-built_in">CGFloat</span>)data.length / <span class="hljs-keyword">self</span>.expectedContentLength;</span><br><span class="line">            <span class="hljs-comment">// NSLog(@"noti data:%f",self.estimatedProgress);</span></span><br><span class="line">            <span class="hljs-keyword">self</span>.records = [<span class="hljs-built_in">NSArray</span> array];</span><br><span class="line">        }<span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-built_in">NSMutableArray</span> *recordsM = [<span class="hljs-built_in">NSMutableArray</span> arrayWithArray:<span class="hljs-keyword">self</span>.records];</span><br><span class="line">            [recordsM addObject:data];</span><br><span class="line">            <span class="hljs-keyword">self</span>.records = [recordsM <span class="hljs-keyword">copy</span>];</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><em>estimatedProgress</em> 属性变化的处理</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)observeValueForKeyPath:(<span class="hljs-built_in">NSString</span> *)keyPath ofObject:(<span class="hljs-keyword">id</span>)object change:(<span class="hljs-built_in">NSDictionary</span>&lt;<span class="hljs-built_in">NSKeyValueChangeKey</span>,<span class="hljs-keyword">id</span>&gt; *)change context:(<span class="hljs-keyword">void</span> *)context {</span><br><span class="line">    <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{</span><br><span class="line">        <span class="hljs-keyword">double</span> newKey = [[change objectForKey:<span class="hljs-built_in">NSKeyValueChangeNewKey</span>] doubleValue];        </span><br><span class="line">        [<span class="hljs-keyword">self</span>.progressBarlayer flush:newKey];</span><br><span class="line">        <span class="hljs-keyword">if</span> (<span class="hljs-number">1</span> - newKey &lt; <span class="hljs-number">0.01</span>) {</span><br><span class="line">            [<span class="hljs-keyword">self</span> finish];</span><br><span class="line">        }</span><br><span class="line">    });</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="UIView"><a href="#UIView" class="headerlink" title="UIView"></a>UIView</h2><p>　</p>
+<p>对于一般的 <em>App</em> 请求,大多都是返回 <em>JSON</em> 数据的接口,也可以做一个进度条的效果。</p>
+<h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>　</p>
+<p>一事不烦二主，也用 <em>AFNetworking</em> 做请求。上面已经分析了 <em>AFNetworking</em> 如何检测请求进度的, 大多数情况下的请求进度肯定是没问题的。</p>
+<h3 id="实践-2"><a href="#实践-2" class="headerlink" title="实践"></a>实践</h3><p>　</p>
+<p>用 <em>AFNetworking</em> 发起请求，根据回调返回的 <em>NSProgress</em> 值实现刷新操作。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"JAUIViewController.h"</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">&lt;AFNetworking.h&gt;</span></span></span><br><span class="line"><span class="hljs-meta">#import <span class="hljs-meta-string">"JAProgressView.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">JAUIViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">strong</span>) JAProgressView *progressView;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">JAUIViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewDidLoad {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="hljs-keyword">self</span>.view.backgroundColor = [<span class="hljs-built_in">UIColor</span> colorWithWhite:<span class="hljs-number">0.92</span> alpha:<span class="hljs-number">1.0</span>];</span><br><span class="line">    _progressView = [[JAProgressView alloc] init];</span><br><span class="line">    [<span class="hljs-keyword">self</span>.navigationController.navigationBar addSubview:_progressView];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)viewWillAppear:(<span class="hljs-built_in">BOOL</span>)animated {</span><br><span class="line">    [<span class="hljs-keyword">super</span> viewWillAppear:animated];</span><br><span class="line">    [[AFHTTPSessionManager manager] GET:<span class="hljs-string">@"http://api.map.baidu.com/telematics/v3/weather?location=%E5%98%89%E5%85%B4&amp;output=json&amp;ak=5slgyqGDENN7Sy7pw29IUvrZ"</span> parameters:<span class="hljs-literal">nil</span> progress:^(<span class="hljs-built_in">NSProgress</span> * _Nonnull downloadProgress) {</span><br><span class="line">        </span><br><span class="line">        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="hljs-number">0.5</span> * <span class="hljs-built_in">NSEC_PER_SEC</span>)), dispatch_get_main_queue(), ^{</span><br><span class="line">            [_progressView flush:downloadProgress.fractionCompleted];</span><br><span class="line">        });</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// or</span></span><br><span class="line">        <span class="hljs-comment">// [[NSNotificationCenter defaultCenter] postNotificationName:JAEstimatedProgressNotification object:downloadProgress];</span></span><br><span class="line"></span><br><span class="line">    } success:^(<span class="hljs-built_in">NSURLSessionDataTask</span> * _Nonnull task, <span class="hljs-keyword">id</span>  _Nullable responseObject) {</span><br><span class="line"></span><br><span class="line">    } failure:^(<span class="hljs-built_in">NSURLSessionDataTask</span> * _Nullable task, <span class="hljs-built_in">NSError</span> * _Nonnull error) {</span><br><span class="line">        </span><br><span class="line">    }];</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">- (<span class="hljs-keyword">void</span>)didReceiveMemoryWarning {</span><br><span class="line">    [<span class="hljs-keyword">super</span> didReceiveMemoryWarning];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>相应的处理</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 通知</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)receiveWithNotification:(<span class="hljs-built_in">NSNotification</span> *)notifcation {</span><br><span class="line">    <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{</span><br><span class="line">        <span class="hljs-keyword">if</span> ([notifcation.object isKindOfClass:[<span class="hljs-built_in">NSProgress</span> <span class="hljs-keyword">class</span>]]) {</span><br><span class="line">            <span class="hljs-built_in">NSProgress</span> *progress = (<span class="hljs-built_in">NSProgress</span> *)notifcation.object;</span><br><span class="line">            [<span class="hljs-keyword">self</span>.progressBarlayer flush:progress.fractionCompleted];</span><br><span class="line">        }</span><br><span class="line">    });</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 传值</span></span><br><span class="line">- (<span class="hljs-keyword">void</span>)flush:(<span class="hljs-built_in">CGFloat</span>)progress {</span><br><span class="line">    [<span class="hljs-keyword">self</span>.progressBarlayer flush:progress];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p>　</p>
+<p><img src="https://ooo.0o0.ooo/2017/05/13/5916e5c5a6442.gif" alt=""></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/JAProgressBar">DEMO</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>　</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/AFNetworking/AFNetworking/issues/1844">Progress and KVO never called</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/分块传输编码">Wiki-分块传输编码</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Transfer-Encoding">MDN - Transfer-Encoding</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/yankai0219/article/details/8269922">http协议中content-length 以及chunked编码分析</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/05/20/iOSer_Analysis-of-UIButton-s-imageEdgeInsets-with-titleEdgeInsets/">浅析UIButton的imageEdgeInsets与titleEdgeInsets</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/05/05/iOSer_objc-709-project-structures/">objc4-709工程搭建</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

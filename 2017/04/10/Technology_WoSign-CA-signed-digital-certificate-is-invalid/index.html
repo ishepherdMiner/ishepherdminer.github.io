@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>WoSign CA 签名的数字证书失效 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="导语　 　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 WoSign 签名的。　　　　在证书交换阶段时报错了，Google 后找到一篇 Apple 官方的声明。 PKI　 　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WoSign CA 签名的数字证书失效">
+<meta property="og:url" content="http://yoursite.com/2017/04/10/Technology_WoSign-CA-signed-digital-certificate-is-invalid/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="导语　 　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 WoSign 签名的。　　　　在证书交换阶段时报错了，Google 后找到一篇 Apple 官方的声明。 PKI　 　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/04/10/58eb549e60b2e.jpg">
+<meta property="article:published_time" content="2017-04-10T09:37:40.000Z">
+<meta property="article:modified_time" content="2022-12-11T10:10:37.601Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/10/58eb549e60b2e.jpg">
+
+
+
+
+
+<link rel="icon" href="/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">Technology</a>
+            
+            <a class="navbar-item "
+               href="/categories/Topic">Topic</a>
+            
+            <a class="navbar-item "
+               href="/archives">Timeline</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#PKI">2&nbsp;&nbsp;<b>PKI</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#cross-certification">3&nbsp;&nbsp;<b>cross-certification</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#当前的场景">3.1&nbsp;&nbsp;当前的场景</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#目标">3.2&nbsp;&nbsp;目标</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#条件">3.3&nbsp;&nbsp;条件</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#原理">3.4&nbsp;&nbsp;原理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#后记">3.5&nbsp;&nbsp;后记</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">4&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            WoSign CA 签名的数字证书失效
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-04-10T09:37:40.000Z" itemprop="datePublished">4月 10 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            4 分钟 读完 (约 563 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 <em>WoSign</em> 签名的。<br>　　<br>　　在证书交换阶段时报错了，<em>Google</em> 后找到一篇 <a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT204132"><em>Apple</em> 官方的声明</a>。</p>
+<h2 id="PKI"><a href="#PKI" class="headerlink" title="PKI"></a><code>PKI</code></h2><p>　</p>
+<p>　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。
+　</p>
+<span id="more"></span>
+
+<h2 id="cross-certification"><a href="#cross-certification" class="headerlink" title="cross-certification"></a><code>cross-certification</code></h2><p>　</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/10/58eb549e60b2e.jpg" alt=""></p>
+<p>来自 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/X.509#Certificate_chains_and_cross-certification">Wiki - cross-certification</a></p>
+<h3 id="当前的场景"><a href="#当前的场景" class="headerlink" title="当前的场景"></a>当前的场景</h3><p>　</p>
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><em>cert 1.1</em></td>
+<td align="center">原 <em>StartCom</em> 证书</td>
+</tr>
+<tr>
+<td align="center"><em>cert 2.1</em></td>
+<td align="center">原 <em>WoSign</em> 证书</td>
+</tr>
+<tr>
+<td align="center"><em>cert 1</em></td>
+<td align="center">由 <em>WoSign</em> 生成的证书</td>
+</tr>
+<tr>
+<td align="center"><em>cert 2</em></td>
+<td align="center">由 <em>StartCom</em> 生成的证书</td>
+</tr>
+<tr>
+<td align="center"><em>cert 2.2</em></td>
+<td align="center"><em>StartCom</em> 数字签名的用户</td>
+</tr>
+<tr>
+<td align="center"><em>cert 1.2</em></td>
+<td align="center"><em>WoSign</em> 数字签名的用户</td>
+</tr>
+</tbody></table>
+<h3 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h3><p>　</p>
+<p>　　<em>StartCom</em> 签名的 <em>cert 2.2</em> 数字证书要被 <em>PKI 1</em> 信任</p>
+<h3 id="条件"><a href="#条件" class="headerlink" title="条件"></a>条件</h3><p>　</p>
+<p>　　<em>Apple</em> 信任 <em>StartCom</em> 的根证书，而不信任 <em>WoSign</em> 的根证书</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>　</p>
+<ol>
+<li><em>StartCom</em> 生成一个包含 <em>WoSign</em> 公钥的证书 (<em>cert 2</em>)</li>
+<li><em>cert 2.2</em> 证书链会有两条路径 (<em>“cert2.2→cert2”</em> 和 <em>“cert2.2→cert2.1→cert1”</em> ),也就会找到 <em>cert 1.1</em> 因为 <em>cert 1.1</em> 根证书是被信任的，所以 <em>cert 2.2</em> 也会被信任。这是一个可以对称的过程。</li>
+</ol>
+<p>关于原因，<em>Apple</em> 的声明中可以略知一二。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>　</p>
+<blockquote>
+<p>为什么有些会有些不会呢?</p>
+</blockquote>
+<p>　</p>
+<p>我觉得主要有两个原因:</p>
+<p>　</p>
+<blockquote>
+<p>To avoid disruption to existing WoSign certificate holders and to allow their transition to trusted roots, Apple products trust individual existing certificates that were issued from this intermediate CA and published to public Certificate Transparency log servers by 2016-09-19. They will continue to be trusted until they expire, are revoked, or are untrusted at Apple’s discretion.</p>
+</blockquote>
+<p>　</p>
+<ol>
+<li>声明中说为了平稳的过渡，该 <em>CA</em> 签名的部分证书在短期内还是可用的。</li>
+<li>被信任的根证书是放在客户端浏览器中的，证书这个应该保护的比较好，需要 <em>SDK</em> 升级进行统一处理可能会比较合适的。</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/X.509#Certificate_chains_and_cross-certification">Wiki - cross-certification</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Public_key_infrastructure">Wiki - Public_key_infrastructure</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2017/04/17/iOSer_Practice-articles-iOS-application-re-signature-next/">实践篇：iOS 应用重签名 (下)</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2017/04/10/iOSer_Practice-articles-iOS-application-re-signature/">实践篇：iOS 应用重签名(上)</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2022 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
