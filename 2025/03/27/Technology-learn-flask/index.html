@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>学习笔记 - Flask - 01 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。 自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask 安装1pip3 install Flask  如果遇到网的问题,可以Google搜索pip 换源,现在安装一些工具确实是没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记 - Flask - 01">
+<meta property="og:url" content="http://yoursite.com/2025/03/27/Technology-learn-flask/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="前言4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。 自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask 安装1pip3 install Flask  如果遇到网的问题,可以Google搜索pip 换源,现在安装一些工具确实是没">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/ypIKa98NV4j7noR.png">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/s1E34NrIotYcjCO.png">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/8kQfY2HyFNOD3jS.png">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/ZRfveWdLX2qDEJ3.png">
+<meta property="og:image" content="https://s2.loli.net/2025/03/27/jnkTrwEZHgMbY84.png">
+<meta property="article:published_time" content="2025-03-27T03:48:49.000Z">
+<meta property="article:modified_time" content="2025-03-27T09:20:52.481Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#安装">2&nbsp;&nbsp;<b>安装</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#IDE安装">2.1&nbsp;&nbsp;IDE安装</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Hello-world">3&nbsp;&nbsp;<b>Hello world</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flask-基本概念">4&nbsp;&nbsp;<b>Flask 基本概念</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#路由-Routing">4.1&nbsp;&nbsp;路由 (Routing)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#视图函数-View-Functions">4.2&nbsp;&nbsp;视图函数 (View Functions)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#请求对象-Request-Object">4.3&nbsp;&nbsp;请求对象 (Request Object)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#响应对象-Response-Object">4.4&nbsp;&nbsp;响应对象 (Response Object)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#模板-Templates">4.5&nbsp;&nbsp;模板 (Templates)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#应用工厂-Application-Factory">4.6&nbsp;&nbsp;应用工厂 (Application Factory)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#配置对象-Configuration-Objects">4.7&nbsp;&nbsp;配置对象 (Configuration Objects)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#蓝图-Blueprints">4.8&nbsp;&nbsp;蓝图 (Blueprints)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#静态文件-Static-Files">4.9&nbsp;&nbsp;静态文件 (Static Files)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#扩展-Extensions">4.10&nbsp;&nbsp;扩展 (Extensions)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#会话-Sessions">4.11&nbsp;&nbsp;会话 (Sessions)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#错误处理-Error-Handling">4.12&nbsp;&nbsp;错误处理 (Error Handling)</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            学习笔记 - Flask - 01
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-03-27T03:48:49.000Z" itemprop="datePublished">3月 27 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            12 分钟 读完 (约 1873 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。</p>
+<p>自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install Flask</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果遇到网的问题,可以Google搜索<code>pip 换源</code>,现在安装一些工具确实是没有什么门槛</p>
+<p>显示下安装后的效果</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 show Flask</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png" alt="2025-03-27 11.59.35.png"></p>
+<span id="more"></span>
+
+<h3 id="IDE安装"><a href="#IDE安装" class="headerlink" title="IDE安装"></a>IDE安装</h3><blockquote>
+<p>Trae 编辑器<br>另外我们也可以下载本地的开发环境 Trae，Trae 是字节跳动推出的一款面向开发者的 AI 驱动的集成开发环境（IDE）。</p>
+</blockquote>
+<blockquote>
+<p>访问 Trae 官网 <a target="_blank" rel="noopener" href="https://www.trae.com.cn">https://www.trae.com.cn</a><br>默认情况，下载按钮会自动匹配我们的电脑系统，我们也可以找到适合自己电脑操作系统的 Trae 安装包，进行下载。</p>
+</blockquote>
+<h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><p>AI 自动补齐</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello, World!'</span></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="hljs-literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>起个本地服务</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python app.py</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Flask-基本概念"><a href="#Flask-基本概念" class="headerlink" title="Flask 基本概念"></a>Flask 基本概念</h2><p>这部分照搬原文,概念上的东西大同小异,主要看下语法</p>
+<ul>
+<li>路由: URL 到 Python 函数的映射</li>
+<li>视图函数: 处理请求并返回响应的 Python 函数</li>
+<li>请求对象: 包含了客户端发送的请求信息,如请求方法、URL、请求头、表单数据等</li>
+<li>响应对象: 包含了发送给客户端的响应信息，如状态码、响应头、响应体等</li>
+<li>模板：Flask 使用 Jinja2 模板引擎来渲染 HTML 模板。模板允许你将 Python 代码嵌入到 HTML 中，从而动态生成网页。</li>
+<li>应用工厂：应用工厂是一个 Python 函数，它创建并返回一个 Flask 应用实例。这允许你配置和初始化你的应用，并且可以创建多个应用实例。</li>
+<li>配置对象：Flask 应用有一个配置对象，你可以使用它来设置各种配置选项，如数据库连接字符串、调试模式等。</li>
+<li>蓝图：蓝图是 Flask 中的一个组织代码的方式，它允许你将相关的视图函数、模板和静态文件组织在一起，并且可以在多个应用中重用。</li>
+<li>静态文件：静态文件是不会被服务器端执行的文件，如 CSS、JavaScript 和图片文件。Flask 提供了一个简单的方法来服务这些文件。</li>
+<li>扩展：Flask 有许多扩展，可以添加额外的功能，如数据库集成、表单验证、用户认证等。</li>
+<li>会话：Flask 使用客户端会话来存储用户信息，这允许你在用户浏览你的应用时记住他们的状态。</li>
+<li>错误处理：Flask 允许你定义错误处理函数，当特定的错误发生时，这些函数会被调用。</li>
+</ul>
+<h3 id="路由-Routing"><a href="#路由-Routing" class="headerlink" title="路由 (Routing)"></a>路由 (Routing)</h3><figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello, World!'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/router/about'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">about</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'About Page'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/router/contact'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">contact</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Contact Page'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="hljs-literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/03/27/ypIKa98NV4j7noR.png" alt="2025-03-27 16.38.55.png"></p>
+<h3 id="视图函数-View-Functions"><a href="#视图函数-View-Functions" class="headerlink" title="视图函数 (View Functions)"></a>视图函数 (View Functions)</h3><figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/greet/&lt;name&gt;'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">greet</span>(<span class="hljs-params">name</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">f'Hello, <span class="hljs-subst">{name}</span>!'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>greet</code> 就是视图函数</p>
+<p><img src="https://s2.loli.net/2025/03/27/s1E34NrIotYcjCO.png" alt="2025-03-27 16.42.50.png"></p>
+<h3 id="请求对象-Request-Object"><a href="#请求对象-Request-Object" class="headerlink" title="请求对象 (Request Object)"></a>请求对象 (Request Object)</h3><figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> request</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/submit'</span>, methods=[<span class="hljs-string">'POST'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">submit</span>():</span></span><br><span class="line">    username = request.form.get(<span class="hljs-string">'username'</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">f'Hello, <span class="hljs-subst">{username}</span>!'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>要有个提交表单的操作才能串起来,看下面涉及到flask里python和html混合的处理逻辑</p>
+<h3 id="响应对象-Response-Object"><a href="#响应对象-Response-Object" class="headerlink" title="响应对象 (Response Object)"></a>响应对象 (Response Object)</h3><p>响应对象包含了发送给客户端的响应信息，包括状态码、响应头和响应体。Flask 默认会将字符串、HTML 直接作为响应体。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> make_response</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/custom_response'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">custom_response</span>():</span></span><br><span class="line">    <span class="hljs-comment"># make_response 创建个响应对象,然后填充请求头</span></span><br><span class="line">    response = make_response(<span class="hljs-string">'This is a custom response!'</span>)</span><br><span class="line">    response.headers[<span class="hljs-string">'X-Custom-Header'</span>] = <span class="hljs-string">'Value'</span></span><br><span class="line">    <span class="hljs-keyword">return</span> response</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="模板-Templates"><a href="#模板-Templates" class="headerlink" title="模板 (Templates)"></a>模板 (Templates)</h3><p>Flask 使用 Jinja2 模板引擎来渲染 HTML 模板。模板允许你将 Python 代码嵌入到 HTML 中，从而动态生成网页内容。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> render_template</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/render/&lt;name&gt;'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">render</span>(<span class="hljs-params">name</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'render_name.html'</span>, name=name)</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Hello, {{ name }}!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>直接访问 <code>http://127.0.0.1:5000/render/Wang</code> 报找不到模板</p>
+<p><img src="https://s2.loli.net/2025/03/27/8kQfY2HyFNOD3jS.png" alt="2025-03-27 17.00.23.png"></p>
+<p>看了下模板文件要放在<code>templates</code> 目录下,新建后,将render_name.html移动到该目录下,重新刷新页面，正常显示</p>
+<p><img src="https://s2.loli.net/2025/03/27/ZRfveWdLX2qDEJ3.png" alt="2025-03-27 17.01.18.png"></p>
+<h3 id="应用工厂-Application-Factory"><a href="#应用工厂-Application-Factory" class="headerlink" title="应用工厂 (Application Factory)"></a>应用工厂 (Application Factory)</h3><p>应用工厂是一个 Python 函数，用于创建和配置 Flask 应用实例。这种方法允许你创建多个应用实例，或者在不同配置下初始化应用。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_app</span>(<span class="hljs-params">config_name</span>):</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.config.from_object(config_name)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">from</span> . <span class="hljs-keyword">import</span> routes</span><br><span class="line">    app.register_blueprint(routes.bp)</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> app</span><br></pre></td></tr></tbody></table></figure>
+
+<p>应该是针对不同环境</p>
+<h3 id="配置对象-Configuration-Objects"><a href="#配置对象-Configuration-Objects" class="headerlink" title="配置对象 (Configuration Objects)"></a>配置对象 (Configuration Objects)</h3><p>配置对象用于设置应用的各种配置选项，如数据库连接字符串、调试模式等。可以通过直接设置或加载配置文件来配置 Flask 应用。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Config</span>:</span></span><br><span class="line">    DEBUG = <span class="hljs-literal">True</span></span><br><span class="line">    SECRET_KEY = <span class="hljs-string">'mysecretkey'</span></span><br><span class="line">    SQLALCHEMY_DATABASE_URI = <span class="hljs-string">'sqlite:///mydatabase.db'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="蓝图-Blueprints"><a href="#蓝图-Blueprints" class="headerlink" title="蓝图 (Blueprints)"></a>蓝图 (Blueprints)</h3><p>蓝图是 Flask 中的组织代码的方式。它允许你将相关的视图函数、模板和静态文件组织在一起，并且可以在多个应用中重用。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Blueprint</span><br><span class="line"></span><br><span class="line">bp = Blueprint(<span class="hljs-string">'main'</span>, __name__)</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@bp.route(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">home</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Home Page'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>注册蓝图 (<code>app/__init__.py</code>)：</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask</span><br><span class="line"><span class="hljs-keyword">from</span> .routes <span class="hljs-keyword">import</span> bp <span class="hljs-keyword">as</span> main_bp</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_app</span>():</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(main_bp)</span><br><span class="line">    <span class="hljs-keyword">return</span> app</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="静态文件-Static-Files"><a href="#静态文件-Static-Files" class="headerlink" title="静态文件 (Static Files)"></a>静态文件 (Static Files)</h3><p>静态文件是不会被服务器端执行的文件，如 CSS、JavaScript 和图片文件。Flask 提供了一个简单的方法来服务这些文件。</p>
+<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style<span class="hljs-selector-class">.css</span>') }}"&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>静态文件目录：将静态文件放在 static 文件夹中，Flask 会自动提供服务。</p>
+<h3 id="扩展-Extensions"><a href="#扩展-Extensions" class="headerlink" title="扩展 (Extensions)"></a>扩展 (Extensions)</h3><p>Flask 有许多扩展，可以添加额外的功能，如数据库集成、表单验证、用户认证等。这些扩展提供了更高级的功能和第三方集成。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask_sqlalchemy <span class="hljs-keyword">import</span> SQLAlchemy</span><br><span class="line"></span><br><span class="line">app.config[<span class="hljs-string">'SQLALCHEMY_DATABASE_URI'</span>] = <span class="hljs-string">'sqlite:///mydatabase.db'</span></span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="会话-Sessions"><a href="#会话-Sessions" class="headerlink" title="会话 (Sessions)"></a>会话 (Sessions)</h3><p>Flask 使用客户端会话来存储用户信息，以便在用户浏览应用时记住他们的状态。会话数据存储在客户端的 cookie 中，并在服务器端进行签名和加密。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> session</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 自动生成的密钥</span></span><br><span class="line">app.secret_key = <span class="hljs-string">'your_secret_key_here'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/set_session/&lt;username&gt;'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">set_session</span>(<span class="hljs-params">username</span>):</span></span><br><span class="line">    session[<span class="hljs-string">'username'</span>] = username</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">f'Session set for <span class="hljs-subst">{username}</span>'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/get_session'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_session</span>():</span></span><br><span class="line">    username = session.get(<span class="hljs-string">'username'</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">f'Hello, <span class="hljs-subst">{username}</span>!'</span> <span class="hljs-keyword">if</span> username <span class="hljs-keyword">else</span> <span class="hljs-string">'No session data'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="错误处理-Error-Handling"><a href="#错误处理-Error-Handling" class="headerlink" title="错误处理 (Error Handling)"></a>错误处理 (Error Handling)</h3><p>Flask 允许你定义错误处理函数，当特定的错误发生时，这些函数会被调用。可以自定义错误页面或处理逻辑。</p>
+<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.errorhandler(<span class="hljs-params"><span class="hljs-number">404</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">page_not_found</span>(<span class="hljs-params">e</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Page not found'</span>, <span class="hljs-number">404</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.errorhandler(<span class="hljs-params"><span class="hljs-number">500</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">internal_server_error</span>(<span class="hljs-params">e</span>):</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'Internal server error'</span>, <span class="hljs-number">500</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/03/27/jnkTrwEZHgMbY84.png" alt="2025-03-27 17.17.56.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.runoob.com/flask/flask-tutorial.html">Flask 教程</a></p>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2022/12/11/Technology-Hexo-push-error/">hexo deploy 命令执行失败</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Разработано на базе <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
