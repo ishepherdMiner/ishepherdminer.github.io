@@ -2,7 +2,7 @@
 <html class="has-navbar-fixed-top">
 <head>
     <meta charset="utf-8">
-<title>牧羊人</title>
+<title>学习笔记 - Flask - 02 - 牧羊人</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
@@ -18,16 +18,27 @@
 
 
 
-    <meta name="description" content="一个闲散的程序员">
-<meta property="og:type" content="website">
-<meta property="og:title" content="牧羊人">
-<meta property="og:url" content="http://yoursite.com/index.html">
+    <meta name="description" content="前言待业家中继续学习。 Flask 项目结构1234567891011121314151617181920212223my_flask_app&#x2F;│├── app&#x2F;│   ├── __init__.py│   ├── routes&#x2F; -- 将不同功能模块的路由分开管理│   │   ├── __init__.py│   │   ├── main.py -- 主模块的路由│   │   └── aut">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记 - Flask - 02">
+<meta property="og:url" content="http://yoursite.com/2025/04/01/Technology-learn-flask-02/index.html">
 <meta property="og:site_name" content="牧羊人">
-<meta property="og:description" content="一个闲散的程序员">
+<meta property="og:description" content="前言待业家中继续学习。 Flask 项目结构1234567891011121314151617181920212223my_flask_app&#x2F;│├── app&#x2F;│   ├── __init__.py│   ├── routes&#x2F; -- 将不同功能模块的路由分开管理│   │   ├── __init__.py│   │   ├── main.py -- 主模块的路由│   │   └── aut">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/01/FiBN3peQs6UCEqj.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/01/tin1AyYW8EZoM3L.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/01/K1tzAgFcNn5PxkS.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/mJKBXZLhCwPVW8R.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/GisgvSjc3hxbYuK.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/7x3NKqkHQVvMW8j.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/jqfa2FyPLBI3dMT.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/2qwjchxPWsSakI3.png">
+<meta property="article:published_time" content="2025-04-01T03:42:58.000Z">
+<meta property="article:modified_time" content="2025-04-02T04:05:42.604Z">
 <meta property="article:author" content="Shepherd">
 <meta property="article:tag" content="iOSer Shepherd">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/01/FiBN3peQs6UCEqj.png">
 
 
 
@@ -110,6 +121,64 @@
             </a>
             
             
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flask-项目结构">2&nbsp;&nbsp;<b>Flask 项目结构</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#如何在Trae-IDE中配置Python解释器">2.1&nbsp;&nbsp;如何在Trae IDE中配置Python解释器</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#路由">3&nbsp;&nbsp;<b>路由</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#定义路由">3.1&nbsp;&nbsp;定义路由</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#路由参数">3.2&nbsp;&nbsp;路由参数</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#路由规则">3.3&nbsp;&nbsp;路由规则</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#请求方法">3.4&nbsp;&nbsp;请求方法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#路由函数返回">3.5&nbsp;&nbsp;路由函数返回</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#静态文件和模板">3.6&nbsp;&nbsp;静态文件和模板</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#路由优先级">3.7&nbsp;&nbsp;路由优先级</a>
+                    
+                </div>
+            </div>
+            
             
             <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
                 
@@ -124,11 +193,10 @@
 
     <section class="section">
     <div class="container">
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
+    <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2025/04/01/Technology-learn-flask-02/" itemprop="url">学习笔记 - Flask - 02</a>
+            学习笔记 - Flask - 02
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -229,481 +297,22 @@
     </div>
     
     
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-28T13:38:38.000Z" itemprop="datePublished">3月 28 2025</time>
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
             
         </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
             
+            <a href="/2025/03/28/Technology-win-mac-brige/">Windows与Mac端数据共享</a>
             
-            2 分钟 读完 (约 274 字)
         </span>
-        
     </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在win上访问外部的网站网速比较快,但是日常开发又在macbook上,因此需要两台电脑能数据共享，一开始是想通过微信的,但是同一个账号不能同时登陆；用网盘传输之类的，又要额外下载应用或者依赖浏览器。既然是个人使用,可以直接在win上创建共享目录来解决。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="设置共享目录"><a href="#设置共享目录" class="headerlink" title="设置共享目录"></a>设置共享目录</h2><p>在win上设置个人目录</p>
-<p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/28/Technology-win-mac-brige/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
     
 </article>
 
 
 
 
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/27/Technology-learn-flask/" itemprop="url">学习笔记 - Flask - 01</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-27T03:48:49.000Z" itemprop="datePublished">3月 27 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            12 分钟 读完 (约 1873 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。</p>
-<p>自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p>如果遇到网的问题,可以Google搜索<code>pip 换源</code>,现在安装一些工具确实是没有什么门槛</p>
-<p>显示下安装后的效果</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 show Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p><img src="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png" alt="2025-03-27 11.59.35.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/27/Technology-learn-flask/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2022/12/11/Technology-Hexo-push-error/" itemprop="url">hexo deploy 命令执行失败</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2022-12-11T12:12:27.000Z" itemprop="datePublished">12月 11 2022</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 193 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/pexels-lumn-167699.jpg" alt=""></p>
-</div>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
-<p>按要求<code>eval "$(ssh-agent -s)"</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent yes</span><br><span class="line">  UseKeychain yes</span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
-
-<p>指定github.com使用该公钥,但是还是失败。</p></body></html>
-        <p class="article-more-link">
-            <a href="/2022/12/11/Technology-Hexo-push-error/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2022/12/11/iOSer-Get-iPhone-udid/" itemprop="url">Wiki - 通过配置获取iPhone的UDID</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2022-12-11T10:18:11.000Z" itemprop="datePublished">12月 11 2022</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 119 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/tomatoes-g8c3751b39_1280.jpg" alt=""></p>
-</div>
-
-<h2 id="仅记录"><a href="#仅记录" class="headerlink" title="仅记录"></a>仅记录</h2><figure class="highlight xml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">plist</span> <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">"-//Apple//DTD PLIST 1.0//EN"</span> <span class="hljs-meta-string">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">plist</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadContent<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>URL<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>http://dev.skyfox.org/udid/receive.php<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span> <span class="hljs-comment">&lt;!--接收数据的接口地址--&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>DeviceAttributes<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>UDID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>IMEI<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ICCID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VERSION<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>PRODUCT<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadOrganization<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>dev.skyfox.org<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--组织名称--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadDisplayName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>查询设备UDID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--安装时显示的标题--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadVersion<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadUUID<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3C4DC7D2-E475-3378-489C-0BB8D737A653<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--自己随机填写的唯一字符串--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadIdentifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>dev.skyfox.profile-service<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadDescription<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>本文件仅用来获取设备ID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>   <span class="hljs-comment">&lt;!--描述--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Profile Service<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">plist</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-
-</body></html>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2020/03/05/Technology-Learn-CocoaAsyncSocket/" itemprop="url">学习 CocoaAsyncSocket</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2020-03-04T16:17:34.000Z" itemprop="datePublished">3月 5 2020</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            11 分钟 读完 (约 1610 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/fog-g9da8a0c7a_1280.jpg" alt=""></p>
-</div>
-
-<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p>套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I/O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。</p>
-<p>大部分系统都提供了一组基于TCP或者UDP的应用程序编程接口（API），该接口通常以一组函数的形式出现，也称为套接字（Socket)</p></body></html>
-        <p class="article-more-link">
-            <a href="/2020/03/05/Technology-Learn-CocoaAsyncSocket/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/11/25/iOSer-OC-Color-macro/" itemprop="url">iOS 颜色宏</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-11-25T05:57:21.000Z" itemprop="datePublished">11月 25 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 216 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　平常用的颜色宏大概如下</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> RGBHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue &amp; 0xFF0000) &gt;&gt; 16))/255.0 green:((float)((rgbValue &amp; 0xFF00) &gt;&gt; 8))/255.0 blue:((float)(rgbValue &amp; 0xFF))/255.0 alpha:1.0]</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>　　考虑到蓝湖中获得的十六进制颜色值为<code>#FF0000</code>,cv时需要先删除#再添加<code>0x</code>,想省略这部分</p>
-<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>　　<code>C</code>语言宏中’#’称之为字符串化操作符(Stringizing Operator)，它将函数宏的实际参数转换为对应的字符串常量。利用这个特点定义如下的颜色宏</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HEXA(COLOR,A) ({ \</span></span><br><span class="line"><span class="hljs-meta">    char *color = #COLOR;\</span></span><br><span class="line"><span class="hljs-meta">    NSString *colorString = [NSString stringWithUTF8String:color]; \</span></span><br><span class="line"><span class="hljs-meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="hljs-meta-string">"#"</span> withString:@<span class="hljs-meta-string">""</span>]; \</span></span><br><span class="line"><span class="hljs-meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="hljs-meta-string">"0x"</span> withString:@<span class="hljs-meta-string">""</span>]; \</span></span><br><span class="line"><span class="hljs-meta">    unsigned int red,green,blue; \</span></span><br><span class="line"><span class="hljs-meta">    NSRange range; \</span></span><br><span class="line"><span class="hljs-meta">    range.length = 2; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 0; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;red]; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 2; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;green]; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 4; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;blue]; \</span></span><br><span class="line"><span class="hljs-meta">    [UIColor colorWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:A]; \</span></span><br><span class="line"><span class="hljs-meta">})</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HEX(COLOR) HEXA(COLOR,1.0)</span></span><br></pre></td></tr></tbody></table></figure>
-
-<p>　　支持<code>0xFF0000/#FF0000/FF0000</code>这三种格式</p>
-</body></html>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/02/22/Technology-ReactNative-Intro/" itemprop="url">ReactNative 入门体验</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-02-22T15:15:22.000Z" itemprop="datePublished">2月 22 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            20 分钟 读完 (约 3045 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>macOS Mojave Version 10.14.3<br>Xcode 10.1<br>iPhone 5s 10.0.1<br>node v11.10.0<br>npm 6.7.0<br>React Native 0.58<br>react 16.6.3</p>
-</blockquote>
-<h2 id="新建ReactNative项目"><a href="#新建ReactNative项目" class="headerlink" title="新建ReactNative项目"></a>新建<code>ReactNative</code>项目</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br><span class="line">brew install watchman</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="安装React-Native命令行工具"><a href="#安装React-Native命令行工具" class="headerlink" title="安装React Native命令行工具"></a>安装<code>React Native</code>命令行工具</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></tbody></table></figure>
-
-
-
-<h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg" alt=""><br>或者</p></body></html>
-        <p class="article-more-link">
-            <a href="/2019/02/22/Technology-ReactNative-Intro/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/02/09/iOSer-Analysis-iOS-Crash/" itemprop="url">iOS崩溃日志分析</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-02-09T01:46:02.000Z" itemprop="datePublished">2月 9 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            12 分钟 读完 (约 1861 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p><code>macOS Mojave 10.14.3</code><br><code>Xcode10.1</code><br><code>iPhone6S 10.0.1</code></p>
-</blockquote>
-<h2 id="获得崩溃日志"><a href="#获得崩溃日志" class="headerlink" title="获得崩溃日志"></a>获得崩溃日志</h2><h3 id="方式一-Xcode"><a href="#方式一-Xcode" class="headerlink" title="方式一:Xcode"></a>方式一:<code>Xcode</code></h3><p>菜单 &gt; <code>Window</code> &gt; <code>Devices and Simulators</code></p>
-<p>选择设备并查看设备日志(<code>View Device Logs</code>)</p>
-<h3 id="方式二-手机"><a href="#方式二-手机" class="headerlink" title="方式二:手机"></a>方式二:手机</h3><p>设置 &gt; 隐私 &gt; 诊断与用量 &gt; 诊断与用量数据</p></body></html>
-        <p class="article-more-link">
-            <a href="/2019/02/09/iOSer-Analysis-iOS-Crash/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/01/09/Technology-Charles-capture-principle/" itemprop="url">Charles HTTP抓包原理</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-01-09T08:57:09.000Z" itemprop="datePublished">1月 9 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            3 分钟 读完 (约 469 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言-Web代理服务器"><a href="#前言-Web代理服务器" class="headerlink" title="前言: Web代理服务器"></a>前言: Web代理服务器</h2><p><img src="https://i.loli.net/2019/01/09/5c35b6b81d2db.png" alt=""></p>
-<p>来自<a href="#refer2">参考链接2</a></p>
-<p>对客户端/浏览器来说<code>Web</code>代理服务器是服务器<br>对服务器来说<code>Web</code>代理服务器是客户端</p></body></html>
-        <p class="article-more-link">
-            <a href="/2019/01/09/Technology-Charles-capture-principle/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-    
-        
-<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
-    <div class="pagination-previous is-invisible is-hidden-mobile">
-        <a href="/page/0/">上一页</a>
-    </div>
-    <div class="pagination-next">
-        <a href="/page/2/">下一页</a>
-    </div>
-    <ul class="pagination-list is-hidden-mobile">
-        
-        <li><a class="pagination-link is-current" href="/">1</a></li>
-        
-        <li><a class="pagination-link" href="/page/2/">2</a></li>
-        
-        <li><span class="pagination-ellipsis">&hellip;</span></li>
-        
-        <li><a class="pagination-link" href="/page/7/">7</a></li>
-        
-    </ul>
-</nav>
-    
     </div>
 </section>
     <footer class="footer">
