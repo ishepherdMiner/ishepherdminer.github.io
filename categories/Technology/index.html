@@ -149,7 +149,7 @@
         <span class="column is-narrow">
             
             
-            9 分钟 读完 (约 1276 字)
+            9 分钟 读完 (约 1307 字)
         </span>
         
     </div>
@@ -159,9 +159,7 @@
 <h2 id="Flask-项目结构"><a href="#Flask-项目结构" class="headerlink" title="Flask 项目结构"></a>Flask 项目结构</h2><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">my_flask_app/</span><br><span class="line">│</span><br><span class="line">├── app/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes/ -- 将不同功能模块的路由分开管理</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── main.py -- 主模块的路由</span><br><span class="line">│   │   └── auth.py -- 认证相关的路由</span><br><span class="line">│   ├── models/ -- 管理数据模型,通常与数据操作相关</span><br><span class="line">│   │   ├── __init__.py </span><br><span class="line">│   │   └── user.py -- 用户模型</span><br><span class="line">│   ├── templates/ -- 存放 HTML 模板文件</span><br><span class="line">│   │   ├── layout.html -- 布局相关</span><br><span class="line">│   │   └── home.html</span><br><span class="line">│   └── static/ -- 存放静态文件,如CSS和JavaScript</span><br><span class="line">│       ├── css/</span><br><span class="line">│       └── js/</span><br><span class="line">│</span><br><span class="line">├── config.py -- 配置文件,包含应用的配置信息</span><br><span class="line">├── requirements.txt -- 列出项目的依赖库</span><br><span class="line">├── migrations/</span><br><span class="line">│   └── ...</span><br><span class="line">└── run.py -- 用于启动Flask应用</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="如何在Trae-IDE中配置Python解释器"><a href="#如何在Trae-IDE中配置Python解释器" class="headerlink" title="如何在Trae IDE中配置Python解释器"></a>如何在Trae IDE中配置Python解释器</h3><p>看到<code>app.py</code> 报错,因为没有导入<code>flask</code>库,但我的设备已经安装了,所以应该是需要配置下。在设置中找半天没有找到,后来搜索才知道原来是在<code>Editor</code>中，搜索python,然后将 <code>Python: Default Interpreter Path</code>的路径设置为设备安装的路径。</p>
-<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p>
-<p><img src="https://s2.loli.net/2025/04/01/FiBN3peQs6UCEqj.png" alt="Snip20250401_2.png"></p>
-<p><img src="https://s2.loli.net/2025/04/01/tin1AyYW8EZoM3L.png" alt="Snip20250401_3.png"></p></body></html>
+<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
         <p class="article-more-link">
             <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
         </p>
