@@ -2,7 +2,7 @@
 <html class="has-navbar-fixed-top">
 <head>
     <meta charset="utf-8">
-<title>分类: Technology - 牧羊人</title>
+<title>学习笔记 - Flask - 03 - 牧羊人</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
@@ -18,16 +18,24 @@
 
 
 
-    <meta name="description" content="一个闲散的程序员">
-<meta property="og:type" content="website">
-<meta property="og:title" content="牧羊人">
-<meta property="og:url" content="http://yoursite.com/categories/Technology/index.html">
+    <meta name="description" content="前言继续… Flask 视图函数视图函数是Flask应用中的核心部分，它负责处理请求并生成响应  定义视图函数：视图函数是处理请求并返回响应的核心功能。 接收请求数据：使用 request 对象获取 URL 参数、表单数据、查询参数等。 返回响应：可以返回字符串、HTML、JSON 或自定义响应对象。 处理请求和响应：使用 request 对象和 make_response 来处理请求和生成自定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学习笔记 - Flask - 03">
+<meta property="og:url" content="http://yoursite.com/2025/04/02/Technology-learn-flask-03/index.html">
 <meta property="og:site_name" content="牧羊人">
-<meta property="og:description" content="一个闲散的程序员">
+<meta property="og:description" content="前言继续… Flask 视图函数视图函数是Flask应用中的核心部分，它负责处理请求并生成响应  定义视图函数：视图函数是处理请求并返回响应的核心功能。 接收请求数据：使用 request 对象获取 URL 参数、表单数据、查询参数等。 返回响应：可以返回字符串、HTML、JSON 或自定义响应对象。 处理请求和响应：使用 request 对象和 make_response 来处理请求和生成自定义">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/tpjR5OGwHF4lI6B.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/6ND4cKoIZs3xTWy.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/ynEMHc1tKPOIl9v.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/Rx8yaPihHk2WwY5.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/02/E68UnJfud4WLt17.png">
+<meta property="article:published_time" content="2025-04-02T11:19:04.000Z">
+<meta property="article:modified_time" content="2025-04-02T12:39:41.450Z">
 <meta property="article:author" content="Shepherd">
 <meta property="article:tag" content="iOSer Shepherd">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/02/tpjR5OGwHF4lI6B.png">
 
 
 
@@ -89,7 +97,7 @@
         
         <div class="navbar-menu navbar-start">
             
-            <a class="navbar-item is-active"
+            <a class="navbar-item "
                href="/categories/Technology">技术</a>
             
             <a class="navbar-item "
@@ -110,6 +118,48 @@
             </a>
             
             
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flask-视图函数">2&nbsp;&nbsp;<b>Flask 视图函数</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#定义视图函数-接收请求数据-返回响应-处理请求和响应">2.1&nbsp;&nbsp;定义视图函数/接收请求数据/返回响应/处理请求和响应</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#处理错误">2.2&nbsp;&nbsp;处理错误</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#装饰器">2.3&nbsp;&nbsp;装饰器</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#视图函数返回的状态码">2.4&nbsp;&nbsp;视图函数返回的状态码</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">3&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
             
             <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
                 
@@ -124,11 +174,10 @@
 
     <section class="section">
     <div class="container">
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
+    <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2025/04/02/Technology-learn-flask-03/" itemprop="url">学习笔记 - Flask - 03</a>
+            学习笔记 - Flask - 03
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -195,481 +244,22 @@
     </div>
     
     
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/01/Technology-learn-flask-02/" itemprop="url">学习笔记 - Flask - 02</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-01T03:42:58.000Z" itemprop="datePublished">4月 1 2025</time>
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
             
         </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
             
+            <a href="/2025/04/01/Technology-learn-flask-02/">学习笔记 - Flask - 02</a>
             
-            9 分钟 读完 (约 1307 字)
         </span>
-        
     </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>待业家中继续学习。</p>
-<h2 id="Flask-项目结构"><a href="#Flask-项目结构" class="headerlink" title="Flask 项目结构"></a>Flask 项目结构</h2><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">my_flask_app/</span><br><span class="line">│</span><br><span class="line">├── app/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes/ -- 将不同功能模块的路由分开管理</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── main.py -- 主模块的路由</span><br><span class="line">│   │   └── auth.py -- 认证相关的路由</span><br><span class="line">│   ├── models/ -- 管理数据模型,通常与数据操作相关</span><br><span class="line">│   │   ├── __init__.py </span><br><span class="line">│   │   └── user.py -- 用户模型</span><br><span class="line">│   ├── templates/ -- 存放 HTML 模板文件</span><br><span class="line">│   │   ├── layout.html -- 布局相关</span><br><span class="line">│   │   └── home.html</span><br><span class="line">│   └── static/ -- 存放静态文件,如CSS和JavaScript</span><br><span class="line">│       ├── css/</span><br><span class="line">│       └── js/</span><br><span class="line">│</span><br><span class="line">├── config.py -- 配置文件,包含应用的配置信息</span><br><span class="line">├── requirements.txt -- 列出项目的依赖库</span><br><span class="line">├── migrations/</span><br><span class="line">│   └── ...</span><br><span class="line">└── run.py -- 用于启动Flask应用</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="如何在Trae-IDE中配置Python解释器"><a href="#如何在Trae-IDE中配置Python解释器" class="headerlink" title="如何在Trae IDE中配置Python解释器"></a>如何在Trae IDE中配置Python解释器</h3><p>看到<code>app.py</code> 报错,因为没有导入<code>flask</code>库,但我的设备已经安装了,所以应该是需要配置下。在设置中找半天没有找到,后来搜索才知道原来是在<code>Editor</code>中，搜索python,然后将 <code>Python: Default Interpreter Path</code>的路径设置为设备安装的路径。</p>
-<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
     
 </article>
 
 
 
 
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-28T13:38:38.000Z" itemprop="datePublished">3月 28 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            2 分钟 读完 (约 274 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在win上访问外部的网站网速比较快,但是日常开发又在macbook上,因此需要两台电脑能数据共享，一开始是想通过微信的,但是同一个账号不能同时登陆；用网盘传输之类的，又要额外下载应用或者依赖浏览器。既然是个人使用,可以直接在win上创建共享目录来解决。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="设置共享目录"><a href="#设置共享目录" class="headerlink" title="设置共享目录"></a>设置共享目录</h2><p>在win上设置个人目录</p>
-<p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/28/Technology-win-mac-brige/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/27/Technology-learn-flask/" itemprop="url">学习笔记 - Flask - 01</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-27T03:48:49.000Z" itemprop="datePublished">3月 27 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            12 分钟 读完 (约 1873 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。</p>
-<p>自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p>如果遇到网的问题,可以Google搜索<code>pip 换源</code>,现在安装一些工具确实是没有什么门槛</p>
-<p>显示下安装后的效果</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 show Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p><img src="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png" alt="2025-03-27 11.59.35.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/27/Technology-learn-flask/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2022/12/11/Technology-Hexo-push-error/" itemprop="url">hexo deploy 命令执行失败</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2022-12-11T12:12:27.000Z" itemprop="datePublished">12月 11 2022</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 193 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/pexels-lumn-167699.jpg" alt=""></p>
-</div>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
-<p>按要求<code>eval "$(ssh-agent -s)"</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent yes</span><br><span class="line">  UseKeychain yes</span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
-
-<p>指定github.com使用该公钥,但是还是失败。</p></body></html>
-        <p class="article-more-link">
-            <a href="/2022/12/11/Technology-Hexo-push-error/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/02/22/Technology-ReactNative-Intro/" itemprop="url">ReactNative 入门体验</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-02-22T15:15:22.000Z" itemprop="datePublished">2月 22 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            20 分钟 读完 (约 3045 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>macOS Mojave Version 10.14.3<br>Xcode 10.1<br>iPhone 5s 10.0.1<br>node v11.10.0<br>npm 6.7.0<br>React Native 0.58<br>react 16.6.3</p>
-</blockquote>
-<h2 id="新建ReactNative项目"><a href="#新建ReactNative项目" class="headerlink" title="新建ReactNative项目"></a>新建<code>ReactNative</code>项目</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br><span class="line">brew install watchman</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="安装React-Native命令行工具"><a href="#安装React-Native命令行工具" class="headerlink" title="安装React Native命令行工具"></a>安装<code>React Native</code>命令行工具</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></tbody></table></figure>
-
-
-
-<h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg" alt=""><br>或者</p></body></html>
-        <p class="article-more-link">
-            <a href="/2019/02/22/Technology-ReactNative-Intro/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2019/01/09/Technology-Charles-capture-principle/" itemprop="url">Charles HTTP抓包原理</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-01-09T08:57:09.000Z" itemprop="datePublished">1月 9 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            3 分钟 读完 (约 469 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言-Web代理服务器"><a href="#前言-Web代理服务器" class="headerlink" title="前言: Web代理服务器"></a>前言: Web代理服务器</h2><p><img src="https://i.loli.net/2019/01/09/5c35b6b81d2db.png" alt=""></p>
-<p>来自<a href="#refer2">参考链接2</a></p>
-<p>对客户端/浏览器来说<code>Web</code>代理服务器是服务器<br>对服务器来说<code>Web</code>代理服务器是客户端</p></body></html>
-        <p class="article-more-link">
-            <a href="/2019/01/09/Technology-Charles-capture-principle/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/09/24/Technology-router-cascade-magnified-wifi/" itemprop="url">路由器级联放大Wifi信号</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-09-24T08:17:06.000Z" itemprop="datePublished">9月 24 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 652 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<code>Wifi</code> 信号又不行了,房间的地理位置不好,联通的路由器信号又特别差,根本不能穿墙。好久不写了博客了,一放松就一直不想写。毕竟从善如登,从恶如崩啦。原来做级联的老旧路由器需要复位,再抢救下,看有没有挽救的希望。所以正好把流程简单记录一下,虽然没啥子用。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>MERCURY xxx 路由器<br>macOS Sierra 10.12.6</p>
-</blockquote>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>网上搜了下,就是下面的参考链接,提供了3种方案</p>
-<ol>
-<li><code>WDS</code> 无线桥接</li>
-<li>当 <code>AP</code> (无线交换机) 使用</li>
-<li>搭建新网络 (子网络)</li>
-</ol>
-<p>因为没有联通路由器的登陆的用户名密码,就选第 <code>3</code> 种方案</p></body></html>
-        <p class="article-more-link">
-            <a href="/2017/09/24/Technology-router-cascade-magnified-wifi/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/04/21/Technology-FFmpeg-video-interception-command/" itemprop="url">FFmpeg指令-视频截取</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-04-21T12:41:09.000Z" itemprop="datePublished">4月 21 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            3 分钟 读完 (约 474 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>　</p>
-<p>　　<em>sdk</em> 需要视频素材,我自己找的视频素材太大不能作为素材资源(<em>150K</em>以内)。</p>
-<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>　</p>
-<p>　　记得 <em>FFmpeg</em> 能处理,用 <em>man</em> 查了下，当时写文档的人还真是很讲究。比如下面的图</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg" alt=""></p>
-<p>　</p></body></html>
-        <p class="article-more-link">
-            <a href="/2017/04/21/Technology-FFmpeg-video-interception-command/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/04/10/Technology-WoSign-CA-signed-digital-certificate-is-invalid/" itemprop="url">WoSign CA 签名的数字证书失效</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-04-10T09:37:40.000Z" itemprop="datePublished">4月 10 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 563 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
-<p>　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 <em>WoSign</em> 签名的。<br>　　<br>　　在证书交换阶段时报错了，<em>Google</em> 后找到一篇 <a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT204132"><em>Apple</em> 官方的声明</a>。</p>
-<h2 id="PKI"><a href="#PKI" class="headerlink" title="PKI"></a><code>PKI</code></h2><p>　</p>
-<p>　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。
-　</p></body></html>
-        <p class="article-more-link">
-            <a href="/2017/04/10/Technology-WoSign-CA-signed-digital-certificate-is-invalid/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-    
-        
-<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
-    <div class="pagination-previous is-invisible is-hidden-mobile">
-        <a href="/categories/Technology/page/0/">上一页</a>
-    </div>
-    <div class="pagination-next">
-        <a href="/categories/Technology/page/2/">下一页</a>
-    </div>
-    <ul class="pagination-list is-hidden-mobile">
-        
-        <li><a class="pagination-link is-current" href="/categories/Technology/">1</a></li>
-        
-        <li><a class="pagination-link" href="/categories/Technology/page/2/">2</a></li>
-        
-        <li><a class="pagination-link" href="/categories/Technology/page/3/">3</a></li>
-        
-    </ul>
-</nav>
-    
     </div>
 </section>
     <footer class="footer">
