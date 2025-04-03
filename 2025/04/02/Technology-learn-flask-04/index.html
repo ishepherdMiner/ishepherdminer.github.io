@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://s2.loli.net/2025/04/03/AOSgt5pwklM3RZP.png">
 <meta property="og:image" content="https://s2.loli.net/2025/04/03/plfyDxSE9q3i8B2.png">
 <meta property="article:published_time" content="2025-04-02T12:43:03.000Z">
-<meta property="article:modified_time" content="2025-04-03T13:03:47.097Z">
+<meta property="article:modified_time" content="2025-04-03T13:06:48.294Z">
 <meta property="article:author" content="Shepherd">
 <meta property="article:tag" content="iOSer Shepherd">
 <meta name="twitter:card" content="summary">
@@ -242,8 +242,7 @@
 <p>app.py</p>
 <figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/leaf'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">leaf</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'leaf.html'</span>)</span><br></pre></td></tr></tbody></table></figure>
 
- 和  是定义的可替换区域。
-
+<p><code>{% block title %}{% endblock %}`` 和 ``{% block content %}{% endblock %}</code> 是定义的可替换区域。</p>
 <p>检查响应的内容确实替换了。</p>
 <p><img src="https://s2.loli.net/2025/04/03/EvS6ZkGNfgcBRts.png" alt="02.png"></p>
 <p>格式: <code>{% block 变量名 %} {% endblock %}</code></p>
