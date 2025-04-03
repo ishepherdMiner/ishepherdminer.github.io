@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Flask学习笔记 - 模板渲染 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="前言继续… Flask 模板渲染模板是包含占位符的 HTML 文件 Flask 使用 Jinja2 模板引擎来处理模板渲染。模板渲染允许你将动态内容插入到 HTML 页面中，使得应用能够生成动态的网页内容。  创建模板：将 HTML 文件放在 templates 文件夹中，使用 Jinja2 占位符。 渲染模板：使用 render_template 函数在视图函数中渲染模板。 模板继承：创建基础模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask学习笔记 - 模板渲染">
+<meta property="og:url" content="http://yoursite.com/2025/04/02/Technology-learn-flask-04/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="前言继续… Flask 模板渲染模板是包含占位符的 HTML 文件 Flask 使用 Jinja2 模板引擎来处理模板渲染。模板渲染允许你将动态内容插入到 HTML 页面中，使得应用能够生成动态的网页内容。  创建模板：将 HTML 文件放在 templates 文件夹中，使用 Jinja2 占位符。 渲染模板：使用 render_template 函数在视图函数中渲染模板。 模板继承：创建基础模">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/dsKpmigtvrPxleV.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/EvS6ZkGNfgcBRts.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/klReb79TZzF54Yp.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/8LHuqIeXRzEj9sD.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/Hl8nuqmYhiT9FOs.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/Vvdqux3YAkUZKE1.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/AOSgt5pwklM3RZP.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/03/plfyDxSE9q3i8B2.png">
+<meta property="article:published_time" content="2025-04-02T12:43:03.000Z">
+<meta property="article:modified_time" content="2025-04-03T13:03:47.097Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/03/dsKpmigtvrPxleV.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flask-模板渲染">2&nbsp;&nbsp;<b>Flask 模板渲染</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#基本概念-创建模板">2.1&nbsp;&nbsp;基本概念/创建模板</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#模板继承">2.2&nbsp;&nbsp;模板继承</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#控制结构">2.3&nbsp;&nbsp;控制结构</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#过滤器">2.4&nbsp;&nbsp;过滤器</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#宏和模板包含">2.5&nbsp;&nbsp;宏和模板包含</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#安全性">2.6&nbsp;&nbsp;安全性</a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Flask学习笔记 - 模板渲染
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-02T12:43:03.000Z" itemprop="datePublished">4月 2 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            6 分钟 读完 (约 972 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继续…</p>
+<h2 id="Flask-模板渲染"><a href="#Flask-模板渲染" class="headerlink" title="Flask 模板渲染"></a>Flask 模板渲染</h2><p>模板是包含占位符的 HTML 文件</p>
+<p><code>Flask</code> 使用 <code>Jinja2</code> 模板引擎来处理模板渲染。模板渲染允许你将动态内容插入到 HTML 页面中，使得应用能够生成动态的网页内容。</p>
+<ol>
+<li>创建模板：将 HTML 文件放在 templates 文件夹中，使用 Jinja2 占位符。</li>
+<li>渲染模板：使用 render_template 函数在视图函数中渲染模板。</li>
+<li>模板继承：创建基础模板，允许其他模板继承和扩展。</li>
+<li>控制结构：使用条件语句和循环在模板中控制逻辑。</li>
+<li>过滤器：使用过滤器格式化变量数据。</li>
+<li>宏和模板包含：创建和使用宏以及模板包含，提高模板的复用性。</li>
+<li>安全性：Jinja2 默认对模板变量进行自动转义以防止 XSS 攻击。</li>
+<li>模板上下文：将数据传递给模板，并在模板中使用这些数据。</li>
+</ol>
+<span id="more"></span>
+
+<h3 id="基本概念-创建模板"><a href="#基本概念-创建模板" class="headerlink" title="基本概念/创建模板"></a>基本概念/创建模板</h3><p>模板是包含占位符的 HTML 文件。</p>
+<p>Flask 使用 Jinja2 模板引擎来渲染这些模板，将 Python 数据插入到 HTML 中，从而生成最终的网页。</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Welcome<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{{ title }}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Hello, {{ name }}!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, render_template</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'index.html'</span>,title=<span class="hljs-string">'Home'</span>,name=<span class="hljs-string">'Misha'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="hljs-literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>格式: <code>{{ 变量名 }}</code></p>
+<p><img src="https://s2.loli.net/2025/04/03/dsKpmigtvrPxleV.png" alt="01.png"></p>
+<h3 id="模板继承"><a href="#模板继承" class="headerlink" title="模板继承"></a>模板继承</h3><p>root.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>{% block title %}My Website{% endblock %}<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>My Website<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">main</span>&gt;</span></span><br><span class="line">        {% block content %}{% endblock %}</span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">main</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">footer</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Footer content<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">footer</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>leaf.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">{% extends "root.html" %}</span><br><span class="line"></span><br><span class="line">{% block title %}Home Page{% endblock %}</span><br><span class="line"></span><br><span class="line">{% block content %}</span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Welcome to the Home Page!<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Content goes here.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line">{% endblock %}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/leaf'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">leaf</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'leaf.html'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+ 和  是定义的可替换区域。
+
+<p>检查响应的内容确实替换了。</p>
+<p><img src="https://s2.loli.net/2025/04/03/EvS6ZkGNfgcBRts.png" alt="02.png"></p>
+<p>格式: <code>{% block 变量名 %} {% endblock %}</code></p>
+<h3 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h3><p>Jinja2 提供了多种控制结构，用于在模板中实现条件逻辑和循环。</p>
+<p>ctrl_flow.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Welcome<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-comment">&lt;!-- 条件语句 --&gt;</span></span><br><span class="line">    {% if user %}</span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Welcome, {{ user }}!<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line">    {% else %}</span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Please log in.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line">    {% endif %}</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">&lt;!-- 循环语句 --&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="line">        {% for item in items %}</span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>{{ item }}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="line">        {% endfor %}</span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/ctrl_flow'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ctrl_flow</span>():</span></span><br><span class="line">    <span class="hljs-comment"># return render_template('ctrl_flow.html',user="Zhangsan")</span></span><br><span class="line">    <span class="hljs-comment"># return render_template('ctrl_flow.html')</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'ctrl_flow.html'</span>,user=<span class="hljs-string">"Zhangsan"</span>,items=[<span class="hljs-string">'apple'</span>,<span class="hljs-string">'banana'</span>,<span class="hljs-string">'orange'</span>])</span><br></pre></td></tr></tbody></table></figure>
+
+<p>传了user<br><img src="https://s2.loli.net/2025/04/03/klReb79TZzF54Yp.png" alt="03.png"></p>
+<p>未传user和items<br><img src="https://s2.loli.net/2025/04/03/8LHuqIeXRzEj9sD.png" alt="04.png"></p>
+<p>传了user和items<br><img src="https://s2.loli.net/2025/04/03/Hl8nuqmYhiT9FOs.png" alt="05.png"></p>
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>过滤器用于在模板中格式化和处理变量数据。</p>
+<p>filter.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Welcome<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ name|capitalize }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ price|round(2) }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/filter'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">filter</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'filter.html'</span>,name=<span class="hljs-string">'wangwu'</span>,price=<span class="hljs-number">2.999</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>过滤器的写法与shell中的管道一样都是用”|”来表示</p>
+<p>格式: <code>{{ 变量名|处理方法 }}</code></p>
+<p><img src="https://s2.loli.net/2025/04/03/Vvdqux3YAkUZKE1.png" alt="06.png"></p>
+<h3 id="宏和模板包含"><a href="#宏和模板包含" class="headerlink" title="宏和模板包含"></a>宏和模板包含</h3><p>macros.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{% macro render_item(item) %}</span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">h3</span>&gt;</span>{{ item.title }}<span class="hljs-tag">&lt;/<span class="hljs-name">h3</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ item.description }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="line">{% endmacro %}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用宏: macros_demo.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{% from "macros.html" import render_item %}</span><br><span class="line"></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Items<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="line">{% for item in items %}</span><br><span class="line">    {{ render_item(item) }}</span><br><span class="line">{% endfor %}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/macros'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">macros</span>():</span></span><br><span class="line">    <span class="hljs-comment"># return render_template('macros_demo.html',items=['apple','banana','orange'])</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'macros_demo.html'</span>,items=[{<span class="hljs-string">"title"</span>:<span class="hljs-string">"apple"</span>,<span class="hljs-string">"description"</span>:<span class="hljs-string">"苹果"</span>},{<span class="hljs-string">"title"</span>:<span class="hljs-string">"banana"</span>,<span class="hljs-string">"description"</span>:<span class="hljs-string">"香蕉"</span>},{<span class="hljs-string">"title"</span>:<span class="hljs-string">"orange"</span>,<span class="hljs-string">"description"</span>:<span class="hljs-string">"橘子"</span>}])</span><br></pre></td></tr></tbody></table></figure>
+
+<p>变量不正确时的效果</p>
+<p><img src="https://s2.loli.net/2025/04/03/AOSgt5pwklM3RZP.png" alt="07_1.png"></p>
+<p>正常的显示</p>
+<p><img src="https://s2.loli.net/2025/04/03/plfyDxSE9q3i8B2.png" alt="07_2.png"></p>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>security.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span> security <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ user_input }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/xss'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">xss</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'security.html'</span>,user_input=<span class="hljs-string">'&lt;script&gt; alert(1) &lt;/script&gt;'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>自动转义：Jinja2 默认会对模板中的变量进行自动转义，防止 XSS 攻击。</p>
+<script>标签不会被认为是html元素
+
+![08.png](https://s2.loli.net/2025/04/03/UvprR3dFSj6kZeG.png)
+
+### 模板上下文
+
+视图函数中传递的变量成为模板的上下文，这些变量可以在模板中直接使用。
+
+profile.html
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; user.name &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Age: &#123;&#123; user.age &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+app.py
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/profile/&lt;username&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">profile</span>(<span class="params">username</span>):</span></span><br><span class="line">    user = &#123;<span class="string">&#x27;name&#x27;</span>: username, <span class="string">&#x27;age&#x27;</span>: <span class="number">25</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;profile.html&#x27;</span>, user=user)</span><br></pre></td></tr></table></figure>
+
+![09.png](https://s2.loli.net/2025/04/03/C3A7PWQaigFwVJf.png)
+
+
+## 参考
+
+1. [Flask模板渲染](https://www.runoob.com/flask/flask-templates.html)
+
+</script></body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/02/Technology-learn-flask-03/">Flask学习笔记 - 视图函数</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
