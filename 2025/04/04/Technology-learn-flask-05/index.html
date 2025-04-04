@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Flask学习笔记 - 表单 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer Shepherd">
+
+
+
+    <meta name="description" content="表单处理 基本表单处理：使用 request.form 获取表单数据。 使用 Flask-WTF：结合 WTForms 进行表单处理和验证，简化表单操作。 表单验证：使用验证器确保表单数据的有效性。 文件上传：处理文件上传和保存文件。 CSRF 保护：确保表单免受跨站请求伪造攻击。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask学习笔记 - 表单">
+<meta property="og:url" content="http://yoursite.com/2025/04/04/Technology-learn-flask-05/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="表单处理 基本表单处理：使用 request.form 获取表单数据。 使用 Flask-WTF：结合 WTForms 进行表单处理和验证，简化表单操作。 表单验证：使用验证器确保表单数据的有效性。 文件上传：处理文件上传和保存文件。 CSRF 保护：确保表单免受跨站请求伪造攻击。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/tNrUfsiI8R7ACup.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/XbBkwf7sDptUzQy.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/IgvKjuiD5RA4pTb.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/KGlroEpkXvcVb5z.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/fDIrMWxalkUsERT.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/46SuxRBDrGA7mbw.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/SpntYv9iPzQdoE8.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/yKpsoVxYRBFdUOA.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/yIeJY5Cb1pGOWi7.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/DrE6PXN3FnyZtWe.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/JZgoiafOMk3eRYx.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/Fq9Kl21xJf4cPHU.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/04/ZIiaSWh7bPqUMT8.png">
+<meta property="article:published_time" content="2025-04-04T02:19:14.000Z">
+<meta property="article:modified_time" content="2025-04-04T09:56:44.740Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer Shepherd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/04/tNrUfsiI8R7ACup.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#表单处理">1&nbsp;&nbsp;<b>表单处理</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#基本表单处理">1.1&nbsp;&nbsp;基本表单处理</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#使用-Flask-WTF-扩展">1.2&nbsp;&nbsp;使用 Flask-WTF 扩展</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#安装-Flask-WTF">1.2.1&nbsp;&nbsp;安装 Flask-WTF</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#表单处理和验证的功能">1.2.2&nbsp;&nbsp;表单处理和验证的功能</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#表单验证">1.3&nbsp;&nbsp;表单验证</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#文件上传">1.4&nbsp;&nbsp;文件上传</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#CSRF-保护">1.5&nbsp;&nbsp;CSRF 保护</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Demo">2&nbsp;&nbsp;<b>Demo</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">3&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Flask学习笔记 - 表单
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-04T02:19:14.000Z" itemprop="datePublished">4月 4 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            9 分钟 读完 (约 1422 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="表单处理"><a href="#表单处理" class="headerlink" title="表单处理"></a>表单处理</h2><ol>
+<li>基本表单处理：使用 request.form 获取表单数据。</li>
+<li>使用 Flask-WTF：结合 WTForms 进行表单处理和验证，简化表单操作。</li>
+<li>表单验证：使用验证器确保表单数据的有效性。</li>
+<li>文件上传：处理文件上传和保存文件。</li>
+<li>CSRF 保护：确保表单免受跨站请求伪造攻击。</li>
+</ol>
+<span id="more"></span>
+
+<h3 id="基本表单处理"><a href="#基本表单处理" class="headerlink" title="基本表单处理"></a>基本表单处理</h3><p>form.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Form Example<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/submit"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"post"</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"name"</span>&gt;</span>Name:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"email"</span>&gt;</span>Email:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"email"</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Submit"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/form'</span></span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">form</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'form.html'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/submit'</span>, methods=[<span class="hljs-string">'POST'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">submit</span>():</span></span><br><span class="line">    name = request.form.get(<span class="hljs-string">'name'</span>)</span><br><span class="line">    email = request.form.get(<span class="hljs-string">'email'</span>)</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">f'Name: <span class="hljs-subst">{name}</span>, Email: <span class="hljs-subst">{email}</span>'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/04/tNrUfsiI8R7ACup.png" alt="1"><br><img src="https://s2.loli.net/2025/04/04/XbBkwf7sDptUzQy.png" alt="2"></p>
+<p><code>request.form.get('变量名')</code>，变量名是<code>input</code>中的<code>name</code>字段的值</p>
+<h3 id="使用-Flask-WTF-扩展"><a href="#使用-Flask-WTF-扩展" class="headerlink" title="使用 Flask-WTF 扩展"></a>使用 Flask-WTF 扩展</h3><p>Flask-WTF 是一个封装了 WTForms 的扩展，提供了表单处理和验证的功能，使得表单处理更加简洁和强大。</p>
+<h4 id="安装-Flask-WTF"><a href="#安装-Flask-WTF" class="headerlink" title="安装 Flask-WTF"></a>安装 Flask-WTF</h4><figure class="highlight shell hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-wtf</span><br><span class="line"><span class="hljs-meta">#</span><span class="hljs-bash"> 我的设备上有Python2.7和Python3,给Python3安装所以用以下的命令</span></span><br><span class="line"><span class="hljs-meta">#</span><span class="hljs-bash"> pip3 install flask-wtf</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/04/IgvKjuiD5RA4pTb.png" alt="03.png"></p>
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, render_template, redirect, url_for</span><br><span class="line"><span class="hljs-keyword">from</span> flask_wtf <span class="hljs-keyword">import</span> FlaskForm</span><br><span class="line"><span class="hljs-keyword">from</span> wtforms <span class="hljs-keyword">import</span> StringField, EmailField, SubmitField</span><br><span class="line"><span class="hljs-keyword">from</span> wtforms.validators <span class="hljs-keyword">import</span> DataRequired, Email</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.secret_key = <span class="hljs-string">'6a31ad17a15b0d887049fcfd478aedeb8da2d40049f1413ca4add757379d4237'</span>  <span class="hljs-comment"># Required for form protection</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyForm</span>(<span class="hljs-params">FlaskForm</span>):</span></span><br><span class="line">    name = StringField(<span class="hljs-string">'Name'</span>, validators=[DataRequired()])</span><br><span class="line">    email = EmailField(<span class="hljs-string">'Email'</span>, validators=[DataRequired(), Email()])</span><br><span class="line">    submit = SubmitField(<span class="hljs-string">'Submit'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/form'</span>, methods=[<span class="hljs-string">'GET'</span>, <span class="hljs-string">'POST'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">form</span>():</span></span><br><span class="line">    form = MyForm()</span><br><span class="line">    <span class="hljs-keyword">if</span> form.validate_on_submit(): <span class="hljs-comment"># 如果校验通过则显示姓名与邮箱地址</span></span><br><span class="line">        name = form.name.data</span><br><span class="line">        email = form.email.data</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">f'Name: <span class="hljs-subst">{name}</span>, Email: <span class="hljs-subst">{email}</span>'</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'form.html'</span>, form=form) <span class="hljs-comment"># 否则显示form.html页面</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    app.run(debug=<span class="hljs-literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h5 id="生成-app-secret-key"><a href="#生成-app-secret-key" class="headerlink" title="生成 app.secret_key"></a>生成 app.secret_key</h5><p>generate_secrets.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> secrets</span><br><span class="line"><span class="hljs-built_in">print</span>(secrets.token_hex())</span><br><span class="line"><span class="hljs-comment"># 6a31ad17a15b0d887049fcfd478aedeb8da2d40049f1413ca4add757379d4237</span></span><br><span class="line"><span class="hljs-comment"># 64位的token</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="表单处理和验证的功能"><a href="#表单处理和验证的功能" class="headerlink" title="表单处理和验证的功能"></a><strong>表单处理和验证的功能</strong></h4><figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name = StringField(<span class="hljs-string">'Name'</span>, validators=[DataRequired()])</span><br><span class="line">email = EmailField(<span class="hljs-string">'Email'</span>, validators=[DataRequired(), Email()])</span><br></pre></td></tr></tbody></table></figure>
+
+<p>要求name和email非空,且email要符合格式</p>
+<h5 id="验证name和email"><a href="#验证name和email" class="headerlink" title="验证name和email"></a>验证name和email</h5><p>不输入name<br><img src="https://s2.loli.net/2025/04/04/KGlroEpkXvcVb5z.png" alt="04.png"></p>
+<p>不输入email<br><img src="https://s2.loli.net/2025/04/04/fDIrMWxalkUsERT.png" alt="05.png"></p>
+<p>输入错误的email</p>
+<p><img src="https://s2.loli.net/2025/04/04/46SuxRBDrGA7mbw.png" alt="06.png"></p>
+<p>输入name和正确格式的email</p>
+<p><img src="https://s2.loli.net/2025/04/04/SpntYv9iPzQdoE8.png" alt="07.png"></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Exception: Install <span class="hljs-string">'email_validator'</span> <span class="hljs-keyword">for</span> email validation support.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>报错比较明显是还缺少emial_validator模块,通过命令行进行安装</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install email_validator</span><br></pre></td></tr></tbody></table></figure>
+
+<p>继续请求,报错消失,但界面没有出现下面的效果</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">return</span> <span class="hljs-string">f'Name: <span class="hljs-subst">{name}</span>, Email: <span class="hljs-subst">{email}</span>'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/04/yKpsoVxYRBFdUOA.png" alt="08.png"></p>
+<p>一开始以为是html中的name和email是小写,导致提交时找不到元素,然而还是不对。</p>
+<p>IDE里的注释<br><code># Call validate only if the form is submitted. This is a shortcut for form.is_submitted() and form.validate().</code><br>所以加了打印看时哪个函数报错,结果是<code>form.validate()</code>校验过程有问题,搜索相关资料,看怎么排查这个问题</p>
+<ul>
+<li>请求方法错误 – POST请求，不是这个问题</li>
+<li>表单数据错误 – 加上<code>print(form.errors)</code> 打印具体具体的错误 =&gt; {‘csrf_token’: [‘The CSRF tokens do not match.’]}<br>…</li>
+</ul>
+<p>是csrf_token未匹配的原因,对比了其它几种写法,未发现有什么特殊操作,其中提到清理浏览器缓存的操作,我一直都是使用Trae IDE自带的浏览器,抱着试一试的心态。用Chrome测试了下,是正常的!</p>
+<p>我又问了Trae里的AI,看能不能告诉我怎么清理自带的浏览器,然后它的回答,始终讲不到点上。</p>
+<p>在Trae起的web服务和主机起的web服务,应该是有差别的。都用了5000端口,所以不能同时起,两者不能相互访问。每次验证都要在关闭web再启动，为了后面遇到奇怪的问题可以用不同浏览器去对比验证。</p>
+<p>Trae和主机传不同的port参数可以解决这个问题</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:</span><br><span class="line">    port = sys.argv[<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-number">5001</span></span><br><span class="line">    app.run(port=&lt;port&gt;,debug=<span class="hljs-literal">True</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Chrome浏览器正常显示</p>
+<p><img src="https://s2.loli.net/2025/04/04/yIeJY5Cb1pGOWi7.png" alt="09.png"></p>
+<h3 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h3><p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyForm2</span>(<span class="hljs-params">FlaskForm</span>):</span></span><br><span class="line">    name = StringField(<span class="hljs-string">'Name'</span>, validators=[</span><br><span class="line">        DataRequired(), Length(<span class="hljs-built_in">min</span>=<span class="hljs-number">1</span>, <span class="hljs-built_in">max</span>=<span class="hljs-number">8</span>)</span><br><span class="line">    ])</span><br><span class="line">    email = EmailField(<span class="hljs-string">'Email'</span>, validators=[</span><br><span class="line">        DataRequired(), Email()</span><br><span class="line">    ])</span><br><span class="line">    submit = SubmitField(<span class="hljs-string">'Submit'</span>)</span><br><span class="line">    </span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/form2'</span>, methods=[<span class="hljs-string">'GET'</span>, <span class="hljs-string">'POST'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">form2</span>():</span></span><br><span class="line">    form = MyForm2()</span><br><span class="line">    <span class="hljs-keyword">if</span> form.validate_on_submit():</span><br><span class="line">        name = form.name.data</span><br><span class="line">        email = form.email.data</span><br><span class="line">        <span class="hljs-keyword">return</span> redirect(url_for(<span class="hljs-string">'form'</span>))</span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'form.html'</span>, form=form)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>设置了Length,name最长只能输入8个</p>
+<p><img src="https://s2.loli.net/2025/04/04/DrE6PXN3FnyZtWe.png" alt="10.png"></p>
+<h3 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h3><p>Flask 还支持处理文件上传。上传的文件可以通过 request.files 访问。</p>
+<p>templates/upload.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Upload File<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/upload"</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"post"</span> <span class="hljs-attr">enctype</span>=<span class="hljs-string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"file"</span>&gt;</span>File:<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"file"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"file"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"file"</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Upload"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/upload_file'</span>, methods=[<span class="hljs-string">'GET'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">upload_form</span>():</span></span><br><span class="line">    <span class="hljs-keyword">return</span> render_template(<span class="hljs-string">'upload.html'</span>)</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">'/upload'</span>, methods=[<span class="hljs-string">'POST'</span>]</span>)</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">upload</span>():</span></span><br><span class="line">    file = request.files.get(<span class="hljs-string">'file'</span>)</span><br><span class="line">    <span class="hljs-keyword">if</span> file:</span><br><span class="line">        filename = file.filename</span><br><span class="line">        file.save(<span class="hljs-string">f'uploads/<span class="hljs-subst">{filename}</span>'</span>)</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">f'File uploaded successfully: <span class="hljs-subst">{filename}</span>'</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">'No file uploaded'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>访问/upload_file，选择文件并上传，上传成功后在app.py同级目录uploads下</p>
+<p><img src="https://s2.loli.net/2025/04/04/JZgoiafOMk3eRYx.png" alt="11.png"><br><img src="https://s2.loli.net/2025/04/04/Fq9Kl21xJf4cPHU.png" alt="12"><br><img src="https://s2.loli.net/2025/04/04/ZIiaSWh7bPqUMT8.png" alt="13"></p>
+<h3 id="CSRF-保护"><a href="#CSRF-保护" class="headerlink" title="CSRF 保护"></a>CSRF 保护</h3><p>Flask-WTF 自动为表单提供 CSRF 保护。你需要配置一个密钥来启用 CSRF 保护，并在模板中包含隐藏的 CSRF 令牌。</p>
+<p>配置CSRF保护</p>
+<p>app.py</p>
+<figure class="highlight python hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.secret_key = <span class="hljs-string">'6a31ad17a15b0d887049fcfd478aedeb8da2d40049f1413ca4add757379d4237'</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>在模板中添加 CSRF 令牌</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"post"</span>&gt;</span></span><br><span class="line">    {{ form.hidden_tag() }}</span><br><span class="line">    <span class="hljs-comment">&lt;!-- Form fields here --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/tutorial/tree/main/Flask">Flask</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/flask/flask-form.html">Flask表单处理</a></li>
+<li><a target="_blank" rel="noopener" href="https://flask.palletsprojects.com/en/stable/patterns/wtforms/">Form Validation with WTForms</a></li>
+<li><a target="_blank" rel="noopener" href="https://geek-docs.com/flask/flask-questions/80_flask_wtf_formvalidate_on_submit_not_working.html">Flask WTF form.validate_on_submit()方法不起作用</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/leijiangtao/p/11770647.html">flask总结05（在 Flask 项目中解决 CSRF 攻击）</a></li>
+<li><a target="_blank" rel="noopener" href="https://codekitchen.community/t/topic/227">Flask-WTF 表单令牌不匹配：The CSRF Tokens do not match</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/02/Technology-learn-flask-04/">Flask学习笔记 - 模板渲染</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
