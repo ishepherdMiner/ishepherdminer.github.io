@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -26,7 +26,7 @@
 <meta property="og:description" content="一个闲散的程序员">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -67,7 +67,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -155,7 +155,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><p>　　在<em>iOS9<em>以下,可以用</em>iTools</em>,<em>PP助手<em>等工具导出其他应用的</em>iPa</em>,但是iOS9开始就不行了<br>　　搜索后,根据<a target="_blank" rel="noopener" href="http://bbs.feng.com/read-htm-tid-10672615-page-2.html">ios9越狱后如何备份ipa？</a>这篇帖子,尝试用mac版的<em>PP助手<em>在越狱的5s(9.3.2)上导出</em>iPa</em></p>
+        <html><head></head><body><p>　　在<em>iOS9</em>以下,可以用<em>iTools</em>,<em>PP助手</em>等工具导出其他应用的<em>iPa</em>,但是iOS9开始就不行了<br>　　搜索后,根据<a target="_blank" rel="noopener" href="http://bbs.feng.com/read-htm-tid-10672615-page-2.html">ios9越狱后如何备份ipa？</a>这篇帖子,尝试用mac版的<em>PP助手</em>在越狱的5s(9.3.2)上导出<em>iPa</em></p>
 <p></p></body></html>
         <p class="article-more-link">
             <a href="/2017/01/21/iOSer-How-to-export-the-ipa-file-for-other-apps-on-iOS9/#more">阅读更多</a>
@@ -247,7 +247,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="类的数据结构-runtime-h"><a href="#类的数据结构-runtime-h" class="headerlink" title="类的数据结构(runtime.h)"></a>类的数据结构(runtime.h)</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> objc_class {</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">long</span> instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">} OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-comment">/* Use `Class` instead of `struct objc_class *` */</span></span><br></pre></td></tr></tbody></table></figure></body></html>
+        <html><head></head><body><h2 id="类的数据结构-runtime-h"><a href="#类的数据结构-runtime-h" class="headerlink" title="类的数据结构(runtime.h)"></a>类的数据结构(runtime.h)</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> objc_class {</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">} OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-comment">/* Use `Class` instead of `struct objc_class *` */</span></span><br></pre></td></tr></tbody></table></figure></body></html>
         <p class="article-more-link">
             <a href="/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/#more">阅读更多</a>
         </p>
@@ -395,7 +395,7 @@
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ol>
 <li>生成RSA证书</li>
 <li>推送公钥到iOS设备</li>
-<li>配置<em>~/.ssh/config</em>文件</li>
+<li>配置*~/.ssh/config*文件</li>
 <li>远程SSH登陆</li>
 </ol></body></html>
         <p class="article-more-link">

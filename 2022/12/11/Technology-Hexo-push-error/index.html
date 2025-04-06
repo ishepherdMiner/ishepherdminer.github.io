@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -29,7 +29,7 @@
 <meta property="article:published_time" content="2022-12-11T12:12:27.000Z">
 <meta property="article:modified_time" content="2022-12-11T12:29:41.093Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/gallery/pexels-lumn-167699.jpg">
 
@@ -71,7 +71,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -186,12 +186,12 @@
     
         <html><head></head><body><div class="gallery-item">
 
-<p><img src="/images/gallery/pexels-lumn-167699.jpg" alt=""></p>
+<p><img src="/images/gallery/pexels-lumn-167699.jpg"></p>
 </div>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
 <p>按要求<code>eval "$(ssh-agent -s)"</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent yes</span><br><span class="line">  UseKeychain yes</span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent <span class="hljs-built_in">yes</span></span><br><span class="line">  UseKeychain <span class="hljs-built_in">yes</span></span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
 
 <p>指定github.com使用该公钥,但是还是失败。</p>
 <span id="more"></span>

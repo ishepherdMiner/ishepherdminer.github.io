@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -26,7 +26,7 @@
 <meta property="og:description" content="一个闲散的程序员">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -67,7 +67,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -124,6 +124,100 @@
 
     <section class="section">
     <div class="container">
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/" itemprop="url">理解objc运行时二:类的结构(runtime.h)</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2016-12-25T02:59:22.000Z" itemprop="datePublished">12月 25 2016</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            16 分钟 读完 (约 2433 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="类的数据结构-runtime-h"><a href="#类的数据结构-runtime-h" class="headerlink" title="类的数据结构(runtime.h)"></a>类的数据结构(runtime.h)</h2><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> objc_class {</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">if</span> !__OBJC2__</span></span><br><span class="line">    Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-type">long</span> instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">    <span class="hljs-keyword">struct</span> objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">} OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="hljs-comment">/* Use `Class` instead of `struct objc_class *` */</span></span><br></pre></td></tr></tbody></table></figure></body></html>
+        <p class="article-more-link">
+            <a href="/2016/12/25/iOSer-Understand-objc-runtime-2-class-structure-runtime-h/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2016/12/08/iOSer-Quickly-generate-icons-for-iOS-apps/" itemprop="url">快速生成iOS应用的图标</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2016-12-08T06:14:08.000Z" itemprop="datePublished">12月 8 2016</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            3 分钟 读完 (约 376 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>shell脚本自动生成应用的图标</li>
+</ul>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><ul>
+<li>.png格式的图片进行缩小操作不会失真</li>
+<li>应用的图标尺寸是可预先确定</li>
+</ul></body></html>
+        <p class="article-more-link">
+            <a href="/2016/12/08/iOSer-Quickly-generate-icons-for-iOS-apps/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
     
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
@@ -294,7 +388,7 @@
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ol>
 <li>生成RSA证书</li>
 <li>推送公钥到iOS设备</li>
-<li>配置<em>~/.ssh/config</em>文件</li>
+<li>配置*~/.ssh/config*文件</li>
 <li>远程SSH登陆</li>
 </ol></body></html>
         <p class="article-more-link">

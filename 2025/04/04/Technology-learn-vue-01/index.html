@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="title: Vue学习笔记 - 安装与环境搭建date: 2025-04-04 18:57:28categories: “Technology”  什么是 VueVue (发音为 &#x2F;vjuː&#x2F;，类似 view) 是一款用于构建用户界面的 JavaScript 框架。它基于标准 HTML、CSS 和 JavaScript 构建，并提供了一套声明式的、组件化的编程模型，帮助你高效地开发用户界面。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="牧羊人">
+<meta property="og:url" content="http://yoursite.com/2025/04/04/Technology-learn-vue-01/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="title: Vue学习笔记 - 安装与环境搭建date: 2025-04-04 18:57:28categories: “Technology”  什么是 VueVue (发音为 &#x2F;vjuː&#x2F;，类似 view) 是一款用于构建用户界面的 JavaScript 框架。它基于标准 HTML、CSS 和 JavaScript 构建，并提供了一套声明式的、组件化的编程模型，帮助你高效地开发用户界面。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/06/bym4LIEVvMewD8a.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/06/dA38pRaeZkSNXxL.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/06/k2NqSbFzexsA6Rv.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/06/CK7c2NvluZU9LQH.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/06/UcfHQRd5hVFbpDB.png">
+<meta property="article:published_time" content="2025-04-04T10:57:28.044Z">
+<meta property="article:modified_time" content="2025-04-06T09:07:13.934Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/06/bym4LIEVvMewD8a.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#什么是-Vue">1&nbsp;&nbsp;<b>什么是 Vue</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#核心功能">1.1&nbsp;&nbsp;核心功能</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#渐进式框架">1.2&nbsp;&nbsp;渐进式框架</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#API-风格">1.3&nbsp;&nbsp;API 风格</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#组合式">1.3.1&nbsp;&nbsp;组合式</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#选项式">1.4&nbsp;&nbsp;选项式</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#安装">2&nbsp;&nbsp;<b>安装</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前置一-Node-js">2.1&nbsp;&nbsp;前置一: Node.js</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#前置二-开发工具-Visual-Studio-Code-Vue-Official-扩展">2.2&nbsp;&nbsp;前置二: 开发工具 Visual Studio Code + Vue - Official 扩展</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#创建一个Vue应用">2.3&nbsp;&nbsp;创建一个Vue应用</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#应用实例-根组件-挂载应用">2.3.1&nbsp;&nbsp;应用实例 + 根组件 + 挂载应用</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">3&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-04T10:57:28.044Z" itemprop="datePublished">4月 4 2025</time>
+            
+        </span>
+        <!--
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            12 分钟 读完 (约 1757 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><hr>
+<p>title: Vue学习笔记 - 安装与环境搭建<br>date: 2025-04-04 18:57:28<br>categories: “Technology”</p>
+<hr>
+<h2 id="什么是-Vue"><a href="#什么是-Vue" class="headerlink" title="什么是 Vue"></a>什么是 Vue</h2><p>Vue (发音为 /vjuː/，类似 view) 是一款用于构建用户界面的 <strong>JavaScript 框架</strong>。它基于标准 HTML、CSS 和 JavaScript 构建，并提供了一套声明式的、组件化的编程模型，帮助你高效地开发用户界面。</p>
+<h3 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h3><ul>
+<li>声明式渲染：Vue 基于标准 HTML 拓展了一套模板语法，使得我们可以声明式地描述最终输出的 HTML 和 JavaScript 状态之间的关系。</li>
+<li>响应性：Vue 会<strong>自动</strong>跟踪 JavaScript 状态并在其发生变化时响应式地更新 DOM。</li>
+</ul>
+<p>声明式渲染:开发界面也是所见即所得<br>响应性: 比如最近关税问题,对不同国家的关税是有差异,应用就是当外部输入变化时能做出对应响应的东西</p>
+<h3 id="渐进式框架"><a href="#渐进式框架" class="headerlink" title="渐进式框架"></a>渐进式框架</h3><p>Vue 是一个框架，也是一个生态。其功能覆盖了大部分前端开发常见的需求。但 Web 世界是十分多样化的，不同的开发者在 Web 上构建的东西可能在形式和规模上会有很大的不同。</p>
+<p>目前想学习的是</p>
+<ul>
+<li>单页应用 (SPA)</li>
+<li>全栈 / 服务端渲染 (SSR)</li>
+</ul>
+<h3 id="API-风格"><a href="#API-风格" class="headerlink" title="API 风格"></a>API 风格</h3><p>有选项式 API 和组合式 API</p>
+<h4 id="组合式"><a href="#组合式" class="headerlink" title="组合式"></a>组合式</h4><p>通过组合式 API，我们可以使用导入的 API 函数来描述组件逻辑。在单文件组件中，组合式 API 通常会与 <code>&lt;script setup&gt;</code> 搭配使用。这个 setup attribute 是一个标识，告诉 Vue 需要在编译时进行一些处理，让我们可以更简洁地使用组合式 API。</p>
+<p>对于有面向对象语言背景的用户来说，这通常与基于类的心智模型更为一致</p>
+<p>那选项式应该更适合我一点</p>
+<h3 id="选项式"><a href="#选项式" class="headerlink" title="选项式"></a>选项式</h3><p>使用选项式 API，我们可以用包含多个选项的对象来描述组件的逻辑，例如 data、methods 和 mounted。选项所定义的属性都会暴露在函数内部的 this 上，它会指向当前的组件实例</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-comment">// data() 返回的属性将会成为响应式的状态</span></span><br><span class="line">  <span class="hljs-comment">// 并且暴露在 `this` 上</span></span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">count</span>: <span class="hljs-number">0</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// methods 是一些用来更改状态与触发更新的函数</span></span><br><span class="line">  <span class="hljs-comment">// 它们可以在模板中作为事件处理器绑定</span></span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">increment</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">count</span>++</span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line"></span><br><span class="line">  <span class="hljs-comment">// 生命周期钩子会在组件生命周期的各个不同阶段被调用</span></span><br><span class="line">  <span class="hljs-comment">// 例如这个函数就会在组件挂载完成后被调用</span></span><br><span class="line">  <span class="title function_">mounted</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="hljs-string">`The initial count is <span class="hljs-subst">${<span class="variable language_">this</span>.count}</span>.`</span>)</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"increment"</span>&gt;</span>Count is: {{ count }}<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如何创建一个Vue工程的应用</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="前置一-Node-js"><a href="#前置一-Node-js" class="headerlink" title="前置一: Node.js"></a>前置一: Node.js</h3><blockquote>
+<p>前提条件<br>熟悉命令行<br>已安装 18.3 或更高版本的 Node.js</p>
+</blockquote>
+<p>终端输出<code>Node.js</code>的版本</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ node -v</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 结果如下</span></span><br><span class="line"><span class="hljs-comment"># v16.8.0</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>因此要先升级node</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ brew list</span><br><span class="line"><span class="hljs-comment"># 结果如下</span></span><br><span class="line">...</span><br><span class="line">node</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>有<code>node</code>,所以我原来是用<code>brew</code>安装,也用<code>brew</code>去升级</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ brew update</span><br><span class="line"><span class="hljs-comment"># Error:</span></span><br><span class="line"><span class="hljs-comment">#  homebrew-cask is a shallow clone.</span></span><br><span class="line"><span class="hljs-comment"># To `brew update`, first run:</span></span><br><span class="line"><span class="hljs-comment">#  git -C /usr/local/Homebrew/Library/Taps/homebrew/homebrew-cask fetch --unshallow </span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>按照错误的解决方法来,有点慢本来想等等的,但是考虑以后,还是换下源</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.ustc.edu.cn/homebrew-core.git</span><br><span class="line">https://mirrors.aliyun.com/homebrew/homebrew-core.git</span><br><span class="line">https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git</span><br></pre></td></tr></tbody></table></figure>
+
+<p>常用的几个源,ping了下值我这边最小的是aliyun的,环境问题只是准备工作,所以选以一个即可</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## 更新 homebrew-cask（如果提示 No such file or directory 可以先跳过前三个命令）</span></span><br><span class="line">$ <span class="hljs-built_in">cd</span> <span class="hljs-string">"<span class="hljs-subst">$(brew --repo)</span>"</span>/Library/Taps/homebrew/homebrew-cask</span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment"># 更换源</span></span><br><span class="line">$ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment"># 更新</span></span><br><span class="line">$ git fetch --unshallow </span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment">## 更新 homebrew-core</span></span><br><span class="line">$ <span class="hljs-built_in">cd</span> <span class="hljs-string">"<span class="hljs-subst">$(brew --repo)</span>"</span>/Library/Taps/homebrew/homebrew-core</span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment"># 更换源</span></span><br><span class="line">$ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br><span class="line"><span class="hljs-comment"># 更新</span></span><br><span class="line">$ git fetch --unshallow </span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>brew update</code> 完成后</p>
+<p><strong>更新node</strong></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ brew upgrade node</span><br><span class="line"><span class="hljs-comment"># 结果如下</span></span><br><span class="line"><span class="hljs-comment"># Warning: node 16.8.0 already installed</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>看来升级有点问题,非关键问题,换种方式,搜了下也可以用n模块来安装</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 清除nodejs的cache：</span></span><br><span class="line">$ <span class="hljs-built_in">sudo</span> npm cache clean -f</span><br><span class="line"><span class="hljs-comment"># 使用npm安装n模块</span></span><br><span class="line">$ <span class="hljs-built_in">sudo</span> npm install -g n </span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 升级到稳定版本</span></span><br><span class="line">$ <span class="hljs-built_in">sudo</span> n stable </span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>升级npm</strong></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 升级到最新版</span></span><br><span class="line"><span class="hljs-built_in">sudo</span> npm install npm@latest -g</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="前置二-开发工具-Visual-Studio-Code-Vue-Official-扩展"><a href="#前置二-开发工具-Visual-Studio-Code-Vue-Official-扩展" class="headerlink" title="前置二: 开发工具 Visual Studio Code + Vue - Official 扩展"></a>前置二: 开发工具 Visual Studio Code + Vue - Official 扩展</h3><p>IDE按文档推荐的来</p>
+<p><img src="https://s2.loli.net/2025/04/06/bym4LIEVvMewD8a.png" alt="2025-04-06 14.37.57.png"></p>
+<h3 id="创建一个Vue应用"><a href="#创建一个Vue应用" class="headerlink" title="创建一个Vue应用"></a>创建一个Vue应用</h3><p>cd切到对应目录,然后在当前目录下创建一个Vue应用的</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm create vue@latest</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这一指令将会安装并执行 create-vue，它是 Vue 官方的项目脚手架工具。</p>
+<p><img src="https://s2.loli.net/2025/04/06/dA38pRaeZkSNXxL.png" alt="Snip20250406_13.png"></p>
+<p>还有渐变色,有点好看😳</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">cd</span> SFADemo</span><br><span class="line">npm install</span><br><span class="line">npm run dev</span><br><span class="line"><span class="hljs-comment"># 因为权限问题执行时要加sudo</span></span><br><span class="line"><span class="hljs-comment"># npm error code EACCES</span></span><br><span class="line"><span class="hljs-comment"># npm error syscall mkdir</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/06/k2NqSbFzexsA6Rv.png" alt="2025-04-06 14.50.45.png"></p>
+<p><img src="https://s2.loli.net/2025/04/06/CK7c2NvluZU9LQH.png" alt="2025-04-06 14.51.48.png"></p>
+<p>index.html</p>
+<figure class="highlight html hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">""</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"icon"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/favicon.ico"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Vite App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/src/main.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="line">  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>好干净,<code>Vite App</code>改成<code>hello world</code> 验证下</p>
+<p><img src="https://s2.loli.net/2025/04/06/UcfHQRd5hVFbpDB.png" alt="2025-04-06 14.57.23.png"></p>
+<h4 id="应用实例-根组件-挂载应用"><a href="#应用实例-根组件-挂载应用" class="headerlink" title="应用实例 + 根组件 + 挂载应用"></a>应用实例 + 根组件 + 挂载应用</h4><p>入口是<code>/src/main.js</code></p>
+<figure class="highlight javascript hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> <span class="hljs-string">'./assets/main.css'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span></span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./App.vue'</span></span><br><span class="line"><span class="hljs-keyword">import</span> router <span class="hljs-keyword">from</span> <span class="hljs-string">'./router'</span></span><br><span class="line"><span class="hljs-comment">// 应用实例: app</span></span><br><span class="line"><span class="hljs-comment">// 每个 Vue 应用都是通过 createApp 函数创建一个新的 应用实例</span></span><br><span class="line"><span class="hljs-comment">// 根组件: App</span></span><br><span class="line"><span class="hljs-comment">// 我们传入 createApp 的对象实际上是一个组件，每个应用都需要一个“根组件”，其他组件将作为其子组件。</span></span><br><span class="line"><span class="hljs-keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>)</span><br><span class="line"><span class="hljs-comment">// 创建路由对象 </span></span><br><span class="line">app.<span class="title function_">use</span>(router)</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 挂载应用:mount</span></span><br><span class="line"><span class="hljs-comment">// 应用实例必须在调用了 .mount() 方法后才会渲染出来。该方法接收一个“容器”参数，</span></span><br><span class="line"><span class="hljs-comment">// 可以是一个实际的 DOM 元素或是一个 CSS 选择器字符串</span></span><br><span class="line"><span class="hljs-comment">// 这里是关联到index.html文件中id=app的节点</span></span><br><span class="line">app.<span class="title function_">mount</span>(<span class="hljs-string">'#app'</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>App.vue 里面是几组标签 javascript,style</p>
+<figure class="highlight javascript hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup&gt;</span><br><span class="line"><span class="hljs-keyword">import</span> { <span class="title class_">RouterLink</span>, <span class="title class_">RouterView</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue-router'</span></span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">HelloWorld</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./components/HelloWorld.vue'</span></span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">header</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">alt</span>=<span class="hljs-string">"Vue logo"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"logo"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"@/assets/logo.svg"</span> <span class="hljs-attr">width</span>=<span class="hljs-string">"125"</span> <span class="hljs-attr">height</span>=<span class="hljs-string">"125"</span> /&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"wrapper"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">HelloWorld</span> <span class="hljs-attr">msg</span>=<span class="hljs-string">"You did it!"</span> /&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"></span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">RouterLink</span> <span class="hljs-attr">to</span>=<span class="hljs-string">"/"</span>&gt;</span>Home<span class="hljs-tag">&lt;/<span class="hljs-name">RouterLink</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">RouterLink</span> <span class="hljs-attr">to</span>=<span class="hljs-string">"/about"</span>&gt;</span>About<span class="hljs-tag">&lt;/<span class="hljs-name">RouterLink</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">header</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">RouterView</span> /&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span><span class="hljs-language-css"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">header</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">line-height</span>: <span class="hljs-number">1.5</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">max-height</span>: <span class="hljs-number">100vh</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-class">.logo</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">display</span>: block;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto <span class="hljs-number">2rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">nav</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">12px</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">text-align</span>: center;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">2rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.router-link-exact-active</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">color</span>: <span class="hljs-built_in">var</span>(--color-text);</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.router-link-exact-active</span><span class="hljs-selector-pseudo">:hover</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">background-color</span>: transparent;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">a</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">display</span>: inline-block;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span> <span class="hljs-number">1rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">border-left</span>: <span class="hljs-number">1px</span> solid <span class="hljs-built_in">var</span>(--color-border);</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-tag">nav</span> <span class="hljs-selector-tag">a</span><span class="hljs-selector-pseudo">:first-of-type</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">border</span>: <span class="hljs-number">0</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-keyword">@media</span> (<span class="hljs-attribute">min-width</span>: <span class="hljs-number">1024px</span>) {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-selector-tag">header</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">display</span>: flex;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">place-items</span>: center;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">padding-right</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-built_in">var</span>(--section-gap) / <span class="hljs-number">2</span>);</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  }</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-selector-class">.logo</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> <span class="hljs-number">2rem</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  }</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-selector-tag">header</span> <span class="hljs-selector-class">.wrapper</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">display</span>: flex;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">place-items</span>: flex-start;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">flex-wrap</span>: wrap;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  }</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-selector-tag">nav</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">text-align</span>: left;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">margin-left</span>: -<span class="hljs-number">1rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">font-size</span>: <span class="hljs-number">1rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">padding</span>: <span class="hljs-number">1rem</span> <span class="hljs-number">0</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">    <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">1rem</span>;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  }</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>import App from './App.vue'</code> 为什么App是App? 改成<code>Best</code> 一样可以,那应该是当前场景下的约定。</p>
+<p>先忽略怎么渲染的,大致是怎么显示出来?</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep -r <span class="hljs-string">"official documentation"</span> path/to/SFADemo</span><br><span class="line"><span class="hljs-comment"># 结果如下</span></span><br><span class="line">SFADemo/src/components/TheWelcome.vue:20:    &lt;a href=<span class="hljs-string">"https://vuejs.org/"</span> target=<span class="hljs-string">"_blank"</span> rel=<span class="hljs-string">"noopener"</span>&gt;official documentation&lt;/a&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>所以怎么到<code>TheWelcome.vue</code></p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">main.js</span><br><span class="line">App.vue -&gt; HelloWorld.vue</span><br><span class="line">router/index.js -&gt; HomeView.vue -&gt; TheWelcomeItem.vue -&gt; WelcomeItem.vue</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/quick-start.html">快速上手</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2baebfeb59f9">brew update 更新时报错</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/64125228">Mac下安装，升级Node、npm</a></li>
+<li><a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/essentials/application.html">创建一个 Vue 应用</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/04/Technology-learn-flask-06/">Flask学习笔记 - 数据库</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

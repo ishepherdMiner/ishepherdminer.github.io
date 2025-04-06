@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -26,7 +26,7 @@
 <meta property="og:description" content="一个闲散的程序员">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -67,7 +67,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -128,6 +128,105 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2020/03/05/Technology-Learn-CocoaAsyncSocket/" itemprop="url">学习 CocoaAsyncSocket</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2020-03-04T16:17:34.000Z" itemprop="datePublished">3月 5 2020</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            11 分钟 读完 (约 1610 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><div class="gallery-item">
+
+<p><img src="/images/gallery/fog-g9da8a0c7a_1280.jpg"></p>
+</div>
+
+<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p>套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I/O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。</p>
+<p>大部分系统都提供了一组基于TCP或者UDP的应用程序编程接口（API），该接口通常以一组函数的形式出现，也称为套接字（Socket)</p></body></html>
+        <p class="article-more-link">
+            <a href="/2020/03/05/Technology-Learn-CocoaAsyncSocket/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2019/11/25/iOSer-OC-Color-macro/" itemprop="url">iOS 颜色宏</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2019-11-25T05:57:21.000Z" itemprop="datePublished">11月 25 2019</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 216 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　平常用的颜色宏大概如下</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> RGBHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue &amp; 0xFF0000) &gt;&gt; 16))/255.0 green:((float)((rgbValue &amp; 0xFF00) &gt;&gt; 8))/255.0 blue:((float)(rgbValue &amp; 0xFF))/255.0 alpha:1.0]</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　考虑到蓝湖中获得的十六进制颜色值为<code>#FF0000</code>,cv时需要先删除#再添加<code>0x</code>,想省略这部分</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>　　<code>C</code>语言宏中’#’称之为字符串化操作符(Stringizing Operator)，它将函数宏的实际参数转换为对应的字符串常量。利用这个特点定义如下的颜色宏</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> HEXA(COLOR,A) ({ \</span></span><br><span class="line"><span class="hljs-meta">    char *color = #COLOR;\</span></span><br><span class="line"><span class="hljs-meta">    NSString *colorString = [NSString stringWithUTF8String:color]; \</span></span><br><span class="line"><span class="hljs-meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="hljs-string">"#"</span> withString:@<span class="hljs-string">""</span>]; \</span></span><br><span class="line"><span class="hljs-meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="hljs-string">"0x"</span> withString:@<span class="hljs-string">""</span>]; \</span></span><br><span class="line"><span class="hljs-meta">    unsigned int red,green,blue; \</span></span><br><span class="line"><span class="hljs-meta">    NSRange range; \</span></span><br><span class="line"><span class="hljs-meta">    range.length = 2; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 0; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;red]; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 2; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;green]; \</span></span><br><span class="line"><span class="hljs-meta">    range.location = 4; \</span></span><br><span class="line"><span class="hljs-meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;blue]; \</span></span><br><span class="line"><span class="hljs-meta">    [UIColor colorWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:A]; \</span></span><br><span class="line"><span class="hljs-meta">})</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> HEX(COLOR) HEXA(COLOR,1.0)</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>　　支持<code>0xFF0000/#FF0000/FF0000</code>这三种格式</p>
+</body></html>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2019/02/22/Technology-ReactNative-Intro/" itemprop="url">ReactNative 入门体验</a>
         
     </h1>
@@ -164,7 +263,7 @@
 
 
 
-<h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg" alt=""><br>或者</p></body></html>
+<h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg"><br>或者</p></body></html>
         <p class="article-more-link">
             <a href="/2019/02/22/Technology-ReactNative-Intro/#more">阅读更多</a>
         </p>
@@ -257,7 +356,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="前言-Web代理服务器"><a href="#前言-Web代理服务器" class="headerlink" title="前言: Web代理服务器"></a>前言: Web代理服务器</h2><p><img src="https://i.loli.net/2019/01/09/5c35b6b81d2db.png" alt=""></p>
+        <html><head></head><body><h2 id="前言-Web代理服务器"><a href="#前言-Web代理服务器" class="headerlink" title="前言: Web代理服务器"></a>前言: Web代理服务器</h2><p><img src="https://i.loli.net/2019/01/09/5c35b6b81d2db.png"></p>
 <p>来自<a href="#refer2">参考链接2</a></p>
 <p>对客户端/浏览器来说<code>Web</code>代理服务器是服务器<br>对服务器来说<code>Web</code>代理服务器是客户端</p></body></html>
         <p class="article-more-link">
@@ -305,14 +404,14 @@
     
         <html><head></head><body><div class="gallery-item">
 
-<p><img src="/images/gallery/pexels-jahoo-clouseau-388415.jpg" alt=""></p>
+<p><img src="/images/gallery/pexels-jahoo-clouseau-388415.jpg"></p>
 </div>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>《编译原理》中提到</p>
 <blockquote>
 <p>编译器的第一个步骤是词法分析(Lexical Analysis)或扫描。词法分析器读入组成源程序的字符流,并且将它们组织成为有意义的词素(lexeme)的序列。对于每个词素,词法分析产生如下形式的词法单元(token)作为输出:<br><code>&lt;token-name,attribute-value&gt;</code><br><code>token-name</code>     是一个语法分析步骤要使用的抽象符号<br><code>attribute-value</code>指向符号表中关于这个词法单元的条目</p>
 </blockquote>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{</span><br><span class="line">    @autoreleasepool {</span><br><span class="line">        <span class="hljs-keyword">int</span> initial = <span class="hljs-number">8</span>;</span><br><span class="line">        <span class="hljs-keyword">int</span> six = <span class="hljs-number">6</span>;</span><br><span class="line">        NSString* site = [[NSString alloc] initWithUTF8String:<span class="hljs-string">"starming"</span>];</span><br><span class="line">        <span class="hljs-keyword">int</span> rank = initial + six;</span><br><span class="line">        <span class="hljs-keyword">int</span> position = initial + rank * <span class="hljs-number">60</span>;</span><br><span class="line">        NSLog(@<span class="hljs-string">"%@ rank %d"</span>, site, position);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span> <span class="title function_">main</span><span class="hljs-params">()</span>{</span><br><span class="line">    @autoreleasepool {</span><br><span class="line">        <span class="hljs-type">int</span> initial = <span class="hljs-number">8</span>;</span><br><span class="line">        <span class="hljs-type">int</span> six = <span class="hljs-number">6</span>;</span><br><span class="line">        NSString* site = [[NSString alloc] initWithUTF8String:<span class="hljs-string">"starming"</span>];</span><br><span class="line">        <span class="hljs-type">int</span> rank = initial + six;</span><br><span class="line">        <span class="hljs-type">int</span> position = initial + rank * <span class="hljs-number">60</span>;</span><br><span class="line">        NSLog(@<span class="hljs-string">"%@ rank %d"</span>, site, position);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
         <p class="article-more-link">
             <a href="/2018/12/28/Topic-Clang-Learn-Clang-02/#more">阅读更多</a>
         </p>
@@ -358,7 +457,7 @@
     
         <html><head></head><body><div class="gallery-item">
 
-<p><img src="/images/gallery/pexels-tobi-620337.jpg" alt=""></p>
+<p><img src="/images/gallery/pexels-tobi-620337.jpg"></p>
 </div>
 
 <h2 id="Clang"><a href="#Clang" class="headerlink" title="Clang"></a>Clang</h2><p><code>Clang</code>是<code>LLVM</code>(Low Level Virtual Machine)项目提供的工具链中的编译器的前端部分</p>
@@ -513,114 +612,6 @@
 </ul></body></html>
         <p class="article-more-link">
             <a href="/2017/06/25/Technology-ITunes-Store-unavailable-not-resolved/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (中)</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-06-04T13:04:19.000Z" itemprop="datePublished">6月 4 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            25 分钟 读完 (约 3675 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
-<p>在上一篇中简单分析了 <code>Weak</code> 属性是如何被存储，获取和销毁的，其中的 <code>SideTable</code> 结构体当做黑盒进行处理。本文尝试对 <code>SideTable</code> 的结构进行一些分析。</p>
-<h2 id="观察"><a href="#观察" class="headerlink" title="观察"></a>观察</h2><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> SideTable {</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts;</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line"></span><br><span class="line">    SideTable() {</span><br><span class="line">        memset(&amp;weak_table, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(weak_table));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    ~SideTable() {</span><br><span class="line">        _objc_fatal(<span class="hljs-string">"Do not delete SideTable."</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">void</span> lock() { slock.lock(); }</span><br><span class="line">    <span class="hljs-keyword">void</span> unlock() { slock.unlock(); }</span><br><span class="line">    <span class="hljs-keyword">void</span> forceReset() { slock.forceReset(); }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Address-ordered lock discipline for a pair of side tables.</span></span><br><span class="line"></span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> lockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> unlockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
-
-<p><code>SideTable</code> 主要分为 <code>3</code> 部分</p>
-<ul>
-<li><code>weak_table_t</code>: <code>weak</code> 引用的全局 <code>hash</code> 表</li>
-<li><code>RefcountMap</code> : 引用计数的 <code>hash</code> 表</li>
-<li><code>slock</code>: 保证原子操作的自旋锁</li>
-</ul></body></html>
-        <p class="article-more-link">
-            <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (上)</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-05-29T10:34:18.000Z" itemprop="datePublished">5月 29 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            19 分钟 读完 (约 2810 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
-<p><code>OC</code> 中的 <code>weak</code> 属性是怎么实现的，为什么在对象释放后会自动变成 <em>nil</em>？本文对这个问题进行了一点探讨。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
-<blockquote>
-<p>mac OS Sierra 10.12.4<br>objc709</p>
-</blockquote>
-<h2 id="参考答案"><a href="#参考答案" class="headerlink" title="参考答案"></a>参考答案</h2><p>　</p>
-<p>搜索后发现<a target="_blank" rel="noopener" href="https://dayon.gitbooks.io/-ios/content/chapter8.html">runtime 如何实现 weak 属性</a>给出了一个参考答案。</p>
-<blockquote>
-<p><code>runtime</code> 对注册的类， 会进行布局，对于 <code>weak</code> 对象会放入一个 <code>hash</code> 表中。 用 <code>weak</code> 指向的对象内存地址作为 <code>key</code>，当此对象的引用计数为 <code>0</code> 的时候会 <code>dealloc</code>，假如 <code>weak</code> 指向的对象内存地址是 <code>a</code> ，那么就会以 <code>a</code> 为键， 在这个 <code>weak</code> 表中搜索，找到所有以 <code>a</code> 为键的 <code>weak</code> 对象，从而设置为 <code>nil</code> 。</p>
-</blockquote></body></html>
-        <p class="article-more-link">
-            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/#more">阅读更多</a>
         </p>
     
     </div>

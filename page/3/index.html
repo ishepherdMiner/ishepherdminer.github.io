@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -26,7 +26,7 @@
 <meta property="og:description" content="一个闲散的程序员">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -67,7 +67,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -124,6 +124,114 @@
 
     <section class="section">
     <div class="container">
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (中)</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-06-04T13:04:19.000Z" itemprop="datePublished">6月 4 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            25 分钟 读完 (约 3675 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
+<p>在上一篇中简单分析了 <code>Weak</code> 属性是如何被存储，获取和销毁的，其中的 <code>SideTable</code> 结构体当做黑盒进行处理。本文尝试对 <code>SideTable</code> 的结构进行一些分析。</p>
+<h2 id="观察"><a href="#观察" class="headerlink" title="观察"></a>观察</h2><p>　</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> SideTable {</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts;</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line"></span><br><span class="line">    SideTable() {</span><br><span class="line">        memset(&amp;weak_table, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(weak_table));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    ~SideTable() {</span><br><span class="line">        _objc_fatal(<span class="hljs-string">"Do not delete SideTable."</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-type">void</span> lock() { slock.lock(); }</span><br><span class="line">    <span class="hljs-type">void</span> unlock() { slock.unlock(); }</span><br><span class="line">    <span class="hljs-type">void</span> forceReset() { slock.forceReset(); }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Address-ordered lock discipline for a pair of side tables.</span></span><br><span class="line"></span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> lockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> unlockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>SideTable</code> 主要分为 <code>3</code> 部分</p>
+<ul>
+<li><code>weak_table_t</code>: <code>weak</code> 引用的全局 <code>hash</code> 表</li>
+<li><code>RefcountMap</code> : 引用计数的 <code>hash</code> 表</li>
+<li><code>slock</code>: 保证原子操作的自旋锁</li>
+</ul></body></html>
+        <p class="article-more-link">
+            <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (上)</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2017-05-29T10:34:18.000Z" itemprop="datePublished">5月 29 2017</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            19 分钟 读完 (约 2810 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
+<p><code>OC</code> 中的 <code>weak</code> 属性是怎么实现的，为什么在对象释放后会自动变成 <em>nil</em>？本文对这个问题进行了一点探讨。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
+<blockquote>
+<p>mac OS Sierra 10.12.4<br>objc709</p>
+</blockquote>
+<h2 id="参考答案"><a href="#参考答案" class="headerlink" title="参考答案"></a>参考答案</h2><p>　</p>
+<p>搜索后发现<a target="_blank" rel="noopener" href="https://dayon.gitbooks.io/-ios/content/chapter8.html">runtime 如何实现 weak 属性</a>给出了一个参考答案。</p>
+<blockquote>
+<p><code>runtime</code> 对注册的类， 会进行布局，对于 <code>weak</code> 对象会放入一个 <code>hash</code> 表中。 用 <code>weak</code> 指向的对象内存地址作为 <code>key</code>，当此对象的引用计数为 <code>0</code> 的时候会 <code>dealloc</code>，假如 <code>weak</code> 指向的对象内存地址是 <code>a</code> ，那么就会以 <code>a</code> 为键， 在这个 <code>weak</code> 表中搜索，找到所有以 <code>a</code> 为键的 <code>weak</code> 对象，从而设置为 <code>nil</code> 。</p>
+</blockquote></body></html>
+        <p class="article-more-link">
+            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
     
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
@@ -306,12 +414,12 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8*，因此本文会用 *Swift</em> 来实现 <em>Touch ID</em> 功能</p>
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8</em>，因此本文会用 <em>Swift</em> 来实现 <em>Touch ID</em> 功能</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Swift 3.0<br>iPhone 6S 10.1.1 </p>
 </blockquote>
 <p><em>Touch ID</em> 需要硬件支持</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg" alt=""> </p></body></html>
+<p><img src="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg"> </p></body></html>
         <p class="article-more-link">
             <a href="/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/#more">阅读更多</a>
         </p>
@@ -452,7 +560,7 @@
 <p>　　<em>sdk</em> 需要视频素材,我自己找的视频素材太大不能作为素材资源(<em>150K</em>以内)。</p>
 <h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>　</p>
 <p>　　记得 <em>FFmpeg</em> 能处理,用 <em>man</em> 查了下，当时写文档的人还真是很讲究。比如下面的图</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg"></p>
 <p>　</p></body></html>
         <p class="article-more-link">
             <a href="/2017/04/21/Technology-FFmpeg-video-interception-command/#more">阅读更多</a>
@@ -505,108 +613,6 @@
 </blockquote></body></html>
         <p class="article-more-link">
             <a href="/2017/04/17/iOSer-Practice-articles-iOS-application-re-signature-next/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/04/10/Technology-WoSign-CA-signed-digital-certificate-is-invalid/" itemprop="url">WoSign CA 签名的数字证书失效</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-04-10T09:37:40.000Z" itemprop="datePublished">4月 10 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 563 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p>　</p>
-<p>　　今天服务器受到反馈，加载平台图片资源失败。原因是不信任的数字证书，公司的服务器证书是用 <em>WoSign</em> 签名的。<br>　　<br>　　在证书交换阶段时报错了，<em>Google</em> 后找到一篇 <a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT204132"><em>Apple</em> 官方的声明</a>。</p>
-<h2 id="PKI"><a href="#PKI" class="headerlink" title="PKI"></a><code>PKI</code></h2><p>　</p>
-<p>　　公钥基础设施（PKI）是创建，管理，分发，使用，存储和撤销数字证书和管理公钥加密所需的一系列角色，策略和过程。
-　</p></body></html>
-        <p class="article-more-link">
-            <a href="/2017/04/10/Technology-WoSign-CA-signed-digital-certificate-is-invalid/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/04/10/iOSer-Practice-articles-iOS-application-re-signature/" itemprop="url">实践篇：iOS 应用重签名(上)</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-04-09T16:19:10.000Z" itemprop="datePublished">4月 10 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            10 分钟 读完 (约 1495 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="环境-amp-工具"><a href="#环境-amp-工具" class="headerlink" title="环境 &amp; 工具"></a>环境 &amp; 工具</h2><p>　</p>
-<blockquote>
-<p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Jailbreak     iPad 8.4<br>No Jailbreak  iPhone 10.1.1</p>
-</blockquote>
-<h2 id="影响因素"><a href="#影响因素" class="headerlink" title="影响因素"></a>影响因素</h2><p>　</p>
-<ul>
-<li><em>_CodeSignature</em></li>
-<li>二进制文件</li>
-<li><em>embedded.mobileprovision</em></li>
-<li><em>entitlements</em></li>
-</ul></body></html>
-        <p class="article-more-link">
-            <a href="/2017/04/10/iOSer-Practice-articles-iOS-application-re-signature/#more">阅读更多</a>
         </p>
     
     </div>

@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -34,7 +34,7 @@
 <meta property="article:published_time" content="2017-02-04T14:37:04.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:09:32.994Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/02/04/5895f353a2747.jpg">
 
@@ -76,7 +76,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -199,7 +199,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="闲话"><a href="#闲话" class="headerlink" title="闲话"></a>闲话</h2><p>　　尝试过几个支持<em>markdown<em>的编辑器,比如</em>MacDown</em>,<em>Ulysses</em>,还是觉得<em>MWeb<em>比较合我的心意,原来就知道</em>MWeb<em>有图床的功能,但是一直没有用,主要是因为觉得有些麻烦,</em>MWeb<em>支持</em>Google photos</em>(应该不会使用这个),<em>imgur</em>,<em>七牛</em>(这两个都要注册,我用sm.ms直接就OK了,感觉也挺方便的),说白了主要就是因为懒,不想自定义配置,当然也下过<em>iPic</em>这样的小工具,同样也未曾使用,因为我觉得当我配置好<em>MWeb</em>后自然也可以不用这样的工具。偶然从订阅的RSS中看到<a target="_blank" rel="noopener" href="http://sspai.com/37130">幕后-专访MWeb</a>,决定治治自己的拖延症。
+        <html><head></head><body><h2 id="闲话"><a href="#闲话" class="headerlink" title="闲话"></a>闲话</h2><p>　　尝试过几个支持<em>markdown</em>的编辑器,比如<em>MacDown</em>,<em>Ulysses</em>,还是觉得<em>MWeb</em>比较合我的心意,原来就知道<em>MWeb</em>有图床的功能,但是一直没有用,主要是因为觉得有些麻烦,<em>MWeb</em>支持<em>Google photos</em>(应该不会使用这个),<em>imgur</em>,<em>七牛</em>(这两个都要注册,我用sm.ms直接就OK了,感觉也挺方便的),说白了主要就是因为懒,不想自定义配置,当然也下过<em>iPic</em>这样的小工具,同样也未曾使用,因为我觉得当我配置好<em>MWeb</em>后自然也可以不用这样的工具。偶然从订阅的RSS中看到<a target="_blank" rel="noopener" href="http://sspai.com/37130">幕后-专访MWeb</a>,决定治治自己的拖延症。
 　　</p>
 <span id="more"></span>
 
@@ -209,14 +209,14 @@
 </blockquote>
 <p>搜索后,发现说这和网络还是有关系,为了避免以后出问题,我选择换一家</p>
 <h2 id="七牛"><a href="#七牛" class="headerlink" title="七牛"></a>七牛</h2><p>　　那我就换一种,换成七牛的,搜了一篇知乎上的<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/21667151">国内有什么方便的图床？</a>,里面说要付费,我没去试,所以不知道现在是不是需要付费。</p>
-<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>　　前面那些都只是铺垫,一开始我就想自定义配置图床。正好发现<em>sm.ms<em>提供了<a target="_blank" rel="noopener" href="https://sm.ms/doc/">API</a><br>　　<br>　　参考图片上传的接口,要填写的字段主要有</em>Name</em>,填<em>sm.ms<em>或其他你喜欢的名称就好了,</em>API URL</em>,接口中有填<em><a target="_blank" rel="noopener" href="https://sm.ms/api/upload">https://sm.ms/api/upload</a></em>,<em>POST File Name<em>字段根据<br>　　<img src="https://ooo.0o0.ooo/2017/02/04/5895f353a2747.jpg" alt=""><br>可知,填写</em>smfile<em>即可,</em>Response URL PATH</em>,一开始不知道填什么,搜索后,发现<a target="_blank" rel="noopener" href="http://zh.mweb.im/how_to_use_custom_image_upload_url.html">iOS 版 MWeb 图床功能中自定义图床的使用指南</a>,好吧,<em>MWeb</em>作者已经写了如何配置图床😂,这个字段填写的就是返回的JSON结果中的图片的路径,根据</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f350e9db5.jpg" alt=""></p>
-<p>填<em>data/url<em>就好了,最后一个是可选,我没填,然后</em>Validate</em>,这里出现一个问题,在<em>macOS 10.12.3</em>上,<em>MWeb 2.1.4(257)</em>中,全屏条件下会出现<br><img src="https://ooo.0o0.ooo/2017/02/04/5895f3540d9b7.jpg" alt=""></p>
+<h2 id="自定义"><a href="#自定义" class="headerlink" title="自定义"></a>自定义</h2><p>　　前面那些都只是铺垫,一开始我就想自定义配置图床。正好发现<em>sm.ms</em>提供了<a target="_blank" rel="noopener" href="https://sm.ms/doc/">API</a><br>　　<br>　　参考图片上传的接口,要填写的字段主要有<em>Name</em>,填<em>sm.ms</em>或其他你喜欢的名称就好了,<em>API URL</em>,接口中有填<em><a target="_blank" rel="noopener" href="https://sm.ms/api/upload">https://sm.ms/api/upload</a></em>,<em>POST File Name</em>字段根据<br>　　<img src="https://ooo.0o0.ooo/2017/02/04/5895f353a2747.jpg"><br>可知,填写<em>smfile</em>即可,<em>Response URL PATH</em>,一开始不知道填什么,搜索后,发现<a target="_blank" rel="noopener" href="http://zh.mweb.im/how_to_use_custom_image_upload_url.html">iOS 版 MWeb 图床功能中自定义图床的使用指南</a>,好吧,<em>MWeb</em>作者已经写了如何配置图床😂,这个字段填写的就是返回的JSON结果中的图片的路径,根据</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f350e9db5.jpg"></p>
+<p>填<em>data/url</em>就好了,最后一个是可选,我没填,然后<em>Validate</em>,这里出现一个问题,在<em>macOS 10.12.3</em>上,*MWeb 2.1.4(257)*中,全屏条件下会出现<br><img src="https://ooo.0o0.ooo/2017/02/04/5895f3540d9b7.jpg"></p>
 <p>我必须选中弹窗,然后切到其他窗口,然后再切回来选择图片,上传测试</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3507a34f.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3507a34f.jpg"></p>
 <p>最后在完成之后</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3b6b444b.jpg" alt=""><br>上传本地图片</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3b92c104.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3b6b444b.jpg"><br>上传本地图片</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/04/5895f3b92c104.jpg"></p>
 <p>选择<em>Copy Markdown</em>就可以得到包含上传图片路径后的博客内容,效率提高了不少,而且备份也容易了一点。花点时间抬头看看天,比一直老老实实的干活,有用一些。</p>
 </body></html>
     

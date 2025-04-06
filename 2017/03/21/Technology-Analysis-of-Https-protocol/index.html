@@ -14,16 +14,16 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
-    <meta name="description" content="定义HTTPS*（也称为 *HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过">
+    <meta name="description" content="定义HTTPS（也称为 HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过程，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解HTTPS协议">
 <meta property="og:url" content="http://yoursite.com/2017/03/21/Technology-Analysis-of-Https-protocol/index.html">
 <meta property="og:site_name" content="牧羊人">
-<meta property="og:description" content="定义HTTPS*（也称为 *HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过">
+<meta property="og:description" content="定义HTTPS（也称为 HTTP over TLS ，HTTP over SSL ，和 HTTP Secure ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。HTTPS 通过 TLS 或其前身的 SSL 实现超文本传输​​协议（HTTP）的安全传输。 在密码学中，加密（英语：Encryption ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有解密方法的对象，经由解密过程，">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/20/58cf6a6e00b06.png">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/20/58cf6a6cec082.jpg">
@@ -38,7 +38,7 @@
 <meta property="article:published_time" content="2017-03-21T11:22:21.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:08:03.877Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/03/20/58cf6a6e00b06.png">
 
@@ -80,7 +80,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -269,7 +269,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><em>HTTPS*（也称为 *HTTP over TLS</em> ，<em>HTTP over SSL</em> ，和 <em>HTTP Secure</em> ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。<em>HTTPS</em> 通过 <em>TLS</em> 或其前身的 <em>SSL</em> 实现超文本传输​​协议（<em>HTTP</em>）的安全传输。</p>
+        <html><head></head><body><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p><em>HTTPS</em>（也称为 <em>HTTP over TLS</em> ，<em>HTTP over SSL</em> ，和 <em>HTTP Secure</em> ）是用于在因特网上广泛使用的计算机网络上的安全通信的协议。<em>HTTPS</em> 通过 <em>TLS</em> 或其前身的 <em>SSL</em> 实现超文本传输​​协议（<em>HTTP</em>）的安全传输。</p>
 <p>在密码学中，<strong>加密</strong>（英语：<em>Encryption</em> ）是将明文信息改变为难以读取的密文内容，使之不可读。只有拥有<strong>解密</strong>方法的对象，经由解密过程，才能将密文还原为正常可读的内容。</p>
 <span id="more"></span>
 
@@ -283,8 +283,8 @@
 <p><strong>公钥加密 + 私钥解密 用于通信加密</strong><br><strong>私钥加密 + 公钥解密 用于身份认证</strong></p>
 </blockquote>
 <p><strong>因此服务器用私钥加密的内容，只要持有公钥，都是可以解密的</strong></p>
-<h2 id="SSL-握手流程"><a href="#SSL-握手流程" class="headerlink" title="SSL 握手流程"></a>SSL 握手流程</h2><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e00b06.png" alt=""></p>
-<p>图片来自<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hant/傳輸層安全協議">wiki - 传输层安全协议</a>，描述的是 <em>SSL</em> 的握手流程。</p>
+<h2 id="SSL-握手流程"><a href="#SSL-握手流程" class="headerlink" title="SSL 握手流程"></a>SSL 握手流程</h2><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e00b06.png"></p>
+<p>图片来自<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hant/%E5%82%B3%E8%BC%B8%E5%B1%A4%E5%AE%89%E5%85%A8%E5%8D%94%E8%AD%B0">wiki - 传输层安全协议</a>，描述的是 <em>SSL</em> 的握手流程。</p>
 <h3 id="协商加密算法"><a href="#协商加密算法" class="headerlink" title="协商加密算法"></a>协商加密算法</h3><ol>
 <li>客户端发送 <em>ClientHello</em> 消息，包含支持的协议版本，加密和压缩算法等，一个客户端生成的随机数 <em>RNc</em>。</li>
 <li>服务器收到 <em>ClientHello</em> 消息后，发送 <em>ServerHello</em> 确定要采用的协议版本，加密和压缩算法等，同时生成一个随机数 <em>RNs</em>。</li>
@@ -322,12 +322,12 @@
 <h2 id="数字证书"><a href="#数字证书" class="headerlink" title="数字证书"></a>数字证书</h2><p>为什么在 <em>HTTPS</em> 会话中要用到数字证书？</p>
 <p>我们看到交换证书的过程中服务器发送的证书中包含了它的公钥，试想如果有不怀好意的<strong>中间人</strong>拦截了请求，与客户端协商了加密的算法，接收 <em>RNc</em> 并发送 <em>RNs</em> ,然后将自己的公钥发送给客户端。客户端不做校验就接收了，那后面的整个过程都是不安全的。所以<strong>需要一个凭证</strong>让客户端来验证这个公钥是不是属于与其通信的服务器。</p>
 <p><strong>数字证书就充当了这个提供凭证的角色</strong></p>
-<h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/電子證書">wiki-电子证书</a>中表明了数字证书并非数字身份证，而是身份认证机构盖在数字身份证上的一个章或印（或者说加在数字身份证上的一个签名），这一行为表示身份认证机构已认定这个持证人。</p>
+<h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E9%9B%BB%E5%AD%90%E8%AD%89%E6%9B%B8">wiki-电子证书</a>中表明了数字证书并非数字身份证，而是身份认证机构盖在数字身份证上的一个章或印（或者说加在数字身份证上的一个签名），这一行为表示身份认证机构已认定这个持证人。</p>
 <h3 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h3><p>打开钥匙串，查看一个数字证书</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6cec082.jpg" alt=""></p>
-<h3 id="CA"><a href="#CA" class="headerlink" title="CA"></a>CA</h3><p><em>CA</em> (<em>certificate authority</em>) 就是一个提供身份认证的机构，为什么信任 <em>CA*，证书的信任是链式的向上传递。在 *mac</em> 上开发者证书的信任问题最终会走到苹果的根证书上，因为我们信任了这个证书，所以后面苹果服务器( <em>CA</em> )签名的证书我们也会信任。</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6acee4afc.jpg" alt=""></p>
-<p>而对于 <em>12306</em> 网站浏览器之所以会弹出<br><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d05328.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6cec082.jpg"></p>
+<h3 id="CA"><a href="#CA" class="headerlink" title="CA"></a>CA</h3><p><em>CA</em> (<em>certificate authority</em>) 就是一个提供身份认证的机构，为什么信任 <em>CA</em>，证书的信任是链式的向上传递。在 <em>mac</em> 上开发者证书的信任问题最终会走到苹果的根证书上，因为我们信任了这个证书，所以后面苹果服务器( <em>CA</em> )签名的证书我们也会信任。</p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6acee4afc.jpg"></p>
+<p>而对于 <em>12306</em> 网站浏览器之所以会弹出<br><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d05328.jpg"></p>
 <p>同样是因为系统不信任 <em>12306</em> 的根证书 <em>SRCA</em> ,所以由它签发的 <em>kyfw.12306.cn</em> 证书也是不受信任的。 </p>
 <h3 id="csr-Certificate-Signing-request"><a href="#csr-Certificate-Signing-request" class="headerlink" title="csr (Certificate Signing request)"></a>csr (Certificate Signing request)</h3><blockquote>
 <p>What is a CSR? A CSR or Certificate Signing request is a block of encoded text that is given to a Certificate Authority when applying for an SSL Certificate. It is usually generated on the server where the certificate will be installed and contains information that will be included in the certificate such as the organization name, common name (domain name), locality, and country. It also contains the public key that will be included in the certificate. A private key is usually created at the same time that you create the CSR, making a key pair. A CSR is generally encoded using ASN.1 according to the PKCS #10 specification.</p>
@@ -346,24 +346,24 @@
 <p>tcp.srcport == 443 or tcp.dstport == 443</p>
 </blockquote>
 <p>我们只关注走 <em>443</em> 端口的 <em>tcp</em> 协议</p>
-<p>访问 <em><a target="_blank" rel="noopener" href="https://www.baidu.com">https://www.baidu.com</a></em></p>
+<p>访问 <em><a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com</a></em></p>
 <p>出现了 <em>Client Hello</em> , <em>Server Hello</em> 等 <em>info</em> 依次到里面看看</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d41247.jpg" alt=""></p>
-<h3 id="实践-Client-Hello"><a href="#实践-Client-Hello" class="headerlink" title="[实践]Client Hello"></a>[实践]Client Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d54f9a.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d41247.jpg"></p>
+<h3 id="实践-Client-Hello"><a href="#实践-Client-Hello" class="headerlink" title="[实践]Client Hello"></a>[实践]Client Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6d54f9a.jpg"></p>
 <ul>
 <li>协议版本 <em>tls 1.2 (0x0303)</em> <em>2</em> 个字节</li>
 <li>随机数 <em>RNc</em> : <em>27ca27…</em></li>
 <li>客户端支持的加密方式 : <em>TLS_EMPTY_RENEGOTIATION_INFO_SCSV 0x00ff…</em></li>
-<li><em>Extension</em> : <em>server_name</em> 下有 <em><a target="_blank" rel="noopener" href="http://www.baidu.com">www.baidu.com</a></em></li>
+<li><em>Extension</em> : <em>server_name</em> 下有 <em><a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></em></li>
 </ul>
-<h3 id="实践-Server-Hello"><a href="#实践-Server-Hello" class="headerlink" title="[实践]Server Hello"></a>[实践]Server Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e1189b.jpg" alt=""></p>
+<h3 id="实践-Server-Hello"><a href="#实践-Server-Hello" class="headerlink" title="[实践]Server Hello"></a>[实践]Server Hello</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e1189b.jpg"></p>
 <p>服务器确定了协议版本号,生成了 <em>RNs</em>，确定了加密的方法</p>
-<h3 id="实践-证书交换"><a href="#实践-证书交换" class="headerlink" title="[实践]证书交换"></a>[实践]证书交换</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e2c0a3.jpg" alt=""></p>
+<h3 id="实践-证书交换"><a href="#实践-证书交换" class="headerlink" title="[实践]证书交换"></a>[实践]证书交换</h3><p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e2c0a3.jpg"></p>
 <p>服务器将包含自己公钥的数字证书发送给客户端</p>
 <p>客户端验证证书通过后，将发送公钥给服务器</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6deb2dc.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6deb2dc.jpg"></p>
 <h3 id="实践-生成对称加密密钥"><a href="#实践-生成对称加密密钥" class="headerlink" title="[实践]生成对称加密密钥"></a>[实践]生成对称加密密钥</h3><p>双方互相通知对方，准备用加密算法对数据加密了，同时结束握手通信</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e24ab5.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/03/20/58cf6a6e24ab5.jpg"></p>
 <p>但是好像少了 <em>SSL</em> 中所谈到的生成对称密钥的过程额</p>
 <p><em>Google</em> 搜索后发现在<a target="_blank" rel="noopener" href="https://www.silverf0x00.com/tls-extended-master-secret-breaking-ssl-proxies/">TLS Extended Master Secret, Breaking SSL Proxies</a>提到了</p>
 <blockquote>
@@ -372,13 +372,23 @@
 <p>在<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc5246">RFC 5246</a> 中 <em>Master secret</em> 确实是使用 <em>pre master secret</em> + <em>ClientHello.random</em> + <em>ServerHello.random</em> 计算生成的，但是在 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7627#section-1">RFC 7627</a>中描述了一种攻击。</p>
 <blockquote>
 <ol>
-<li>C sends a “ClientHello” to A, and A forwards it to S.</li>
-<li>S sends a “ServerHello” to A, and A forwards it to C.</li>
-<li>S sends a “Certificate”, containing its certificate chain, to A.<br>   A replaces it with its own certificate chain and sends it to C.</li>
-<li>S sends a “ServerHelloDone” to A, and A forwards it to C.</li>
-<li>C sends a “ClientKeyExchange” to A, containing the<br>   “pre_master_secret”, encrypted with A’s public key.  A decrypts<br>   the “pre_master_secret”, re-encrypts it with S’s public key, and<br>   sends it on to S.</li>
-<li>C sends a “Finished” to A.  A computes a “Finished” for its<br>   connection with S and sends it to S.</li>
-<li>S sends a “Finished” to A.  A computes a “Finished” for its<br>   connection with C and sends it to C.</li>
+<li> C sends a “ClientHello” to A, and A forwards it to S.</li>
+<li> S sends a “ServerHello” to A, and A forwards it to C.</li>
+<li>S sends a “Certificate”, containing its certificate chain, to A.<pre><code>A replaces it with its own certificate chain and sends it to C.
+</code></pre>
+</li>
+<li> S sends a “ServerHelloDone” to A, and A forwards it to C.</li>
+<li>C sends a “ClientKeyExchange” to A, containing the<pre><code>"pre_master_secret", encrypted with A's public key.  A decrypts
+the "pre_master_secret", re-encrypts it with S's public key, and
+sends it on to S.
+</code></pre>
+</li>
+<li>C sends a “Finished” to A.  A computes a “Finished” for its<pre><code>connection with S and sends it to S.
+</code></pre>
+</li>
+<li>S sends a “Finished” to A.  A computes a “Finished” for its<pre><code>connection with C and sends it to C.
+</code></pre>
+</li>
 </ol>
 </blockquote>
 <p>被攻击的主要原因是 <em>Master Secret</em> 只依赖于 <em>ClientHello.random</em> , <em>ServerHello.random</em> ,解决方案是把证书和会话的信息都参与到 <em>Master Secret</em> 的生成过程</p>
@@ -391,7 +401,7 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/HTTPS">wiki - HTTPS</a></li>
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Transport_Layer_Security">wiki - TLS</a></li>
-<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/加密">wiki - 加密</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E5%8A%A0%E5%AF%86">wiki - 加密</a></li>
 <li><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa380513(v=vs.85).aspx">TLS Handshake Protocol</a></li>
 <li><a target="_blank" rel="noopener" href="https://ldapwiki.com/wiki/Premaster%20Secret">Premaster Secret</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.ietf.org/rfc/rfc2246.txt">RFC 2246 - The TLS Protocol Version 1.0 </a></li>

@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -36,7 +36,7 @@
 <meta property="article:published_time" content="2017-09-24T08:17:06.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:09:43.139Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2017/09/24/59c768f525482.jpg">
 
@@ -78,7 +78,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -243,30 +243,30 @@
 <span id="more"></span>
 
 <p>适用环境,组网后的效果,然后操作之类的,截图如下</p>
-<p><img src="https://i.loli.net/2017/09/24/59c768f525482.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f525482.jpg"></p>
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>把我的路由器的 <code>WAN</code> 口与联通路由器的 <code>LAN</code> 用网线连接</p>
 <h3 id="复位"><a href="#复位" class="headerlink" title="复位"></a>复位</h3><p>路由器旁边一般有个复位键(reset),长按几秒,当指示灯全亮的时候,就代表复位成功了。</p>
-<h3 id="加入子网"><a href="#加入子网" class="headerlink" title="加入子网"></a>加入子网</h3><p><img src="https://i.loli.net/2017/09/24/59c767f38b14a.jpg" alt=""></p>
+<h3 id="加入子网"><a href="#加入子网" class="headerlink" title="加入子网"></a>加入子网</h3><p><img src="https://i.loli.net/2017/09/24/59c767f38b14a.jpg"></p>
 <p>就是上面这个</p>
-<h3 id="配置路由器"><a href="#配置路由器" class="headerlink" title="配置路由器"></a>配置路由器</h3><p> 远程登陆上去,一般为 <code>192.168.1.1</code> 路由器上一般会写<br> <img src="https://i.loli.net/2017/09/24/59c768f45ffda.jpg" alt=""></p>
+<h3 id="配置路由器"><a href="#配置路由器" class="headerlink" title="配置路由器"></a>配置路由器</h3><p> 远程登陆上去,一般为 <code>192.168.1.1</code> 路由器上一般会写<br> <img src="https://i.loli.net/2017/09/24/59c768f45ffda.jpg"></p>
 <p>要认证,一般路由器上会写</p>
 <p>因为是配置子网,比如联通的路由器的网段是 <code>192.168.1.x</code> 的,那我的路由器的网段不能一样,改成 <code>192.168.5.x</code> </p>
-<p><img src="https://i.loli.net/2017/09/24/59c768f4db2a8.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f4db2a8.jpg"></p>
 <p>点保存后,页面会失效,因为当前的 <code>192.168.1.1</code> 已经不是当前路由器的 <code>IP</code> 地址了。关闭 <code>wifi</code> 再次连接,然后用 <code>192.168.5.1</code> 访问一下。好了,子网络已经成功了。</p>
 <h3 id="收尾-添加-WAP2-密码-修改远程登陆密码…"><a href="#收尾-添加-WAP2-密码-修改远程登陆密码…" class="headerlink" title="收尾: 添加 WAP2 密码, 修改远程登陆密码…"></a>收尾: 添加 <code>WAP2</code> 密码, 修改远程登陆密码…</h3><ul>
 <li>添加 <code>WAP2</code> 密码</li>
 </ul>
-<p><img src="https://i.loli.net/2017/09/24/59c768f6cd6f2.jpg" alt=""><br>每种品牌的路由器都会有点差异,随便点点找找就行。</p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f6cd6f2.jpg"><br>每种品牌的路由器都会有点差异,随便点点找找就行。</p>
 <p>因为 <code>wifi</code> 已经密码了,所以网络又掉线了,用新密码重新登陆</p>
-<p><img src="https://i.loli.net/2017/09/24/59c768f443c81.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f443c81.jpg"></p>
 <ul>
 <li>修改管理员账户</li>
 </ul>
-<p><img src="https://i.loli.net/2017/09/24/59c768f456338.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2017/09/24/59c768f456338.jpg"></p>
 <ul>
 <li>修改 <code>wifi</code> 热点名称</li>
 </ul>
-<p><img src="https://i.loli.net/2017/09/24/59c768fb0f5a2.jpg" alt=""><br>改完保存即可</p>
+<p><img src="https://i.loli.net/2017/09/24/59c768fb0f5a2.jpg"><br>改完保存即可</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>访问又变得流畅了些。机器和人一样,一直不休息,也会宕机的,因为疲劳会不断累积,总会有根稻草压垮那只骆驼,感觉写写也是蛮开心的,虽然没什么内容。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://www.360doc.com/content/17/0110/19/30525780_621591192.shtml">多台路由器如何级联</a></p>
 </body></html>

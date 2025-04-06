@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -42,7 +42,7 @@
 <meta property="article:published_time" content="2017-02-24T12:00:23.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:08:15.379Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg">
 
@@ -84,7 +84,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -235,7 +235,7 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<em>DNSPod<em>域名解析有一天多都失败了,服务器也宕机了,公众号也没办法获得情况,提示暂时无法服务,不知道出什么问题了,上网查了一下,</em>DNSPod<em>如果解析失败,可以指向另一个备用</em>ip</em>,正好<em>VPS<em>提供独立</em>ip</em>,想尝试在<em>VPS</em>提供的服务器上搭建<em>Web</em>服务器。<br>　　<em>Mac</em>自带了<em>apache</em>服务器,考虑换一种服务器来试试,比如<em>nginx</em>。
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　<em>DNSPod</em>域名解析有一天多都失败了,服务器也宕机了,公众号也没办法获得情况,提示暂时无法服务,不知道出什么问题了,上网查了一下,<em>DNSPod</em>如果解析失败,可以指向另一个备用<em>ip</em>,正好<em>VPS</em>提供独立<em>ip</em>,想尝试在<em>VPS</em>提供的服务器上搭建<em>Web</em>服务器。<br>　　<em>Mac</em>自带了<em>apache</em>服务器,考虑换一种服务器来试试,比如<em>nginx</em>。
 　　</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p><em>CentOS release 6.6 (Final)</em><br><em>macOS Sierra 10.12.3</em></p>
@@ -245,29 +245,29 @@
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p><em>nginx</em>安装非常简单</p>
 <h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">$ vim nginx.repo</span><br></pre></td></tr></tbody></table></figure>
 
-<p>因为我不是用<em>root<em>登陆,所以后面创建</em>nginx.repo<em>文件是无法写入目录的,修改一下,前面添加</em>sudo</em></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vim nginx.repo</span><br></pre></td></tr></tbody></table></figure>
+<p>因为我不是用<em>root</em>登陆,所以后面创建<em>nginx.repo</em>文件是无法写入目录的,修改一下,前面添加<em>sudo</em></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">sudo</span> vim nginx.repo</span><br></pre></td></tr></tbody></table></figure>
 
 <p>在新建的<em>nginx.repo</em>文件中,添加</p>
 <figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/<span class="hljs-variable">$releasever</span>/<span class="hljs-variable">$basearch</span>/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></tbody></table></figure>
 
 <p>保存后<em>yum.repos.d</em>目录下会出现<em>nginx.repo</em>文件</p>
 <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>然后执行</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install nginx -y</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">sudo</span> yum install nginx -y</span><br></pre></td></tr></tbody></table></figure>
 
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg" alt=""></p>
-<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/nginx start</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4abf5bc.jpg"></p>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">sudo</span> /etc/init.d/nginx start</span><br></pre></td></tr></tbody></table></figure>
 
 <blockquote>
 <p>现在<em>nginx</em>已经启动了，直接访问服务器就能看到<em>nginx</em>欢迎页面了的。</p>
 </blockquote>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4bd17cd.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4bd17cd.jpg"></p>
 <h2 id="nginx的目录"><a href="#nginx的目录" class="headerlink" title="nginx的目录"></a>nginx的目录</h2><p>上面的效果图的实际页面在 <em>/usr/share/nginx/html/index.html</em></p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4f9b5a0.jpg" alt=""></p>
-<p>我使用的<em>blog<em>引擎是</em>Hexo</em>,它是把<em>blog</em>路径下的<em>public</em>目录的内容提交到服务器,所以先慢慢来,我先把<em>public</em>目录的内容传到远程服务器,测试一下效果</p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4f9b5a0.jpg"></p>
+<p>我使用的<em>blog</em>引擎是<em>Hexo</em>,它是把<em>blog</em>路径下的<em>public</em>目录的内容提交到服务器,所以先慢慢来,我先把<em>public</em>目录的内容传到远程服务器,测试一下效果</p>
 <h3 id="失败"><a href="#失败" class="headerlink" title="失败"></a>失败</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0)scp -i ~/.ssh/id_vps -P xxxx ./public/*  Jason@xxx.xxx.xxx.xxx:/usr/share/nginx/html/</span><br></pre></td></tr></tbody></table></figure>
 
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b79991.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b79991.jpg"></p>
 <ul>
 <li>不能传递文件夹</li>
 <li>权限问题</li>
@@ -275,40 +275,40 @@
 <h3 id="成功"><a href="#成功" class="headerlink" title="成功"></a>成功</h3><p>好吧,先压缩</p>
 <figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0) tar -cvzf blog.tar.gz ./public</span><br></pre></td></tr></tbody></table></figure>
 
-<p>权限问题,因为不是<em>root</em>,所以要么修改远程服务器的目录权限,或者是我先把包传到<em>/tmp</em>选择了后者</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0)sudo scp -i ~/.ssh/id_vps -P xxxxx blog.tar.gz Jason@xxx.xxx.xxx.xxx:/tmp</span><br></pre></td></tr></tbody></table></figure>
+<p>权限问题,因为不是<em>root</em>,所以要么修改远程服务器的目录权限,或者是我先把包传到*/tmp*选择了后者</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">» ~ (npm:0.0.0)<span class="hljs-built_in">sudo</span> scp -i ~/.ssh/id_vps -P xxxxx blog.tar.gz Jason@xxx.xxx.xxx.xxx:/tmp</span><br></pre></td></tr></tbody></table></figure>
 
 <p>发送成功<br><img src="https://ooo.0o0.ooo/2017/02/24/58b01dd89f598.jpg" alt="成功截图"></p>
-<p>到远程目录,解压,复制,粘贴到<em>/usr/share/nginx/html/</em></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xvf blog.tar.gz</span><br><span class="line">$ sudo cp ./public/* /usr/share/nginx/html/</span><br></pre></td></tr></tbody></table></figure>
+<p>到远程目录,解压,复制,粘贴到*/usr/share/nginx/html/*</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xvf blog.tar.gz</span><br><span class="line">$ <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">cp</span> ./public/* /usr/share/nginx/html/</span><br></pre></td></tr></tbody></table></figure>
 
 <p>访问远程服务器</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75356.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75356.jpg"></p>
 <h2 id="DNSPod"><a href="#DNSPod" class="headerlink" title="DNSPod"></a>DNSPod</h2><p>刚刚测试了一下,居然已经恢复了,不过没事儿,它恢复它的,我设置我的。</p>
 <p>登陆<em>DNSPod</em>官网</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01e00aecf2.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01e00aecf2.jpg"></p>
 <blockquote>
 <p>选择<em>D</em>监控 </p>
 </blockquote>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75d13.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f4b75d13.jpg"></p>
 <blockquote>
 <p>选择监控设置(已添加了<em>D</em>监控)</p>
 </blockquote>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f51accc1.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f51accc1.jpg"></p>
 <blockquote>
 <p>点击修改设置</p>
 </blockquote>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f511e180.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f511e180.jpg"></p>
 <blockquote>
 <p>点击修改按钮</p>
 </blockquote>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5aae5df.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5aae5df.jpg"></p>
 <p>　　但是没办法点击,我以为是我的操作有问题。在网上找了一下,<a target="_blank" rel="noopener" href="http://qingcaiye0.blog.163.com/blog/static/206672158201324105151306/">DNSPOD设置自动切换IP</a>也是这么操作的,看<a target="_blank" rel="noopener" href="https://support.dnspod.cn/Kb/showarticle/tsid/179">D监控切换规则</a>,也没有提到这一茬。<br>　　查看了一下网页源代码</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f50447b4.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f50447b4.jpg"></p>
 <p>去掉<em>disabled=“disabled”</em>,选中后,界面变成</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5346bdb.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f5346bdb.jpg"></p>
 <p>就能输入了,不知道啥情况,输入远程服务器的ip,点击确定</p>
-<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f52b89a3.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/02/24/58b01f52b89a3.jpg"></p>
 <p>好吧,看来免费的用户是不允许设置备用<em>ip</em>,文档中也没说明<strong>差评</strong>。</p>
 <p>当然现在这样的体验还不好,还需要用<em>ssh</em>把<em>public</em>目录提交到远程服务器的指定目录,本来<em>sudo hexo d</em>一句话的事情,要变成好几件,略微麻烦些,而且因为域名解析的问题,不能流畅的切换,打算过些时间找到合适的<em>DNS</em>服务器再继考虑。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>

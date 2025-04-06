@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -26,7 +26,7 @@
 <meta property="og:description" content="一个闲散的程序员">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -67,7 +67,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -202,12 +202,12 @@
     </div>
     <div class="article-entry is-size-6-mobile" itemprop="articleBody">
     
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8*，因此本文会用 *Swift</em> 来实现 <em>Touch ID</em> 功能</p>
+        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8</em>，因此本文会用 <em>Swift</em> 来实现 <em>Touch ID</em> 功能</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Swift 3.0<br>iPhone 6S 10.1.1 </p>
 </blockquote>
 <p><em>Touch ID</em> 需要硬件支持</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg" alt=""> </p></body></html>
+<p><img src="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg"> </p></body></html>
         <p class="article-more-link">
             <a href="/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/#more">阅读更多</a>
         </p>
@@ -454,7 +454,7 @@
 <p>macOS Sierra 10.12.4<br>Xcode 8.3.1</p>
 </blockquote>
 <h2 id="数字签名"><a href="#数字签名" class="headerlink" title="数字签名"></a>数字签名</h2><p>　<br>　　数位签章（又称公钥数位签章，英语：<em>Digital Signature</em> ）是一种类似写在纸上的普通的物理签名，但是使用了公钥加密领域的技术实现，用于鉴别数字信息的方法。</p>
-<p>　　在这里指 <em>codesign</em> 的参数 <em>identity</em> ，它的生成是用 <em>SHA-1</em> 算法对整个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/電子證書">数字证书</a>内容进行摘要生成的 <em>40</em> 位的 <em>16</em> 进制的字符序列。</p>
+<p>　　在这里指 <em>codesign</em> 的参数 <em>identity</em> ，它的生成是用 <em>SHA-1</em> 算法对整个<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E9%9B%BB%E5%AD%90%E8%AD%89%E6%9B%B8">数字证书</a>内容进行摘要生成的 <em>40</em> 位的 <em>16</em> 进制的字符序列。</p>
 <h2 id="Entitlement"><a href="#Entitlement" class="headerlink" title="Entitlement"></a><code>Entitlement</code></h2><p>　<br>在 《深入解析Mac OS X &amp; iOS 操作系统》一书中提到:
 　　</p>
 <p>　</p>

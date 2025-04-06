@@ -18,17 +18,17 @@
 
 
 
-    <meta name="description" content="前提条件 越狱设备 设备已安装OpenSSH  流程 生成RSA证书 推送公钥到iOS设备 配置~&#x2F;.ssh&#x2F;config文件 远程SSH登陆">
+    <meta name="description" content="前提条件 越狱设备 设备已安装OpenSSH  流程 生成RSA证书 推送公钥到iOS设备 配置*~&#x2F;.ssh&#x2F;config*文件 远程SSH登陆">
 <meta property="og:type" content="article">
 <meta property="og:title" content="免密码远程登陆iOS设备">
 <meta property="og:url" content="http://yoursite.com/2016/11/20/iOSer-Free-password-to-remotely-access-iOS-devices/index.html">
 <meta property="og:site_name" content="牧羊人">
-<meta property="og:description" content="前提条件 越狱设备 设备已安装OpenSSH  流程 生成RSA证书 推送公钥到iOS设备 配置~&#x2F;.ssh&#x2F;config文件 远程SSH登陆">
+<meta property="og:description" content="前提条件 越狱设备 设备已安装OpenSSH  流程 生成RSA证书 推送公钥到iOS设备 配置*~&#x2F;.ssh&#x2F;config*文件 远程SSH登陆">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-11-20T09:49:34.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:04:48.223Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 
 
@@ -69,7 +69,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -139,7 +139,7 @@
                     
                     
                     
-                    <a class="navbar-item" href="#将RSA证书移动到-ssh-目录下">2.1.2&nbsp;&nbsp;将RSA证书移动到~/.ssh/目录下</a>
+                    <a class="navbar-item" href="#将RSA证书移动到-ssh-目录下">2.1.2&nbsp;&nbsp;将RSA证书移动到*~/.ssh/*目录下</a>
                     
                     
                     
@@ -223,26 +223,26 @@
 <h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ol>
 <li>生成RSA证书</li>
 <li>推送公钥到iOS设备</li>
-<li>配置<em>~/.ssh/config</em>文件</li>
+<li>配置*~/.ssh/config*文件</li>
 <li>远程SSH登陆</li>
 </ol>
 <span id="more"></span>
 
 <h3 id="生成RSA证书"><a href="#生成RSA证书" class="headerlink" title="生成RSA证书"></a>生成RSA证书</h3><h4 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen</span><br><span class="line"></span><br><span class="line">// 默认为id_rsa 可另取名比如 iPadMini 密码Apple$%^321</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="hljs-keyword">in</span> <span class="hljs-built_in">which</span> to save the key (/Users/Jason/.ssh/id_rsa):</span><br><span class="line">Enter passphrase (empty <span class="hljs-keyword">for</span> no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved <span class="hljs-keyword">in</span> iPadMini.</span><br><span class="line">Your public key has been saved <span class="hljs-keyword">in</span> iPadMini.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:6lL+mpTksDTg4CsPiqD1WIemisd1BeoLtbXmgKuhjto Jason@BJ-iAir</span><br><span class="line">The key<span class="hljs-string">'s randomart image is:</span></span><br><span class="line"><span class="hljs-string">+---[RSA 2048]----+</span></span><br><span class="line"><span class="hljs-string">|                 |</span></span><br><span class="line"><span class="hljs-string">|      .          |</span></span><br><span class="line"><span class="hljs-string">|. .  . .         |</span></span><br><span class="line"><span class="hljs-string">|.o .o . .        |</span></span><br><span class="line"><span class="hljs-string">| ..++o.oS        |</span></span><br><span class="line"><span class="hljs-string">|  +.=B=o         |</span></span><br><span class="line"><span class="hljs-string">|=o.+=O*          |</span></span><br><span class="line"><span class="hljs-string">|X*+*o+o.         |</span></span><br><span class="line"><span class="hljs-string">|&amp;=E ..+o.        |</span></span><br><span class="line"><span class="hljs-string">+----[SHA256]-----+</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h4 id="将RSA证书移动到-ssh-目录下"><a href="#将RSA证书移动到-ssh-目录下" class="headerlink" title="将RSA证书移动到~/.ssh/目录下"></a>将RSA证书移动到<em>~/.ssh/</em>目录下</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mv iPadMini ~/.ssh/</span><br><span class="line">$ mv iPadMini.pub ~/.ssh/</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="将RSA证书移动到-ssh-目录下"><a href="#将RSA证书移动到-ssh-目录下" class="headerlink" title="将RSA证书移动到*~/.ssh/*目录下"></a>将RSA证书移动到*~/.ssh/*目录下</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">mv</span> iPadMini ~/.ssh/</span><br><span class="line">$ <span class="hljs-built_in">mv</span> iPadMini.pub ~/.ssh/</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="推送公钥到iOS设备"><a href="#推送公钥到iOS设备" class="headerlink" title="推送公钥到iOS设备"></a>推送公钥到iOS设备</h3><h4 id="ssh-目录是否存在"><a href="#ssh-目录是否存在" class="headerlink" title="~/.ssh/ 目录是否存在"></a>~/.ssh/ 目录是否存在</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@your_device_ip</span><br><span class="line"></span><br><span class="line">// 没有.ssh目录时</span><br><span class="line">$ <span class="hljs-built_in">cd</span> ~</span><br><span class="line">$ mkdir .ssh</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="推送公钥到iOS设备"><a href="#推送公钥到iOS设备" class="headerlink" title="推送公钥到iOS设备"></a>推送公钥到iOS设备</h3><h4 id="ssh-目录是否存在"><a href="#ssh-目录是否存在" class="headerlink" title="~/.ssh/ 目录是否存在"></a>~/.ssh/ 目录是否存在</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ssh root@your_device_ip</span><br><span class="line"></span><br><span class="line">// 没有.ssh目录时</span><br><span class="line">$ <span class="hljs-built_in">cd</span> ~</span><br><span class="line">$ <span class="hljs-built_in">mkdir</span> .ssh</span><br></pre></td></tr></tbody></table></figure>
 
 <h4 id="推送公钥"><a href="#推送公钥" class="headerlink" title="推送公钥"></a>推送公钥</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ scp ~/.ssh/iPadMini.pub root@your_device_ip:/var/root/.ssh/</span><br><span class="line"></span><br><span class="line">root@192.168.5.105<span class="hljs-string">'s password:</span></span><br><span class="line"><span class="hljs-string">iPadMini.pub                                  100%  395     0.4KB/s   00:00</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h4 id="修改公钥文件名"><a href="#修改公钥文件名" class="headerlink" title="修改公钥文件名"></a>修改公钥文件名</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> ~/.ssh/</span><br><span class="line">// 当不存在authorized_keys该文件时 可以</span><br><span class="line">$ mv iPadMini.pub authorized_keys</span><br><span class="line">// 当存在时,可用cat将公钥加到authorized_keys文件尾</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="修改公钥文件名"><a href="#修改公钥文件名" class="headerlink" title="修改公钥文件名"></a>修改公钥文件名</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> ~/.ssh/</span><br><span class="line">// 当不存在authorized_keys该文件时 可以</span><br><span class="line">$ <span class="hljs-built_in">mv</span> iPadMini.pub authorized_keys</span><br><span class="line">// 当存在时,可用<span class="hljs-built_in">cat</span>将公钥加到authorized_keys文件尾</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="配置-ssh-config文件"><a href="#配置-ssh-config文件" class="headerlink" title="配置~/.ssh/config文件"></a>配置~/.ssh/config文件</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 进行远程登陆操作的计算机(比如 Mac OS)</span><br><span class="line">$ <span class="hljs-built_in">cd</span> ~/.ssh/</span><br><span class="line"></span><br><span class="line">// 查看config文件是否存在,不存在则创建</span><br><span class="line">$ mkdir config</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="配置-ssh-config文件"><a href="#配置-ssh-config文件" class="headerlink" title="配置~/.ssh/config文件"></a>配置~/.ssh/config文件</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 进行远程登陆操作的计算机(比如 Mac OS)</span><br><span class="line">$ <span class="hljs-built_in">cd</span> ~/.ssh/</span><br><span class="line"></span><br><span class="line">// 查看config文件是否存在,不存在则创建</span><br><span class="line">$ <span class="hljs-built_in">mkdir</span> config</span><br></pre></td></tr></tbody></table></figure>
 
 <h4 id="config内容格式"><a href="#config内容格式" class="headerlink" title="config内容格式:"></a>config内容格式:</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host aMini</span><br><span class="line">        HostName your_device_ip  <span class="hljs-comment">## 设备ip</span></span><br><span class="line">        User root                <span class="hljs-comment">## 用户名</span></span><br><span class="line">        PreferredAuthentications publickey</span><br><span class="line">        IdentityFile ~/.ssh/iPadMini  <span class="hljs-comment">## 指定RSA私钥文件</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="远程登陆"><a href="#远程登陆" class="headerlink" title="远程登陆"></a>远程登陆</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh aMini</span><br><span class="line">Enter passphrase <span class="hljs-keyword">for</span> key <span class="hljs-string">'/Users/Jason/.ssh/iPadMini'</span>:</span><br><span class="line">niya:~ root<span class="hljs-comment">#</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="远程登陆"><a href="#远程登陆" class="headerlink" title="远程登陆"></a>远程登陆</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ssh aMini</span><br><span class="line">Enter passphrase <span class="hljs-keyword">for</span> key <span class="hljs-string">'/Users/Jason/.ssh/iPadMini'</span>:</span><br><span class="line">niya:~ root#</span><br></pre></td></tr></tbody></table></figure>
 
 <blockquote>
 <p>已经能免密码SSH登陆了</p>

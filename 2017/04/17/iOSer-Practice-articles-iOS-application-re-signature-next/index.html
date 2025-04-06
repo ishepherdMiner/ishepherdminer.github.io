@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -37,7 +37,7 @@
 <meta property="article:published_time" content="2017-04-17T05:24:04.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:06:07.171Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg">
 
@@ -79,7 +79,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -240,16 +240,16 @@
 
 <h2 id="多-target"><a href="#多-target" class="headerlink" title="多 target"></a>多 <code>target</code></h2><p>　</p>
 <p>　　在 <em>Apple</em> 官方的<a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html">Code Signing Guide</a> 中提到参与签名的有二进制文件，库文件，资源文件。微信的 <em>.ipa</em> 包中包含了 <em>PlugIns</em> 目录，里面包含了插件的二进制文件，<em>Watch</em> 目录，其中包含了应用在 <em>Watch OS</em> 平台下的二进制文件。</p>
-<p>　　该如何签名呢? 创建一个工程，添加了 <em>ShareExtension</em> + <em>Watch OS</em> 的 <em>target*，然后 *Archive</em> 看看 <em>Xcode</em> 是如何执行签名流程的。</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg" alt=""></p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e90ca0e.jpg" alt=""></p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e909288.jpg" alt=""></p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9124d2.jpg" alt=""></p>
+<p>　　该如何签名呢? 创建一个工程，添加了 <em>ShareExtension</em> + <em>Watch OS</em> 的 <em>target</em>，然后 <em>Archive</em> 看看 <em>Xcode</em> 是如何执行签名流程的。</p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bcb10.jpg"></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e90ca0e.jpg"></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e909288.jpg"></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9124d2.jpg"></p>
 <p>　</p>
 <p>　　从上面的截图可知 <code>Xcode</code> 签名的所需要的内容，还是和上篇中说的一致，但是多 <code>target</code> 环境下需要对二进制由内到外进行签名操作，同时每个 <code>target</code> 都需要有各自的描述文件。</p>
 <p>　　用 <code>otool -l path/to/unix_exec_file | grep -B 2 crypt</code> 来确定是否被加壳了。经过测试发现 <em>Plugins</em> 目录下的二进制是加密的，而 <em>Watch</em> 目录下的二进制并没有被加密</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9dde10.jpg" alt=""></p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bbe92.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9dde10.jpg"></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e8bbe92.jpg"></p>
 <p>　　<br>　　因为加壳的代码要脱壳才能进行重签名，一般会用类似 <em>dumpdecrypted</em> 的工具在运行时通过 <em>dump</em> 的方式来获得脱壳后的文件，因此在这里可以将 <em>Plugins</em> 和 <em>Watch</em> 目录删除，这样处理后，应用就从多 <em>target</em> 就转换为单 <em>target</em> 了。</p>
 <p>以微信 <em>6.5.7</em> 版本为例，准备好 <em>AdHoc</em> 类型的描述文件之后，进行如下操作:</p>
 <ol>
@@ -263,8 +263,8 @@
 <p>安装 <em>.ipa</em> 结果成功。</p>
 <h2 id="注入-dylib"><a href="#注入-dylib" class="headerlink" title="注入 dylib"></a>注入 <code>dylib</code></h2><p>　</p>
 <p>　　用 <em>Xcode</em> 中的 <em>OpenDev</em> 模板(需要单独下载)，生成要注入到微信中的 <em>dylib</em>，在生成的工程中添加类似下面的方法。</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e930b64.jpg" alt=""></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Dylib</span></span></span><br><span class="line"></span><br><span class="line">__attribute__((constructor))</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> entry() {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"hello, world!"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e930b64.jpg"></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">Dylib</span></span></span><br><span class="line"></span><br><span class="line">__attribute__((constructor))</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> entry() {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"hello, world!"</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>　　<em>⌘ B</em> 编译生成动态库,用 <em>yololib</em> 将动态库注入到微信的二进制。同时将该动态库拷贝到微信应用的目录中</p>
 <figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./yololib 目标可执行文件 需注入的dylib</span><br></pre></td></tr></tbody></table></figure>
@@ -287,13 +287,13 @@
 <h3 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h3><p>　</p>
 <p>　　<em>cd</em> 到 <em>WeChat.app</em> 目录下,确保 <em>yololib</em> 注入后，动态库的执行路径为 <em>@executable_path /Dylib.dylib</em> </p>
 <h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>　　查看设备日志，可以看到动态库已成功注入</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9936c3.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/17/58f450e9936c3.jpg"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　</p>
 <blockquote>
 <p>要注意的是，由于中国的开发者利用免费的证书大量对应用进行重签名，所以目前苹果加上了许多限制，免费开发者的provisioning证书有效时间从之前的30天改为7天，过期后需要重新签名。另外就是一个星期内最多只能申请到10个证书。</p>
 </blockquote>
 <p>　</p>
-<p>　　本文通过 <em>Xcode</em> 的一次多 <em>target</em> 的工程签名流程入手，了解多 <em>target</em> 的签名顺序。因为重签名需要进行脱壳的操作，因此对多 <em>target</em> 的应用，在不影响的情况下，可删除其他 <em>target</em> 文件，将其转换为单 <em>target*。注入的 *dylib</em> 需要独立签名，同时使用 <em>yololib</em> 时需要注意执行路径的问题。<br>　　<br>最后把整体流程再整理下:</p>
+<p>　　本文通过 <em>Xcode</em> 的一次多 <em>target</em> 的工程签名流程入手，了解多 <em>target</em> 的签名顺序。因为重签名需要进行脱壳的操作，因此对多 <em>target</em> 的应用，在不影响的情况下，可删除其他 <em>target</em> 文件，将其转换为单 <em>target</em>。注入的 <em>dylib</em> 需要独立签名，同时使用 <em>yololib</em> 时需要注意执行路径的问题。<br>　　<br>最后把整体流程再整理下:</p>
 <ol>
 <li>删除应用中的 <em>_CodeSignature</em> 目录</li>
 <li>用脱壳后的二进制文件替换掉原应用的二进制文件</li>

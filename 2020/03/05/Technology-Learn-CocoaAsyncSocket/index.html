@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -44,7 +44,7 @@
 <meta property="article:published_time" content="2020-03-04T16:17:34.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:09:16.838Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/gallery/fog-g9da8a0c7a_1280.jpg">
 
@@ -86,7 +86,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -231,7 +231,7 @@
     
         <html><head></head><body><div class="gallery-item">
 
-<p><img src="/images/gallery/fog-g9da8a0c7a_1280.jpg" alt=""></p>
+<p><img src="/images/gallery/fog-g9da8a0c7a_1280.jpg"></p>
 </div>
 
 <h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p>套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I/O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。</p>
@@ -259,55 +259,55 @@
 <figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 服务器</span></span><br><span class="line"></span><br><span class="line">来自(<span class="hljs-string">'192.168.31.136'</span>, 58258)的客户端向你发来信息：GET / HTTP/1.1</span><br><span class="line">Host: 192.168.31.136:9999</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7</span><br></pre></td></tr></tbody></table></figure>
 
 <p><strong>使用浏览器访问,使用<code>HTTP</code>协议访问,传输层实现了端到端的传输(能力),但是信息要被正确的理解,需要一些说明,比如上面<code>HTTP</code> 请求头</strong>,操作系统拥有传输层的能力,并包装了一组抽象的编程接口(<code>Socket</code>),应用层协议通过调用<code>Socket</code>实现信息的传输并制定格式用于理解信息。</p>
-<h2 id="Socket的流程"><a href="#Socket的流程" class="headerlink" title="Socket的流程"></a>Socket的流程</h2><p><img src="https://i.loli.net/2020/03/05/pPbR2VLmoYs8OzJ.jpg" alt=""></p>
+<h2 id="Socket的流程"><a href="#Socket的流程" class="headerlink" title="Socket的流程"></a>Socket的流程</h2><p><img src="https://i.loli.net/2020/03/05/pPbR2VLmoYs8OzJ.jpg"></p>
 <p>来自网络</p>
 <h2 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h2><p>CocoaAsyncSocket为macOS，iOS和tvOS提供了易于使用且功能强大的异步套接字库。</p>
 <h3 id="客户端Socket"><a href="#客户端Socket" class="headerlink" title="客户端Socket"></a>客户端Socket</h3><p>实现客户端<code>socket</code>,参考上图,主要为创建<code>socket</code>,连接,发送,接收,关闭流程</p>
 <figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// 创建``Socket``</span></span><br><span class="line"><span class="hljs-comment">/// 指定代理及代理回调的队列</span></span><br><span class="line">_socket = [[GCDAsyncSocket alloc] initWithDelegate:<span class="hljs-keyword">self</span> delegateQueue:dispatch_get_main_queue()];</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 连接</span></span><br><span class="line"><span class="hljs-built_in">NSError</span> *err = <span class="hljs-literal">nil</span>;</span><br><span class="line"><span class="hljs-keyword">if</span> (![_socket connectToHost:<span class="hljs-string">@"192.168.31.136"</span> onPort:<span class="hljs-number">9999</span> error:&amp;err]) {</span><br><span class="line">    <span class="hljs-comment">// If there was an error, it's likely something like "already connected" or "no delegate set"</span></span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"I goofed: %@"</span>, err);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 发送</span></span><br><span class="line"><span class="hljs-built_in">NSString</span> *requestString = <span class="hljs-string">@"AsyncSocket request string 1"</span>;</span><br><span class="line"><span class="hljs-built_in">NSData</span> *requestData = [requestString dataUsingEncoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    </span><br><span class="line">[_socket writeData:requestData withTimeout:<span class="hljs-number">-1</span> tag:<span class="hljs-number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 接收</span></span><br><span class="line">[_socket readDataWithTimeout:<span class="hljs-number">10</span> tag:<span class="hljs-number">1</span>];</span><br></pre></td></tr></tbody></table></figure>
 
 <h4 id="代理回调"><a href="#代理回调" class="headerlink" title="代理回调"></a>代理回调</h4><p>连接成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)socket:(GCDAsyncSocket *)sock didConnectToHost:(<span class="hljs-built_in">NSString</span> *)host port:(uint16_t)port {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@ - %@ - %hu"</span>,sock,host,port);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sock didConnectToHost:(<span class="hljs-built_in">NSString</span> *)host port:(uint16_t)port {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@ - %@ - %hu"</span>,sock,host,port);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>发送成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(<span class="hljs-keyword">long</span>)tag {</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"First request sent"</span>);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Second request sent"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(<span class="hljs-type">long</span>)tag {</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"First request sent"</span>);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Second request sent"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>接收成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-keyword">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="hljs-built_in">NSData</span> *)data withTag:(<span class="hljs-keyword">long</span>)tag</span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="hljs-built_in">NSData</span> *)data withTag:(<span class="hljs-type">long</span>)tag</span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>确保真机和<code>mac</code>处于同一局域网,输出效果如下:</p>
-<p><img src="https://i.loli.net/2020/03/05/M4eWodN3AP5E81z.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/M4eWodN3AP5E81z.jpg"></p>
 <p>能成功连接,发送信息给服务端且接收服务端返回的信息</p>
 <h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>在连接的回调中设置断点,并进行追踪</p>
-<p><img src="https://i.loli.net/2020/03/05/IKhaREyQwut4i2X.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/IKhaREyQwut4i2X.jpg"></p>
 <p>对于连接操作,采用异步的并发队列进行管理,提高连接效率,调用系统提供<code>socket.h</code>中的<code>connect</code>方法</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">int</span>     <span class="hljs-title">connect</span><span class="hljs-params">(<span class="hljs-keyword">int</span>, <span class="hljs-keyword">const</span> struct sockaddr *, <span class="hljs-keyword">socklen_t</span>)</span> __<span class="hljs-title">DARWIN_ALIAS_C</span><span class="hljs-params">(connect)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span>     <span class="title function_">connect</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> sockaddr *, <span class="hljs-type">socklen_t</span>)</span> __<span class="title function_">DARWIN_ALIAS_C</span><span class="hljs-params">(connect)</span>;</span><br></pre></td></tr></tbody></table></figure>
 
 <figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">connect - initiate a connection on a socket</span><br><span class="line"></span><br><span class="line">The connect() system call connects the socket referred to by the file</span><br><span class="line">    descriptor sockfd to the address specified by addr.  The addrlen</span><br><span class="line">    argument specifies the size of addr.  </span><br><span class="line"></span><br><span class="line">If the connection or binding succeeds, zero is returned.  On error,</span><br><span class="line">       -1 is returned, and errno is set appropriately.</span><br></pre></td></tr></tbody></table></figure>
 
 <p>连接完成后,统一回调到<code>socketQueue</code>队列,调用<code>didConnect:</code>方法</p>
-<p><img src="https://i.loli.net/2020/03/05/EUxhFXT5Bk971IG.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/EUxhFXT5Bk971IG.jpg"></p>
 <p><code>SetupStreamPart1()</code></p>
-<p><img src="https://i.loli.net/2020/03/05/zUkNipRDLs1qIbJ.jpg" alt=""></p>
-<p><img src="https://i.loli.net/2020/03/05/agsQtVNCzpEhX6I.jpg" alt=""></p>
-<p>经过一些容错判断后,调用<code>CFStreamCreatePairWithSocket</code><br><img src="https://i.loli.net/2020/03/05/wYKHkd7JrF9inME.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/zUkNipRDLs1qIbJ.jpg"></p>
+<p><img src="https://i.loli.net/2020/03/05/agsQtVNCzpEhX6I.jpg"></p>
+<p>经过一些容错判断后,调用<code>CFStreamCreatePairWithSocket</code><br><img src="https://i.loli.net/2020/03/05/wYKHkd7JrF9inME.jpg"></p>
 <p>创建连接到套接字的可读和可写流</p>
-<p><img src="https://i.loli.net/2020/03/05/HOBaXlrg5hQu1wx.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/HOBaXlrg5hQu1wx.jpg"></p>
 <p><code>includeReadWrite</code>参数为<code>NO</code>,对<code>Stream</code>在读写操作中发生错误和完成注册回调函数</p>
 <p><code>dispatch_async(delegateQueue,...</code></p>
 <p>异步回调到代理队列(初始化时可指定,此处为主队列)执行代理方法</p>
 <p><code>SetupStreamsPart2()</code></p>
 <p>回到<code>socketQueue</code></p>
-<p><img src="https://i.loli.net/2020/03/05/IaQ7fci1l462dpV.jpg" alt=""></p>
-<p><img src="https://i.loli.net/2020/03/05/yQqzlwBP1sv8iDZ.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/IaQ7fci1l462dpV.jpg"></p>
+<p><img src="https://i.loli.net/2020/03/05/yQqzlwBP1sv8iDZ.jpg"></p>
 <p>在<code>startCFStreamThreadIfNeeded</code>方法中创建一个串行队列,以同步的方式新建一条子线程并开启运行循环</p>
-<p><img src="https://i.loli.net/2020/03/05/abnYSC5qhyFM6sG.jpg" alt=""></p>
-<p><img src="https://i.loli.net/2020/03/05/1VvtFnfqglTidmK.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/abnYSC5qhyFM6sG.jpg"></p>
+<p><img src="https://i.loli.net/2020/03/05/1VvtFnfqglTidmK.jpg"></p>
 <p>同时在<code>addStreamsToRunLoop</code>中,将创建的读写流作为事件源顺序添加到刚创建的子线程的<code>runloop</code>中,确保发生对应事件时,<code>runloop</code>能顺利派发。</p>
-<p><img src="https://i.loli.net/2020/03/05/xazEIlNHb4Spn1A.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/xazEIlNHb4Spn1A.jpg"></p>
 <p>回到<code>didConnect:</code>方法中,</p>
-<p><img src="https://i.loli.net/2020/03/05/38MQxJsyHCXuqRj.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/38MQxJsyHCXuqRj.jpg"></p>
 <p><code>socket</code>开启非阻塞<code>IO</code>,注册读写操作的回调,同时尝试进行读写操作</p>
-<p><img src="https://i.loli.net/2020/03/05/u2UlCbHMZd853ID.jpg" alt=""></p>
+<p><img src="https://i.loli.net/2020/03/05/u2UlCbHMZd853ID.jpg"></p>
 <p>执行原来的两个读操作</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A5%97%E6%8E%A5%E5%AD%97/9637606?fromtitle=socket&amp;fromid=281150">百科 - 套接字</a></li>

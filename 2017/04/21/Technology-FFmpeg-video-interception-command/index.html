@@ -14,7 +14,7 @@
 
 
 
-<meta name="keywords" content="iOSer Shepherd">
+<meta name="keywords" content="iOSer CS">
 
 
 
@@ -29,7 +29,7 @@
 <meta property="article:published_time" content="2017-04-21T12:41:09.000Z">
 <meta property="article:modified_time" content="2022-12-11T10:08:38.462Z">
 <meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer Shepherd">
+<meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg">
 
@@ -71,7 +71,7 @@
     
 
 
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 5.4.2"></head>
 <body>
     
 <nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
@@ -194,7 +194,7 @@
 <p>　　<em>sdk</em> 需要视频素材,我自己找的视频素材太大不能作为素材资源(<em>150K</em>以内)。</p>
 <h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>　</p>
 <p>　　记得 <em>FFmpeg</em> 能处理,用 <em>man</em> 查了下，当时写文档的人还真是很讲究。比如下面的图</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg" alt=""></p>
+<p><img src="https://ooo.0o0.ooo/2017/04/21/58f9fe1a99375.jpg"></p>
 <p>　</p>
 <span id="more"></span>
 <p>　　文档太长，还是 <em>–help</em> 吧</p>
@@ -202,7 +202,7 @@
 
 <p>　　指令执行格式为 <code>ffmpeg + 参数 + 输入文件参数 + -i 输入文件 ... 输出文件参数 输出文件</code>,中括号表示可选，大括号代表必选。当前要做的是要截取一段时间。</p>
 <p>　</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-t duration         record or transcode <span class="hljs-string">"duration"</span> seconds of audio/video</span><br><span class="line"></span><br><span class="line">-t duration (input/output)</span><br><span class="line">      When used as an input option (before <span class="hljs-string">"-i"</span>), <span class="hljs-built_in">limit</span> the duration of data <span class="hljs-built_in">read</span></span><br><span class="line">      from the input file.</span><br><span class="line"></span><br><span class="line">      When used as an output option (before an output url), stop writing the output</span><br><span class="line">      after its duration reaches duration.</span><br><span class="line"></span><br><span class="line">      duration must be a time duration specification, see the Time duration section</span><br><span class="line">      <span class="hljs-keyword">in</span> the ffmpeg-utils(1) manual.</span><br><span class="line"></span><br><span class="line">      -to and -t are mutually exclusive and -t has priority.</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-t duration         record or transcode <span class="hljs-string">"duration"</span> seconds of audio/video</span><br><span class="line"></span><br><span class="line">-t duration (input/output)</span><br><span class="line">      When used as an input option (before <span class="hljs-string">"-i"</span>), <span class="hljs-built_in">limit</span> the duration of data <span class="hljs-built_in">read</span></span><br><span class="line">      from the input file.</span><br><span class="line"></span><br><span class="line">      When used as an output option (before an output url), stop writing the output</span><br><span class="line">      after its duration reaches duration.</span><br><span class="line"></span><br><span class="line">      duration must be a <span class="hljs-keyword">time</span> duration specification, see the Time duration section</span><br><span class="line">      <span class="hljs-keyword">in</span> the ffmpeg-utils(1) manual.</span><br><span class="line"></span><br><span class="line">      -to and -t are mutually exclusive and -t has priority.</span><br></pre></td></tr></tbody></table></figure>
 
 <p><code>-t</code> 在 <code>-i</code> 之前，<code>duration</code> 该用什么格式填写呢? </p>
 <p>从 <code>man</code> 中找例子</p>
