@@ -148,11 +148,14 @@
                                 <span>
                                     <html><head></head><body><div class="gallery-item">
 
-<p><img src="/images/gallery/pexels-tobi-620337.jpg"></p>
+<p><img src="/images/gallery/pexels-jahoo-clouseau-388415.jpg"></p>
 </div>
 
-<h2 id="Clang"><a href="#Clang" class="headerlink" title="Clang"></a>Clang</h2><p><code>Clang</code>是<code>LLVM</code>(Low Level Virtual Machine)项目提供的工具链中的编译器的前端部分</p>
-<p>LLVM项目是模块化和可重用的编译器和工具链技术的集合,LLVM的一大特色就是，有着独立的、完善的、严格约束的中间代码表示。这种中间代码，就是LLVM的字节码，是LLVM抽象的精髓，前端生成这种中间代码，后端自动进行各类优化分析，让用LLVM开发的编译器，都能用上最先进的后端优化技术。</p></body></html>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>《编译原理》中提到</p>
+<blockquote>
+<p>编译器的第一个步骤是词法分析(Lexical Analysis)或扫描。词法分析器读入组成源程序的字符流,并且将它们组织成为有意义的词素(lexeme)的序列。对于每个词素,词法分析产生如下形式的词法单元(token)作为输出:<br><code>&lt;token-name,attribute-value&gt;</code><br><code>token-name</code>     是一个语法分析步骤要使用的抽象符号<br><code>attribute-value</code>指向符号表中关于这个词法单元的条目</p>
+</blockquote>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span> <span class="title function_">main</span><span class="hljs-params">()</span>{</span><br><span class="line">    @autoreleasepool {</span><br><span class="line">        <span class="hljs-type">int</span> initial = <span class="hljs-number">8</span>;</span><br><span class="line">        <span class="hljs-type">int</span> six = <span class="hljs-number">6</span>;</span><br><span class="line">        NSString* site = [[NSString alloc] initWithUTF8String:<span class="hljs-string">"starming"</span>];</span><br><span class="line">        <span class="hljs-type">int</span> rank = initial + six;</span><br><span class="line">        <span class="hljs-type">int</span> position = initial + rank * <span class="hljs-number">60</span>;</span><br><span class="line">        NSLog(@<span class="hljs-string">"%@ rank %d"</span>, site, position);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
                                 </span>
                                 </div>
                                 <br/>
