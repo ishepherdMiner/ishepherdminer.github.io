@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Vue学习笔记 - 互动教程 01 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="为了快速熟悉Vue,学习下互动教程。 早上出门有事情,没学完,学到哪算哪 互动教程(Vue3)声明式渲染Vue 的核心功能是声明式渲染：通过扩展于标准 HTML 的模板语法，我们可以根据 JavaScript 的状态来描述 HTML 应该是什么样子的。当状态改变时，HTML 会自动更新。 能在改变时触发更新的状态被认为是响应式的。在 Vue 中，响应式状态被保存在组件中。 小结  使用 data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习笔记 - 互动教程 01">
+<meta property="og:url" content="http://yoursite.com/2025/04/08/Technology-learn-vue-02/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="为了快速熟悉Vue,学习下互动教程。 早上出门有事情,没学完,学到哪算哪 互动教程(Vue3)声明式渲染Vue 的核心功能是声明式渲染：通过扩展于标准 HTML 的模板语法，我们可以根据 JavaScript 的状态来描述 HTML 应该是什么样子的。当状态改变时，HTML 会自动更新。 能在改变时触发更新的状态被认为是响应式的。在 Vue 中，响应式状态被保存在组件中。 小结  使用 data">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/TuYPD1vl7paFEAc.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/y3Y2MLENcxdRzUG.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/A8ylMpLUqXWR4nK.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/b4QsHWmiD1oOjkV.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/zDNT4y5pKWZoxXi.png">
+<meta property="article:published_time" content="2025-04-08T03:20:31.000Z">
+<meta property="article:modified_time" content="2025-04-08T03:22:30.707Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/08/TuYPD1vl7paFEAc.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#互动教程-Vue3">1&nbsp;&nbsp;<b>互动教程(Vue3)</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#声明式渲染">1.1&nbsp;&nbsp;声明式渲染</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Attribute-绑定">1.2&nbsp;&nbsp;Attribute 绑定</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#事件监听">1.3&nbsp;&nbsp;事件监听</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#表单绑定">1.4&nbsp;&nbsp;表单绑定</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#条件渲染">1.5&nbsp;&nbsp;条件渲染</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">2&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Vue学习笔记 - 互动教程 01
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-08T03:20:31.000Z" itemprop="datePublished">4月 8 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            8 分钟 读完 (约 1126 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>为了快速熟悉<code>Vue</code>,学习下互动教程。</p>
+<p>早上出门有事情,没学完,学到哪算哪</p>
+<h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="声明式渲染"><a href="#声明式渲染" class="headerlink" title="声明式渲染"></a>声明式渲染</h3><p>Vue 的核心功能是声明式渲染：通过扩展于标准 HTML 的模板语法，我们可以根据 JavaScript 的状态来描述 HTML 应该是什么样子的。当状态改变时，HTML 会自动更新。</p>
+<p>能在改变时触发更新的状态被认为是响应式的。在 Vue 中，响应式状态被保存在组件中。</p>
+<p>小结</p>
+<ol>
+<li>使用 data 组件选项来声明响应式状态，该选项应该是一个返回对象的函数</li>
+<li>使用双花括号”状态值“渲染文本（双大括号写法又名:mustache语法)</li>
+<li>双花括号中的内容并不只限于标识符或路径——我们可以使用任何有效的 JavaScript 表达式</li>
+</ol>
+<span id="more"></span>
+
+<figure class="highlight javascript hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-comment">// 返回一个Object,其中name属性的"状态"/值是字符串"张三"</span></span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">        <span class="hljs-attr">name</span>:<span class="hljs-string">"Zhangsan"</span>,</span><br><span class="line">        <span class="hljs-attr">gender</span>:<span class="hljs-string">"male"</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  // 渲染name属性</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{{ name }}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{{ gender }}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>{{ this.gender.split('') }}<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/TuYPD1vl7paFEAc.png" alt="2025-04-07 08.53.40.png"></p>
+<h3 id="Attribute-绑定"><a href="#Attribute-绑定" class="headerlink" title="Attribute 绑定"></a>Attribute 绑定</h3><p>在 Vue 中，mustache 语法 (即双大括号) 只能用于文本插值。为了给 attribute 绑定一个动态值，需要使用 v-bind 指令：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div v-<span class="hljs-attr">bind</span>:id=<span class="hljs-string">"dynamicId"</span>&gt;&lt;/div&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码<br>要求: 把一个动态的 <code>class</code> 绑定添加到这个 <code>&lt;h1&gt;</code> 上，并使用 <code>titleClass</code> 的数据属性作为它的值。如果绑定正确，文字将会变为红色</p>
+<figure class="highlight javascript hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div v-<span class="hljs-attr">bind</span>:id=<span class="hljs-string">"dynamicId"</span>&gt;&lt;/div&gt;</span><br><span class="line"># 简写</span><br><span class="line">&lt;div :id=<span class="hljs-string">"dynamicId"</span>&gt;&lt;/div&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">titleClass</span>: <span class="hljs-string">'title'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Make me red<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span> <span class="hljs-comment">&lt;!-- 此处添加一个动态 class 绑定 --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="hljs-language-css"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-class">.title</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">color</span>: red;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个一开始没理解</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 这样写没有效果,看了参考答案明白了</span><br><span class="line">&lt;h1 :id=<span class="hljs-string">"titleClass"</span>&gt;<span class="title class_">Make</span> me red&lt;/h1&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>要延伸一下,JS可以通过 <code>id</code>,<code>class</code>,<code>name</code> 等找到页面的元素,示例只是以<code>id</code>为例,所以有个<code>title</code>的样式,就明白<code>v:bind</code>绑定了</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1 :<span class="hljs-keyword">class</span>=<span class="hljs-string">"titleClass"</span>&gt;<span class="title class_">Make</span> me red&lt;/h1&gt; </span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/y3Y2MLENcxdRzUG.png" alt="2025-04-07 09.11.50.png"></p>
+<p>再验证下,绑定<code>id</code></p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">titleClass</span>: <span class="hljs-string">'title'</span>,</span><br><span class="line">      <span class="hljs-attr">today</span>:<span class="hljs-string">'mondy'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">:class</span>=<span class="hljs-string">"titleClass"</span>&gt;</span>Make me red<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span> </span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">:id</span>=<span class="hljs-string">"today"</span>&gt;</span>Make me green<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span> </span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="hljs-language-css"></span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-class">.title</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">  <span class="hljs-attribute">color</span>: red;</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"><span class="hljs-selector-id">#mondy</span> {</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">	<span class="hljs-attribute">color</span>: green;    </span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml">}</span></span></span><br><span class="line"><span class="hljs-language-css"><span class="hljs-language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/A8ylMpLUqXWR4nK.png" alt="2025-04-07 09.22.19.png"></p>
+<p>小结:</p>
+<ol>
+<li>使用 v-bind:id=”dynamicId” 绑定元素,可以给属性一个动态值</li>
+<li>v-bind:id=”dynamicId” 可以简写为 :id=”dynamicId”</li>
+</ol>
+<h3 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h3><p>可以使用 v-on 指令监听 DOM 事件</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button v-<span class="hljs-attr">on</span>:click=<span class="hljs-string">"increment"</span>&gt;{{ count }}&lt;/button&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>简写</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button @click=<span class="hljs-string">"increment"</span>&gt;{{ count }}&lt;/button&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>实现一个点击自增的按钮效果</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">count</span>: <span class="hljs-number">0</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">increment</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">count</span>++</span><br><span class="line">    },</span><br><span class="line">    <span class="title function_">incremetMore</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">count</span> += <span class="hljs-number">2</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"incremetMore"</span>&gt;</span>Count is: {{ count }}<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/b4QsHWmiD1oOjkV.png" alt="2025-04-07 09.33.58.png"></p>
+<p>小结:</p>
+<ol>
+<li>使用 v-on:click=”方法名” 监听点击事件</li>
+<li>v-on:click=”方法名”可以简写为 @click=”方法名”</li>
+<li>methods里定义方法列表</li>
+</ol>
+<h3 id="表单绑定"><a href="#表单绑定" class="headerlink" title="表单绑定"></a>表单绑定</h3><p>可以同时使用 v-bind 和 v-on 来在表单的输入元素上创建双向绑定</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input :value=<span class="hljs-string">"text"</span> @input=<span class="hljs-string">"onInput"</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-attr">methods</span>: {</span><br><span class="line">  <span class="title function_">onInput</span>(<span class="hljs-params">e</span>) {</span><br><span class="line">    <span class="hljs-comment">// v-on 处理函数会接收原生 DOM 事件</span></span><br><span class="line">    <span class="hljs-comment">// 作为其参数。</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="hljs-property">text</span> = e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>为了简化双向绑定，Vue 提供了一个 v-model 指令，它实际上是上述操作的语法糖：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input v-model=<span class="hljs-string">"text"</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">text</span>: <span class="hljs-string">''</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">onInput</span>(<span class="hljs-params">e</span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">text</span> = e.<span class="hljs-property">target</span>.<span class="hljs-property">value</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  // 双向绑定: input通过:value绑定(bind)了状态值里的text,input事件触发methods里的onInput方法</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">:value</span>=<span class="hljs-string">"text"</span> @<span class="hljs-attr">input</span>=<span class="hljs-string">"onInput"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Type here"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ text }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用<code>v-model</code>进行简写</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">text</span>: <span class="hljs-string">''</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  // 双向绑定: input通过:value绑定(bind)了状态值里的text,input事件触发methods里的onInput方法</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Type here"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ text }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/zDNT4y5pKWZoxXi.png" alt="2025-04-07 09.42.03.png"></p>
+<p>小结:</p>
+<ol>
+<li>使用 v-model=”状态值”,可以实现双向绑定,支持文本输入框，多选框、单选框、下拉框 – 开发时更关注状态的变化,建立绑定很多时候是必要的苦力活</li>
+</ol>
+<h3 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h3><p>可以使用 <code>v-if</code> 指令来有条件地渲染元素</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1 v-<span class="hljs-keyword">if</span>=<span class="hljs-string">"awesome"</span>&gt;<span class="title class_">Vue</span> is awesome!&lt;/h1&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1 v-<span class="hljs-keyword">if</span>=<span class="hljs-string">"awesome"</span>&gt;<span class="title class_">Vue</span> is awesome!&lt;/h1&gt;</span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">v-else</span>&gt;</span>Oh no 😢<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个没啥好说的,很自然的逻辑，过一下用例即可</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">awesome</span>: <span class="hljs-literal">true</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">toggle</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="hljs-comment">// ...</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"toggle"</span>&gt;</span>Toggle<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Vue is awesome!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Oh no 😢<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例程序同时展示了两个 <code>&lt;h1&gt;</code> 标签，并且按钮不执行任何操作。尝试给它们添加 <code>v-if</code> 和 <code>v-else</code> 指令，并实现 <code>toggle()</code> 方法，让我们可以使用按钮在它们之间切换。</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">awesome</span>: <span class="hljs-literal">true</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">toggle</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="hljs-comment">// 值取反</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">awesome</span> = !<span class="variable language_">this</span>.<span class="hljs-property">awesome</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"toggle"</span>&gt;</span>Toggle<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"awesome"</span>&gt;</span>Vue is awesome!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">v-else</span>&gt;</span>Oh no 😢<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>小结:</p>
+<ol>
+<li>可以使用<code>v-if="状态值"</code>,<code>v-else</code> 实现根据状态值来执行不同的操作</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://cn.vuejs.org/tutorial/#step-1">Vue互动教程</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
+            
+            <a href="/2025/04/08/Technology-learn-vue-03/">Vue学习笔记 - 互动教程 02</a>
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/06/Technology-learn-vue-01/">Vue学习笔记 - 安装与环境搭建</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

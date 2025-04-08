@@ -128,6 +128,112 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2022/12/11/Technology-Hexo-push-error/" itemprop="url">hexo deploy 命令执行失败</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2022-12-11T12:12:27.000Z" itemprop="datePublished">12月 11 2022</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            1 分钟 读完 (约 193 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><div class="gallery-item">
+
+<p><img src="/images/gallery/pexels-lumn-167699.jpg"></p>
+</div>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
+<p>按要求<code>eval "$(ssh-agent -s)"</code></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent <span class="hljs-built_in">yes</span></span><br><span class="line">  UseKeychain <span class="hljs-built_in">yes</span></span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
+
+<p>指定github.com使用该公钥,但是还是失败。</p></body></html>
+        <p class="article-more-link">
+            <a href="/2022/12/11/Technology-Hexo-push-error/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2019/02/22/Technology-ReactNative-Intro/" itemprop="url">ReactNative 入门体验</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2019-02-22T15:15:22.000Z" itemprop="datePublished">2月 22 2019</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            20 分钟 读完 (约 3045 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS Mojave Version 10.14.3<br>Xcode 10.1<br>iPhone 5s 10.0.1<br>node v11.10.0<br>npm 6.7.0<br>React Native 0.58<br>react 16.6.3</p>
+</blockquote>
+<h2 id="新建ReactNative项目"><a href="#新建ReactNative项目" class="headerlink" title="新建ReactNative项目"></a>新建<code>ReactNative</code>项目</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br><span class="line">brew install watchman</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="安装React-Native命令行工具"><a href="#安装React-Native命令行工具" class="headerlink" title="安装React Native命令行工具"></a>安装<code>React Native</code>命令行工具</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></tbody></table></figure>
+
+
+
+<h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg"><br>或者</p></body></html>
+        <p class="article-more-link">
+            <a href="/2019/02/22/Technology-ReactNative-Intro/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2019/01/09/Technology-Charles-capture-principle/" itemprop="url">Charles HTTP抓包原理</a>
         
     </h1>
@@ -501,111 +607,6 @@
 <p><em>arg</em>是参数缩写,<em>c</em>是<em>count</em>,<em>argc</em>代表外部参数的个数,<em>argv</em>是一个指向字符数组的指针。简而言之外部可以给<em>main</em>传递一个字符串数组,个数由<em>argc</em>确定</p></body></html>
         <p class="article-more-link">
             <a href="/2017/03/12/Technology-IntelliJ-IDEA-main-function-pass/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/03/11/Technology-Something-about-Charles/" itemprop="url">Charles使用二三事</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-03-11T03:10:15.000Z" itemprop="datePublished">3月 11 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            7 分钟 读完 (约 1065 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><ul>
-<li><em>https</em>代理</li>
-<li>本地和远程映射</li>
-<li>断点调试</li>
-</ul>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p><em>macOS Sierra 10.12.3</em><br><em>Charles 4.0</em></p>
-</blockquote></body></html>
-        <p class="article-more-link">
-            <a href="/2017/03/11/Technology-Something-about-Charles/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/03/06/Technology-FFmpeg-study-notes-01-environmental-building/" itemprop="url">FFmpeg学习笔记01(环境搭建)</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-03-05T16:04:48.000Z" itemprop="datePublished">3月 6 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            10 分钟 读完 (约 1459 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　学习<em>FFmpeg</em></p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p><em>macOS Sierra 10.12.3</em><br><em>Xcode 8.2.1</em><br><em>FFmpeg 3.2</em></p>
-</blockquote>
-<h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么?"></a>是什么?</h2><blockquote>
-<p>一个用于录制,转换和流式传输音频和视频的完整的跨平台解决方案。</p>
-</blockquote>
-<p>可通过<em>git</em>方式下载源码</p>
-<blockquote>
-<p>git clone <a target="_blank" rel="noopener" href="https://git.ffmpeg.org/ffmpeg.git">https://git.ffmpeg.org/ffmpeg.git</a> ffmpeg</p>
-</blockquote></body></html>
-        <p class="article-more-link">
-            <a href="/2017/03/06/Technology-FFmpeg-study-notes-01-environmental-building/#more">阅读更多</a>
         </p>
     
     </div>

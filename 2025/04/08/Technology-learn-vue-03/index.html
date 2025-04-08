@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Vue学习笔记 - 互动教程 02 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="互动教程(Vue3)列表渲染条件语句后是循环操作,也是基本操作 可以使用 v-for 指令来渲染一个基于源数组的列表 12345&lt;ul&gt;  &lt;li v-for&#x3D;&quot;todo in todos&quot; :key&#x3D;&quot;todo.id&quot;&gt;    {{ todo.text }}  &lt;&#x2F;li&gt;&lt;&#x2F;ul&gt;  这里的 todo 是一个局部变量，表示当前正在迭代的数组元素。它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习笔记 - 互动教程 02">
+<meta property="og:url" content="http://yoursite.com/2025/04/08/Technology-learn-vue-03/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="互动教程(Vue3)列表渲染条件语句后是循环操作,也是基本操作 可以使用 v-for 指令来渲染一个基于源数组的列表 12345&lt;ul&gt;  &lt;li v-for&#x3D;&quot;todo in todos&quot; :key&#x3D;&quot;todo.id&quot;&gt;    {{ todo.text }}  &lt;&#x2F;li&gt;&lt;&#x2F;ul&gt;  这里的 todo 是一个局部变量，表示当前正在迭代的数组元素。它">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/2SF8CrzyuEteN3V.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/XTRO7cy5GZpxath.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/KMxzPlS7O8iYjst.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/JdcC2j9szQUNPpY.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/znw5A7g9JIFGXL6.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/o3EvXtFaNOsgQ7q.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/UsXJqruTC3BVKRf.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/Zbltke7Pz96fg1C.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/qoZUIHxKFGLavp6.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/08/7pJwRYBxzriXEI8.png">
+<meta property="article:published_time" content="2025-04-08T03:20:35.000Z">
+<meta property="article:modified_time" content="2025-04-08T03:22:20.958Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/08/2SF8CrzyuEteN3V.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#互动教程-Vue3">1&nbsp;&nbsp;<b>互动教程(Vue3)</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#列表渲染">1.1&nbsp;&nbsp;列表渲染</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#计算属性">1.2&nbsp;&nbsp;计算属性</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#生命周期和模板引用">1.3&nbsp;&nbsp;生命周期和模板引用</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#侦听器-Watch">1.4&nbsp;&nbsp;侦听器(Watch)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#组件">1.5&nbsp;&nbsp;组件</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Props">1.6&nbsp;&nbsp;Props</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Emits">1.7&nbsp;&nbsp;Emits</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#插槽-slots">1.8&nbsp;&nbsp;插槽(slots)</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#总结">1.9&nbsp;&nbsp;总结</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">2&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Vue学习笔记 - 互动教程 02
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-08T03:20:35.000Z" itemprop="datePublished">4月 8 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            15 分钟 读完 (约 2315 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h3><p>条件语句后是循环操作,也是基本操作</p>
+<p>可以使用 <code>v-for</code> 指令来渲染一个基于源数组的列表</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"todo in todos"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"todo.id"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    {{ todo.text }}</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里的 <code>todo</code> 是一个局部变量，表示当前正在迭代的数组元素。它只能在 <code>v-for</code> 所绑定的元素上或是其内部访问，就像函数的作用域一样。</p>
+<p>注意，我们还给每个 <code>todo</code> 对象设置了唯一的 <code>id</code>，并且将它作为特殊的 <code>key attribute</code> 绑定到每个 <code>&lt;li&gt;</code>。<code>key</code> 使得 <code>Vue</code> 能够精确地移动每个 </p><li>，以匹配对应的对象在数组中的位置。<p></p>
+<span id="more"></span>
+
+<p>更新列表</p>
+<p>在源数组上调用变更方法</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">push</span>(newTodo)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用新的数组替代原数组</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="hljs-property">todos</span> = <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">filter</span>(<span class="hljs-comment">/* ... */</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码:</p>
+<p>这里有一个简单的 todo 列表——试着实现一下 addTodo() 和 removeTodo() 这两个方法的逻辑，使列表能够正常工作！</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-comment">// 给每个 todo 对象一个唯一的 id</span></span><br><span class="line"><span class="hljs-keyword">let</span> id = <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">newTodo</span>: <span class="hljs-string">''</span>,</span><br><span class="line">      <span class="hljs-attr">todos</span>: [</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn HTML'</span> },</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn JavaScript'</span> },</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn Vue'</span> }</span><br><span class="line">      ]</span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="hljs-comment">// @submit.prevent属性可以实现当我们点击提交按钮时，表单并不会提交，而是会触发绑定的函数</span></span><br><span class="line">    <span class="hljs-comment">// 所以addTodo被触发</span></span><br><span class="line">    <span class="title function_">addTodo</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="hljs-comment">// 因为"newTodo" 用v-model进行修饰,所以有双向关联,newTodo会得到用户输入的内容</span></span><br><span class="line">      <span class="hljs-comment">// 可以添加到todos列表中</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">push</span>({<span class="hljs-attr">id</span>:id++,<span class="hljs-attr">text</span>:<span class="variable language_">this</span>.<span class="hljs-property">newTodo</span>})</span><br><span class="line">      <span class="hljs-comment">// 常规操作</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">newTodo</span> = <span class="hljs-string">''</span></span><br><span class="line">    },</span><br><span class="line">    <span class="title function_">removeTodo</span>(<span class="hljs-params">todo</span>) {</span><br><span class="line">        <span class="hljs-comment">// 遍历this.todos,如果其中的元素item != 当前删除的这个才放到this.todos这个数组</span></span><br><span class="line">        <span class="variable language_">this</span>.<span class="hljs-property">todos</span> = <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item != todo)</span><br><span class="line">        <span class="hljs-comment">// 参考答案</span></span><br><span class="line">        <span class="hljs-comment">// 这里用的是 !== </span></span><br><span class="line">        <span class="hljs-comment">// this.todos = this.todos.filter((t) =&gt; t !== todo)</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">toString</span>.<span class="title function_">call</span>(todo)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">form</span> @<span class="hljs-attr">submit.prevent</span>=<span class="hljs-string">"addTodo"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"newTodo"</span> <span class="hljs-attr">required</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"new todo"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">button</span>&gt;</span>Add Todo<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"todo in todos"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"todo.id"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">      {{ todo.text }}</span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"removeTodo(todo)"</span>&gt;</span>X<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>小结:</p>
+<ol>
+<li>可以用赋值/filter的方法生成数组,遍历操作: (变量) =&gt; 变量相关逻辑</li>
+<li><code>form</code>表单可以使用<code>@submit.prevent = "方法名"</code> 来阻止默认的提交,并触发指定的方法</li>
+<li><code>!==</code>执行严格的不相等比较,不会在检查不相等之前转换操作数的类型。这里是对象比较,比较的是相同</li>
+</ol>
+<h3 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h3><p>这是通过给每一个<code>todo</code>对象添加<code>done</code>属性并将其绑定到复选框上来添加切换功能</p>
+<p>如何基于状态渲染不同的列表项,这个要求有点类似上一篇的<code>v-if-else</code></p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;li v-<span class="hljs-keyword">for</span>=<span class="hljs-string">"todo in todos"</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"checkbox"</span> <span class="hljs-attr">v-model</span>=<span class="hljs-string">"todo.done"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  ...</span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以使用 computed 选项声明一个响应式的属性，它的值由其他属性计算而来</p>
+<p>示例代码:</p>
+<p>试着添加 filteredTodos 计算属性并实现计算逻辑</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">let</span> id = <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">newTodo</span>: <span class="hljs-string">''</span>,</span><br><span class="line">      <span class="hljs-attr">hideCompleted</span>: <span class="hljs-literal">false</span>,</span><br><span class="line">      <span class="hljs-attr">todos</span>: [</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn HTML'</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> },</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn JavaScript'</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">true</span> },</span><br><span class="line">        { <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="hljs-string">'Learn Vue'</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span> }</span><br><span class="line">      ]</span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">computed</span>: {</span><br><span class="line">    <span class="hljs-comment">// ② 根据 `this.hideCompleted` 返回过滤后的 todo 项目</span></span><br><span class="line">    <span class="title function_">filteredTodos</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="hljs-keyword">return</span> <span class="variable language_">this</span>.<span class="hljs-property">hideCompleted</span> ? <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> t.<span class="hljs-property">done</span> !== <span class="hljs-literal">true</span>) : <span class="variable language_">this</span>.<span class="hljs-property">todos</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="title function_">addTodo</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">push</span>({ <span class="hljs-attr">id</span>: id++, <span class="hljs-attr">text</span>: <span class="variable language_">this</span>.<span class="hljs-property">newTodo</span>, <span class="hljs-attr">done</span>: <span class="hljs-literal">false</span> })</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">newTodo</span> = <span class="hljs-string">''</span></span><br><span class="line">    },</span><br><span class="line">    <span class="title function_">removeTodo</span>(<span class="hljs-params">todo</span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">todos</span> = <span class="variable language_">this</span>.<span class="hljs-property">todos</span>.<span class="title function_">filter</span>(<span class="hljs-function">(<span class="hljs-params">t</span>) =&gt;</span> t !== todo)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;form @submit.prevent="addTodo"&gt;</span><br><span class="line">    &lt;input v-model="newTodo" required placeholder="new todo"&gt;</span><br><span class="line">    &lt;button&gt;Add Todo&lt;/button&gt;</span><br><span class="line">  &lt;/form&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    // ① 关联计算属性</span><br><span class="line">    &lt;li v-for="todo in filteredTodos" :key="todo.id"&gt;</span><br><span class="line">    &lt;!--&lt;li v-for="todo in todos" :key="todo.id"&gt; --&gt;</span><br><span class="line">      &lt;input type="checkbox" v-model="todo.done"&gt;</span><br><span class="line">      &lt;span :class="{ done: todo.done }"&gt;{{ todo.text }}&lt;/span&gt;</span><br><span class="line">      &lt;button @click="removeTodo(todo)"&gt;X&lt;/button&gt;</span><br><span class="line">    &lt;/li&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">  &lt;button @click="hideCompleted = !hideCompleted"&gt;</span><br><span class="line">    {{ hideCompleted ? 'Show all' : 'Hide completed' }}</span><br><span class="line">  &lt;/button&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.done {</span><br><span class="line">  text-decoration: line-through;</span><br><span class="line">}</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>显示所有的<code>todos</code></p>
+<p><img src="https://s2.loli.net/2025/04/08/2SF8CrzyuEteN3V.png" alt="2025-04-08 09.58.21.png"></p>
+<p>隐藏已完成的<code>todos</code></p>
+<p><img src="https://s2.loli.net/2025/04/08/XTRO7cy5GZpxath.png" alt="2025-04-08 09.58.30.png"></p>
+<p>可以把右侧的<code>show Error</code>关闭,弹出错误提示的时候影响输入</p>
+<p>小结</p>
+<ol>
+<li>计算属性的值依赖其其它的属性而来的,它会自动跟踪其计算中所使用的到的其他响应式状态</li>
+<li>计算属性可以放在 <code>computed:</code> 选项里</li>
+</ol>
+<h3 id="生命周期和模板引用"><a href="#生命周期和模板引用" class="headerlink" title="生命周期和模板引用"></a>生命周期和模板引用</h3><p><code>Vue</code> 为我们处理了所有的 <code>DOM</code> 更新，这要归功于响应性和声明式渲染。然而，有时我们也会不可避免地需要手动操作 <code>DOM</code>。 – 类似<code>C</code> 要有指针去访问地址的概念;有自动挡还是要了解手动档。</p>
+<p>这时我们需要使用模板引用——也就是指向模板中一个 <code>DOM</code> 元素的 <code>ref</code>。我们需要通过这个特殊的 <code>ref attribute</code> 来实现模板引用：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p ref=<span class="hljs-string">"pElementRef"</span>&gt;hello&lt;/p&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>此元素将作为 <code>this.$refs.pElementRef</code> 暴露在 <code>this.$refs</code> 上。然而，你只能在组件挂载之后访问它。</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">mounted</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-comment">// 重新设置引用的pElementRef元素的textContent</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">pElementRef</span>.<span class="hljs-property">textContent</span> = <span class="hljs-string">"World"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">"pElementRef"</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/KMxzPlS7O8iYjst.png" alt="2025-04-08 10.20.57.png"></p>
+<p>这被称为生命周期钩子——它允许我们注册一个在组件的特定生命周期调用的回调函数。还有一些其他的钩子如 <code>created</code> 和 <code>updated</code></p>
+<p><img src="https://s2.loli.net/2025/04/08/JdcC2j9szQUNPpY.jpg" alt="17440789282070.jpg"></p>
+<p>小结</p>
+<ol>
+<li>可以通过`ref<code>标签</code>在<code>Vue</code>中操作<code>DOM</code>元素</li>
+<li><code>Vue</code>提供了若干生命周期的钩子函数,让开发者可以在不同的时间点操作操作元素</li>
+</ol>
+<h3 id="侦听器-Watch"><a href="#侦听器-Watch" class="headerlink" title="侦听器(Watch)"></a>侦听器(Watch)</h3><p>有时我们需要响应性地执行一些“副作用”——例如，当一个数字改变时将其输出到控制台。我们可以通过侦听器来实现它：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">count</span>: <span class="hljs-number">0</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">watch</span>: {</span><br><span class="line">    <span class="title function_">count</span>(<span class="hljs-params">newCount</span>) {</span><br><span class="line">      <span class="hljs-comment">// 没错，console.log() 是一个副作用</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="hljs-string">`new count is: <span class="hljs-subst">${newCount}</span>`</span>)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">todoId</span>: <span class="hljs-number">1</span>,</span><br><span class="line">      <span class="hljs-attr">todoData</span>: <span class="hljs-literal">null</span></span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="hljs-keyword">async</span> <span class="title function_">fetchData</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">todoData</span> = <span class="hljs-literal">null</span></span><br><span class="line">      <span class="hljs-comment">// 获取数据</span></span><br><span class="line">      <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="title function_">fetch</span>(</span><br><span class="line">        <span class="hljs-string">`https://jsonplaceholder.typicode.com/todos/<span class="hljs-subst">${<span class="variable language_">this</span>.todoId}</span>`</span></span><br><span class="line">      )</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">todoData</span> = <span class="hljs-keyword">await</span> res.<span class="title function_">json</span>()</span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">mounted</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">fetchData</span>()</span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-attr">watch</span>: {</span><br><span class="line">    <span class="hljs-comment">// 观察todoId状态,每次点击 Fetch next dodo按钮时</span></span><br><span class="line">    <span class="hljs-comment">// 因为@click="todoId++"，所以todoId的状态值会自增1</span></span><br><span class="line">    <span class="hljs-comment">// 然后触发watch里的todoId方法，执行fetchData,获取下一条数据</span></span><br><span class="line">    <span class="title function_">todoId</span>(<span class="hljs-params"></span>) {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">fetchData</span>()</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Todo id: {{ todoId }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">"todoId++"</span> <span class="hljs-attr">:disabled</span>=<span class="hljs-string">"!todoData"</span>&gt;</span>Fetch next todo<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"!todoData"</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">pre</span> <span class="hljs-attr">v-else</span>&gt;</span>{{ todoData }}<span class="hljs-tag">&lt;/<span class="hljs-name">pre</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/znw5A7g9JIFGXL6.png" alt="2025-04-08 10.31.18.png"></p>
+<p>小结</p>
+<ol>
+<li>使用<code>Watch</code> 选项可以设置当某个值变化时触发指定的操作,有点像计算属性的更泛的表达</li>
+</ol>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>真正的 Vue 应用往往是由嵌套组件创建的。</p>
+<p>父组件可以在模板中渲染另一个组件作为子组件。要使用子组件，我们需要先导入它：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">ChildComp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./ChildComp.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">components</span>: {</span><br><span class="line">    <span class="title class_">ChildComp</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>使用模板</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">ChildComp</span> /&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-comment">// 注册子组件</span></span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-comment">&lt;!-- render child component --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/o3EvXtFaNOsgQ7q.png" alt="2025-04-08 10.41.24.png"></p>
+<p><img src="https://s2.loli.net/2025/04/08/UsXJqruTC3BVKRf.png" alt="2025-04-08 10.42.07.png"></p>
+<p>小结</p>
+<ol>
+<li>使用<code>import</code> 可以引入子组件</li>
+<li>使用<code>components</code> 选项可以注册子组件</li>
+</ol>
+<h3 id="Props"><a href="#Props" class="headerlink" title="Props"></a>Props</h3><p>子组件可以通过 <code>props</code> 从父组件接受动态数据。首先，需要声明它所接受的 <code>props</code>：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 在子组件中</span></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">props</span>: {</span><br><span class="line">    <span class="hljs-attr">msg</span>: <span class="title class_">String</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>msg prop</code> 就会暴露在 <code>this</code> 上，并可以在子组件的模板中使用</p>
+<p>父组件可以像声明 <code>HTML attributes</code> 一样传递 <code>props</code>。若要传递动态值，也可以使用 <code>v-bind</code> 语法：</p>
+<p>示例代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">ChildComp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./ChildComp.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">components</span>: {</span><br><span class="line">    <span class="title class_">ChildComp</span></span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">greeting</span>: <span class="hljs-string">'Hello from parent'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-comment">&lt;!-- 父组件的greeting状态值传递给子组件用prop声明接收的msg  --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ChildComp</span> <span class="hljs-attr">:msg</span>=<span class="hljs-string">"greeting"</span> /&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-comment">&lt;!-- 使用HTML attributes 传递给子组件 --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ChildComp</span> <span class="hljs-attr">msg</span>=<span class="hljs-string">"123"</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">ChildComp</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/Zbltke7Pz96fg1C.png" alt="2025-04-08 10.48.08.png"></p>
+<p>小结</p>
+<ol>
+<li>子组件可以通过<code>prop</code> 指定接收哪些外部状态 – 大同小异,差不多就是模型定义的公开属性</li>
+<li>可以通过<code>html attributes</code>/ <code>v-bind</code> 将状态值从父组件传给子组件</li>
+</ol>
+<h3 id="Emits"><a href="#Emits" class="headerlink" title="Emits"></a>Emits</h3><p>除了接收 <code>props</code>，子组件还可以向父组件触发事件</p>
+<p><code>emit</code>: 发射</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-comment">// 声明触发的事件</span></span><br><span class="line">  <span class="hljs-attr">emits</span>: [<span class="hljs-string">'response'</span>],</span><br><span class="line">  <span class="title function_">created</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-comment">// 带参数触发</span></span><br><span class="line">    <span class="variable language_">this</span>.$emit(<span class="hljs-string">'response'</span>, <span class="hljs-string">'hello from child'</span>)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>this.$emit()</code> 的第一个参数是事件的名称。其他所有参数都将传递给事件监听器。</p>
+<p>示例代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">ChildComp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./ChildComp.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">components</span>: {</span><br><span class="line">    <span class="title class_">ChildComp</span></span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">childMsg</span>: <span class="hljs-string">'No child msg yet'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-comment">&lt;!-- 父组件可以使用 ``v-on`` 监听子组件触发的事件——这里的处理函数接收了子组件触发事件时的额外参数并将它赋值给了本地状态 --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ChildComp</span> @<span class="hljs-attr">response</span>=<span class="hljs-string">"(msg) =&gt; childMsg = msg"</span> /&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>{{ childMsg }}<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/08/qoZUIHxKFGLavp6.png" alt="2025-04-08 10.57.34.png"></p>
+<p>小结</p>
+<ol>
+<li>在子组件使用<code>emits</code> 选项可以声明触发某些事件</li>
+<li>父组件可以使用<code>v-on</code>在响应子组件的<code>emits</code>的操作 – 数据如何传递</li>
+</ol>
+<h3 id="插槽-slots"><a href="#插槽-slots" class="headerlink" title="插槽(slots)"></a>插槽(slots)</h3><p>除了通过 <code>props</code> 传递数据外，父组件还可以通过插槽 <code>(slots)</code> 将模板片段传递给子组件：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">ChildComp</span>&gt;</span><br><span class="line">  <span class="title class_">This</span> is some slot content!</span><br><span class="line">&lt;/<span class="title class_">ChildComp</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>示例代码</p>
+<p>App.vue</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">ChildComp</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./ChildComp.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">components</span>: {</span><br><span class="line">    <span class="title class_">ChildComp</span></span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">msg</span>: <span class="hljs-string">'from parent'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">ChildComp</span>&gt;</span>妖怪，还不现出原形<span class="hljs-tag">&lt;/<span class="hljs-name">ChildComp</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>ChildComp.vue</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">slot</span>&gt;</span>Fallback content<span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>默认显示 <code>Fallback content</code>， 如果父组件中有具体内容,则显示父组件中的内容</p>
+<p><img src="https://s2.loli.net/2025/04/08/7pJwRYBxzriXEI8.png" alt="2025-04-08 11.06.06.png"></p>
+<p>小结</p>
+<ol>
+<li>父组件可以通过插槽 <code>(slots)</code> 将模板片段传递给子组件 – 可以理解为一种自定义的标签</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>如何操作列表</li>
+<li>通过<code>computed</code>选项可以关联其它的状态</li>
+<li>了解了<code>Vue</code>模板的生命周期</li>
+<li>通过<code>watch</code>选项在其它状态变化时触发指定操作</li>
+<li>如何引入外部组件</li>
+<li>多个组件间如何进行数据的传递:<code>props</code>(父组件传子组件),<code>Emits</code>(子组件回传父组件),<code>slot</code>(父组件传子组件)</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/wang_xiao_ye/article/details/89385023">Vue中常用的数组方法.filter()、.map()、.forEach()、.find()、.findIndex()、.some()、.every()</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012562411/article/details/85220801">vue中阻止表单自动提交</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022913676">比较 JavaScript 对象的四种方式</a></li>
+</ol>
+</li></body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/08/Technology-learn-vue-02/">Vue学习笔记 - 互动教程 01</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

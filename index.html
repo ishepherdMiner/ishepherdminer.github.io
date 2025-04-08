@@ -128,6 +128,108 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/08/Technology-learn-vue-03/" itemprop="url">Vue学习笔记 - 互动教程 02</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-08T03:20:35.000Z" itemprop="datePublished">4月 8 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            15 分钟 读完 (约 2315 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h3><p>条件语句后是循环操作,也是基本操作</p>
+<p>可以使用 <code>v-for</code> 指令来渲染一个基于源数组的列表</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"todo in todos"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"todo.id"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    {{ todo.text }}</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里的 <code>todo</code> 是一个局部变量，表示当前正在迭代的数组元素。它只能在 <code>v-for</code> 所绑定的元素上或是其内部访问，就像函数的作用域一样。</p>
+<p>注意，我们还给每个 <code>todo</code> 对象设置了唯一的 <code>id</code>，并且将它作为特殊的 <code>key attribute</code> 绑定到每个 <code>&lt;li&gt;</code>。<code>key</code> 使得 <code>Vue</code> 能够精确地移动每个 </p><li>，以匹配对应的对象在数组中的位置。<p></p></li></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/08/Technology-learn-vue-03/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            <a href="/2025/04/08/Technology-learn-vue-02/" itemprop="url">Vue学习笔记 - 互动教程 01</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-08T03:20:31.000Z" itemprop="datePublished">4月 8 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            8 分钟 读完 (约 1126 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>为了快速熟悉<code>Vue</code>,学习下互动教程。</p>
+<p>早上出门有事情,没学完,学到哪算哪</p>
+<h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="声明式渲染"><a href="#声明式渲染" class="headerlink" title="声明式渲染"></a>声明式渲染</h3><p>Vue 的核心功能是声明式渲染：通过扩展于标准 HTML 的模板语法，我们可以根据 JavaScript 的状态来描述 HTML 应该是什么样子的。当状态改变时，HTML 会自动更新。</p>
+<p>能在改变时触发更新的状态被认为是响应式的。在 Vue 中，响应式状态被保存在组件中。</p>
+<p>小结</p>
+<ol>
+<li>使用 data 组件选项来声明响应式状态，该选项应该是一个返回对象的函数</li>
+<li>使用双花括号”状态值“渲染文本（双大括号写法又名:mustache语法)</li>
+<li>双花括号中的内容并不只限于标识符或路径——我们可以使用任何有效的 JavaScript 表达式</li>
+</ol></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/08/Technology-learn-vue-02/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/04/06/Technology-learn-vue-01/" itemprop="url">Vue学习笔记 - 安装与环境搭建</a>
         
     </h1>
@@ -533,108 +635,6 @@
 
 
     
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2022/12/11/Technology-Hexo-push-error/" itemprop="url">hexo deploy 命令执行失败</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2022-12-11T12:12:27.000Z" itemprop="datePublished">12月 11 2022</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 193 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/pexels-lumn-167699.jpg"></p>
-</div>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>很久没写博客,重新恢复写作后,发现<code>hexo deploy</code> 无法推送了,一直报无权限,检查了<code>~/.gitconfig</code>账号是对的,按参考一在<code>~/.ssh/config</code>中加了公钥</p>
-<p>按要求<code>eval "$(ssh-agent -s)"</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host *.github.com</span><br><span class="line">  AddKeysToAgent <span class="hljs-built_in">yes</span></span><br><span class="line">  UseKeychain <span class="hljs-built_in">yes</span></span><br><span class="line">  IdentityFile ~/.ssh/whz1992gt_github_home</span><br></pre></td></tr></tbody></table></figure>
-
-<p>指定github.com使用该公钥,但是还是失败。</p></body></html>
-        <p class="article-more-link">
-            <a href="/2022/12/11/Technology-Hexo-push-error/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2022/12/11/iOSer-Get-iPhone-udid/" itemprop="url">Wiki - 通过配置获取iPhone的UDID</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2022-12-11T10:18:11.000Z" itemprop="datePublished">12月 11 2022</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            1 分钟 读完 (约 119 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/tomatoes-g8c3751b39_1280.jpg"></p>
-</div>
-
-<h2 id="仅记录"><a href="#仅记录" class="headerlink" title="仅记录"></a>仅记录</h2><figure class="highlight xml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">"1.0"</span> encoding=<span class="hljs-string">"UTF-8"</span>?&gt;</span></span><br><span class="line"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">plist</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">"-//Apple//DTD PLIST 1.0//EN"</span> <span class="hljs-string">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">plist</span> <span class="hljs-attr">version</span>=<span class="hljs-string">"1.0"</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadContent<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>URL<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>http://dev.skyfox.org/udid/receive.php<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span> <span class="hljs-comment">&lt;!--接收数据的接口地址--&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>DeviceAttributes<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>UDID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>IMEI<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>ICCID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>VERSION<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">                <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>PRODUCT<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;/<span class="hljs-name">array</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadOrganization<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>dev.skyfox.org<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--组织名称--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadDisplayName<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>查询设备UDID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--安装时显示的标题--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadVersion<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">integer</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">integer</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadUUID<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>3C4DC7D2-E475-3378-489C-0BB8D737A653<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>  <span class="hljs-comment">&lt;!--自己随机填写的唯一字符串--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadIdentifier<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>dev.skyfox.profile-service<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadDescription<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>本文件仅用来获取设备ID<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span>   <span class="hljs-comment">&lt;!--描述--&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>PayloadType<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">string</span>&gt;</span>Profile Service<span class="hljs-tag">&lt;/<span class="hljs-name">string</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">plist</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
-
-
-</body></html>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
     
         
 <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
@@ -652,7 +652,7 @@
         
         <li><span class="pagination-ellipsis">&hellip;</span></li>
         
-        <li><a class="pagination-link" href="/page/7/">7</a></li>
+        <li><a class="pagination-link" href="/page/8/">8</a></li>
         
     </ul>
 </nav>
