@@ -2,7 +2,7 @@
 <html class="has-navbar-fixed-top">
 <head>
     <meta charset="utf-8">
-<title>牧羊人</title>
+<title>Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件 - 牧羊人</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
@@ -18,16 +18,24 @@
 
 
 
-    <meta name="description" content="一个闲散的程序员">
-<meta property="og:type" content="website">
-<meta property="og:title" content="牧羊人">
-<meta property="og:url" content="http://yoursite.com/index.html">
+    <meta name="description" content="学完互动教程,已经有个基本印象,再看看文档,基础部分有涉及了,所以看深入组件那部分文档 注册全局注册可以使用 Vue 应用实例的 .component() 方法，让组件在当前 Vue 应用中全局可用 123456789101112import { createApp } from &#39;vue&#39;const app &#x3D; createApp({})app.component(  &#x2F;&#x2F; 注册的名字  &#39;My">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件">
+<meta property="og:url" content="http://yoursite.com/2025/04/11/Technology-learn-vue-04/index.html">
 <meta property="og:site_name" content="牧羊人">
-<meta property="og:description" content="一个闲散的程序员">
+<meta property="og:description" content="学完互动教程,已经有个基本印象,再看看文档,基础部分有涉及了,所以看深入组件那部分文档 注册全局注册可以使用 Vue 应用实例的 .component() 方法，让组件在当前 Vue 应用中全局可用 123456789101112import { createApp } from &#39;vue&#39;const app &#x3D; createApp({})app.component(  &#x2F;&#x2F; 注册的名字  &#39;My">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/10/trGODJs5vnquV8i.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/10/F5wcy8DK7oMOTlv.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/10/FYH1lOCk8AuSdPv.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/04/10/9P5OcyaLhuWSIQV.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/04/10/TVhNaro3YQOj2vG.png">
+<meta property="article:published_time" content="2025-04-11T08:59:29.000Z">
+<meta property="article:modified_time" content="2025-04-11T09:00:25.768Z">
 <meta property="article:author" content="Shepherd">
 <meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/10/trGODJs5vnquV8i.png">
 
 
 
@@ -110,6 +118,78 @@
             </a>
             
             
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#注册">1&nbsp;&nbsp;<b>注册</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#全局注册">1.1&nbsp;&nbsp;全局注册</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#局部注册">1.2&nbsp;&nbsp;局部注册</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#组件名格式">1.2.1&nbsp;&nbsp;组件名格式</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#透传-Attributes">1.3&nbsp;&nbsp;透传 Attributes</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Attributes-继承">1.3.1&nbsp;&nbsp;Attributes 继承</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#依赖注入">1.4&nbsp;&nbsp;依赖注入</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#应用层-Provide">1.4.1&nbsp;&nbsp;应用层 Provide</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Prop-逐级透传问题">1.4.2&nbsp;&nbsp;Prop 逐级透传问题</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#完整示例">1.4.3&nbsp;&nbsp;完整示例</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#异步组件">1.5&nbsp;&nbsp;异步组件</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#基本用法">1.5.1&nbsp;&nbsp;基本用法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#加载与错误状态">1.5.2&nbsp;&nbsp;加载与错误状态</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#最后的感想">1.6&nbsp;&nbsp;最后的感想</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">2&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
             
             <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
                 
@@ -124,11 +204,10 @@
 
     <section class="section">
     <div class="container">
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
+    <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
-            <a href="/2025/04/11/Technology-learn-vue-04/" itemprop="url">Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件</a>
+            Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件
         
     </h1>
     <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
@@ -242,492 +321,22 @@
     </div>
     
     
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/08/Technology-learn-vue-03/" itemprop="url">Vue学习笔记 - 互动教程 02</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-08T03:20:35.000Z" itemprop="datePublished">4月 8 2025</time>
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
             
         </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
             
+            <a href="/2025/04/08/Technology-learn-vue-03/">Vue学习笔记 - 互动教程 02</a>
             
-            15 分钟 读完 (约 2315 字)
         </span>
-        
     </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h3><p>条件语句后是循环操作,也是基本操作</p>
-<p>可以使用 <code>v-for</code> 指令来渲染一个基于源数组的列表</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"todo in todos"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"todo.id"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    {{ todo.text }}</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>这里的 <code>todo</code> 是一个局部变量，表示当前正在迭代的数组元素。它只能在 <code>v-for</code> 所绑定的元素上或是其内部访问，就像函数的作用域一样。</p>
-<p>注意，我们还给每个 <code>todo</code> 对象设置了唯一的 <code>id</code>，并且将它作为特殊的 <code>key attribute</code> 绑定到每个 <code>&lt;li&gt;</code>。<code>key</code> 使得 <code>Vue</code> 能够精确地移动每个 </p><li>，以匹配对应的对象在数组中的位置。<p></p></li></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/08/Technology-learn-vue-03/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
     
 </article>
 
 
 
 
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/08/Technology-learn-vue-02/" itemprop="url">Vue学习笔记 - 互动教程 01</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-08T03:20:31.000Z" itemprop="datePublished">4月 8 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            8 分钟 读完 (约 1126 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><p>为了快速熟悉<code>Vue</code>,学习下互动教程。</p>
-<p>早上出门有事情,没学完,学到哪算哪</p>
-<h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="声明式渲染"><a href="#声明式渲染" class="headerlink" title="声明式渲染"></a>声明式渲染</h3><p>Vue 的核心功能是声明式渲染：通过扩展于标准 HTML 的模板语法，我们可以根据 JavaScript 的状态来描述 HTML 应该是什么样子的。当状态改变时，HTML 会自动更新。</p>
-<p>能在改变时触发更新的状态被认为是响应式的。在 Vue 中，响应式状态被保存在组件中。</p>
-<p>小结</p>
-<ol>
-<li>使用 data 组件选项来声明响应式状态，该选项应该是一个返回对象的函数</li>
-<li>使用双花括号”状态值“渲染文本（双大括号写法又名:mustache语法)</li>
-<li>双花括号中的内容并不只限于标识符或路径——我们可以使用任何有效的 JavaScript 表达式</li>
-</ol></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/08/Technology-learn-vue-02/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/06/Technology-learn-vue-01/" itemprop="url">Vue学习笔记 - 安装与环境搭建</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-06T05:57:28.000Z" itemprop="datePublished">4月 6 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            12 分钟 读完 (约 1732 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="什么是-Vue"><a href="#什么是-Vue" class="headerlink" title="什么是 Vue"></a>什么是 Vue</h2><p>Vue (发音为 /vjuː/，类似 view) 是一款用于构建用户界面的 <strong>JavaScript 框架</strong>。它基于标准 HTML、CSS 和 JavaScript 构建，并提供了一套声明式的、组件化的编程模型，帮助你高效地开发用户界面。</p>
-<h3 id="核心功能"><a href="#核心功能" class="headerlink" title="核心功能"></a>核心功能</h3><ul>
-<li>声明式渲染：Vue 基于标准 HTML 拓展了一套模板语法，使得我们可以声明式地描述最终输出的 HTML 和 JavaScript 状态之间的关系。</li>
-<li>响应性：Vue 会<strong>自动</strong>跟踪 JavaScript 状态并在其发生变化时响应式地更新 DOM。</li>
-</ul>
-<p>声明式渲染:开发界面也是所见即所得</p>
-<p>响应性: 比如最近关税问题,对不同国家的关税是有差异,应用就是当外部输入变化时能做出对应响应的东西</p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/06/Technology-learn-vue-01/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/04/Technology-learn-flask-06/" itemprop="url">Flask学习笔记 - 数据库</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-04T10:24:08.000Z" itemprop="datePublished">4月 4 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            9 分钟 读完 (约 1373 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="Flask-数据库操作"><a href="#Flask-数据库操作" class="headerlink" title="Flask 数据库操作"></a>Flask 数据库操作</h2><p>Flask 提供了多种方式来与数据库进行交互，包括直接使用 SQL 和利用 ORM（对象关系映射）工具，如 SQLAlchemy。</p>
-<ol>
-<li>使用SQLAlchemy</li>
-<li>创建和管理数据库：使用 db.create_all() 创建表。</li>
-<li>CRUD 操作：添加、读取、更新和删除记录。</li>
-<li>查询操作：执行基本和复杂查询，包括排序和分页。</li>
-<li>Flask-Migrate：使用 Flask-Migrate 管理数据库迁移。</li>
-<li>执行原始 SQL：使用原始 SQL 语句进行数据库操作。</li>
-</ol></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/04/Technology-learn-flask-06/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/04/Technology-learn-flask-05/" itemprop="url">Flask学习笔记 - 表单</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-04T02:19:14.000Z" itemprop="datePublished">4月 4 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            9 分钟 读完 (约 1422 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="表单处理"><a href="#表单处理" class="headerlink" title="表单处理"></a>表单处理</h2><ol>
-<li>基本表单处理：使用 request.form 获取表单数据。</li>
-<li>使用 Flask-WTF：结合 WTForms 进行表单处理和验证，简化表单操作。</li>
-<li>表单验证：使用验证器确保表单数据的有效性。</li>
-<li>文件上传：处理文件上传和保存文件。</li>
-<li>CSRF 保护：确保表单免受跨站请求伪造攻击。</li>
-</ol></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/04/Technology-learn-flask-05/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/02/Technology-learn-flask-04/" itemprop="url">Flask学习笔记 - 模板渲染</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-02T12:43:03.000Z" itemprop="datePublished">4月 2 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            6 分钟 读完 (约 970 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继续…</p>
-<h2 id="Flask-模板渲染"><a href="#Flask-模板渲染" class="headerlink" title="Flask 模板渲染"></a>Flask 模板渲染</h2><p>模板是包含占位符的 HTML 文件</p>
-<p><code>Flask</code> 使用 <code>Jinja2</code> 模板引擎来处理模板渲染。模板渲染允许你将动态内容插入到 HTML 页面中，使得应用能够生成动态的网页内容。</p>
-<ol>
-<li>创建模板：将 HTML 文件放在 templates 文件夹中，使用 Jinja2 占位符。</li>
-<li>渲染模板：使用 render_template 函数在视图函数中渲染模板。</li>
-<li>模板继承：创建基础模板，允许其他模板继承和扩展。</li>
-<li>控制结构：使用条件语句和循环在模板中控制逻辑。</li>
-<li>过滤器：使用过滤器格式化变量数据。</li>
-<li>宏和模板包含：创建和使用宏以及模板包含，提高模板的复用性。</li>
-<li>安全性：Jinja2 默认对模板变量进行自动转义以防止 XSS 攻击。</li>
-<li>模板上下文：将数据传递给模板，并在模板中使用这些数据。</li>
-</ol></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/02/Technology-learn-flask-04/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/02/Technology-learn-flask-03/" itemprop="url">Flask学习笔记 - 视图函数</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-02T11:19:04.000Z" itemprop="datePublished">4月 2 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            5 分钟 读完 (约 809 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继续学习…</p>
-<h2 id="Flask-视图函数"><a href="#Flask-视图函数" class="headerlink" title="Flask 视图函数"></a>Flask 视图函数</h2><p>视图函数是Flask应用中的核心部分，它负责处理请求并生成响应</p>
-<ol>
-<li>定义视图函数：视图函数是处理请求并返回响应的核心功能。</li>
-<li>接收请求数据：使用 request 对象获取 URL 参数、表单数据、查询参数等。</li>
-<li>返回响应：可以返回字符串、HTML、JSON 或自定义响应对象。</li>
-<li>处理请求和响应：使用 request 对象和 make_response 来处理请求和生成自定义响应。</li>
-<li>处理错误：视图函数内处理异常或使用 Flask 的错误处理机制。</li>
-<li>视图函数的装饰器：使用 @app.before_request、@app.after_request 等装饰器处理请求前后逻辑。</li>
-<li>视图函数返回的状态码：可以指定 HTTP 状态码来表示请求的处理结果。</li>
-</ol></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/02/Technology-learn-flask-03/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/01/Technology-learn-flask-02/" itemprop="url">Flask学习笔记 - 项目结构 + 路由</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-01T03:42:58.000Z" itemprop="datePublished">4月 1 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            9 分钟 读完 (约 1307 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>待业家中继续学习。</p>
-<h2 id="Flask-项目结构"><a href="#Flask-项目结构" class="headerlink" title="Flask 项目结构"></a>Flask 项目结构</h2><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">my_flask_app/</span><br><span class="line">│</span><br><span class="line">├── app/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes/ -- 将不同功能模块的路由分开管理</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── main.py -- 主模块的路由</span><br><span class="line">│   │   └── auth.py -- 认证相关的路由</span><br><span class="line">│   ├── models/ -- 管理数据模型,通常与数据操作相关</span><br><span class="line">│   │   ├── __init__.py </span><br><span class="line">│   │   └── user.py -- 用户模型</span><br><span class="line">│   ├── templates/ -- 存放 HTML 模板文件</span><br><span class="line">│   │   ├── layout.html -- 布局相关</span><br><span class="line">│   │   └── home.html</span><br><span class="line">│   └── static/ -- 存放静态文件,如CSS和JavaScript</span><br><span class="line">│       ├── css/</span><br><span class="line">│       └── js/</span><br><span class="line">│</span><br><span class="line">├── config.py -- 配置文件,包含应用的配置信息</span><br><span class="line">├── requirements.txt -- 列出项目的依赖库</span><br><span class="line">├── migrations/</span><br><span class="line">│   └── ...</span><br><span class="line">└── run.py -- 用于启动Flask应用</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="如何在Trae-IDE中配置Python解释器"><a href="#如何在Trae-IDE中配置Python解释器" class="headerlink" title="如何在Trae IDE中配置Python解释器"></a>如何在Trae IDE中配置Python解释器</h3><p>看到<code>app.py</code> 报错,因为没有导入<code>flask</code>库,但我的设备已经安装了,所以应该是需要配置下。在设置中找半天没有找到,后来搜索才知道原来是在<code>Editor</code>中，搜索python,然后将 <code>Python: Default Interpreter Path</code>的路径设置为设备安装的路径。</p>
-<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-28T13:38:38.000Z" itemprop="datePublished">3月 28 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            2 分钟 读完 (约 274 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在win上访问外部的网站网速比较快,但是日常开发又在macbook上,因此需要两台电脑能数据共享，一开始是想通过微信的,但是同一个账号不能同时登陆；用网盘传输之类的，又要额外下载应用或者依赖浏览器。既然是个人使用,可以直接在win上创建共享目录来解决。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="设置共享目录"><a href="#设置共享目录" class="headerlink" title="设置共享目录"></a>设置共享目录</h2><p>在win上设置个人目录</p>
-<p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/28/Technology-win-mac-brige/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-    
-        
-<nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
-    <div class="pagination-previous is-invisible is-hidden-mobile">
-        <a href="/page/0/">上一页</a>
-    </div>
-    <div class="pagination-next">
-        <a href="/page/2/">下一页</a>
-    </div>
-    <ul class="pagination-list is-hidden-mobile">
-        
-        <li><a class="pagination-link is-current" href="/">1</a></li>
-        
-        <li><a class="pagination-link" href="/page/2/">2</a></li>
-        
-        <li><span class="pagination-ellipsis">&hellip;</span></li>
-        
-        <li><a class="pagination-link" href="/page/8/">8</a></li>
-        
-    </ul>
-</nav>
-    
     </div>
 </section>
     <footer class="footer">
