@@ -128,6 +128,55 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/12/Technology-learn-vue-05/" itemprop="url">Vue学习笔记 - 插件</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-12T06:37:04.000Z" itemprop="datePublished">4月 12 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            6 分钟 读完 (约 931 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>插件 <code>(Plugins)</code> 是一种能为 <code>Vue</code> 添加全局功能的工具代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> app = <span class="title function_">createApp</span>({})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(myPlugin, {</span><br><span class="line">  <span class="hljs-comment">/* 可选的选项 */</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>一个插件可以是一个拥有 <code>install()</code> 方法的对象，也可以直接是一个安装函数本身。安装函数会接收到安装它的应用实例和传递给 <code>app.use()</code> 的额外选项作为参数：</p>
+<p>对象的写法</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> myPlugin = {</span><br><span class="line">  <span class="title function_">install</span>(<span class="hljs-params">app, options</span>) {</span><br><span class="line">    <span class="hljs-comment">// 配置此应用</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/12/Technology-learn-vue-05/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/04/11/Technology-learn-vue-04/" itemprop="url">Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件</a>
         
     </h1>
@@ -578,52 +627,6 @@
 <p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
         <p class="article-more-link">
             <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-28T13:38:38.000Z" itemprop="datePublished">3月 28 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            2 分钟 读完 (约 274 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在win上访问外部的网站网速比较快,但是日常开发又在macbook上,因此需要两台电脑能数据共享，一开始是想通过微信的,但是同一个账号不能同时登陆；用网盘传输之类的，又要额外下载应用或者依赖浏览器。既然是个人使用,可以直接在win上创建共享目录来解决。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="设置共享目录"><a href="#设置共享目录" class="headerlink" title="设置共享目录"></a>设置共享目录</h2><p>在win上设置个人目录</p>
-<p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/28/Technology-win-mac-brige/#more">阅读更多</a>
         </p>
     
     </div>

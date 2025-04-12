@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Vue学习笔记 - 插件 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="介绍插件 (Plugins) 是一种能为 Vue 添加全局功能的工具代码 1234567import { createApp } from &#39;vue&#39;const app &#x3D; createApp({})app.use(myPlugin, {  &#x2F;* 可选的选项 *&#x2F;})  一个插件可以是一个拥有 install() 方法的对象，也可以直接是一个安装函数本身。安装函数会接收到安装它的应用实例和传递给">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue学习笔记 - 插件">
+<meta property="og:url" content="http://yoursite.com/2025/04/12/Technology-learn-vue-05/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="介绍插件 (Plugins) 是一种能为 Vue 添加全局功能的工具代码 1234567import { createApp } from &#39;vue&#39;const app &#x3D; createApp({})app.use(myPlugin, {  &#x2F;* 可选的选项 *&#x2F;})  一个插件可以是一个拥有 install() 方法的对象，也可以直接是一个安装函数本身。安装函数会接收到安装它的应用实例和传递给">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/12/VTHnsk7EBvhQWAF.png">
+<meta property="article:published_time" content="2025-04-12T06:37:04.000Z">
+<meta property="article:modified_time" content="2025-04-12T06:38:02.504Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/12/VTHnsk7EBvhQWAF.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#介绍">1&nbsp;&nbsp;<b>介绍</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#编写一个插件">2&nbsp;&nbsp;<b>编写一个插件</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#reduce-方法">2.1&nbsp;&nbsp;reduce 方法</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#效果">2.2&nbsp;&nbsp;效果</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#插件中的-Provide-Inject">3&nbsp;&nbsp;<b>插件中的 Provide / Inject</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">4&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Vue学习笔记 - 插件
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-12T06:37:04.000Z" itemprop="datePublished">4月 12 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            6 分钟 读完 (约 931 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>插件 <code>(Plugins)</code> 是一种能为 <code>Vue</code> 添加全局功能的工具代码</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> app = <span class="title function_">createApp</span>({})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(myPlugin, {</span><br><span class="line">  <span class="hljs-comment">/* 可选的选项 */</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<p>一个插件可以是一个拥有 <code>install()</code> 方法的对象，也可以直接是一个安装函数本身。安装函数会接收到安装它的应用实例和传递给 <code>app.use()</code> 的额外选项作为参数：</p>
+<p>对象的写法</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">const</span> myPlugin = {</span><br><span class="line">  <span class="title function_">install</span>(<span class="hljs-params">app, options</span>) {</span><br><span class="line">    <span class="hljs-comment">// 配置此应用</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<span id="more"></span>
+
+<p>函数的写法</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> { <span class="title class_">App</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span>;</span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">HelloWorld</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@v3/components/HelloWorld.vue'</span></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">install</span>(<span class="hljs-params">app: App, options</span>) {</span><br><span class="line">    <span class="hljs-comment">// 插件逻辑</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="hljs-string">'MyPlugin is installed with options:'</span>, options);</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-comment">// 你可以在这里添加全局方法、指令、混入等</span></span><br><span class="line">    <span class="hljs-comment">// 示例：添加全局方法</span></span><br><span class="line">    app.<span class="hljs-property">config</span>.<span class="hljs-property">globalProperties</span>.<span class="hljs-property">$myMethod</span> = <span class="hljs-function">() =&gt;</span> {</span><br><span class="line">      <span class="hljs-keyword">return</span> <span class="hljs-string">'This is a method from MyPlugin!'</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="hljs-string">'This is a method from MyPlugin!'</span>);</span><br><span class="line">    };</span><br><span class="line">    ...</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>插件没有严格定义的使用范围，但是插件发挥作用的常见场景主要包括以下几种</p>
+<ol>
+<li>通过 <code>app.component()</code> 和 <code>app.directive()</code> 注册一到多个全局组件或自定义指令。</li>
+<li>通过 <code>app.provide()</code> 使一个资源可被注入进整个应用。</li>
+<li>向 <code>app.config.globalProperties</code> 中添加一些全局实例属性或方法</li>
+<li>一个可能上述三种都包含了的功能库 (例如 <code>vue-router</code>)。</li>
+</ol>
+<h2 id="编写一个插件"><a href="#编写一个插件" class="headerlink" title="编写一个插件"></a>编写一个插件</h2><p><code>i18n</code> (国际化 (<code>Internationalization</code>) 的缩写) 插件</p>
+<p>创建插件代码文件</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// plugins/i18n.js</span></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">install</span>: <span class="hljs-function">(<span class="hljs-params">app, options</span>) =&gt;</span> {</span><br><span class="line">    <span class="hljs-comment">// 在这里编写插件代码</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>有一个翻译函数，这个函数接收一个以 <code>.</code> 作为分隔符的 key 字符串，用来在用户提供的翻译字典中查找对应语言的文本</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;{{ $translate(<span class="hljs-string">'greetings.hello'</span>) }}&lt;/h1&gt;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这个函数应当能够在任意模板中被全局调用。这一点可以通过在插件中将它添加到 <code>app.config.globalProperties</code> 上来实现</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// plugins/i18n.js</span></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">install</span>: <span class="hljs-function">(<span class="hljs-params">app, options</span>) =&gt;</span> {</span><br><span class="line">    <span class="hljs-comment">// 注入一个全局可用的 $translate() 方法</span></span><br><span class="line">    app.<span class="hljs-property">config</span>.<span class="hljs-property">globalProperties</span>.<span class="hljs-property">$translate</span> = <span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> {</span><br><span class="line">      <span class="hljs-comment">// 获取 `options` 对象的深层属性</span></span><br><span class="line">      <span class="hljs-comment">// 使用 `key` 作为索引</span></span><br><span class="line">      <span class="hljs-keyword">return</span> key.<span class="title function_">split</span>(<span class="hljs-string">'.'</span>).<span class="title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">o, i</span>) =&gt;</span> {</span><br><span class="line">        <span class="hljs-keyword">if</span> (o) <span class="hljs-keyword">return</span> o[i]</span><br><span class="line">      }, options)</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>$translate</code> 函数会接收一个例如 <code>greetings.hello</code> 的字符串，在用户提供的翻译字典中查找，并返回翻译得到的值。</p>
+<p>用于查找的翻译字典对象则应当在插件被安装时作为 <code>app.use()</code> 的额外参数被传入：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> i18nPlugin <span class="hljs-keyword">from</span> <span class="hljs-string">'./plugins/i18n'</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(i18nPlugin, {</span><br><span class="line">  <span class="hljs-attr">greetings</span>: {</span><br><span class="line">    <span class="hljs-attr">hello</span>: <span class="hljs-string">'Bonjour!'</span></span><br><span class="line">  }</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="reduce-方法"><a href="#reduce-方法" class="headerlink" title="reduce 方法"></a>reduce 方法</h3><p><code>reduce</code> 方法接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。</p>
+<blockquote>
+<p>array.reduce(function(total, currentValue, currentIndex, arr), initialValue)</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2025/04/12/VTHnsk7EBvhQWAF.png" alt="01"></p>
+<p>先传<code>greetings</code> 返回对象<code>{hello:'Bonjour'}</code>,再传<code>hello</code>,返回<code>Bonjour</code>,如果中间一个没有,就没有了</p>
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p>一开始的表达式 <code>$translate('greetings.hello')</code> 就会在运行时被替换为 <code>Bonjour</code> 了。</p>
+<h2 id="插件中的-Provide-Inject"><a href="#插件中的-Provide-Inject" class="headerlink" title="插件中的 Provide / Inject"></a>插件中的 Provide / Inject</h2><p>可以通过 <code>provide</code> 来为插件用户供给一些内容。举例来说，我们可以将插件接收到的 <code>options</code> 参数提供给整个应用，让任何组件都能使用这个翻译字典对象。</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// plugins/i18n.js</span></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">install</span>: <span class="hljs-function">(<span class="hljs-params">app, options</span>) =&gt;</span> {</span><br><span class="line">    app.<span class="title function_">provide</span>(<span class="hljs-string">'i18n'</span>, options)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>想使用插件的开发者就可以在他们的组件中以 <code>i18n</code> 为 <code>key</code> 注入并访问插件的选项对象了</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">inject</span>: [<span class="hljs-string">'i18n'</span>],</span><br><span class="line">  <span class="title function_">created</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="hljs-property">i18n</span>.<span class="hljs-property">greetings</span>.<span class="hljs-property">hello</span>)</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<ol>
+<li><code>app.use</code>的<code>options</code> </li>
+<li><code>plugin</code>的 <code>install</code></li>
+<li><code>plugin</code>的 <code>provider</code></li>
+<li>其它组件的 <code>inject</code> 接收并使用</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/reusability/plugins.html">Vue-插件</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/snowball_li/article/details/144014863">vue3 + ts：开发插件 / Plugins / 注册全局实例 / 在 template 与 setup 中使用 / provide、inject</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/jsref/jsref-reduce.html">JavaScript reduce() 方法</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/11/Technology-learn-vue-04/">Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
