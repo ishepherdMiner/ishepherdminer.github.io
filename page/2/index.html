@@ -128,6 +128,54 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/01/Technology-learn-flask-02/" itemprop="url">Flask学习笔记 - 项目结构 + 路由</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-01T03:42:58.000Z" itemprop="datePublished">4月 1 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            9 分钟 读完 (约 1307 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>待业家中继续学习。</p>
+<h2 id="Flask-项目结构"><a href="#Flask-项目结构" class="headerlink" title="Flask 项目结构"></a>Flask 项目结构</h2><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">my_flask_app/</span><br><span class="line">│</span><br><span class="line">├── app/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes/ -- 将不同功能模块的路由分开管理</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── main.py -- 主模块的路由</span><br><span class="line">│   │   └── auth.py -- 认证相关的路由</span><br><span class="line">│   ├── models/ -- 管理数据模型,通常与数据操作相关</span><br><span class="line">│   │   ├── __init__.py </span><br><span class="line">│   │   └── user.py -- 用户模型</span><br><span class="line">│   ├── templates/ -- 存放 HTML 模板文件</span><br><span class="line">│   │   ├── layout.html -- 布局相关</span><br><span class="line">│   │   └── home.html</span><br><span class="line">│   └── static/ -- 存放静态文件,如CSS和JavaScript</span><br><span class="line">│       ├── css/</span><br><span class="line">│       └── js/</span><br><span class="line">│</span><br><span class="line">├── config.py -- 配置文件,包含应用的配置信息</span><br><span class="line">├── requirements.txt -- 列出项目的依赖库</span><br><span class="line">├── migrations/</span><br><span class="line">│   └── ...</span><br><span class="line">└── run.py -- 用于启动Flask应用</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="如何在Trae-IDE中配置Python解释器"><a href="#如何在Trae-IDE中配置Python解释器" class="headerlink" title="如何在Trae IDE中配置Python解释器"></a>如何在Trae IDE中配置Python解释器</h3><p>看到<code>app.py</code> 报错,因为没有导入<code>flask</code>库,但我的设备已经安装了,所以应该是需要配置下。在设置中找半天没有找到,后来搜索才知道原来是在<code>Editor</code>中，搜索python,然后将 <code>Python: Default Interpreter Path</code>的路径设置为设备安装的路径。</p>
+<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
         
     </h1>
@@ -561,59 +609,6 @@
 <p>对客户端/浏览器来说<code>Web</code>代理服务器是服务器<br>对服务器来说<code>Web</code>代理服务器是客户端</p></body></html>
         <p class="article-more-link">
             <a href="/2019/01/09/Technology-Charles-capture-principle/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2018/12/28/Topic-Clang-Learn-Clang-02/" itemprop="url">Clang学习历程 编译过程-词法分析</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2018-12-28T07:18:45.000Z" itemprop="datePublished">12月 28 2018</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Clang/">Clang</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            34 分钟 读完 (约 5112 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><div class="gallery-item">
-
-<p><img src="/images/gallery/pexels-jahoo-clouseau-388415.jpg"></p>
-</div>
-
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>《编译原理》中提到</p>
-<blockquote>
-<p>编译器的第一个步骤是词法分析(Lexical Analysis)或扫描。词法分析器读入组成源程序的字符流,并且将它们组织成为有意义的词素(lexeme)的序列。对于每个词素,词法分析产生如下形式的词法单元(token)作为输出:<br><code>&lt;token-name,attribute-value&gt;</code><br><code>token-name</code>     是一个语法分析步骤要使用的抽象符号<br><code>attribute-value</code>指向符号表中关于这个词法单元的条目</p>
-</blockquote>
-<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span> <span class="title function_">main</span><span class="hljs-params">()</span>{</span><br><span class="line">    @autoreleasepool {</span><br><span class="line">        <span class="hljs-type">int</span> initial = <span class="hljs-number">8</span>;</span><br><span class="line">        <span class="hljs-type">int</span> six = <span class="hljs-number">6</span>;</span><br><span class="line">        NSString* site = [[NSString alloc] initWithUTF8String:<span class="hljs-string">"starming"</span>];</span><br><span class="line">        <span class="hljs-type">int</span> rank = initial + six;</span><br><span class="line">        <span class="hljs-type">int</span> position = initial + rank * <span class="hljs-number">60</span>;</span><br><span class="line">        NSLog(@<span class="hljs-string">"%@ rank %d"</span>, site, position);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure></body></html>
-        <p class="article-more-link">
-            <a href="/2018/12/28/Topic-Clang-Learn-Clang-02/#more">阅读更多</a>
         </p>
     
     </div>

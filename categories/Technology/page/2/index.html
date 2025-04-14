@@ -128,6 +128,54 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/01/Technology-learn-flask-02/" itemprop="url">Flask学习笔记 - 项目结构 + 路由</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-01T03:42:58.000Z" itemprop="datePublished">4月 1 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            9 分钟 读完 (约 1307 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>待业家中继续学习。</p>
+<h2 id="Flask-项目结构"><a href="#Flask-项目结构" class="headerlink" title="Flask 项目结构"></a>Flask 项目结构</h2><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">my_flask_app/</span><br><span class="line">│</span><br><span class="line">├── app/</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── routes/ -- 将不同功能模块的路由分开管理</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── main.py -- 主模块的路由</span><br><span class="line">│   │   └── auth.py -- 认证相关的路由</span><br><span class="line">│   ├── models/ -- 管理数据模型,通常与数据操作相关</span><br><span class="line">│   │   ├── __init__.py </span><br><span class="line">│   │   └── user.py -- 用户模型</span><br><span class="line">│   ├── templates/ -- 存放 HTML 模板文件</span><br><span class="line">│   │   ├── layout.html -- 布局相关</span><br><span class="line">│   │   └── home.html</span><br><span class="line">│   └── static/ -- 存放静态文件,如CSS和JavaScript</span><br><span class="line">│       ├── css/</span><br><span class="line">│       └── js/</span><br><span class="line">│</span><br><span class="line">├── config.py -- 配置文件,包含应用的配置信息</span><br><span class="line">├── requirements.txt -- 列出项目的依赖库</span><br><span class="line">├── migrations/</span><br><span class="line">│   └── ...</span><br><span class="line">└── run.py -- 用于启动Flask应用</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="如何在Trae-IDE中配置Python解释器"><a href="#如何在Trae-IDE中配置Python解释器" class="headerlink" title="如何在Trae IDE中配置Python解释器"></a>如何在Trae IDE中配置Python解释器</h3><p>看到<code>app.py</code> 报错,因为没有导入<code>flask</code>库,但我的设备已经安装了,所以应该是需要配置下。在设置中找半天没有找到,后来搜索才知道原来是在<code>Editor</code>中，搜索python,然后将 <code>Python: Default Interpreter Path</code>的路径设置为设备安装的路径。</p>
+<p>藏的有点深,可能从产品的角度上看是不想局限在某种语言,可以在<code>Editor</code>设置的说明文案部分增加编译器,解释器。</p></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/01/Technology-learn-flask-02/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/03/28/Technology-win-mac-brige/" itemprop="url">Windows与Mac端数据共享</a>
         
     </h1>
@@ -562,57 +610,6 @@
         <p class="article-more-link">
             <a href="/2017/04/07/Technology-Full-width-spaces-used-in-Markdown/#more">阅读更多</a>
         </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/03/28/Technology-How-to-create-URL-shortcuts-on-macOS/" itemprop="url">macOS上如何创建网址快捷方式</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-03-28T14:45:15.000Z" itemprop="datePublished">3月 28 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            2 分钟 读完 (约 253 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>mac</em> 上装了很多浏览器。因为喜欢 <em>Safari</em> 的 <em>Pin Tab</em> 的功能，所以主力的浏览器选择的是它，但是太多的 <em>Pin Tab</em> 似乎拖累了浏览器的速度，今天要打开苹果开发者后台时，由于网速不给力，最后换成 <em>Firefox</em> 才顺利打开。感觉有必要整理一下。又不想放到收藏夹中，放到那儿，似乎就很难再记起它了。</p>
-<p>闲话点到为止即可，讲讲如何制作网址快捷方式，非常简单，只是因为以前没注意过这个角落，因此才考虑花点时间记录一下。</p>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ol>
-<li>切换到 <em>Safari</em> 浏览器中</li>
-<li>移动到地址栏</li>
-<li>长按鼠标/触摸板，以拖拽的方式将其移动到目标路径,比如 <em>Finder</em>/<em>Desktop</em></li>
-</ol>
-<p>顺利的话应该会生成类似这样的图标</p>
-<p><img src="https://ooo.0o0.ooo/2017/03/28/58da76c4ed5a1.jpg"></p>
-<p><em>That’s all</em></p>
-</body></html>
     
     </div>
     
