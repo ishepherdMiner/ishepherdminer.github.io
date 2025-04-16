@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>音频基础概念 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="声音物体在一定的振动频率下产生了声音。声音可以被分解为不同频率不同强度正弦波的叠加。 声音三要素声调音调: 由发声体振动的频率决定，频率越高（振动越快）则音调越高，听起来就越“刺耳”，反之音调越低、听起来就越低沉。 声音的音调，即音频频率或每秒的变化次数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="音频基础概念">
+<meta property="og:url" content="http://yoursite.com/2025/04/16/Technology-learn-media-01/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="声音物体在一定的振动频率下产生了声音。声音可以被分解为不同频率不同强度正弦波的叠加。 声音三要素声调音调: 由发声体振动的频率决定，频率越高（振动越快）则音调越高，听起来就越“刺耳”，反之音调越低、听起来就越低沉。 声音的音调，即音频频率或每秒的变化次数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/16/x5abToc8SHKzYpy.jpg">
+<meta property="article:published_time" content="2025-04-16T08:39:33.000Z">
+<meta property="article:modified_time" content="2025-04-16T08:40:21.199Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/16/x5abToc8SHKzYpy.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#声音">1&nbsp;&nbsp;<b>声音</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#声音三要素">1.1&nbsp;&nbsp;声音三要素</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#声调">1.1.1&nbsp;&nbsp;声调</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#响度">1.1.2&nbsp;&nbsp;响度</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#音色">1.1.3&nbsp;&nbsp;音色</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#声音的采集与量化">2&nbsp;&nbsp;<b>声音的采集与量化</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#模拟信号">2.1&nbsp;&nbsp;模拟信号</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#数字信号">2.2&nbsp;&nbsp;数字信号</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#PCM">2.2.1&nbsp;&nbsp;PCM</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#数字信号质量三要素">3&nbsp;&nbsp;<b>数字信号质量三要素</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#1-采样率">3.1&nbsp;&nbsp;1.采样率</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#为什么是44-1kHz">3.1.1&nbsp;&nbsp;为什么是44.1kHz</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#2-采样位数">3.2&nbsp;&nbsp;2.采样位数</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#3-声道数">3.3&nbsp;&nbsp;3.声道数</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#常见的声道数">3.3.1&nbsp;&nbsp;常见的声道数</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#其它">4&nbsp;&nbsp;<b>其它</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#采样数">4.1&nbsp;&nbsp;采样数</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#音频帧">4.1.1&nbsp;&nbsp;音频帧</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#帧时长">4.2&nbsp;&nbsp;帧时长</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#采样格式">4.3&nbsp;&nbsp;采样格式</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#封装格式与编码协议">4.4&nbsp;&nbsp;封装格式与编码协议</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#音频码率">4.5&nbsp;&nbsp;音频码率</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            音频基础概念
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-16T08:39:33.000Z" itemprop="datePublished">4月 16 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            20 分钟 读完 (约 3016 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h2><p>物体在一定的振动频率下产生了声音。声音可以被分解为不同频率不同强度正弦波的叠加。</p>
+<h3 id="声音三要素"><a href="#声音三要素" class="headerlink" title="声音三要素"></a>声音三要素</h3><h4 id="声调"><a href="#声调" class="headerlink" title="声调"></a>声调</h4><p>音调: 由发声体振动的频率决定，频率越高（振动越快）则音调越高，听起来就越“刺耳”，反之音调越低、听起来就越低沉。</p>
+<p>声音的音调，即音频频率或每秒的变化次数</p>
+<span id="more"></span>
+
+<h4 id="响度"><a href="#响度" class="headerlink" title="响度"></a>响度</h4><p>响度: 由发声体振动的幅度决定,当传播的距离相同时，振动幅度越大、则响度越大；相反，当振幅一定时，传播距离越远，响度越小。</p>
+<h4 id="音色"><a href="#音色" class="headerlink" title="音色"></a>音色</h4><p>音色: 不同声音表现在波形方面与众不同的特性</p>
+<h2 id="声音的采集与量化"><a href="#声音的采集与量化" class="headerlink" title="声音的采集与量化"></a>声音的采集与量化</h2><h3 id="模拟信号"><a href="#模拟信号" class="headerlink" title="模拟信号"></a>模拟信号</h3><p>模拟信号:是一种连续变化的信号，可以表示为电压、电流或电荷的形式。这种信号的变化可以反应真实世界的物理量（如声音、温度、压力等）的变化。</p>
+<blockquote>
+<p>在不同振幅、频率声波的影响下，振动膜会同步振动，并配合其他关联模块将振动转换为变化的电流。</p>
+</blockquote>
+<h3 id="数字信号"><a href="#数字信号" class="headerlink" title="数字信号"></a>数字信号</h3><p>数字信号:是指自变量是离散的、因变量也是离散的信号，这种信号的自变量用整数表示，因变量用有限数字中的一个数字来表示。在计算机中，数字信号的大小常用有限位的二进制数表示。</p>
+<blockquote>
+<p>将音频模拟信号转换为音频数字信号，这个过程称为音频模拟信号的数字化，整个过程主要包括采样、量化、编码等步骤<br>第一步，采样：以一定采样率，在时间轴上对模拟信号进行数字化。<br>第二步，量化：以一定精度，在幅度轴上对模拟信号进行数字化。<br>第三步，编码：按特定格式，记录采样/量化后的数据。</p>
+</blockquote>
+<h4 id="PCM"><a href="#PCM" class="headerlink" title="PCM"></a>PCM</h4><p>量化编码后的音频采样数据裸流，即为PCM音频数据(Pulse Code Modulation,脉冲编码调制),实际应用还会通过编码算法进行压缩封装</p>
+<blockquote>
+<p>来自参考5</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2025/04/16/x5abToc8SHKzYpy.jpg" alt="17447908008526.jpg"></p>
+<h2 id="数字信号质量三要素"><a href="#数字信号质量三要素" class="headerlink" title="数字信号质量三要素"></a>数字信号质量三要素</h2><h3 id="1-采样率"><a href="#1-采样率" class="headerlink" title="1.采样率"></a>1.采样率</h3><p>自然界的模拟信号声音转换成数字信号存储到计算机的过程中，一个是离散的，一个是连续的，就会有转换精度的描述。</p>
+<p>采样率(sampleRate): 单位时间内(1s)对声音信号的采集次数，采样率越高，声音的还原越真实。采样率单位为Hz。</p>
+<p>奈奎斯特采样定理：当采样频率大于信号中最高频率的2倍时，采样后的数字信号能够完整保留原始信号的信息。</p>
+<p>因为人一般能够听到的声音范围：20Hz～20000Hz，所以很多采样率是基于这个区间而设计的。</p>
+<blockquote>
+<p>来自参考5: </p>
+</blockquote>
+<p>常见声音采样率:</p>
+<table>
+<thead>
+<tr>
+<th>采样率</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8kHz</td>
+<td>在语聊、通话场景，满足基本的沟通目的，同时有效减少数据量、兼容各种传输/存储环境。人说话声音频率一般在300-700Hz之间，最大区间一般为60Hz-2000Hz</td>
+</tr>
+<tr>
+<td>16kHz、32kHz</td>
+<td>在保证基本沟通的基础上，进一步提升音质，同时平衡带宽、存储的压力。某些音频处理算法会要求使用32KHz的采样率</td>
+</tr>
+<tr>
+<td>44.1kHz、48kHz</td>
+<td>大多数的音视频应用场景。我们一般将 44.1kHz作为CD音质的采样标准</td>
+</tr>
+<tr>
+<td>96kHz/192kHz</td>
+<td>更特殊的应用，比如需要对采集的音频进行后期加工、二次处理等。96KHz、192KHz等采样率对于人耳听感来说已无明显的提升，反而会增大存储、带宽的压力，对采集/播放设备也有较高要求，RTC场景一般不考虑</td>
+</tr>
+</tbody></table>
+<h4 id="为什么是44-1kHz"><a href="#为什么是44-1kHz" class="headerlink" title="为什么是44.1kHz"></a>为什么是44.1kHz</h4><p>找了些资料，技术 + 历史原因决定的</p>
+<h5 id="技术"><a href="#技术" class="headerlink" title="技术"></a>技术</h5><blockquote>
+<ol>
+<li>奈奎斯特采样定理决定至少要满足40000Hz才能避免</li>
+<li>工程选择:麦克风能接收,采集到的空气振动的频率范围远超过人耳听力。如果直接采集这样的信号，会导致出现混叠，所以必须要先使用一个低通滤波器，把高于阈值的信号过滤掉。高于40000Hz的部分实际是给低通滤波器留出空间，使得下降曲线可以落在20kHz以外，不影响音频效果</li>
+</ol>
+</blockquote>
+<h5 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h5><blockquote>
+<ol start="3">
+<li>在数字存储媒介被发明之前，早期的数字音频是要被录制在<strong>模拟录像带</strong>上的，因为只有VCR带能存储一定长度的数字音频信号。当年有两种标准NTSC/PAL<br>NTSC每场扫描245线，每秒钟60场，每条扫描线只需要存储三个采样就可以达到44100Hz<br>PAL每场扫描294线，每秒钟50场，每条扫描线也只需要存储三个采样就能达到44100Hz</li>
+</ol>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/27644914/answer/37464776">人耳 20kHz 封顶，为什么数字音频都要记录和解析到更高的频率上去？</a></p>
+<h5 id="其它的说法"><a href="#其它的说法" class="headerlink" title="其它的说法"></a>其它的说法</h5><blockquote>
+<p>44.1 kHz 也允许CD格式的创作者在120毫米的唱片上记录至少80分钟的音乐（多于一个黑胶唱片的容量），在当时这被认为是一个极好的卖点。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/24046373">Why 44.1 kHz</a></p>
+<h3 id="2-采样位数"><a href="#2-采样位数" class="headerlink" title="2.采样位数"></a>2.采样位数</h3><p>前面的采样率是音频采集量化的频率,那每次采样得到值如何描述?</p>
+<p>采样位数: 在音频采集量化过程中，每个采样点幅度值的取值精度，一般使用bit作为单位。</p>
+<blockquote>
+<p>来自参考5: </p>
+</blockquote>
+<p>常用的几种采样位数</p>
+<table>
+<thead>
+<tr>
+<th>采样位深</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8bit</td>
+<td>早期常用的位深精度，可满足基础的通话音质需求</td>
+</tr>
+<tr>
+<td>16bit</td>
+<td>被认为是达到专业音频质量的位深标准，足够完整地收录绝大多数音频场景的动态变化，适用范围广。和44.1KHz采样率一起，被作为CD音质的标准</td>
+</tr>
+<tr>
+<td>24bit,32bit,64bit</td>
+<td>对于使用常见播放设备（手机、普通音箱）的用户来说，32bit与16bit的感官差异很细微，音质上的提升不明显，反而带来了更大的带宽、存储压力，更不用说64bit。并不需要盲目追求</td>
+</tr>
+</tbody></table>
+<h3 id="3-声道数"><a href="#3-声道数" class="headerlink" title="3.声道数"></a>3.声道数</h3><p>因为音频的采集和播放时可以叠加的，因此可以同时从多个音频源采集声音，并分别输出到不同的扬声器。</p>
+<p>声道数: 指声音在录制或播放时，在不同空间位置采集或回放的相互独立音频信号。声道数指在录音时的音源数量，或在播放时的扬声器数量。</p>
+<h4 id="常见的声道数"><a href="#常见的声道数" class="headerlink" title="常见的声道数"></a>常见的声道数</h4><ol>
+<li>单声道(Mono): 只有一个声道，优点:数据量小，缺点:缺乏对声音位置定位</li>
+<li>双/立体声道(Stereo): 由左声道，右声道组成，改善对声音位置定位的状态</li>
+<li>四声环绕: 由左、前右、后左、后右组成，形成立体环绕。4.1声道是在四声环绕基础上，增加一个低音</li>
+<li>5.1声道: 在4.1基础上，增加一个中场声道，就是电影院说的杜比音效</li>
+</ol>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="采样数"><a href="#采样数" class="headerlink" title="采样数"></a>采样数</h3><p>采样数: 每帧采样的数量。</p>
+<p><a target="_blank" rel="noopener" href="https://ffmpeg.org/doxygen/trunk/frame_8h_source.html">源码:libavutil &gt; frame.h</a></p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">AVFrame</span> {</span></span><br><span class="line">...</span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">      * number of audio samples (per channel) described by this frame</span></span><br><span class="line"><span class="hljs-comment">      */</span></span><br><span class="line">    <span class="hljs-type">int</span> nb_samples;</span><br><span class="line">...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在<code>ffmpeg</code>中使用结构体<code>AVFrame</code>中的成员变量<code>nb_samples</code>来表示采样数</p>
+<h4 id="音频帧"><a href="#音频帧" class="headerlink" title="音频帧"></a>音频帧</h4><p>因为音视频文件播放时，为了保证音视频同步，程序需要根据每帧的播放时间戳进行有序播放。但是每个音频采样数据太小,音频帧实际上就是把一小段时间的音频采样数据都打包。</p>
+<p>这是根据需要人为抽象的概念。</p>
+<h3 id="帧时长"><a href="#帧时长" class="headerlink" title="帧时长"></a>帧时长</h3><p>音频的帧时长 = 采样数 / 采样率。假设采样率为44.1k，采样数为1024。那么每帧时长约等于23ms。</p>
+<h3 id="采样格式"><a href="#采样格式" class="headerlink" title="采样格式"></a>采样格式</h3><p>采样格式: 采样数据的保存格式</p>
+<p>音频的采样格式分为大端存储和小端存储。按照符号划分有: 有符号与无符号。按照类型划分有:整形与浮点数。按照存储位数划分有：8位、16位、32位、64位，都是8的倍数。</p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">AVSampleFormat</span> {</span></span><br><span class="line">    AV_SAMPLE_FMT_NONE = <span class="hljs-number">-1</span>,</span><br><span class="line">    AV_SAMPLE_FMT_U8,          <span class="hljs-comment">///&lt; unsigned 8 bits</span></span><br><span class="line">    AV_SAMPLE_FMT_S16,         <span class="hljs-comment">///&lt; signed 16 bits</span></span><br><span class="line">    AV_SAMPLE_FMT_S32,         <span class="hljs-comment">///&lt; signed 32 bits</span></span><br><span class="line">    AV_SAMPLE_FMT_FLT,         <span class="hljs-comment">///&lt; float</span></span><br><span class="line">    AV_SAMPLE_FMT_DBL,         <span class="hljs-comment">///&lt; double</span></span><br><span class="line"></span><br><span class="line">    AV_SAMPLE_FMT_U8P,         <span class="hljs-comment">///&lt; unsigned 8 bits, planar</span></span><br><span class="line">    AV_SAMPLE_FMT_S16P,        <span class="hljs-comment">///&lt; signed 16 bits, planar</span></span><br><span class="line">    AV_SAMPLE_FMT_S32P,        <span class="hljs-comment">///&lt; signed 32 bits, planar</span></span><br><span class="line">    AV_SAMPLE_FMT_FLTP,        <span class="hljs-comment">///&lt; float, planar</span></span><br><span class="line">    AV_SAMPLE_FMT_DBLP,        <span class="hljs-comment">///&lt; double, planar</span></span><br><span class="line">    AV_SAMPLE_FMT_S64,         <span class="hljs-comment">///&lt; signed 64 bits</span></span><br><span class="line">    AV_SAMPLE_FMT_S64P,        <span class="hljs-comment">///&lt; signed 64 bits, planar</span></span><br><span class="line"></span><br><span class="line">    AV_SAMPLE_FMT_NB           <span class="hljs-comment">///&lt; Number of sample formats. DO NOT USE if linking dynamically</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://ffmpeg.org/doxygen/trunk/samplefmt_8h_source.html">源码:libavutil &gt; samplefmt.h</a></p>
+<h3 id="封装格式与编码协议"><a href="#封装格式与编码协议" class="headerlink" title="封装格式与编码协议"></a>封装格式与编码协议</h3><p>封装: 将音频数据，元数据和其它多媒体内容组合在一起。它提供了一种标准化的方式来存储和传输音频数据，使得不同的设备和软件能够理解和处理这些数据。</p>
+<p>封装格式由特定格式头,媒体信息，音频轨数据组成</p>
+<p>常见的封装格式有：mp3、m4a、ogg、amr、wma、wav、flac、aac、ape等。</p>
+<p>不同封装格式的区别</p>
+<blockquote>
+<p>来自参考8</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>发布者</th>
+<th>年份</th>
+<th>编码器</th>
+<th>是否有损</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>wav</td>
+<td>微软</td>
+<td>1991</td>
+<td>pcm</td>
+<td>无损</td>
+<td>波形文件，直接存储声音波形</td>
+</tr>
+<tr>
+<td>mp3</td>
+<td>MPEG-1</td>
+<td>1992</td>
+<td>mp3</td>
+<td>有损</td>
+<td>压缩比1:10甚至1:12，占有存储空间小，有版权</td>
+</tr>
+<tr>
+<td>aac</td>
+<td>MPEG-2</td>
+<td>1997</td>
+<td>aac</td>
+<td>有损</td>
+<td>支持多声道，更高解析度，更高压缩率</td>
+</tr>
+<tr>
+<td>m4a</td>
+<td>MPEG-4</td>
+<td>1998</td>
+<td>aac</td>
+<td>有损</td>
+<td>MPEG-4的扩展名，由ipod采用m4a变得流行</td>
+</tr>
+<tr>
+<td>wma</td>
+<td>微软</td>
+<td>1999</td>
+<td>wma</td>
+<td>有损</td>
+<td>支持证书加密，主要应用于VOIP视频通话</td>
+</tr>
+</tbody></table>
+<h3 id="音频码率"><a href="#音频码率" class="headerlink" title="音频码率"></a>音频码率</h3><p>音频码率: 又称比特率，指的是单位时间内(一般为1s)所包含的音频数据量。</p>
+<p>原始码率 = 采样率 * 采样位深(bit) * 声道数 * 时长(1s)</p>
+<p>比如采样率 44.1kHZ，位深16bit的双声道的PCM数据，它的原始码率为</p>
+<p>44.1 * 1000 * 16 * 2 * 1 = 1411200bps ≈ 1.346 Mbps</p>
+<p>传输一分钟的音频数据需要消耗带宽 60 * 1.346 = 80.75Mbps</p>
+<p>因为 1MB/s = 8Mbps, 所以接收原始音频的PCM数据1分钟大约要10M的流量，这个有点大,所以也可见传输过程的压缩很有必要。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/46934212">音乐与数学(1) - 从正弦函数讲起</a></li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7/915663">数字信号</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sdlypyzq/article/details/108334322">语音识别入门01-基本概念</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41824928/article/details/108124382">音频相关基础知识（采样率、位深度、通道数、PCM、AAC）</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000044293641">音视频开发基础入门｜声音的采集与量化、音频数字信号质量、音频码率</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq1263575666/article/details/130309277">音频帧如何理解，码率采样率、音频帧、位深度、声道编码介绍</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61747783">视频和视频帧：视频和帧基础知识整理</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011686167/article/details/108565360">走进音视频的世界——音频封装格式</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ithome.com/0/437/491.htm">一文看懂 Mbps、Mb / s、MB/s 有什么区别</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/15/Technology-learn-swift-01/">学习笔记 - Swfit 6.1 - 语法概览</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
