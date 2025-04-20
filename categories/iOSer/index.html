@@ -128,6 +128,58 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/20/Technology-learn-ios-101/" itemprop="url">optool为macho文件增加动态库</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-20T10:30:45.000Z" itemprop="datePublished">4月 20 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            17 分钟 读完 (约 2587 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>对macho文件有一定理解后,了解下<code>optool</code>是如何给macho文件增加动态库等功能的</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/alexzielenski/optool">optool</a> 源码</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS 13.4 (22F66)<br>Xcode 14.3.1</p>
+</blockquote>
+<h2 id="0x0-编译"><a href="#0x0-编译" class="headerlink" title="0x0 编译"></a>0x0 编译</h2><p>下载源码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="hljs-built_in">clone</span> --recurse-submodules https://github.com/alexzielenski/optool.git</span><br></pre></td></tr></tbody></table></figure>
+
+<p>修改下Deployment Target,比如改成11.0，不修改会报</p></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/20/Technology-learn-ios-101/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/04/19/Technology-learn-ios-100/" itemprop="url">学习笔记 Mach-O 文件</a>
         
     </h1>
@@ -555,60 +607,6 @@
 </ul></body></html>
         <p class="article-more-link">
             <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/" itemprop="url">ObjC Runtime 中 Weak 属性的实现 (上)</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-05-29T10:34:18.000Z" itemprop="datePublished">5月 29 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            19 分钟 读完 (约 2810 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
-<p><code>OC</code> 中的 <code>weak</code> 属性是怎么实现的，为什么在对象释放后会自动变成 <em>nil</em>？本文对这个问题进行了一点探讨。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
-<blockquote>
-<p>mac OS Sierra 10.12.4<br>objc709</p>
-</blockquote>
-<h2 id="参考答案"><a href="#参考答案" class="headerlink" title="参考答案"></a>参考答案</h2><p>　</p>
-<p>搜索后发现<a target="_blank" rel="noopener" href="https://dayon.gitbooks.io/-ios/content/chapter8.html">runtime 如何实现 weak 属性</a>给出了一个参考答案。</p>
-<blockquote>
-<p><code>runtime</code> 对注册的类， 会进行布局，对于 <code>weak</code> 对象会放入一个 <code>hash</code> 表中。 用 <code>weak</code> 指向的对象内存地址作为 <code>key</code>，当此对象的引用计数为 <code>0</code> 的时候会 <code>dealloc</code>，假如 <code>weak</code> 指向的对象内存地址是 <code>a</code> ，那么就会以 <code>a</code> 为键， 在这个 <code>weak</code> 表中搜索，找到所有以 <code>a</code> 为键的 <code>weak</code> 对象，从而设置为 <code>nil</code> 。</p>
-</blockquote></body></html>
-        <p class="article-more-link">
-            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/#more">阅读更多</a>
         </p>
     
     </div>

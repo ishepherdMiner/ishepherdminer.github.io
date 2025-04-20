@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>optool为macho文件增加动态库 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="对macho文件有一定理解后,了解下optool是如何给macho文件增加动态库等功能的 optool 源码 环境 macOS 13.4 (22F66)Xcode 14.3.1  0x0 编译下载源码 1$ git clone --recurse-submodules https:&#x2F;&#x2F;github.com&#x2F;alexzielenski&#x2F;optool.git  修改下Deployment Target">
+<meta property="og:type" content="article">
+<meta property="og:title" content="optool为macho文件增加动态库">
+<meta property="og:url" content="http://yoursite.com/2025/04/20/Technology-learn-ios-101/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="对macho文件有一定理解后,了解下optool是如何给macho文件增加动态库等功能的 optool 源码 环境 macOS 13.4 (22F66)Xcode 14.3.1  0x0 编译下载源码 1$ git clone --recurse-submodules https:&#x2F;&#x2F;github.com&#x2F;alexzielenski&#x2F;optool.git  修改下Deployment Target">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/mgWsXNTlfvr3d1Y.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/OVzQy5vpetIugCa.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/hT4Hfyl5sNqLte6.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/jylUh6O5E8WdSuZ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/HL9f3aR1ZYhxqbU.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/WHrCjJn79pTEwvS.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/up2iKaUFRc7rl9S.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/R84YvI1w7bzOHrc.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/VWgnKPpetHrhSDz.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/djv8ucHNKfwaLDx.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/20/E5JA4hWMKkjw3gI.png">
+<meta property="article:published_time" content="2025-04-20T10:30:45.000Z">
+<meta property="article:modified_time" content="2025-04-20T10:31:31.193Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/20/mgWsXNTlfvr3d1Y.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#环境">1&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#0x0-编译">2&nbsp;&nbsp;<b>0x0 编译</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#0x1-命令到源码分析">3&nbsp;&nbsp;<b>0x1 命令到源码分析</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#注入动态库">3.1&nbsp;&nbsp;注入动态库</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#源码分析">3.2&nbsp;&nbsp;源码分析</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#效果">3.3&nbsp;&nbsp;效果</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#02x-参考">4&nbsp;&nbsp;<b>02x 参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            optool为macho文件增加动态库
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-20T10:30:45.000Z" itemprop="datePublished">4月 20 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            17 分钟 读完 (约 2587 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>对macho文件有一定理解后,了解下<code>optool</code>是如何给macho文件增加动态库等功能的</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/alexzielenski/optool">optool</a> 源码</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS 13.4 (22F66)<br>Xcode 14.3.1</p>
+</blockquote>
+<h2 id="0x0-编译"><a href="#0x0-编译" class="headerlink" title="0x0 编译"></a>0x0 编译</h2><p>下载源码</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="hljs-built_in">clone</span> --recurse-submodules https://github.com/alexzielenski/optool.git</span><br></pre></td></tr></tbody></table></figure>
+
+<p>修改下Deployment Target,比如改成11.0，不修改会报</p>
+<span id="more"></span>
+
+<p><img src="https://s2.loli.net/2025/04/20/mgWsXNTlfvr3d1Y.png" alt="2025-04-20 11.16.16.png"></p>
+<p>当然可以从Xcode旧版本里找到libarclite_macos.x复制一个到对应目录下。</p>
+<p>⌘ + B后,从Derived Data中找到编译后的二进制文件</p>
+<p><img src="https://s2.loli.net/2025/04/20/OVzQy5vpetIugCa.png" alt="2025-04-20 11.20.31.png"></p>
+<p>libArgumentParser-Static.a 这个静态库主要是解析命令行参数的,而且链接后会在optool中,可以忽略</p>
+<h2 id="0x1-命令到源码分析"><a href="#0x1-命令到源码分析" class="headerlink" title="0x1 命令到源码分析"></a>0x1 命令到源码分析</h2><h3 id="注入动态库"><a href="#注入动态库" class="headerlink" title="注入动态库"></a>注入动态库</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># optool install -c &lt;command&gt; -p &lt;payload&gt; -t &lt;target&gt;</span></span><br><span class="line">$ optool install -c load -p 动态库的地址 -t macho文件</span><br></pre></td></tr></tbody></table></figure>
+
+<p>编译出一个非常简单的app，用MachOView查看可知Load Comamnds的LC_LOAD_DYLIB加载了Foundaiton,libobjc.A.dylib… UIKit这些系统库</p>
+<p><img src="https://s2.loli.net/2025/04/20/hT4Hfyl5sNqLte6.png" alt="2025-04-20 11.35.29.png"></p>
+<p>现在追加一个LearnOptionFramework</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./optool install -c load -p LearnOptoolFramework.framework/LearnOptoolFramework -t LearnOptool_patch_cmd</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/20/jylUh6O5E8WdSuZ.png" alt="2025-04-20 11.37.10.png"></p>
+<p>再次用MachOView查看，看出Load Commands增加了LearnOptoolFramework</p>
+<p><img src="https://s2.loli.net/2025/04/20/HL9f3aR1ZYhxqbU.png" alt="Snip20250420_1.png"></p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>打开Xcode工程,工程代码结构简单</p>
+<p><img src="https://s2.loli.net/2025/04/20/WHrCjJn79pTEwvS.png" alt="Snip20250420_2.png"></p>
+<p>通过启动传参来调试添加动态库的过程</p>
+<p><img src="https://s2.loli.net/2025/04/20/up2iKaUFRc7rl9S.png" alt="2025-04-20 17.54.16.png"></p>
+<p>从main函数开始看,前面部分是解析参数的</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-type">BOOL</span> showHelp = <span class="hljs-literal">NO</span>;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// Flags</span></span><br><span class="line">        XPMArgumentSignature *<span class="hljs-keyword">weak</span> = [XPMArgumentSignature argumentSignatureWithFormat:<span class="hljs-string">@"[-w --weak]"</span>];</span><br><span class="line">        XPMArgumentSignature *resign = [XPMArgumentSignature argumentSignatureWithFormat:<span class="hljs-string">@"[--resign]"</span>];</span><br><span class="line">        XPMArgumentSignature *target = [XPMArgumentSignature argumentSignatureWithFormat:<span class="hljs-string">@"[-t --target]={1,1}"</span>];</span><br><span class="line">        ...</span><br><span class="line">        XPMArgumentPackage *package = [[<span class="hljs-built_in">NSProcessInfo</span> processInfo] xpmargs_parseArgumentsWithSignatures:@[resign, command, strip, restore, install, uninstall, output, backup, aslr, help, unrestrict, rename]];</span><br><span class="line"></span><br><span class="line">        <span class="hljs-built_in">NSString</span> *targetPath = [package firstObjectForSignature:target];</span><br><span class="line">        ...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面这部分是建立命令行解析的规则,比如是这样的字符串 <code>[-t --target]={1,1}</code></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XPMArgumentSignature *target = [XPMArgumentSignature argumentSignatureWithFormat:<span class="hljs-string">@"[-t --target]={1,1}"</span>];</span><br></pre></td></tr></tbody></table></figure>
+
+<p>进入</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="hljs-type">id</span>)argumentSignatureWithFormat:(<span class="hljs-built_in">NSString</span> *)format, ...</span><br><span class="line">{</span><br><span class="line">	va_list args;</span><br><span class="line">	va_start(args, format);</span><br><span class="line">    </span><br><span class="line">	XPMArgumentSignature * signature = [XPMArgumentSignature argumentSignatureWithFormat:format arguments:args];</span><br><span class="line">	</span><br><span class="line">	va_end(args);</span><br><span class="line">	</span><br><span class="line">	<span class="hljs-keyword">return</span> signature;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里会用到可变参数</p>
+<p><strong>可变参数</strong></p>
+<ol>
+<li>va_list args：定义一个指向个数可变的参数列表指针;</li>
+<li>va_start(args, format)format是第一个可选参数前的固定参数，va_start 使指针指向第一个可选参数;</li>
+<li>va_arg(args, type)返回参数列表中指针args所指的参数，返回类型为type，并使指针args指向参数列表中下一个参数;</li>
+<li>va_end(ap) 清空参数列表，并置参数指针ap无效.</li>
+</ol>
+<p>按流程走下去主要就是</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">xpmargs_ScanFormatCtorHead(scanner, foundSwitches, foundAliases, &amp;foundRange, &amp;didFindRange);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="hljs-keyword">for</span> (<span class="hljs-built_in">NSString</span> * s <span class="hljs-keyword">in</span> [enclosedString componentsSeparatedByString:<span class="hljs-string">@" "</span>]) {</span><br><span class="line">		<span class="hljs-keyword">if</span> ([s hasPrefix:<span class="hljs-string">@"--"</span>]) {</span><br><span class="line">			[switches addObject:[s substringFromIndex:<span class="hljs-number">2</span>]];</span><br><span class="line">		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([s hasPrefix:<span class="hljs-string">@"-"</span>]) {</span><br><span class="line">			[switches addObject:[s substringFromIndex:<span class="hljs-number">1</span>]];</span><br><span class="line">		} <span class="hljs-keyword">else</span> {</span><br><span class="line">			[aliases addObject:s];</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line">xpmargs_ScanFormatCtorTail(scanner, valueRange, didFindRange);</span><br></pre></td></tr></tbody></table></figure>
+
+<p>整个要做的是如何识别<code>[-t --target]={1,1}</code>，然后命令行传入能匹配成功。</p>
+<p><strong>命令行参数</strong></p>
+<p>通过<code>NSProcessInfo</code> 对象的<code>arguments</code> 获取这次传入的参数信息,</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">readonly</span>, <span class="hljs-keyword">copy</span>) <span class="hljs-built_in">NSArray</span>&lt;<span class="hljs-built_in">NSString</span> *&gt; *arguments;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>打印效果大致如下</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;__NSFrozenArrayM 0x600000c00c00&gt;(</span><br><span class="line">xxx/optool,</span><br><span class="line">install,</span><br><span class="line">-c,</span><br><span class="line">load,</span><br><span class="line">-p,</span><br><span class="line">LearnOptoolFramework.framework/LearnOptoolFramework,</span><br><span class="line">-t,</span><br><span class="line">LearnOptool_patch_cmd</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据规则解析出<code>targetPath</code></p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">NSString</span> *targetPath = [package firstObjectForSignature:target];</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/20/R84YvI1w7bzOHrc.png" alt="2025-04-20 15.28.31.png"></p>
+<p>就是-t 参数传入的</p>
+<p>如下所示，接着因为工具支持是否要备份,使用({})匿名函数来返回备份文件路径,target后面加_backup，因为没有使用到忽略。</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="hljs-built_in">NSBundle</span> *bundle = [<span class="hljs-built_in">NSBundle</span> bundleWithPath:targetPath];</span><br><span class="line"><span class="hljs-built_in">NSString</span> *executablePath = [[bundle.executablePath ?: targetPath stringByExpandingTildeInPath] stringByResolvingSymlinksInPath];</span><br><span class="line"><span class="hljs-built_in">NSString</span> *backupPath = ({</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *bkp = [executablePath stringByAppendingString:<span class="hljs-string">@"_backup"</span>];</span><br><span class="line">    <span class="hljs-keyword">if</span> (bundle) {</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *vers = [bundle objectForInfoDictionaryKey:(<span class="hljs-built_in">NSString</span> *)kCFBundleVersionKey];</span><br><span class="line">    <span class="hljs-keyword">if</span> (vers)</span><br><span class="line">        bkp = [bkp stringByAppendingPathExtension:vers];</span><br><span class="line">    }</span><br><span class="line">    bkp;</span><br><span class="line">});;</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>紧接着是一段保护处理,也略过,然后读取executablePath文件到NSData对象中,然后创建一个可变的二进制对象,后面对binary进行操作</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="hljs-built_in">NSData</span> *originalData = [<span class="hljs-built_in">NSData</span> dataWithContentsOfFile:executablePath];</span><br><span class="line"><span class="hljs-built_in">NSMutableData</span> *binary = originalData.mutableCopy;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 检查</span></span><br><span class="line"><span class="hljs-keyword">if</span> (!binary)</span><br><span class="line">    <span class="hljs-keyword">return</span> OPErrorRead;</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p>然后自定义了一个thin_header</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// we pass around this header which includes some extra information</span></span><br><span class="line"><span class="hljs-comment">// and a 32-bit header which we used for both 32-bit and 64-bit files</span></span><br><span class="line"><span class="hljs-comment">// since the 64-bit just adds an extra field to the end which we don't need</span></span><br><span class="line"><span class="hljs-keyword">struct</span> thin_header {</span><br><span class="line">    uint32_t offset;</span><br><span class="line">    uint32_t size;</span><br><span class="line">    <span class="hljs-keyword">struct</span> mach_header header;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> thin_header headers[<span class="hljs-number">4</span>];</span><br><span class="line">uint32_t numHeaders = <span class="hljs-number">0</span>;</span><br><span class="line">headersFromBinary(headers, binary, &amp;numHeaders);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> (numHeaders == <span class="hljs-number">0</span>) {</span><br><span class="line">    LOG(<span class="hljs-string">"No compatible architecture found"</span>);</span><br><span class="line">    <span class="hljs-keyword">return</span> OPErrorIncompatibleBinary;</span><br><span class="line">}</span><br><span class="line">    ...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>主要看下headersFromBinary这个函数</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 这部分的逻辑主要是检查macho文件的魔数字段,然后确定是FAT，还是单独架构的文件,然后将填充到自定义的header结构体</span></span><br><span class="line"><span class="hljs-keyword">struct</span> thin_header *headersFromBinary(<span class="hljs-keyword">struct</span> thin_header *headers, <span class="hljs-built_in">NSData</span> *binary, uint32_t *amount) {</span><br><span class="line">    <span class="hljs-comment">// In a MachO/FAT binary the first 4 bytes is a magic number</span></span><br><span class="line">    <span class="hljs-comment">// which gives details about the type of binary it is</span></span><br><span class="line">    <span class="hljs-comment">// CIGAM and co. mean the target binary has a byte order</span></span><br><span class="line">    <span class="hljs-comment">// in reverse relation to the host machine so we have to swap the bytes</span></span><br><span class="line">    uint32_t magic = [binary intAtOffset:<span class="hljs-number">0</span>];</span><br><span class="line">    <span class="hljs-type">bool</span> shouldSwap = magic == MH_CIGAM || magic == MH_CIGAM_64 || magic == FAT_CIGAM;</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SWAP(NUM) shouldSwap ? CFSwapInt32(NUM) : NUM</span></span><br><span class="line">    </span><br><span class="line">    uint32_t numArchs = <span class="hljs-number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// a FAT file is basically a collection of thin MachO binaries</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (magic == FAT_CIGAM || magic == FAT_MAGIC) {</span><br><span class="line">        LOG(<span class="hljs-string">"Found FAT Header"</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// WE GOT A FAT ONE</span></span><br><span class="line">        <span class="hljs-keyword">struct</span> fat_header fat = *(<span class="hljs-keyword">struct</span> fat_header *)binary.bytes;</span><br><span class="line">        fat.nfat_arch = SWAP(fat.nfat_arch);</span><br><span class="line">        <span class="hljs-type">int</span> offset = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> fat_header);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// Loop through the architectures within the FAT binary to find</span></span><br><span class="line">        <span class="hljs-comment">// a thin macho header that we can work with (x86 or x86_64)</span></span><br><span class="line">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; fat.nfat_arch; i++) {</span><br><span class="line">            <span class="hljs-keyword">struct</span> fat_arch arch;</span><br><span class="line">            arch = *(<span class="hljs-keyword">struct</span> fat_arch *)([binary bytes] + offset);</span><br><span class="line">            arch.cputype = SWAP(arch.cputype);</span><br><span class="line">            arch.offset = SWAP(arch.offset);</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">struct</span> thin_header macho = headerAtOffset(binary, arch.offset);</span><br><span class="line">            <span class="hljs-keyword">if</span> (macho.size &gt; <span class="hljs-number">0</span>) {</span><br><span class="line">                LOG(<span class="hljs-string">"Found thin header..."</span>);</span><br><span class="line"></span><br><span class="line">                headers[numArchs] = macho;</span><br><span class="line">                numArchs++;</span><br><span class="line">            }</span><br><span class="line">            </span><br><span class="line">            offset += <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> fat_arch);</span><br><span class="line">        }</span><br><span class="line">    <span class="hljs-comment">// The binary is thin, meaning it contains only one architecture</span></span><br><span class="line">    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (magic == MH_MAGIC || magic == MH_MAGIC_64) {</span><br><span class="line">        <span class="hljs-comment">// 根据设备的情况这个是这个,然后给thin_header赋值</span></span><br><span class="line">        <span class="hljs-keyword">struct</span> thin_header macho = headerAtOffset(binary, <span class="hljs-number">0</span>);</span><br><span class="line">        <span class="hljs-keyword">if</span> (macho.size &gt; <span class="hljs-number">0</span>) {</span><br><span class="line">            LOG(<span class="hljs-string">"Found thin header..."</span>);</span><br><span class="line"></span><br><span class="line">            numArchs++;</span><br><span class="line">            headers[<span class="hljs-number">0</span>] = macho;</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        LOG(<span class="hljs-string">"No headers found."</span>);</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    *amount = numArchs;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> headers;</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>headerAtOffset函数给thin_header赋值</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> thin_header headerAtOffset(<span class="hljs-built_in">NSData</span> *binary, uint32_t offset) {</span><br><span class="line">    <span class="hljs-keyword">struct</span> thin_header macho;</span><br><span class="line">    macho.offset = offset;</span><br><span class="line">    macho.header = *(<span class="hljs-keyword">struct</span> mach_header *)(binary.bytes + offset);</span><br><span class="line">    <span class="hljs-keyword">if</span> (macho.header.magic == MH_MAGIC || macho.header.magic == MH_CIGAM) {</span><br><span class="line">        macho.size = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mach_header);</span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        macho.size = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mach_header_64);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">if</span> (macho.header.cputype != CPU_TYPE_X86_64 &amp;&amp; macho.header.cputype != CPU_TYPE_I386 &amp;&amp; macho.header.cputype != CPU_TYPE_ARM &amp;&amp; macho.header.cputype != CPU_TYPE_ARM64){</span><br><span class="line">        macho.size = <span class="hljs-number">0</span>;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> macho;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面这些准备工作执行完成后,可以开始修改二进制文件了。</p>
+<p>开始遍历上面准备好的 thin_header 数组，里面有 mach_header 结构体</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">for</span> (uint32_t i = <span class="hljs-number">0</span>; i &lt; numHeaders; i++) {</span><br><span class="line">    <span class="hljs-keyword">struct</span> thin_header macho = headers[i];</span><br><span class="line">    ...</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([package booleanValueForSignature:install]) {</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *lc = [package firstObjectForSignature:command];</span><br><span class="line">        uint32_t command = LC_LOAD_DYLIB;</span><br><span class="line">        <span class="hljs-keyword">if</span> (lc)</span><br><span class="line">            command = COMMAND(lc);</span><br><span class="line">        <span class="hljs-keyword">if</span> (command == <span class="hljs-number">-1</span>) {</span><br><span class="line">            LOG(<span class="hljs-string">"Invalid load command."</span>);</span><br><span class="line">            <span class="hljs-keyword">return</span> OPErrorInvalidLoadCommand;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (insertLoadEntryIntoBinary(dylibPath, binary, macho, command)) {</span><br><span class="line">            LOG(<span class="hljs-string">"Successfully inserted a %s command for %s"</span>, LC(command),   CPU(macho.header.cputype));</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            LOG(<span class="hljs-string">"Failed to insert a %s command for %s"</span>, LC(command), CPU(macho.header.cputype));</span><br><span class="line">            <span class="hljs-keyword">return</span> OPErrorInsertFailure;</span><br><span class="line">        }</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据下面这段COMMAND的宏，因为命令传的是load所以就是LC_LOAD_DYLIB，说明是一条加载动态库的指令，将待加载的动态库，二进制文件,macho文件头信息，加载命令都传到<code>insertLoadEntryIntoBinary</code>函数中</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> COMMAND(str) ({ \</span></span><br><span class="line"><span class="hljs-meta">    uint32_t cmd = -1; \</span></span><br><span class="line"><span class="hljs-meta">    <span class="hljs-keyword">if</span> ([str isEqualToString: @<span class="hljs-string">"reexport"</span>]) \</span></span><br><span class="line"><span class="hljs-meta">        cmd = LC_REEXPORT_DYLIB; \</span></span><br><span class="line"><span class="hljs-meta">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([str isEqualToString: @<span class="hljs-string">"weak"</span>]) \</span></span><br><span class="line"><span class="hljs-meta">        cmd = LC_LOAD_WEAK_DYLIB; \</span></span><br><span class="line"><span class="hljs-meta">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([str isEqualToString: @<span class="hljs-string">"upward"</span>]) \</span></span><br><span class="line"><span class="hljs-meta">        cmd = LC_LOAD_UPWARD_DYLIB; \</span></span><br><span class="line"><span class="hljs-meta">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ([str isEqualToString: @<span class="hljs-string">"load"</span>]) \</span></span><br><span class="line"><span class="hljs-meta">        cmd = LC_LOAD_DYLIB; \</span></span><br><span class="line"><span class="hljs-meta">    cmd; \</span></span><br><span class="line"><span class="hljs-meta">})</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>进入到 <code>insertLoadEntryIntoBinary</code> 函数,这段就是在处理macho来增加动态库加载的逻辑</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">BOOL</span> insertLoadEntryIntoBinary(<span class="hljs-built_in">NSString</span> *dylibPath, <span class="hljs-built_in">NSMutableData</span> *binary, <span class="hljs-keyword">struct</span> thin_header macho, uint32_t type) {</span><br><span class="line">    <span class="hljs-comment">// 异常保护</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (type != LC_REEXPORT_DYLIB &amp;&amp;</span><br><span class="line">        type != LC_LOAD_WEAK_DYLIB &amp;&amp;</span><br><span class="line">        type != LC_LOAD_UPWARD_DYLIB &amp;&amp;</span><br><span class="line">        type != LC_LOAD_DYLIB) {</span><br><span class="line">        LOG(<span class="hljs-string">"Invalid load command type"</span>);</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-comment">// parse load commands to see if our load command is already there</span></span><br><span class="line">    uint32_t lastOffset = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-comment">// 是否重复添加</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (binaryHasLoadCommandForDylib(binary, dylibPath, &amp;lastOffset, macho)) {</span><br><span class="line">        <span class="hljs-comment">// there already exists a load command for this payload so change the command type</span></span><br><span class="line">        uint32_t originalType = *(uint32_t *)(binary.bytes + lastOffset);</span><br><span class="line">        <span class="hljs-keyword">if</span> (originalType != type) {</span><br><span class="line">            LOG(<span class="hljs-string">"A load command already exists for %s. Changing command type from %s to desired %s"</span>, dylibPath.UTF8String, LC(originalType), LC(type));</span><br><span class="line">            [binary replaceBytesInRange:<span class="hljs-built_in">NSMakeRange</span>(lastOffset, <span class="hljs-keyword">sizeof</span>(type)) withBytes:&amp;type];</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            LOG(<span class="hljs-string">"Load command already exists"</span>);</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// create a new load command</span></span><br><span class="line">    <span class="hljs-comment">// 新添加,创建加载动态库命令</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> length = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> dylib_command) + (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)dylibPath.length;</span><br><span class="line">    <span class="hljs-comment">// 我添加的dylibPath.length = 51,整个length = 75, padding = 5</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> padding = (<span class="hljs-number">8</span> - (length % <span class="hljs-number">8</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// check if data we are replacing is null</span></span><br><span class="line">    <span class="hljs-comment">// 获取要添加command的位置的内容</span></span><br><span class="line">    <span class="hljs-built_in">NSData</span> *occupant = [binary subdataWithRange:<span class="hljs-built_in">NSMakeRange</span>(macho.header.sizeofcmds + macho.offset + macho.size,</span><br><span class="line">                                                            length + padding)];</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// All operations in optool try to maintain a constant byte size of the executable</span></span><br><span class="line">    <span class="hljs-comment">// so we don't want to append new bytes to the binary (that would break the executable</span></span><br><span class="line">    <span class="hljs-comment">// since everything is offset-based–we'd have to go in and adjust every offset)</span></span><br><span class="line">    <span class="hljs-comment">// So instead take advantage of the huge amount of padding after the load commands</span></span><br><span class="line">    <span class="hljs-comment">// 比较如果非空,说明到了代码的内容部分,就有问题。添加命令只能在Load Command后面且在代码内容前</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (strcmp([occupant bytes], <span class="hljs-string">"\0"</span>)) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"cannot inject payload into %s because there is no room"</span>, dylibPath.fileSystemRepresentation);</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-literal">NO</span>;</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    LOG(<span class="hljs-string">"Inserting a %s command for architecture: %s"</span>, LC(type), CPU(macho.header.cputype));</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">struct</span> dylib_command command;</span><br><span class="line">    <span class="hljs-keyword">struct</span> dylib dylib;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * A variable length string in a load command is represented by an lc_str</span></span><br><span class="line"><span class="hljs-comment"> * union.  The strings are stored just after the load command structure and</span></span><br><span class="line"><span class="hljs-comment"> * the offset is from the start of the load command structure.  The size</span></span><br><span class="line"><span class="hljs-comment"> * of the string is reflected in the cmdsize field of the load command.</span></span><br><span class="line"><span class="hljs-comment"> * Once again any padded bytes to bring the cmdsize field to a multiple</span></span><br><span class="line"><span class="hljs-comment"> * of 4 bytes must be zero.</span></span><br><span class="line"><span class="hljs-comment"> *  lc_str 的注释</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line">    <span class="hljs-comment">// 所以offset是dylib command的大小</span></span><br><span class="line">    dylib.name.offset = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> dylib_command);</span><br><span class="line">    dylib.timestamp = <span class="hljs-number">2</span>; <span class="hljs-comment">// load commands I've seen use 2 for some reason</span></span><br><span class="line">    dylib.current_version = <span class="hljs-number">0</span>;</span><br><span class="line">    dylib.compatibility_version = <span class="hljs-number">0</span>;</span><br><span class="line">    command.cmd = type;</span><br><span class="line">    command.dylib = dylib;</span><br><span class="line">    <span class="hljs-comment">// 命令的长度等于内容 + 对齐</span></span><br><span class="line">    command.cmdsize = length + padding;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> zeroByte = <span class="hljs-number">0</span>;</span><br><span class="line">    <span class="hljs-built_in">NSMutableData</span> *commandData = [<span class="hljs-built_in">NSMutableData</span> data];</span><br><span class="line">    <span class="hljs-comment">// 动态库 command的内容</span></span><br><span class="line">    [commandData appendBytes:&amp;command length:<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> dylib_command)];</span><br><span class="line">    <span class="hljs-comment">// 动态库的路径字符串</span></span><br><span class="line">    [commandData appendData:[dylibPath dataUsingEncoding:<span class="hljs-built_in">NSASCIIStringEncoding</span>]];</span><br><span class="line">    <span class="hljs-comment">// 默认补0</span></span><br><span class="line">    [commandData appendBytes:&amp;zeroByte length:padding];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// remove enough null bytes to account of our inserted data</span></span><br><span class="line">    <span class="hljs-comment">// 这部分内容用0覆盖,最后一个参数传0就是指定覆盖区间就是Range的length</span></span><br><span class="line">    [binary replaceBytesInRange:<span class="hljs-built_in">NSMakeRange</span>(macho.offset + macho.header.sizeofcmds + macho.size, commandData.length)</span><br><span class="line">                      withBytes:<span class="hljs-number">0</span></span><br><span class="line">                         length:<span class="hljs-number">0</span>];</span><br><span class="line">    <span class="hljs-comment">// insert the data</span></span><br><span class="line">    <span class="hljs-comment">// 添加data</span></span><br><span class="line">    [binary replaceBytesInRange:<span class="hljs-built_in">NSMakeRange</span>(lastOffset, <span class="hljs-number">0</span>) withBytes:commandData.bytes length:commandData.length];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// fix the existing header</span></span><br><span class="line">    <span class="hljs-comment">// 元数据的修改</span></span><br><span class="line">    macho.header.ncmds += <span class="hljs-number">1</span>;</span><br><span class="line">    macho.header.sizeofcmds += command.cmdsize;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">// this is safe to do in 32bit because the 4 bytes after the header are still being put back</span></span><br><span class="line">    <span class="hljs-comment">// 替换mach的header部分</span></span><br><span class="line">    [binary replaceBytesInRange:<span class="hljs-built_in">NSMakeRange</span>(macho.offset, <span class="hljs-keyword">sizeof</span>(macho.header)) withBytes:&amp;macho.header];</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h3><p>最后是加载在LC_LOAD_DYLIB这块</p>
+<p><img src="https://s2.loli.net/2025/04/20/VWgnKPpetHrhSDz.png" alt="2025-04-20 18.12.34.png"></p>
+<p><code>insertLoadEntryIntoBinary</code>函数</p>
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 替换的时候有个lastOffset</span></span><br><span class="line">    [binary replaceBytesInRange:<span class="hljs-built_in">NSMakeRange</span>(lastOffset, <span class="hljs-number">0</span>) withBytes:commandData.bytes length:commandData.length];</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">// 上面检测是否是重复添加时，会去计算</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (binaryHasLoadCommandForDylib(binary, dylibPath, &amp;lastOffset, macho)) {</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="hljs-comment">// 只有这个LC_LOAD_DYLIB命令会修改loadOffset</span></span><br><span class="line"><span class="hljs-keyword">case</span> LC_LOAD_DYLIB: {</span><br><span class="line">                <span class="hljs-keyword">struct</span> dylib_command command = *(<span class="hljs-keyword">struct</span> dylib_command *)(binary.bytes + binary.currentOffset);</span><br><span class="line">                <span class="hljs-type">char</span> *name = (<span class="hljs-type">char</span> *)[[binary subdataWithRange:<span class="hljs-built_in">NSMakeRange</span>(binary.currentOffset + command.dylib.name.offset, command.cmdsize - command.dylib.name.offset)] bytes];</span><br><span class="line">                </span><br><span class="line">                <span class="hljs-keyword">if</span> ([@(name) isEqualToString:dylib]) {</span><br><span class="line">                    *lastOffset = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)binary.currentOffset;</span><br><span class="line">                    <span class="hljs-keyword">return</span> <span class="hljs-literal">YES</span>;</span><br><span class="line">                }</span><br><span class="line">                </span><br><span class="line">                binary.currentOffset += size;</span><br><span class="line">                loadOffset = (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>)binary.currentOffset;</span><br><span class="line">                <span class="hljs-keyword">break</span>;</span><br><span class="line">            }</span><br><span class="line">... </span><br><span class="line"><span class="hljs-comment">// 这个lastOffset 就是最后一个LC_LOAD_DYLIB的位置</span></span><br><span class="line"><span class="hljs-keyword">if</span> (lastOffset != <span class="hljs-literal">NULL</span>)</span><br><span class="line">        *lastOffset = loadOffset;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>optool 添加有限制,但是LoadCommand末尾到代码部分的空间对添加几条命令还是足够的</p>
+<p><img src="https://s2.loli.net/2025/04/20/djv8ucHNKfwaLDx.png" alt="2025-04-20 18.23.08.png"></p>
+<p><img src="https://s2.loli.net/2025/04/20/E5JA4hWMKkjw3gI.png" alt="2025-04-20 18.23.14.png"></p>
+<h2 id="02x-参考"><a href="#02x-参考" class="headerlink" title="02x 参考"></a>02x 参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/291148403">va_list、va_start和va_end使用</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/foundation/nsmutabledata/replacebytes(in:withbytes:length:)">replaceBytes(in:withBytes:length:)</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/19/Technology-learn-ios-100/">学习笔记 Mach-O 文件</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
