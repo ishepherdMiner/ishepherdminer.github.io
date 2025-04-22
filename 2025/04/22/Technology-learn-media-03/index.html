@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>音视频学习 - MP3格式 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="环境 JDK 13IDEA Build #IC-243.26053.27, built on March 16, 2025  DemoMP3Parser MP3MP3全称为MPEG Audio Layer 3，它是一种高效的计算机音频编码方案，它以较大的压缩比将音频文件转换成较小的扩展名为.mp3的文件，基本保持源文件的音质，MP3是ISO&#x2F;MPEG标准的一部分， ISO&#x2F;MPEG标准描述了使用高">
+<meta property="og:type" content="article">
+<meta property="og:title" content="音视频学习 - MP3格式">
+<meta property="og:url" content="http://yoursite.com/2025/04/22/Technology-learn-media-03/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="环境 JDK 13IDEA Build #IC-243.26053.27, built on March 16, 2025  DemoMP3Parser MP3MP3全称为MPEG Audio Layer 3，它是一种高效的计算机音频编码方案，它以较大的压缩比将音频文件转换成较小的扩展名为.mp3的文件，基本保持源文件的音质，MP3是ISO&#x2F;MPEG标准的一部分， ISO&#x2F;MPEG标准描述了使用高">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/H6ZqBmyU4DMO9rX.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/aodbrzyhOM2IXTZ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/zyR5vFtPVCoBlcX.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/1qvzS4AeDU82Mik.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/rOFtRqAYidpfLEw.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/ChWyQwgUHIvGotY.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/ipAszJEDfV36g8v.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/22/h3lJp4Sms6DQA27.png">
+<meta property="article:published_time" content="2025-04-22T09:03:20.000Z">
+<meta property="article:modified_time" content="2025-04-22T09:04:13.903Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/22/H6ZqBmyU4DMO9rX.jpg">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#环境">1&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Demo">2&nbsp;&nbsp;<b>Demo</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#MP3">3&nbsp;&nbsp;<b>MP3</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#文件结构">3.1&nbsp;&nbsp;文件结构</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#ID3V1">3.1.1&nbsp;&nbsp;ID3V1</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#音频帧">3.1.2&nbsp;&nbsp;音频帧</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#ID3V2">3.1.3&nbsp;&nbsp;ID3V2</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#寻找首个音频帧">3.1.4&nbsp;&nbsp;寻找首个音频帧</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">4&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            音视频学习 - MP3格式
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-22T09:03:20.000Z" itemprop="datePublished">4月 22 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            28 分钟 读完 (约 4240 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>JDK 13<br>IDEA Build #IC-243.26053.27, built on March 16, 2025</p>
+</blockquote>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/tutorial/tree/main/FFmpeg/MP3/MP3Parser">MP3Parser</a></p>
+<h2 id="MP3"><a href="#MP3" class="headerlink" title="MP3"></a>MP3</h2><p>MP3全称为MPEG Audio Layer 3，它是一种高效的计算机音频编码方案，它以较大的压缩比将音频文件转换成较小的扩展名为.mp3的文件，基本保持源文件的音质，MP3是ISO/MPEG标准的一部分，</p>
+<p>ISO/MPEG标准描述了使用高性能感知编码方案的音频压缩，此标准一直在不断更新以满足“质高量小”的追求，现已形成MPEG Layer1、Layer2、Layer3三种音频编解码方案，分别对应MP1、MP2、MP3 这三种声音文件</p>
+<span id="more"></span>
+
+<p>了解下MP3的编码方式</p>
+<p>静态码率(CBR):<code>Constants Bits Rate</code>是一种固定采样率的压缩方式<br>这种编码方式不需要文件头，第一帧开始就是音频数据</p>
+<p>（1）优点：压缩快，能被大多数软件和设备支持。<br>（2）缺点：占用空间大，效果不是十分理想。现已逐渐被VBR方式取代。</p>
+<p><strong>动态码率(VBR)</strong>:<code>Variable Bit Rate</code>使用这个方式时，可以选择从最差音质/最大压缩比到最好音质/最低压缩比之间的种种过渡级数，在MP3文件编码之时，程序会尝试保持所选定的整个文件的品质，将选择适合音乐文件不同部分的不同比特率来编码。</p>
+<p>需要文件头</p>
+<p>（1）优点：可以让整首歌都能大致达到我们的音质要求。<br>（2）缺点：编码时无法估计压缩出来的文件体积大小</p>
+<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>一般可分为以下三部分</p>
+<blockquote>
+<p>来自参考3</p>
+</blockquote>
+<p><img src="https://s2.loli.net/2025/04/22/H6ZqBmyU4DMO9rX.jpg" alt="17452054380250.jpg"></p>
+<p>配合具体的解析的开源工程来理解</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mpatric/mp3agic">mp3agic-Java写的读写mp3的开源库</a></p>
+<p>因为工程是以前的,遇到些问题,费了些时间,编译出mp3agic的jar包</p>
+<p><img src="https://s2.loli.net/2025/04/22/aodbrzyhOM2IXTZ.png" alt="Snip20250421_1.png"></p>
+<p>查看该工具加载MP3文件代码，从中也可以看出,分成Id3v1,音频,Id3v2和自定义的部分</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Mp3File.java</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="title function_">init</span><span class="hljs-params">(<span class="hljs-type">int</span> bufferLength, <span class="hljs-type">boolean</span> scanFile)</span> <span class="hljs-keyword">throws</span> IOException, UnsupportedTagException, InvalidDataException {</span><br><span class="line">		<span class="hljs-keyword">if</span> (bufferLength &lt; MINIMUM_BUFFER_LENGTH + <span class="hljs-number">1</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="hljs-string">"Buffer too small"</span>);</span><br><span class="line"></span><br><span class="line">		<span class="hljs-built_in">this</span>.bufferLength = bufferLength;</span><br><span class="line">		<span class="hljs-built_in">this</span>.scanFile = scanFile;</span><br><span class="line"></span><br><span class="line">		<span class="hljs-keyword">try</span> (<span class="hljs-type">SeekableByteChannel</span> <span class="hljs-variable">seekableByteChannel</span> <span class="hljs-operator">=</span> Files.newByteChannel(path, StandardOpenOption.READ)) {</span><br><span class="line">		   <span class="hljs-comment">// 加载Id3v1</span></span><br><span class="line">			initId3v1Tag(seekableByteChannel);</span><br><span class="line">			</span><br><span class="line">			<span class="hljs-comment">// 加载音频帧部分</span></span><br><span class="line">			scanFile(seekableByteChannel);</span><br><span class="line">			<span class="hljs-keyword">if</span> (startOffset &lt; <span class="hljs-number">0</span>) {</span><br><span class="line">				<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="title class_">InvalidDataException</span>(<span class="hljs-string">"No mpegs frames found"</span>);</span><br><span class="line">			}</span><br><span class="line">			</span><br><span class="line">			<span class="hljs-comment">// 加载Id3v2部分</span></span><br><span class="line">			initId3v2Tag(seekableByteChannel);</span><br><span class="line">			<span class="hljs-keyword">if</span> (scanFile) {</span><br><span class="line">			   <span class="hljs-comment">// 加载自定义部分</span></span><br><span class="line">				initCustomTag(seekableByteChannel);</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="ID3V1"><a href="#ID3V1" class="headerlink" title="ID3V1"></a>ID3V1</h4><p>ID3 V1.0标准并不周全，存放的信息少，无法存放歌词，无法录入专辑封面、图片等。</p>
+<p>此标准是将MP3文件尾的最后128个字节用来存放ID3信息</p>
+<table>
+<thead>
+<tr>
+<th>字节</th>
+<th>长度(字节)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1-3</td>
+<td>3</td>
+<td>存放”TAG”字符,表示ID3V1.0标准,紧接其后的是歌曲信息</td>
+</tr>
+<tr>
+<td>4-33</td>
+<td>30</td>
+<td>歌名</td>
+</tr>
+<tr>
+<td>34-63</td>
+<td>30</td>
+<td>作者</td>
+</tr>
+<tr>
+<td>64-93</td>
+<td>30</td>
+<td>专辑名</td>
+</tr>
+<tr>
+<td>94-97</td>
+<td>4</td>
+<td>年份</td>
+</tr>
+<tr>
+<td>98-127</td>
+<td>30</td>
+<td>附注</td>
+</tr>
+<tr>
+<td>128</td>
+<td>1</td>
+<td>MP3音乐类别，共147种</td>
+</tr>
+</tbody></table>
+<p>音乐类型具体可以看 ID3v1Geners.java中定义的枚举或者本文后的参考3</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">0="Blues";</span><br><span class="line">1="ClassicRock";</span><br><span class="line">2="Country";</span><br><span class="line">3="Dance";</span><br><span class="line">4="Disco";</span><br><span class="line">5="Funk";</span><br><span class="line">6="Grunge";</span><br><span class="line">7="Hip-Hop";</span><br><span class="line">8="Jazz";</span><br><span class="line">9="Metal";</span><br><span class="line">10="NewAge";</span><br><span class="line">11="Oldies";</span><br><span class="line">12="Other";</span><br><span class="line">13="Pop";</span><br><span class="line">14="R&amp;B";</span><br><span class="line">15="Rap";</span><br><span class="line">16="Reggae";</span><br><span class="line">17="Rock";</span><br><span class="line">18="Techno";</span><br><span class="line">...</span><br><span class="line">143="Salsa";</span><br><span class="line">144="Trashl";</span><br><span class="line">145="Anime";</span><br><span class="line">146="JPop";</span><br><span class="line">147="Synthpop";</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h5 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h5><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Main.java</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="title class_">Main</span> {</span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InvalidDataException, UnsupportedTagException, IOException {</span><br><span class="line">        <span class="hljs-type">Main</span> <span class="hljs-variable">parse</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">Main</span>();</span><br><span class="line">        <span class="hljs-type">String</span> <span class="hljs-variable">filename</span> <span class="hljs-operator">=</span> <span class="hljs-string">"resource/v24tagswithalbumimage.mp3"</span>;</span><br><span class="line">        ...</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="title function_">getID3v1Tag</span> <span class="hljs-params">(String filename)</span> <span class="hljs-keyword">throws</span> InvalidDataException, UnsupportedTagException, IOException {</span><br><span class="line">        System.out.println(<span class="hljs-string">"\n========================MP3 ID3v1============================"</span>);</span><br><span class="line">        <span class="hljs-type">Mp3File</span> <span class="hljs-variable">mp3file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">Mp3File</span>(filename);</span><br><span class="line">        <span class="hljs-keyword">if</span> (mp3file.hasId3v1Tag()) {</span><br><span class="line">            <span class="hljs-type">ID3v1</span> <span class="hljs-variable">id3v1Tag</span> <span class="hljs-operator">=</span> mp3file.getId3v1Tag();</span><br><span class="line">            System.out.println(<span class="hljs-string">"Track: "</span> + id3v1Tag.getTrack());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Artist: "</span> + id3v1Tag.getArtist());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Title: "</span> + id3v1Tag.getTitle());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Album: "</span> + id3v1Tag.getAlbum());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Year: "</span> + id3v1Tag.getYear());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Genre: "</span> + id3v1Tag.getGenre() + <span class="hljs-string">" ("</span> + id3v1Tag.getGenreDescription() + <span class="hljs-string">")"</span>);</span><br><span class="line">            System.out.println(<span class="hljs-string">"Comment: "</span> + id3v1Tag.getComment());</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+
+<p><img src="https://s2.loli.net/2025/04/22/zyR5vFtPVCoBlcX.png" alt="2025-04-22 11.53.22.png"></p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="title function_">initId3v1Tag</span><span class="hljs-params">(SeekableByteChannel var1)</span> <span class="hljs-keyword">throws</span> IOException {</span><br><span class="line">        <span class="hljs-comment">// 创建128个字节的大小缓冲区</span></span><br><span class="line">        <span class="hljs-type">ByteBuffer</span> <span class="hljs-variable">var2</span> <span class="hljs-operator">=</span> ByteBuffer.allocate(<span class="hljs-number">128</span>);</span><br><span class="line">        <span class="hljs-comment">// 文件对象指向尾部 - 128的位置</span></span><br><span class="line">        var1.position(<span class="hljs-built_in">this</span>.getLength() - <span class="hljs-number">128L</span>);</span><br><span class="line">        var2.clear();</span><br><span class="line">        <span class="hljs-comment">// 读取128个字节</span></span><br><span class="line">        <span class="hljs-type">int</span> <span class="hljs-variable">var3</span> <span class="hljs-operator">=</span> var1.read(var2);</span><br><span class="line">        <span class="hljs-keyword">if</span> (var3 &lt; <span class="hljs-number">128</span>) {</span><br><span class="line">            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="title class_">IOException</span>(<span class="hljs-string">"Not enough bytes read"</span>);</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-keyword">try</span> {</span><br><span class="line">                <span class="hljs-comment">// 创建id3vTag对象。将128个字节传入</span></span><br><span class="line">                <span class="hljs-built_in">this</span>.id3v1Tag = <span class="hljs-keyword">new</span> <span class="title class_">ID3v1Tag</span>(var2.array());</span><br><span class="line">            } <span class="hljs-keyword">catch</span> (NoSuchTagException var5) {</span><br><span class="line">                <span class="hljs-comment">// 不是以TAG开头抛出异常在这里捕获,是否有Id3v1这个就是判断该属性</span></span><br><span class="line">                <span class="hljs-comment">// public boolean hasId3v1Tag() {</span></span><br><span class="line">                <span class="hljs-comment">//        return this.id3v1Tag != null;</span></span><br><span class="line">                <span class="hljs-comment">// }</span></span><br><span class="line">                <span class="hljs-built_in">this</span>.id3v1Tag = <span class="hljs-literal">null</span>;</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="title function_">unpackTag</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] var1)</span> <span class="hljs-keyword">throws</span> NoSuchTagException {</span><br><span class="line">        <span class="hljs-comment">// 是否以TAG开头</span></span><br><span class="line">        <span class="hljs-built_in">this</span>.sanityCheckTag(var1);</span><br><span class="line">        <span class="hljs-comment">// 这里就是根据协议读取指定区间,然后转成对应的内容</span></span><br><span class="line">        <span class="hljs-built_in">this</span>.title = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">3</span>, <span class="hljs-number">30</span>));</span><br><span class="line">        <span class="hljs-built_in">this</span>.artist = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">33</span>, <span class="hljs-number">30</span>));</span><br><span class="line">        <span class="hljs-built_in">this</span>.album = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">63</span>, <span class="hljs-number">30</span>));</span><br><span class="line">        <span class="hljs-built_in">this</span>.year = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">93</span>, <span class="hljs-number">4</span>));</span><br><span class="line">        <span class="hljs-comment">// 音乐类型</span></span><br><span class="line">        <span class="hljs-built_in">this</span>.genre = var1[<span class="hljs-number">127</span>] &amp; <span class="hljs-number">255</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.genre == <span class="hljs-number">255</span>) {</span><br><span class="line">            <span class="hljs-built_in">this</span>.genre = -<span class="hljs-number">1</span>;</span><br><span class="line">        }</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// 读取附注</span></span><br><span class="line">        <span class="hljs-keyword">if</span> (var1[<span class="hljs-number">125</span>] != <span class="hljs-number">0</span>) {</span><br><span class="line">            <span class="hljs-built_in">this</span>.comment = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">97</span>, <span class="hljs-number">30</span>));</span><br><span class="line">            <span class="hljs-built_in">this</span>.track = <span class="hljs-literal">null</span>;</span><br><span class="line">        } <span class="hljs-keyword">else</span> {</span><br><span class="line">            <span class="hljs-built_in">this</span>.comment = BufferTools.trimStringRight(BufferTools.byteBufferToStringIgnoringEncodingIssues(var1, <span class="hljs-number">97</span>, <span class="hljs-number">28</span>));</span><br><span class="line">            <span class="hljs-type">byte</span> <span class="hljs-variable">var2</span> <span class="hljs-operator">=</span> var1[<span class="hljs-number">126</span>];</span><br><span class="line">            <span class="hljs-keyword">if</span> (var2 == <span class="hljs-number">0</span>) {</span><br><span class="line">                <span class="hljs-built_in">this</span>.track = <span class="hljs-string">""</span>;</span><br><span class="line">            } <span class="hljs-keyword">else</span> {</span><br><span class="line">                <span class="hljs-built_in">this</span>.track = Integer.toString(var2);</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">    }</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 最后调用String,然后编码格式是ISO-8859-1,应该不支持中文</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="title function_">byteBufferToStringIgnoringEncodingIssues</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] var0, <span class="hljs-type">int</span> var1, <span class="hljs-type">int</span> var2)</span> {</span><br><span class="line">        <span class="hljs-keyword">try</span> {</span><br><span class="line">            <span class="hljs-keyword">return</span> byteBufferToString(var0, var1, var2, defaultCharsetName);</span><br><span class="line">        } <span class="hljs-keyword">catch</span> (UnsupportedEncodingException var4) {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span><br><span class="line">        }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="音频帧"><a href="#音频帧" class="headerlink" title="音频帧"></a>音频帧</h4><blockquote>
+<p>来自参考1</p>
+</blockquote>
+<p>每个帧都有一个帧头，长度是四个字节，帧后面可能有2字节的CRC校验，取决于帧头的第16位，为0则无校验，为1则有校验，后面是可变长度的附加信息，对于标准的MP3文件来说，其长度是32字节，紧接其后的是压缩的声音数据，当解码器读到此处时就进行解码了。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>长度(字节)</th>
+<th>属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>帧头</td>
+<td>4</td>
+<td>必存在</td>
+</tr>
+<tr>
+<td>CRC</td>
+<td>2</td>
+<td>可能存在</td>
+</tr>
+<tr>
+<td>Side Info</td>
+<td>32</td>
+<td>必存在</td>
+</tr>
+<tr>
+<td>声音数据</td>
+<td>N</td>
+<td>必存在</td>
+</tr>
+</tbody></table>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">typedef</span> FrameHeader {</span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> sync:<span class="hljs-number">11</span>; <span class="hljs-comment">// 同步信息</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> version:<span class="hljs-number">2</span>; <span class="hljs-comment">// 版本</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> layer: <span class="hljs-number">2</span>; <span class="hljs-comment">// 层</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> error protection:<span class="hljs-number">1</span>; <span class="hljs-comment">// 是否要CRC校验</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> bitrate_index:<span class="hljs-number">4</span>; <span class="hljs-comment">// 位率</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> sampling_frequency:<span class="hljs-number">2</span>; <span class="hljs-comment">// 采样频率</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> padding:<span class="hljs-number">1</span>; <span class="hljs-comment">// 帧长调节</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> private:<span class="hljs-number">1</span>; <span class="hljs-comment">// 保留字</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> mode:<span class="hljs-number">2</span>; <span class="hljs-comment">// 声道模式</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> mode extension:<span class="hljs-number">2</span>; <span class="hljs-comment">// 扩充模式</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> copyright:<span class="hljs-number">1</span>; <span class="hljs-comment">// 版权</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> original:<span class="hljs-number">1</span>; <span class="hljs-comment">// 原版标志</span></span><br><span class="line">    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> emphasis:<span class="hljs-number">2</span>; <span class="hljs-comment">// 强调模式</span></span><br><span class="line">}HEADER, *LPHEADER;</span><br></pre></td></tr></tbody></table></figure>
+
+
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>位长</th>
+<th>第几字节</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>同步信息</td>
+<td>11</td>
+<td>1~2</td>
+<td>所有位均为1，第1字节恒为FF</td>
+</tr>
+<tr>
+<td>版本</td>
+<td>2</td>
+<td>2</td>
+<td>00-MPEG 2.5 01-未定义 10-MPEG2 11-MPEG 1</td>
+</tr>
+<tr>
+<td>层</td>
+<td>2</td>
+<td>2</td>
+<td>00-未定义 01-Layer 3 10-Layer 2 11-Layer 1</td>
+</tr>
+<tr>
+<td>CRC校验</td>
+<td>1</td>
+<td>2</td>
+<td>0-校验 1-不校验</td>
+</tr>
+<tr>
+<td>位率</td>
+<td>4</td>
+<td>3</td>
+<td>取样率,单位为kbs。详见下表</td>
+</tr>
+<tr>
+<td>采样频率</td>
+<td>2</td>
+<td>3</td>
+<td>MPEG-1: 00:44.1kHz 01:48kHz 10:32kHz 11-未定义</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>MPEG-2: 00:22.05kHz 01:24kHz 10:16kHz 11-未定义</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>MPEG-2.5: 00:11.025kHz 01:12kHz 10:8kHz 11-未定义</td>
+</tr>
+<tr>
+<td>帧长调节</td>
+<td>1</td>
+<td>3</td>
+<td>用于调整文件头长度，0:无需调整 1:调整</td>
+</tr>
+<tr>
+<td>保留字</td>
+<td>1</td>
+<td>3</td>
+<td>没有使用</td>
+</tr>
+<tr>
+<td>声道模式</td>
+<td>2</td>
+<td>4</td>
+<td>00:立体声Stereo 01:Joint Stereo 10:双声道 11:单声道</td>
+</tr>
+<tr>
+<td>扩充模式</td>
+<td>2</td>
+<td>4</td>
+<td>当声道模式为01时才使用</td>
+</tr>
+<tr>
+<td>版权</td>
+<td>1</td>
+<td>4</td>
+<td>0:不合法 1:合法</td>
+</tr>
+<tr>
+<td>原版标志</td>
+<td>1</td>
+<td>4</td>
+<td>是否原版, 0: 非原版，1:原版</td>
+</tr>
+<tr>
+<td>强调方式</td>
+<td>2</td>
+<td>4</td>
+<td>用于声音降噪压缩后再补偿的分类,很少用到</td>
+</tr>
+</tbody></table>
+<p>位率</p>
+<p>V1: MPEG 1<br>V2: MPEG 2 和 MPEG 2.5</p>
+<p>L1: Layer 1<br>L2: Lyaer 2<br>L3: Layer 3</p>
+<table>
+<thead>
+<tr>
+<th>bits</th>
+<th>V1,L1</th>
+<th>V1,L2</th>
+<th>V1,L3</th>
+<th>V2,L1</th>
+<th>V2,L2</th>
+<th>V2,L3</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0000</td>
+<td>free</td>
+<td>free</td>
+<td>free</td>
+<td>free</td>
+<td>free</td>
+<td>free</td>
+</tr>
+<tr>
+<td>0001</td>
+<td>32</td>
+<td>32</td>
+<td>32</td>
+<td>32(32)</td>
+<td>32(8)</td>
+<td>8(8)</td>
+</tr>
+<tr>
+<td>0010</td>
+<td>64</td>
+<td>48</td>
+<td>40</td>
+<td>64(48)</td>
+<td>48(16)</td>
+<td>16(16)</td>
+</tr>
+<tr>
+<td>0011</td>
+<td>96</td>
+<td>56</td>
+<td>48</td>
+<td>96(56)</td>
+<td>56(24)</td>
+<td>24(24)</td>
+</tr>
+<tr>
+<td>0100</td>
+<td>128</td>
+<td>64</td>
+<td>56</td>
+<td>128(64)</td>
+<td>64(32)</td>
+<td>32(32)</td>
+</tr>
+<tr>
+<td>0101</td>
+<td>160</td>
+<td>80</td>
+<td>64</td>
+<td>160(80)</td>
+<td>80(40)</td>
+<td>64(40)</td>
+</tr>
+<tr>
+<td>0110</td>
+<td>192</td>
+<td>96</td>
+<td>80</td>
+<td>192(96)</td>
+<td>96(48)</td>
+<td>80(48)</td>
+</tr>
+<tr>
+<td>0111</td>
+<td>224</td>
+<td>112</td>
+<td>96</td>
+<td>224(112)</td>
+<td>112(56)</td>
+<td>56(56)</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>256</td>
+<td>128</td>
+<td>112</td>
+<td>256(128)</td>
+<td>128(64)</td>
+<td>64(64)</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>288</td>
+<td>160</td>
+<td>128</td>
+<td>288(144)</td>
+<td>160(80)</td>
+<td>128(80)</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>320</td>
+<td>192</td>
+<td>160</td>
+<td>320(160)</td>
+<td>192(96)</td>
+<td>160(96)</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>352</td>
+<td>224</td>
+<td>192</td>
+<td>356(176)</td>
+<td>224(112)</td>
+<td>112(112)</td>
+</tr>
+<tr>
+<td>1100</td>
+<td>384</td>
+<td>256</td>
+<td>224</td>
+<td>384(192)</td>
+<td>256(128)</td>
+<td>128(128)</td>
+</tr>
+<tr>
+<td>1101</td>
+<td>416</td>
+<td>320</td>
+<td>256</td>
+<td>416(224)</td>
+<td>320(144)</td>
+<td>256(144)</td>
+</tr>
+<tr>
+<td>1110</td>
+<td>448</td>
+<td>384</td>
+<td>320</td>
+<td>448(256)</td>
+<td>384(160)</td>
+<td>320(160)</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>bad</td>
+<td>bad</td>
+<td>bad</td>
+<td>bad</td>
+<td>bad</td>
+<td>bad</td>
+</tr>
+</tbody></table>
+<p><strong>帧大小</strong>即每帧的采样数，表示一帧数据中采样的个数，该值是恒定的</p>
+<p>MP3的帧大小是1152</p>
+<p><strong>帧长度</strong>是压缩时每一帧的长度，包括帧头的4个字节。它将填充的空位也计算在内。Layer 2和Layer 3的空位是1字节。当读取MPEG文件时必须计算该值以便找到相邻的帧</p>
+<p>计算公式:</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Layer2/3：Len(字节) = ((每帧采样数/8*比特率)/采样频率)+填充</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>例：MPEG1 Layer3 比特率128000，采样率44100，填充0，帧长度为：((1152/8*128K)/44.1K+0=417字节</p>
+</blockquote>
+<p><strong>帧持续时间</strong></p>
+<p>计算公式:</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">每帧持续时间(毫秒) = 每帧采样数 / 采样频率 * 1000</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote>
+<p>例：1152/441000*1000=26ms</p>
+</blockquote>
+<p>帧头后边是Side Info。对标准的立体声MP3文件来说其长度为32字节。当解码器在读到上述信息后，就可以进行解码了</p>
+<h5 id="验证-1"><a href="#验证-1" class="headerlink" title="验证"></a>验证</h5><p>读取音频数据帧头</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Mp3File.java</span></span><br><span class="line"><span class="hljs-comment">// 初始化方法</span></span><br><span class="line">...</span><br><span class="line"><span class="hljs-comment">// 传MP3文件</span></span><br><span class="line">scanFile(seekableByteChannel);</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Mp3File.java</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="title function_">scanFile</span><span class="hljs-params">(SeekableByteChannel seekableByteChannel)</span> <span class="hljs-keyword">throws</span> IOException, InvalidDataException {</span><br><span class="line">      <span class="hljs-comment">// 读取MP3文件的缓冲区</span></span><br><span class="line">		<span class="hljs-type">ByteBuffer</span> <span class="hljs-variable">byteBuffer</span> <span class="hljs-operator">=</span> ByteBuffer.allocate(bufferLength);</span><br><span class="line">		<span class="hljs-comment">// &lt;1&gt;获取音频帧的起始位置</span></span><br><span class="line">		<span class="hljs-type">int</span> <span class="hljs-variable">fileOffset</span> <span class="hljs-operator">=</span> preScanFile(seekableByteChannel);</span><br><span class="line">		seekableByteChannel.position(fileOffset);</span><br><span class="line">		<span class="hljs-type">boolean</span> <span class="hljs-variable">lastBlock</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;</span><br><span class="line">		<span class="hljs-type">int</span> <span class="hljs-variable">lastOffset</span> <span class="hljs-operator">=</span> fileOffset;</span><br><span class="line">		<span class="hljs-keyword">while</span> (!lastBlock) {</span><br><span class="line">			byteBuffer.clear();</span><br><span class="line">			<span class="hljs-type">int</span> <span class="hljs-variable">bytesRead</span> <span class="hljs-operator">=</span> seekableByteChannel.read(byteBuffer);</span><br><span class="line">			<span class="hljs-type">byte</span>[] bytes = byteBuffer.array();</span><br><span class="line">			<span class="hljs-comment">// 最后一帧字节长度小于缓冲区长度</span></span><br><span class="line">			<span class="hljs-keyword">if</span> (bytesRead &lt; bufferLength) lastBlock = <span class="hljs-literal">true</span>;</span><br><span class="line">			<span class="hljs-keyword">if</span> (bytesRead &gt;= MINIMUM_BUFFER_LENGTH) {</span><br><span class="line">				<span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {</span><br><span class="line">					<span class="hljs-keyword">try</span> {</span><br><span class="line">						<span class="hljs-type">int</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span><br><span class="line">						<span class="hljs-comment">// &lt;2&gt;音频首帧的处理</span></span><br><span class="line">						<span class="hljs-keyword">if</span> (startOffset &lt; <span class="hljs-number">0</span>) {</span><br><span class="line">							offset = scanBlockForStart(bytes, bytesRead, fileOffset, offset);</span><br><span class="line">							<span class="hljs-keyword">if</span> (startOffset &gt;= <span class="hljs-number">0</span> &amp;&amp; !scanFile) {</span><br><span class="line">								<span class="hljs-keyword">return</span>;</span><br><span class="line">							}</span><br><span class="line">							lastOffset = startOffset;</span><br><span class="line">						}</span><br><span class="line">						<span class="hljs-comment">// &lt;3&gt;读取音频帧</span></span><br><span class="line">						offset = scanBlock(bytes, bytesRead, fileOffset, offset);</span><br><span class="line">						<span class="hljs-comment">// 文件偏移量</span></span><br><span class="line">						fileOffset += offset;</span><br><span class="line">						<span class="hljs-comment">// 更新文件的偏移量</span></span><br><span class="line">						seekableByteChannel.position(fileOffset);</span><br><span class="line">						<span class="hljs-keyword">break</span>;</span><br><span class="line">					} <span class="hljs-keyword">catch</span> (InvalidDataException e) {</span><br><span class="line">						<span class="hljs-keyword">if</span> (frameCount &lt; <span class="hljs-number">2</span>) {</span><br><span class="line">							startOffset = -<span class="hljs-number">1</span>;</span><br><span class="line">							xingOffset = -<span class="hljs-number">1</span>;</span><br><span class="line">							frameCount = <span class="hljs-number">0</span>;</span><br><span class="line">							bitrates.clear();</span><br><span class="line">							lastBlock = <span class="hljs-literal">false</span>;</span><br><span class="line">							fileOffset = lastOffset + <span class="hljs-number">1</span>;</span><br><span class="line">							<span class="hljs-keyword">if</span> (fileOffset == <span class="hljs-number">0</span>)</span><br><span class="line">								<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="title class_">InvalidDataException</span>(<span class="hljs-string">"Valid start of mpeg frames not found"</span>, e);</span><br><span class="line">							seekableByteChannel.position(fileOffset);</span><br><span class="line">							<span class="hljs-keyword">break</span>;</span><br><span class="line">						}</span><br><span class="line">						<span class="hljs-keyword">return</span>;</span><br><span class="line">					}</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>&lt;1&gt; 获取文件偏移量</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">protected</span> <span class="hljs-type">int</span> <span class="title function_">preScanFile</span><span class="hljs-params">(SeekableByteChannel seekableByteChannel)</span> {</span><br><span class="line">		<span class="hljs-type">ByteBuffer</span> <span class="hljs-variable">byteBuffer</span> <span class="hljs-operator">=</span> ByteBuffer.allocate(AbstractID3v2Tag.HEADER_LENGTH);</span><br><span class="line">		<span class="hljs-keyword">try</span> {</span><br><span class="line">			seekableByteChannel.position(<span class="hljs-number">0</span>);</span><br><span class="line">			byteBuffer.clear();</span><br><span class="line">			<span class="hljs-type">int</span> <span class="hljs-variable">bytesRead</span> <span class="hljs-operator">=</span> seekableByteChannel.read(byteBuffer);</span><br><span class="line">			<span class="hljs-comment">// ID3v2的表头 10个字节</span></span><br><span class="line">			<span class="hljs-keyword">if</span> (bytesRead == AbstractID3v2Tag.HEADER_LENGTH) {</span><br><span class="line">				<span class="hljs-keyword">try</span> {</span><br><span class="line">					<span class="hljs-type">byte</span>[] bytes = byteBuffer.array();</span><br><span class="line">					ID3v2TagFactory.sanityCheckTag(bytes);</span><br><span class="line">					<span class="hljs-comment">// 音频帧的起始位置是通过表头的10个字节 + f(表头最后的4个字节)计算出来,后面可知就是ID3v2的结构体的size</span></span><br><span class="line">					<span class="hljs-keyword">return</span> AbstractID3v2Tag.HEADER_LENGTH + BufferTools.unpackSynchsafeInteger(bytes[AbstractID3v2Tag.DATA_LENGTH_OFFSET], bytes[AbstractID3v2Tag.DATA_LENGTH_OFFSET + <span class="hljs-number">1</span>], bytes[AbstractID3v2Tag.DATA_LENGTH_OFFSET + <span class="hljs-number">2</span>], bytes[AbstractID3v2Tag.DATA_LENGTH_OFFSET + <span class="hljs-number">3</span>]);</span><br><span class="line">				} <span class="hljs-keyword">catch</span> (NoSuchTagException | UnsupportedTagException e) {</span><br><span class="line">					<span class="hljs-comment">// do nothing</span></span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		} <span class="hljs-keyword">catch</span> (IOException e) {</span><br><span class="line">			<span class="hljs-comment">// do nothing</span></span><br><span class="line">		}</span><br><span class="line">		<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>规则代码如下</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="title function_">shiftByte</span><span class="hljs-params">(<span class="hljs-type">byte</span> c, <span class="hljs-type">int</span> places)</span> {</span><br><span class="line">      <span class="hljs-comment">// c 位与 0xff 那还是原来的字节，只保留低8位</span></span><br><span class="line">		<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> c &amp; <span class="hljs-number">0xff</span>;</span><br><span class="line">		<span class="hljs-comment">// &lt; 0 ，i向左位移</span></span><br><span class="line">		<span class="hljs-comment">// &gt; 0 , i向右位移，虽然这里传的都是&lt;0，考虑大端的场景应该是兼容</span></span><br><span class="line">		<span class="hljs-keyword">if</span> (places &lt; <span class="hljs-number">0</span>) {</span><br><span class="line">			<span class="hljs-keyword">return</span> i &lt;&lt; -places;</span><br><span class="line">		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (places &gt; <span class="hljs-number">0</span>) {</span><br><span class="line">			<span class="hljs-keyword">return</span> i &gt;&gt; places;</span><br><span class="line">		}</span><br><span class="line">		<span class="hljs-keyword">return</span> i;</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="title function_">unpackSynchsafeInteger</span><span class="hljs-params">(<span class="hljs-type">byte</span> b1, <span class="hljs-type">byte</span> b2, <span class="hljs-type">byte</span> b3, <span class="hljs-type">byte</span> b4)</span> {</span><br><span class="line">      <span class="hljs-comment">// b4是size的最低位 =&gt; size[3]</span></span><br><span class="line">      <span class="hljs-comment">// b3是size[2]</span></span><br><span class="line">      <span class="hljs-comment">// ...</span></span><br><span class="line">      <span class="hljs-comment">// &amp; 0x7f就是只保留该位,然后通过位移得到该位的值,然后相加计算出ID3v2的总长度</span></span><br><span class="line">		<span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> ((<span class="hljs-type">byte</span>) (b4 &amp; <span class="hljs-number">0x7f</span>));</span><br><span class="line">		value += shiftByte((<span class="hljs-type">byte</span>) (b3 &amp; <span class="hljs-number">0x7f</span>), -<span class="hljs-number">7</span>);</span><br><span class="line">		value += shiftByte((<span class="hljs-type">byte</span>) (b2 &amp; <span class="hljs-number">0x7f</span>), -<span class="hljs-number">14</span>);</span><br><span class="line">		value += shiftByte((<span class="hljs-type">byte</span>) (b1 &amp; <span class="hljs-number">0x7f</span>), -<span class="hljs-number">21</span>);</span><br><span class="line">		<span class="hljs-keyword">return</span> value;</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>&lt;2&gt;音频首帧的处理</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="title function_">scanBlockForStart</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] bytes, <span class="hljs-type">int</span> bytesRead, <span class="hljs-type">int</span> absoluteOffset, <span class="hljs-type">int</span> offset)</span> {</span><br><span class="line">		<span class="hljs-keyword">while</span> (offset &lt; bytesRead - MINIMUM_BUFFER_LENGTH) {</span><br><span class="line">		   <span class="hljs-comment">// 音频帧头同步: 11位都要是1 = 0b1111 1111 1110 000。低位与E0要等于E0</span></span><br><span class="line">			<span class="hljs-keyword">if</span> (bytes[offset] == (<span class="hljs-type">byte</span>) <span class="hljs-number">0xFF</span> &amp;&amp; (bytes[offset + <span class="hljs-number">1</span>] &amp; (<span class="hljs-type">byte</span>) <span class="hljs-number">0xE0</span>) == (<span class="hljs-type">byte</span>) <span class="hljs-number">0xE0</span>) {</span><br><span class="line">				<span class="hljs-keyword">try</span> {</span><br><span class="line">				   <span class="hljs-comment">// 初始化音频帧，帧头有4个字节</span></span><br><span class="line">					<span class="hljs-type">MpegFrame</span> <span class="hljs-variable">frame</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">MpegFrame</span>(bytes[offset], bytes[offset + <span class="hljs-number">1</span>], bytes[offset + <span class="hljs-number">2</span>], bytes[offset + <span class="hljs-number">3</span>]);</span><br><span class="line">					<span class="hljs-comment">// 因为VBR是Xing公司发明的,所以音频首帧里会留"痕迹"，位于MP3文件中第一个有效帧的数据区</span></span><br><span class="line">					<span class="hljs-keyword">if</span> (xingOffset &lt; <span class="hljs-number">0</span> &amp;&amp; isXingFrame(bytes, offset)) {</span><br><span class="line">						xingOffset = absoluteOffset + offset;</span><br><span class="line">						xingBitrate = frame.getBitrate();</span><br><span class="line">						offset += frame.getLengthInBytes();</span><br><span class="line">					} <span class="hljs-keyword">else</span> {</span><br><span class="line">					   <span class="hljs-comment">// 非VBR</span></span><br><span class="line">						startOffset = absoluteOffset + offset;</span><br><span class="line">						channelMode = frame.getChannelMode();</span><br><span class="line">						emphasis = frame.getEmphasis();</span><br><span class="line">						layer = frame.getLayer();</span><br><span class="line">						modeExtension = frame.getModeExtension();</span><br><span class="line">						sampleRate = frame.getSampleRate();</span><br><span class="line">						version = frame.getVersion();</span><br><span class="line">						copyright = frame.isCopyright();</span><br><span class="line">						original = frame.isOriginal();</span><br><span class="line">						<span class="hljs-comment">// 帧数量加1</span></span><br><span class="line">						frameCount++;</span><br><span class="line">						<span class="hljs-comment">// 帧率添加到集合中,如果有不同多个值说明是VBR</span></span><br><span class="line">						addBitrate(frame.getBitrate());</span><br><span class="line">						offset += frame.getLengthInBytes();</span><br><span class="line">						<span class="hljs-keyword">return</span> offset;</span><br><span class="line">					}</span><br><span class="line">				} <span class="hljs-keyword">catch</span> (InvalidDataException e) {</span><br><span class="line">					offset++;</span><br><span class="line">				}</span><br><span class="line">			} <span class="hljs-keyword">else</span> {</span><br><span class="line">				offset++;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="hljs-keyword">return</span> offset;</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这里按音频帧头的格式填充</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="title function_">MpegFrame</span><span class="hljs-params">(<span class="hljs-type">byte</span> frameData1, <span class="hljs-type">byte</span> frameData2, <span class="hljs-type">byte</span> frameData3, <span class="hljs-type">byte</span> frameData4)</span> <span class="hljs-keyword">throws</span> InvalidDataException {</span><br><span class="line">		<span class="hljs-type">long</span> <span class="hljs-variable">frameHeader</span> <span class="hljs-operator">=</span> BufferTools.unpackInteger(frameData1, frameData2, frameData3, frameData4);</span><br><span class="line">		setFields(frameHeader);</span><br><span class="line">	}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="title function_">setFields</span><span class="hljs-params">(<span class="hljs-type">long</span> frameHeader)</span> <span class="hljs-keyword">throws</span> InvalidDataException {</span><br><span class="line">		<span class="hljs-type">long</span> <span class="hljs-variable">frameSync</span> <span class="hljs-operator">=</span> extractField(frameHeader, BITMASK_FRAME_SYNC);</span><br><span class="line">		<span class="hljs-keyword">if</span> (frameSync != FRAME_SYNC) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="title class_">InvalidDataException</span>(<span class="hljs-string">"Frame sync missing"</span>);</span><br><span class="line">		setVersion(extractField(frameHeader, BITMASK_VERSION));</span><br><span class="line">		setLayer(extractField(frameHeader, BITMASK_LAYER));</span><br><span class="line">		setProtection(extractField(frameHeader, BITMASK_PROTECTION));</span><br><span class="line">		setBitRate(extractField(frameHeader, BITMASK_BITRATE));</span><br><span class="line">		setSampleRate(extractField(frameHeader, BITMASK_SAMPLE_RATE));</span><br><span class="line">		setPadding(extractField(frameHeader, BITMASK_PADDING));</span><br><span class="line">		setPrivate(extractField(frameHeader, BITMASK_PRIVATE));</span><br><span class="line">		setChannelMode(extractField(frameHeader, BITMASK_CHANNEL_MODE));</span><br><span class="line">		setModeExtension(extractField(frameHeader, BITMASK_MODE_EXTENSION));</span><br><span class="line">		setCopyright(extractField(frameHeader, BITMASK_COPYRIGHT));</span><br><span class="line">		setOriginal(extractField(frameHeader, BITMASK_ORIGINAL));</span><br><span class="line">		setEmphasis(extractField(frameHeader, BITMASK_EMPHASIS));</span><br><span class="line">	}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p>判断是否是”Xing”帧</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="title function_">isXingFrame</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] bytes, <span class="hljs-type">int</span> offset)</span> {</span><br><span class="line">		<span class="hljs-keyword">if</span> (bytes.length &gt;= offset + XING_MARKER_OFFSET_1 + <span class="hljs-number">3</span>) {</span><br><span class="line">			<span class="hljs-keyword">if</span> (<span class="hljs-string">"Xing"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_1, <span class="hljs-number">4</span>)))</span><br><span class="line">				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">			<span class="hljs-keyword">if</span> (<span class="hljs-string">"Info"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_1, <span class="hljs-number">4</span>)))</span><br><span class="line">				<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">			<span class="hljs-keyword">if</span> (bytes.length &gt;= offset + XING_MARKER_OFFSET_2 + <span class="hljs-number">3</span>) {</span><br><span class="line">				<span class="hljs-keyword">if</span> (<span class="hljs-string">"Xing"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_2, <span class="hljs-number">4</span>)))</span><br><span class="line">					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">				<span class="hljs-keyword">if</span> (<span class="hljs-string">"Info"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_2, <span class="hljs-number">4</span>)))</span><br><span class="line">					<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">				<span class="hljs-keyword">if</span> (bytes.length &gt;= offset + XING_MARKER_OFFSET_3 + <span class="hljs-number">3</span>) {</span><br><span class="line">					<span class="hljs-keyword">if</span> (<span class="hljs-string">"Xing"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_3, <span class="hljs-number">4</span>)))</span><br><span class="line">						<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">					<span class="hljs-keyword">if</span> (<span class="hljs-string">"Info"</span>.equals(BufferTools.byteBufferToStringIgnoringEncodingIssues(bytes, offset + XING_MARKER_OFFSET_3, <span class="hljs-number">4</span>)))</span><br><span class="line">						<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span><br><span class="line">				}</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>&lt;3&gt;读取音频帧</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="title function_">scanBlock</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] bytes, <span class="hljs-type">int</span> bytesRead, <span class="hljs-type">int</span> absoluteOffset, <span class="hljs-type">int</span> offset)</span> <span class="hljs-keyword">throws</span> InvalidDataException {</span><br><span class="line">		<span class="hljs-keyword">while</span> (offset &lt; bytesRead - MINIMUM_BUFFER_LENGTH) {</span><br><span class="line">		   <span class="hljs-comment">// 同样传4字节的帧头初始化MpegFrame</span></span><br><span class="line">			<span class="hljs-type">MpegFrame</span> <span class="hljs-variable">frame</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">MpegFrame</span>(bytes[offset], bytes[offset + <span class="hljs-number">1</span>], bytes[offset + <span class="hljs-number">2</span>], bytes[offset + <span class="hljs-number">3</span>]);</span><br><span class="line">			<span class="hljs-comment">// 帧信息不一致容错处理,会抛异常</span></span><br><span class="line">			sanityCheckFrame(frame, absoluteOffset + offset);</span><br><span class="line">			<span class="hljs-type">int</span> <span class="hljs-variable">newEndOffset</span> <span class="hljs-operator">=</span> absoluteOffset + offset + frame.getLengthInBytes() - <span class="hljs-number">1</span>;</span><br><span class="line">			<span class="hljs-comment">// 要给ID3v1留128个字节位置</span></span><br><span class="line">			<span class="hljs-keyword">if</span> (newEndOffset &lt; maxEndOffset()) {</span><br><span class="line">				endOffset = absoluteOffset + offset + frame.getLengthInBytes() - <span class="hljs-number">1</span>;</span><br><span class="line">				frameCount++;</span><br><span class="line">				addBitrate(frame.getBitrate());</span><br><span class="line">				offset += frame.getLengthInBytes();</span><br><span class="line">			} <span class="hljs-keyword">else</span> {</span><br><span class="line">				<span class="hljs-keyword">break</span>;</span><br><span class="line">			}</span><br><span class="line">		}</span><br><span class="line">		<span class="hljs-keyword">return</span> offset;</span><br><span class="line">	}</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="ID3V2"><a href="#ID3V2" class="headerlink" title="ID3V2"></a>ID3V2</h4><p>ID3V2一共有四个版本，ID3V2.1/2.2/2.3/2.4</p>
+<p>ID3V2.3由一个标签头和若干个标签帧或者一个扩展标签头组成，至少要有一个标签帧，每一个标签帧记录一种信息，例如作曲、标题等</p>
+<h5 id="标签头"><a href="#标签头" class="headerlink" title="标签头"></a>标签头</h5><p>位于文件开始处，长度为10字节</p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">char</span> Header[<span class="hljs-number">3</span>]; <span class="hljs-comment">/*必须为“ID3”否则认为标签不存在*/</span></span><br><span class="line"><span class="hljs-type">char</span> Ver; <span class="hljs-comment">/*版本号ID3V2.3 就记录3*/</span></span><br><span class="line"><span class="hljs-type">char</span> Revision; <span class="hljs-comment">/*副版本号此版本记录为0*/</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 标志字节一般为0，定义如下(abc000000B)</span></span><br><span class="line"><span class="hljs-comment">// a：表示是否使用Unsynchronisation</span></span><br><span class="line"><span class="hljs-comment">// b：表示是否有扩展头部，一般没有，所以一般也不设置</span></span><br><span class="line"><span class="hljs-comment">// c：表示是否为测试标签，99.99%的标签都不是测试标签，不设置</span></span><br><span class="line"><span class="hljs-type">char</span> Flag; <span class="hljs-comment">/*标志字节，只使用高三位，其它位为0 */</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 标签大小共四个字节，每个字节只使用低7位，最高位不使用恒为0,计算公式如下：</span></span><br><span class="line"><span class="hljs-comment">// Size = (Size[0] &amp; 0x7F) * 0x200000 + (Size[1] &amp; 0x7F) * 0x400+(Size[2] &amp; 0x7F) * 0x80 + (Size[3] &amp; 0x7F)</span></span><br><span class="line"><span class="hljs-type">char</span> Size[<span class="hljs-number">4</span>]; <span class="hljs-comment">/*标签大小*/</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h5 id="标签帧"><a href="#标签帧" class="headerlink" title="标签帧"></a>标签帧</h5><p>每个标签帧都有10个字节的帧头和至少一个字节的内容构成</p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// TIT2: 标题5449 5432</span></span><br><span class="line"><span class="hljs-comment">// TPE1: 作者</span></span><br><span class="line"><span class="hljs-comment">// TALB: 专集</span></span><br><span class="line"><span class="hljs-comment">// TRCK: 音轨格式 N/M 其中N为专集中的第N首，M为专集中共M首，N和M 为ASCII 码表示的数字</span></span><br><span class="line"><span class="hljs-comment">// TYPE: 年代</span></span><br><span class="line"><span class="hljs-comment">// COMM: 备注,格式: "eng\0备注内容"，其中eng 表示备注所使用的自然语言</span></span><br><span class="line"><span class="hljs-type">char</span> ID[<span class="hljs-number">4</span>];   <span class="hljs-comment">/*标识帧，说明其内容，例如作者/标题等*/</span></span><br><span class="line"><span class="hljs-comment">// 帧内容大小，计算公式如下：</span></span><br><span class="line"><span class="hljs-comment">// Size = Size[0]*0x100000000 + Size[1]*0x10000+ Size[2]*0x100 +Size[3];</span></span><br><span class="line"><span class="hljs-type">char</span> Size[<span class="hljs-number">4</span>]; <span class="hljs-comment">/*帧内容的大小，不包括帧头，不得小于1*/</span></span><br><span class="line"><span class="hljs-comment">// 标志帧，使用每个字节的高三位，其他位均为0(abc00000B xyz00000B)</span></span><br><span class="line"><span class="hljs-comment">// a -- 标签保护标志，设置时认为此帧作废</span></span><br><span class="line"><span class="hljs-comment">// b -- 文件保护标志，设置时认为此帧作废</span></span><br><span class="line"><span class="hljs-comment">// c -- 只读标志，设置时认为此帧不能修改</span></span><br><span class="line"><span class="hljs-comment">// x -- 压缩标志，设置时一个字节存放两个BCD 码表示数字</span></span><br><span class="line"><span class="hljs-comment">// y -- 加密标志</span></span><br><span class="line"><span class="hljs-comment">// z -- 组标志，设置时说明此帧和其他的某帧是一组</span></span><br><span class="line"><span class="hljs-type">char</span> Flags[<span class="hljs-number">2</span>]; <span class="hljs-comment">/*标志帧，只定义了6 位*/</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h5 id="验证-2"><a href="#验证-2" class="headerlink" title="验证"></a>验证</h5><p>打印MP3文件中的Id3v2</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="title function_">getID3v2Tag</span><span class="hljs-params">(String filename)</span> <span class="hljs-keyword">throws</span> InvalidDataException, UnsupportedTagException, IOException {</span><br><span class="line">        System.out.println(<span class="hljs-string">"\n========================MP3 ID3v2============================"</span>);</span><br><span class="line">        <span class="hljs-type">Mp3File</span> <span class="hljs-variable">mp3file</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="title class_">Mp3File</span>(filename);</span><br><span class="line">        <span class="hljs-keyword">if</span> (mp3file.hasId3v2Tag()) {</span><br><span class="line">            <span class="hljs-type">ID3v2</span> <span class="hljs-variable">id3v2Tag</span> <span class="hljs-operator">=</span> mp3file.getId3v2Tag();</span><br><span class="line">            System.out.println(<span class="hljs-string">"Track: "</span> + id3v2Tag.getTrack());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Artist: "</span> + id3v2Tag.getArtist());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Title: "</span> + id3v2Tag.getTitle());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Album: "</span> + id3v2Tag.getAlbum());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Year: "</span> + id3v2Tag.getYear());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Genre: "</span> + id3v2Tag.getGenre() + <span class="hljs-string">" ("</span> + id3v2Tag.getGenreDescription() + <span class="hljs-string">")"</span>);</span><br><span class="line">            System.out.println(<span class="hljs-string">"Comment: "</span> + id3v2Tag.getComment());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Lyrics: "</span> + id3v2Tag.getLyrics());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Composer: "</span> + id3v2Tag.getComposer());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Publisher: "</span> + id3v2Tag.getPublisher());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Original artist: "</span> + id3v2Tag.getOriginalArtist());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Album artist: "</span> + id3v2Tag.getAlbumArtist());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Copyright: "</span> + id3v2Tag.getCopyright());</span><br><span class="line">            System.out.println(<span class="hljs-string">"URL: "</span> + id3v2Tag.getUrl());</span><br><span class="line">            System.out.println(<span class="hljs-string">"Encoder: "</span> + id3v2Tag.getEncoder());</span><br><span class="line">            <span class="hljs-type">byte</span>[] albumImageData = id3v2Tag.getAlbumImage();</span><br><span class="line">            <span class="hljs-keyword">if</span> (albumImageData != <span class="hljs-literal">null</span>) {</span><br><span class="line">                System.out.println(<span class="hljs-string">"Have album image data, length: "</span> + albumImageData.length + <span class="hljs-string">" bytes"</span>);</span><br><span class="line">                System.out.println(<span class="hljs-string">"Album image mime type: "</span> + id3v2Tag.getAlbumImageMimeType());</span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<p>结果如下</p>
+<p><img src="https://s2.loli.net/2025/04/22/1qvzS4AeDU82Mik.png" alt="2025-04-22 10.46.41.png"></p>
+<p>从网上下载的一些mp3文件因为是静态码率,所以没有标签头，用Sublime Text打开后就是</p>
+<p><img src="https://s2.loli.net/2025/04/22/rOFtRqAYidpfLEw.png" alt="2025-04-22 09.17.52.png"></p>
+<p>用FFmpeg把pcm压缩编码为mp3会加上</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -y -i v24tagswithalbumimage.mp3 -acodec pcm_s16le -f s16le -ac 2 -ar 44100 v24tagswithalbumimage.pcm</span><br></pre></td></tr></tbody></table></figure>
+
+<p>v24tagswithalbumimage.mp3文件的二进制</p>
+<p><strong>标签头</strong></p>
+<p><img src="https://s2.loli.net/2025/04/22/ChWyQwgUHIvGotY.png" alt="Snip20250422_3.png"></p>
+<p>Header[3] + Version是<code>4944 3304</code>:就是 ID3v2和 第4版<br>Revision:0<br>Flag:0 不使用Unsynchronisation，没有扩展头，非测试标签</p>
+<p>Size[4]是<code>1841</code>根据上面提到的公式</p>
+<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size = (Size[<span class="hljs-number">0</span>] &amp; <span class="hljs-number">0x7F</span>) * <span class="hljs-number">0x200000</span> + (Size[<span class="hljs-number">1</span>] &amp; <span class="hljs-number">0x7F</span>) * <span class="hljs-number">0x400</span>+(Size[<span class="hljs-number">2</span>] &amp; <span class="hljs-number">0x7F</span>) * <span class="hljs-number">0x80</span> + (Size[<span class="hljs-number">3</span>] &amp; <span class="hljs-number">0x7F</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>计算: (0x18 &amp; 0x7F) * 0x80 + (0x41 &amp; 0x7F)<br>= 0x18 * 0x80 + 0x41<br>= 3137</p>
+<p>加上头的10个字节,所以mp3文件的ID3v2部分是 3147</p>
+<p>这个调试的时候也可以验证</p>
+<p><img src="https://s2.loli.net/2025/04/22/ipAszJEDfV36g8v.png" alt="2025-04-22 11.36.58.png"></p>
+<p>var1 是mp3文件, var3 是被认为ID3v2的内容。</p>
+<h4 id="寻找首个音频帧"><a href="#寻找首个音频帧" class="headerlink" title="寻找首个音频帧"></a>寻找首个音频帧</h4><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 根据ID3v2的size + 上面的公式 + ID3v2的文件头</span><br><span class="line">0x1841 =&gt; 0x41 + 0x18 &lt;&lt; 7 = 3137</span><br><span class="line">3137 + 10 = 3147</span><br><span class="line"></span><br><span class="line">3147 = 196 * 16 + 11</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/22/h3lJp4Sms6DQA27.png" alt="2025-04-22 16.23.23.png"></p>
+<p>根据前4个字节 0xfffb9044</p>
+<p>0b1111 1111 111/ 11 / 01 / 0 / 1001 / 00 / 0 / 0 / 01 / 00 0 / 1 / 00 </p>
+<p>同步信息: 0xfffb 前11个都是1<br>版本:11-说明是MPEG 1<br>层:01-说明是Layer 3 是MP3符合预期<br>CRC: 0 不校验<br>位率: 1001，因为是MPEG 1 + Layer 3，根据上面的码表 取样率:128kbps<br>采样率: 00,因为是MPEG 1说明是44.1kHz<br>帧长调节: 0，无需调整<br>保留字: 0<br>声道模式: 01 .Joint 关闭强度立体声 + MS立体声<br>扩充模式: 00<br>版权:0,不合法<br>原版:1,原版<br>强调方式: 00</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/littlezls/article/details/135705670">音频格式之MP3：（1)MP3封装格式简介</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/yagnruinihao/article/details/38662967">静态码率（CBR）和动态码率（VBR）</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/542458374">MP3文件结构解析(超详细)</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/20/Technology-learn-ios-101/">optool为macho文件增加动态库</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>
