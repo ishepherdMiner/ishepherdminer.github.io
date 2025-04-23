@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Flutter 环境搭建 - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="环境 macOS 15.4.1   Xcode Version 16.3 (16E140)   Visual Studio Code 1.99.3   Flutter 3.29.3 • channel stable • https:&#x2F;&#x2F;github.com&#x2F;flutter&#x2F;flutter.gitFramework • revision ea121f8859 (11 days ago) • 2025">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 环境搭建">
+<meta property="og:url" content="http://yoursite.com/2025/04/23/Technology-learn-flutter-01/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="环境 macOS 15.4.1   Xcode Version 16.3 (16E140)   Visual Studio Code 1.99.3   Flutter 3.29.3 • channel stable • https:&#x2F;&#x2F;github.com&#x2F;flutter&#x2F;flutter.gitFramework • revision ea121f8859 (11 days ago) • 2025">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/wLxBUZzjTJ56VCW.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/pgZBGcjDXYrLetq.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/ZN8uYcGFz5qH6KW.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/k56XO9TJUSP4uKG.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/rn9bFJiGXjPgQfq.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/UsDTcoajKwXZxGW.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/zVpktjlgofHO1BJ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/9KbQwvSIqNh2WVZ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/4plLd7awyDuUVsb.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/WYfIP1Q2mAUuw4D.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/htjpFiv1uWNyaEe.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/ayhWGK8fepM3twi.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/u2wOrhsMxikK3Xf.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/cgm3nSCIYsPV1pG.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/gNcidMu6nKTs2BQ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/23/dUjDpyfS3isHOlM.png">
+<meta property="article:published_time" content="2025-04-23T03:13:13.000Z">
+<meta property="article:modified_time" content="2025-04-23T03:14:51.661Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/23/wLxBUZzjTJ56VCW.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#环境">1&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#网络配置">2&nbsp;&nbsp;<b>网络配置</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境搭建">3&nbsp;&nbsp;<b>环境搭建</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#第一个Flutter程序">3.1&nbsp;&nbsp;第一个Flutter程序</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#插件安装">3.1.1&nbsp;&nbsp;插件安装</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#创建Flutter工程">3.1.2&nbsp;&nbsp;创建Flutter工程</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#多平台运行">3.1.3&nbsp;&nbsp;多平台运行</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#体验与其它">4&nbsp;&nbsp;<b>体验与其它</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">5&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Flutter 环境搭建
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-23T03:13:13.000Z" itemprop="datePublished">4月 23 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            8 分钟 读完 (约 1270 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS 15.4.1</p>
+</blockquote>
+<blockquote>
+<p>Xcode Version 16.3 (16E140)</p>
+</blockquote>
+<blockquote>
+<p>Visual Studio Code 1.99.3</p>
+</blockquote>
+<blockquote>
+<p>Flutter 3.29.3 • channel stable • <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter.git">https://github.com/flutter/flutter.git</a><br>Framework • revision ea121f8859 (11 days ago) • 2025-04-11 19:10:07 +0000<br>Engine • revision cf56914b32<br>Tools • Dart 3.7.2 • DevTools 2.42.3</p>
+</blockquote>
+<blockquote>
+<p>iPhone iOS(13.4.1)</p>
+<p>iPhone iOS(18.0.1)</p>
+</blockquote>
+<h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><p>网络原因对镜像做的一些处理</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">export</span> PUB_HOSTED_URL=<span class="hljs-string">"https://pub.flutter-io.cn"</span></span><br><span class="line">$ <span class="hljs-built_in">export</span> FLUTTER_STORAGE_BASE_URL=<span class="hljs-string">"https://storage.flutter-io.cn"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>下载后<a target="_blank" rel="noopener" href="https://docs.flutter.cn/release/archive">SDK镜像</a>,我是放到<code>/usr/local</code>，所以在终端执行下面的代码</p>
+<span id="more"></span> 
+
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">export</span> PATH=<span class="hljs-string">"/usr/local/flutter/bin:<span class="hljs-variable">$PATH</span>"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>可以加到.zshrc/.bashrc里，这点看使用的shell环境</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>我的环境是macOS + iOS,所以选择了参考1的文档，下载了flutter_macos_3.29.3-stable.zip</p>
+<p><img src="https://s2.loli.net/2025/04/23/wLxBUZzjTJ56VCW.png" alt="2025-04-20 20.18.32.png"></p>
+<ol>
+<li>Android 不支持目前是预期的</li>
+<li>Xcode建议升级,好吧,还要升级系统,麻烦</li>
+</ol>
+<p>文档中要WIFI调试,这点目前不关键,然后iPhone Xcode相关的配置文档中也已经详细的写了。</p>
+<p>我主要记录学习Flutter过程中遇到的问题和解决过程,而不是文档的copy</p>
+<h3 id="第一个Flutter程序"><a href="#第一个Flutter程序" class="headerlink" title="第一个Flutter程序"></a>第一个Flutter程序</h3><h4 id="插件安装"><a href="#插件安装" class="headerlink" title="插件安装"></a>插件安装</h4><p>IDE按教程推荐的使用VSCode，搜索flutter &amp;&amp; 安装插件</p>
+<p>文档没有提到,所以按照<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/666632997">flutter vscode环境搭建+vscode插件推荐</a> 装了一些插件</p>
+<p><img src="https://s2.loli.net/2025/04/23/pgZBGcjDXYrLetq.png" alt="2025-04-20 20.31.03.png"></p>
+<h4 id="创建Flutter工程"><a href="#创建Flutter工程" class="headerlink" title="创建Flutter工程"></a>创建Flutter工程</h4><p>会报错,要配置Flutter的SDK路径,因为上面将Flutter放到了<code>/usr/local/flutter</code>，所以选择Locate SDK，在文件窗上把<code>/usr/local/flutter/bin</code>拖拽下,这样会自动跳到这个目录下</p>
+<p><img src="https://s2.loli.net/2025/04/23/ZN8uYcGFz5qH6KW.png" alt="2025-04-20 20.38.08.png"></p>
+<p>然后选择设置即可<code>Flutter SDK</code> ，注意是bin目录</p>
+<p><img src="https://s2.loli.net/2025/04/23/k56XO9TJUSP4uKG.png" alt="2025-04-20 20.40.57.png"></p>
+<p>然后再次操作,成功创建Flutter工程</p>
+<p><img src="https://s2.loli.net/2025/04/23/rn9bFJiGXjPgQfq.png" alt="Snip20250423_5.png"></p>
+<p>每个平台都有一个目录</p>
+<h4 id="多平台运行"><a href="#多平台运行" class="headerlink" title="多平台运行"></a>多平台运行</h4><p>左侧工具栏切到Flutter选项,可以看到几个平台的图标,选择对应平台,然后再执行即可查看效果</p>
+<p>选择Chrome</p>
+<p><img src="https://s2.loli.net/2025/04/23/UsDTcoajKwXZxGW.png" alt="Snip20250423_10.png"></p>
+<p>执行</p>
+<p><img src="https://s2.loli.net/2025/04/23/zVpktjlgofHO1BJ.png" alt="Snip20250423_9.png"></p>
+<p>显示效果</p>
+<p><img src="https://s2.loli.net/2025/04/23/9KbQwvSIqNh2WVZ.png" alt="Snip20250423_8.png"></p>
+<p>可以看出对应的效果入口是lib/main.dart</p>
+<p>试试macOS</p>
+<p><img src="https://s2.loli.net/2025/04/23/4plLd7awyDuUVsb.png" alt="Snip20250423_12.png"></p>
+<p>选择iPhone(13.4.1)时报错了,看错误是证书问题,用Xcode打开Flutter里的Xcode工程</p>
+<p><img src="https://s2.loli.net/2025/04/23/WYfIP1Q2mAUuw4D.png" alt="Snip20250423_13.png"></p>
+<p>因为工程名是helloworld，创建出来的默认包名是com.example.helloworld,这个无法被自动注册</p>
+<p><img src="https://s2.loli.net/2025/04/23/htjpFiv1uWNyaEe.png" alt="Snip20250423_16.png"></p>
+<p><img src="https://s2.loli.net/2025/04/23/ayhWGK8fepM3twi.png" alt="Snip20250423_15.png"></p>
+<p>重新运行，安装在手机上,但是还是报错了。</p>
+<p><img src="https://s2.loli.net/2025/04/23/u2wOrhsMxikK3Xf.jpg" alt="17453711561212.jpg"></p>
+<p>一开始我以为的是免费的开发者账号,所以被手机系统拦截了，需要信任。在手机上打开<code>设置 &gt; 通用 &gt; 描述文件</code> 选择对应的账号并信任</p>
+<p>再重新运行但是还是报相同的错误,使用Xcode工程现在是可以运行在手机上,所以问题应该是出在Flutter驱动Xcode的过程，因为跨平台。网上提到的几个方法</p>
+<blockquote>
+<ol>
+<li>flutter clean – 应该和在Xcode中清理一样</li>
+<li>版本问题: 升级Flutter，– 我的Flutter和Xcode版本按目前的时间点都很新,应该是这个问题但没办法升级了</li>
+<li>手机上设置信任 – 这步我已经操作过了,Xcode能正常跑,VSCode上不行</li>
+</ol>
+</blockquote>
+<p>换一台iPhone(18.0.1)试了一下，发现能跑起来,那应该是兼容的问题</p>
+<table>
+<thead>
+<tr>
+<th>设备系统</th>
+<th>Xcode</th>
+<th>VSCode + Flutter</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iOS 13.4.1</td>
+<td>✅</td>
+<td>❎</td>
+</tr>
+<tr>
+<td>iOS 18.0.1</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+<p>启动系统会弹2个告警的弹窗。idevicesyslog和iproxy。</p>
+<p><img src="https://s2.loli.net/2025/04/23/cgm3nSCIYsPV1pG.png" alt="Snip20250423_19.png"></p>
+<p><img src="https://s2.loli.net/2025/04/23/gNcidMu6nKTs2BQ.png" alt="Snip20250423_21.png"></p>
+<p><strong>未信任iproxy无法正常运行，会一直等待</strong>,处理方法是把这两个工具加入到系统信任的白名单中</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// flutter路径根据实际的情况进行修改,我这边是 /usr/local/flutter/</span><br><span class="line">$ <span class="hljs-built_in">sudo</span> xattr -d com.apple.quarantine /usr/local/flutter/bin/cache/artifacts/usbmuxd/iproxy</span><br><span class="line">$ <span class="hljs-built_in">sudo</span> xattr -d com.apple.quarantine /usr/local/flutter/bin/cache/artifacts/libimobiledevice/idevicesyslog</span><br></pre></td></tr></tbody></table></figure>
+
+<p>然后就正常运行了</p>
+<p><img src="https://s2.loli.net/2025/04/23/dUjDpyfS3isHOlM.png" alt="Snip20250423_23.png"></p>
+<p>看对应的Xcode工程也在执行的状态,所以可以打开Xcode进行调试</p>
+<h2 id="体验与其它"><a href="#体验与其它" class="headerlink" title="体验与其它"></a>体验与其它</h2><ol>
+<li>多平台都能运行很好,而且看工程也有原生的部分，对原来熟悉该平台的开发友好</li>
+<li>操作上还是会遇到各自平台一些坑，特别是移动端，flutter既然在上面加了一层，可以接受。</li>
+<li>涉及到原平台的部分还是在对应的IDE操作直观些</li>
+</ol>
+<p>后期: 把Android也跑起来，然后学习flutter代码相关的</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/get-started/install/macos/mobile-ios">开始在 macOS 上构建 Flutter iOS 应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/get-started/codelab">编写第一个 Flutter 应用</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/666632997">flutter vscode环境搭建+vscode插件推荐</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6990273342464851982">Flutter真机运行提示 无法打开“iproxy”,因为无法验证开发者</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/22/Technology-learn-media-03/">音视频学习 - MP3格式</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

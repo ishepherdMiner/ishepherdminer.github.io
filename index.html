@@ -128,6 +128,69 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/23/Technology-learn-flutter-01/" itemprop="url">Flutter 环境搭建</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-23T03:13:13.000Z" itemprop="datePublished">4月 23 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            8 分钟 读完 (约 1270 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS 15.4.1</p>
+</blockquote>
+<blockquote>
+<p>Xcode Version 16.3 (16E140)</p>
+</blockquote>
+<blockquote>
+<p>Visual Studio Code 1.99.3</p>
+</blockquote>
+<blockquote>
+<p>Flutter 3.29.3 • channel stable • <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter.git">https://github.com/flutter/flutter.git</a><br>Framework • revision ea121f8859 (11 days ago) • 2025-04-11 19:10:07 +0000<br>Engine • revision cf56914b32<br>Tools • Dart 3.7.2 • DevTools 2.42.3</p>
+</blockquote>
+<blockquote>
+<p>iPhone iOS(13.4.1)</p>
+<p>iPhone iOS(18.0.1)</p>
+</blockquote>
+<h2 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h2><p>网络原因对镜像做的一些处理</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">export</span> PUB_HOSTED_URL=<span class="hljs-string">"https://pub.flutter-io.cn"</span></span><br><span class="line">$ <span class="hljs-built_in">export</span> FLUTTER_STORAGE_BASE_URL=<span class="hljs-string">"https://storage.flutter-io.cn"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>下载后<a target="_blank" rel="noopener" href="https://docs.flutter.cn/release/archive">SDK镜像</a>,我是放到<code>/usr/local</code>，所以在终端执行下面的代码</p></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/23/Technology-learn-flutter-01/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/04/22/Technology-learn-media-03/" itemprop="url">音视频学习 - MP3格式</a>
         
     </h1>
@@ -570,55 +633,6 @@
 
 
     
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/04/08/Technology-learn-vue-03/" itemprop="url">Vue学习笔记 - 互动教程 02</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-08T03:20:35.000Z" itemprop="datePublished">4月 8 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            15 分钟 读完 (约 2315 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="互动教程-Vue3"><a href="#互动教程-Vue3" class="headerlink" title="互动教程(Vue3)"></a>互动教程(Vue3)</h2><h3 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h3><p>条件语句后是循环操作,也是基本操作</p>
-<p>可以使用 <code>v-for</code> 指令来渲染一个基于源数组的列表</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">"todo in todos"</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"todo.id"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    {{ todo.text }}</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span></span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></tbody></table></figure>
-
-<p>这里的 <code>todo</code> 是一个局部变量，表示当前正在迭代的数组元素。它只能在 <code>v-for</code> 所绑定的元素上或是其内部访问，就像函数的作用域一样。</p>
-<p>注意，我们还给每个 <code>todo</code> 对象设置了唯一的 <code>id</code>，并且将它作为特殊的 <code>key attribute</code> 绑定到每个 <code>&lt;li&gt;</code>。<code>key</code> 使得 <code>Vue</code> 能够精确地移动每个 </p><li>，以匹配对应的对象在数组中的位置。<p></p></li></body></html>
-        <p class="article-more-link">
-            <a href="/2025/04/08/Technology-learn-vue-03/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
     
         
 <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
@@ -636,7 +650,7 @@
         
         <li><span class="pagination-ellipsis">&hellip;</span></li>
         
-        <li><a class="pagination-link" href="/page/8/">8</a></li>
+        <li><a class="pagination-link" href="/page/9/">9</a></li>
         
     </ul>
 </nav>
