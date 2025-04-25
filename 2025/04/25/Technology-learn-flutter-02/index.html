@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html class="has-navbar-fixed-top">
+<head>
+    <meta charset="utf-8">
+<title>Flutter 环境搭建 (Android) - 牧羊人</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+
+
+<meta name="description" content="一个闲散的程序员">
+
+
+
+<meta name="keywords" content="iOSer CS">
+
+
+
+    <meta name="description" content="目标上一篇Flutter应用已经能在iOS，macOS和,chrome环境下正常运行了,这次把Android跑通。 环境 macOS 15.4.1 Visual Studio Code 1.99.3 Flutter 3.29.3 • channel stable • https:&#x2F;&#x2F;github.com&#x2F;flutter&#x2F;flutter.gitFramework • revision ea121f8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 环境搭建 (Android)">
+<meta property="og:url" content="http://yoursite.com/2025/04/25/Technology-learn-flutter-02/index.html">
+<meta property="og:site_name" content="牧羊人">
+<meta property="og:description" content="目标上一篇Flutter应用已经能在iOS，macOS和,chrome环境下正常运行了,这次把Android跑通。 环境 macOS 15.4.1 Visual Studio Code 1.99.3 Flutter 3.29.3 • channel stable • https:&#x2F;&#x2F;github.com&#x2F;flutter&#x2F;flutter.gitFramework • revision ea121f8">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/ck5g3OSXvZiECPN.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/fJvZAPQjLW8eD5a.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/vnkMbecoXFSy7YW.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/x8zFEG2MVD7uo4j.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/VGpoAZtyeMIjK7R.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/2Lxs47aqtQM6r5b.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/xZq3wp4kK5Ev7cg.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/wsQI5WfHlmPET9Z.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/Nme2tnlMbC1yIFz.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/ynT2PU4EeZ7azvj.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/dTX37A9xPtFYVMR.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/qveCzdLVpfT23S5.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/2K1SJhFgrdemcRH.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/wgzKk7peLmXy9Rt.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/R5aE6r2dSTLKqW7.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/R4Yd921NI3gUHaZ.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/o4XOlYuzd5DKJvj.png">
+<meta property="og:image" content="https://s2.loli.net/2025/04/25/J1XpiAwRnlb5D48.png">
+<meta property="article:published_time" content="2025-04-25T10:20:22.000Z">
+<meta property="article:modified_time" content="2025-04-25T10:22:14.076Z">
+<meta property="article:author" content="Shepherd">
+<meta property="article:tag" content="iOSer CS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/04/25/ck5g3OSXvZiECPN.png">
+
+
+
+
+
+<link rel="icon" href="/images/favicon.png">
+
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+<body>
+    
+<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item navbar-logo" href="/">
+                
+                    
+                    牧羊人
+                    
+                
+            </a>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <div class="navbar-menu navbar-start">
+            
+            <a class="navbar-item "
+               href="/categories/Technology">技术</a>
+            
+            <a class="navbar-item "
+               href="/categories/iOSer">iOSer</a>
+            
+            <a class="navbar-item "
+               href="/categories">主题</a>
+            
+            <a class="navbar-item "
+               href="/archives">时间流</a>
+            
+        </div>
+        
+        <div class="navbar-menu navbar-end">
+            
+            <a class="navbar-item search" title="搜索" href="javascript:;">
+                <i class="fas fa-search"></i>
+            </a>
+            
+            
+            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
+                <a class="navbar-item" title="目录">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="navbar-dropdown is-right">
+                    
+                    
+                    
+                    
+                    <a class="navbar-item" href="#目标">1&nbsp;&nbsp;<b>目标</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#环境搭建">3&nbsp;&nbsp;<b>环境搭建</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#问题列表">3.1&nbsp;&nbsp;问题列表</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#网络">3.1.1&nbsp;&nbsp;网络:</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#Flutter-执行-Android">4&nbsp;&nbsp;<b>Flutter 执行 Android</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#问题列表-1">5&nbsp;&nbsp;<b>问题列表</b></a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#flutter-doctor">5.1&nbsp;&nbsp;flutter doctor</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#同意Android协议">5.1.1&nbsp;&nbsp;同意Android协议</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#JDK版本过低不支持sdkmanager">5.1.2&nbsp;&nbsp;JDK版本过低不支持sdkmanager</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Maven地址的替换">5.2&nbsp;&nbsp;Maven地址的替换</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#创建Android虚拟机">5.3&nbsp;&nbsp;创建Android虚拟机</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Maven安装-卡在Flutter-Running-Gradle-task-‘assembleDebug’-Exception-in-thread-“main”-java-util-zip-ZipException-zip-END-header-not-found">5.4&nbsp;&nbsp;Maven安装:卡在Flutter:Running Gradle task ‘assembleDebug’ - Exception in thread “main” java.util.zip.ZipException: zip END header not found</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Maven下载依赖包相关">5.5&nbsp;&nbsp;Maven下载依赖包相关</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#下载kotlin-compiler-embeddable超时">5.5.1&nbsp;&nbsp;下载kotlin-compiler-embeddable超时</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#Maven依赖冲突">5.5.2&nbsp;&nbsp;Maven依赖冲突</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#安装冲突">5.5.3&nbsp;&nbsp;安装冲突</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#最终的build-gradle-kts-setting-gradle-kts">5.5.4&nbsp;&nbsp;最终的build.gradle.kts + setting.gradle.kts</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#小插曲-关闭gradle自动更新">5.5.5&nbsp;&nbsp;小插曲: 关闭gradle自动更新</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#NDK-安装">5.6&nbsp;&nbsp;NDK 安装</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#困惑-NDK的默认版本">5.6.1&nbsp;&nbsp;困惑:NDK的默认版本</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#找不到flutter-embedding-debug包">5.7&nbsp;&nbsp;找不到flutter_embedding_debug包</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#下指定版本的cmake">5.8&nbsp;&nbsp;下指定版本的cmake</a>
+                    
+                    
+                    
+                    <a class="navbar-item" href="#成功">5.9&nbsp;&nbsp;成功</a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#体验与收获">6&nbsp;&nbsp;<b>体验与收获</b></a>
+                    
+                    
+                    <hr class="navbar-divider">
+                    
+                    
+                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
+                    
+                </div>
+            </div>
+            
+            
+            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+               
+            
+        </div>
+    </div>
+</nav>
+
+    <section class="section">
+    <div class="container">
+    <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
+            Flutter 环境搭建 (Android)
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-25T10:20:22.000Z" itemprop="datePublished">4月 25 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            19 分钟 读完 (约 2905 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>上一篇Flutter应用已经能在iOS，macOS和,chrome环境下正常运行了,这次把Android跑通。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS 15.4.1</p>
+<p>Visual Studio Code 1.99.3</p>
+<p>Flutter 3.29.3 • channel stable • <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter.git">https://github.com/flutter/flutter.git</a><br>Framework • revision ea121f8859 (11 days ago) • 2025-04-11 19:10:07 +0000<br>Engine • revision cf56914b32<br>Tools • Dart 3.7.2 • DevTools 2.42.3</p>
+<p>JDK 17<br>Gradle 8.10.2</p>
+</blockquote>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>Flutter的Android的工具链</p>
+<ul>
+<li>Android SDK Platform, API 35.0.2</li>
+<li>Android SDK Command-line Tools – 包括 ProGuard 等基本工具</li>
+<li>Android SDK Build-Tools – 包含构建 Android 应用的工具（可以下多个)</li>
+<li>Android SDK Platform-Tools – 包含 Android 平台所需的各种工具，包括 adb 工具。</li>
+<li>Android Emulator – 模拟器</li>
+</ul>
+<span id="more"></span>
+
+<p>最后效果</p>
+<p><img src="https://s2.loli.net/2025/04/25/ck5g3OSXvZiECPN.png" alt="2025-04-23 18.42.39.png"></p>
+<p><img src="https://s2.loli.net/2025/04/25/fJvZAPQjLW8eD5a.png" alt="2025-04-23 18.42.45.png"></p>
+<h3 id="问题列表"><a href="#问题列表" class="headerlink" title="问题列表"></a>问题列表</h3><h4 id="网络"><a href="#网络" class="headerlink" title="网络:"></a>网络:</h4><p>网上试了一些方案,没有解决,下面这篇的方案在我的设备上是可以的</p>
+<p><a target="_blank" rel="noopener" href="https://www.oryoy.com/news/android-sdk-geng-xin-she-zhi-dai-li-xiang-jie-jie-jue-guo-nei-kai-fa-zhe-xia-zai-nan-ti.html">Android SDK更新设置代理详解：解决国内开发者下载难题</a></p>
+<ol>
+<li>自动代理配置 <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/">https://mirrors.aliyun.com</a></li>
+<li>验证代理是否生效</li>
+<li>下载Android SDK相关工具</li>
+</ol>
+<p><img src="https://s2.loli.net/2025/04/25/vnkMbecoXFSy7YW.png" alt="Snip20250423_1.png"></p>
+<p>主要是第二步让我看到了点曙光，网络测试时</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 能访问 </li>
+<li><a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a> 超时 – 符合预期</li>
+<li>dl.google.com 404 – 这个说明不是不能访问,只是地址不对,所以又下载验证了下，总算在跑了</li>
+</ol>
+<p>设置下载SDK的路径</p>
+<p><img src="https://s2.loli.net/2025/04/25/x8zFEG2MVD7uo4j.png" alt="Snip20250423_27.png"></p>
+<p>各个工具压缩包的大小</p>
+<p><img src="https://s2.loli.net/2025/04/25/VGpoAZtyeMIjK7R.png" alt="Snip20250423_28.png"></p>
+<p>同意协议, 这里我因为不了解,所以Build-Tools多下了一个</p>
+<p><img src="https://s2.loli.net/2025/04/25/2Lxs47aqtQM6r5b.png" alt="Snip20250423_29.png"></p>
+<p>从执行结果看,还是有因为超时失败的,比如<code>https://dl.google.com/android/repository/build-tools_r36_macosx.zip</code><br>发现能ping通dl.google.com，而且能知道下载哪个包,可以直接用curl下载，一般不会有校验。</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Preparing "Install Sources for Android 35 (revision 1)".</span><br><span class="line">Downloading https://dl.google.com/android/repository/source-35_r01.zip</span><br><span class="line">"Install Sources for Android 35 (revision 1)" ready.</span><br><span class="line">Installing Sources for Android 35 in /Users/shepherd/Library/Android/sdk/sources/android-35</span><br><span class="line">"Install Sources for Android 35 (revision 1)" complete.</span><br><span class="line">"Install Sources for Android 35 (revision 1)" finished.</span><br><span class="line">Preparing "Install Android SDK Build-Tools 35.0.1 v.35.0.1".</span><br><span class="line">Downloading https://dl.google.com/android/repository/build-tools_r35.0.1_macosx.zip</span><br><span class="line">"Install Android SDK Build-Tools 35.0.1 v.35.0.1" ready.</span><br><span class="line">Installing Android SDK Build-Tools 35.0.1 in /Users/shepherd/Library/Android/sdk/build-tools/35.0.1</span><br><span class="line">"Install Android SDK Build-Tools 35.0.1 v.35.0.1" complete.</span><br><span class="line">"Install Android SDK Build-Tools 35.0.1 v.35.0.1" finished.</span><br><span class="line">Preparing "Install Android SDK Platform 35 (revision 2)".</span><br><span class="line">Downloading https://dl.google.com/android/repository/platform-35_r02.zip</span><br><span class="line">"Install Android SDK Platform 35 (revision 2)" ready.</span><br><span class="line">Installing Android SDK Platform 35 in /Users/shepherd/Library/Android/sdk/platforms/android-35</span><br><span class="line">...</span><br><span class="line">Preparing "Install Android Emulator v.35.4.9".</span><br><span class="line">Downloading https://dl.google.com/android/repository/emulator-darwin_x64-13025442.zip</span><br><span class="line">java.io.IOException: Connection closed at byte 88515719. Expected 393818294 bytes.</span><br><span class="line">Warning: An error occurred while preparing SDK package Android Emulator: Connection closed at byte 88515719. Expected 393818294 bytes..</span><br><span class="line">"Install Android Emulator v.35.4.9" failed.</span><br><span class="line">Parsing /Users/shepherd/Library/Android/sdk/build-tools/35.0.1/package.xml</span><br><span class="line">Parsing /Users/shepherd/Library/Android/sdk/platform-tools/package.xml</span><br><span class="line">Parsing /Users/shepherd/Library/Android/sdk/platforms/android-35/package.xml</span><br><span class="line">Parsing /Users/shepherd/Library/Android/sdk/sources/android-35/package.xml</span><br><span class="line">java.net.SocketTimeoutException: Read timed out</span><br><span class="line">Warning: An error occurred while preparing SDK package Android SDK Build-Tools 36: Read timed out.</span><br><span class="line">java.io.IOException: Connection closed at byte 88515719. Expected 393818294 bytes.</span><br><span class="line">Warning: An error occurred while preparing SDK package Android Emulator: Connection closed at byte 88515719. Expected 393818294 bytes..</span><br><span class="line"></span><br><span class="line">Preparing "Install Android SDK Build-Tools 36 v.36.0.0".</span><br><span class="line">Downloading https://dl.google.com/android/repository/build-tools_r36_macosx.zip</span><br><span class="line">java.net.SocketTimeoutException: Read timed out</span><br><span class="line">Warning: An error occurred while preparing SDK package Android SDK Build-Tools 36: Read timed out.</span><br><span class="line">"Install Android SDK Build-Tools 36 v.36.0.0" failed.</span><br><span class="line">Preparing "Install Android Emulator v.35.4.9".</span><br><span class="line">Downloading https://dl.google.com/android/repository/emulator-darwin_x64-13025442.zip</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h2 id="Flutter-执行-Android"><a href="#Flutter-执行-Android" class="headerlink" title="Flutter 执行 Android"></a>Flutter 执行 Android</h2><p>Flutter驱动Android Studio工程成功运行到模拟器上</p>
+<p><img src="https://s2.loli.net/2025/04/25/xZq3wp4kK5Ev7cg.png" alt="Snip20250425_9.png"></p>
+<h2 id="问题列表-1"><a href="#问题列表-1" class="headerlink" title="问题列表"></a>问题列表</h2><h3 id="flutter-doctor"><a href="#flutter-doctor" class="headerlink" title="flutter doctor"></a>flutter doctor</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/25/wsQI5WfHlmPET9Z.png" alt="2025-04-23 19.08.20.png"></p>
+<p>两个问题,上一篇文章里是无法定位到Android SDK,现在能定位到了,看报错需要同意下协议</p>
+<h4 id="同意Android协议"><a href="#同意Android协议" class="headerlink" title="同意Android协议"></a>同意Android协议</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 会报错,依赖sdkmanager</span></span><br><span class="line">$ flutter doctor --android-licenses</span><br><span class="line">Android sdkmanager not found. Update to the latest Android SDK and ensure that the cmdline-tools are installed to resolve this.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在Android Studio界面选择了安装 command-line 工具后</p>
+<p><img src="https://s2.loli.net/2025/04/25/Nme2tnlMbC1yIFz.png" alt="Snip20250424_3.png"></p>
+<p>下载完成后会在<code>sdk &gt; cmdline-tools</code>目录下</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># ~/.zshrc 追加环境变量</span></span><br><span class="line"><span class="hljs-built_in">export</span> PATH=<span class="hljs-string">"sdk/command-tools/latest/bin/:<span class="hljs-variable">$PATH</span>"</span></span><br><span class="line"><span class="hljs-built_in">source</span> ~/.zshrc</span><br></pre></td></tr></tbody></table></figure>
+
+<p>再次执行sdkmanager无法打开</p>
+<p><img src="https://s2.loli.net/2025/04/25/ynT2PU4EeZ7azvj.png" alt="Snip20250423_4.png"></p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">sudo</span> xattr -d com.apple.quarantine ~/Library/Android/sdk/cmdline-tools/bin/sdkmanager</span><br></pre></td></tr></tbody></table></figure>
+
+<p>再次执行JDK版本过低…</p>
+<h4 id="JDK版本过低不支持sdkmanager"><a href="#JDK版本过低不支持sdkmanager" class="headerlink" title="JDK版本过低不支持sdkmanager"></a>JDK版本过低不支持sdkmanager</h4><p>选择合适的平台和架构然后下载JDK 17</p>
+<p><a target="_blank" rel="noopener" href="https://www.openlogic.com/openjdk-downloads">openjdk</a></p>
+<p>然后复制到<code>/Library/Java/JavaVirtualMachines/</code> 目录下</p>
+<p>修改<code>~/.zshrc</code> 里的PATH,将java命令指向这个目录下的JDK 17</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">export</span> JAVA_HOME=/Library/Java/JavaVirtualMachines/openlogic-openjdk-17.jdk/Contents/Home</span><br><span class="line"></span><br><span class="line">$ <span class="hljs-built_in">export</span> PATH=<span class="hljs-string">"<span class="hljs-variable">$JAVA_HOME</span>/bin:<span class="hljs-variable">$PATH</span>"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>打印当前的JDK版本</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ java --version</span><br><span class="line">openjdk 17.0.14 2025-01-21</span><br><span class="line">OpenJDK Runtime Environment OpenLogic-OpenJDK (build 17.0.14+7-adhoc.admin.jdk17u)</span><br><span class="line">OpenJDK 64-Bit Server VM OpenLogic-OpenJDK (build 17.0.14+7-adhoc.admin.jdk17u, mixed mode, sharing)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>处理完成后,再次执行</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 成功完成协议的签署</span></span><br><span class="line">$ flutter doctor --android-licenses</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Maven地址的替换"><a href="#Maven地址的替换" class="headerlink" title="Maven地址的替换"></a>Maven地址的替换</h3><ol>
+<li>maven.google.com google的maven库资源站 – 不能访问</li>
+<li>pub.dev dart和flutter的官方开放库资源站 – 能访问</li>
+<li>github.com – 慢,但勉强能访问</li>
+</ol>
+<p>参考这个进行处理 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b69231defaaf">【Flutter】flutter doctor network resources 报错，解决国内开发环境问题</a></p>
+<p>但里面说要重新删除cache，因为昨天网问题,下载非常慢,我原来下过,大部分是不用删，不删改代码执行会报错,主要是因为有哈希校验，所以看了下,把几个大的(artifacts,dark-sdk,flutter_web_sdk)和相关的.stamp文件保留,然后执行会快很多</p>
+<h3 id="创建Android虚拟机"><a href="#创建Android虚拟机" class="headerlink" title="创建Android虚拟机"></a>创建Android虚拟机</h3><p>使用Android Studio界面创建虚拟机，下载镜像,还是网络问题,一直失败,还是通过浏览器下载放到</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 35是API;google_apis_playstore是界面的名字;x86_64是架构</span></span><br><span class="line">.../sdk/system-images/android-35/google_apis_playstore/x86_64</span><br></pre></td></tr></tbody></table></figure>
+
+<p>但是界面识别不了，还是要求我下载。后面发现可以通过VSCode触发创建虚拟机(Create Android emulator),所以这个可以等后面再处理</p>
+<p><img src="https://s2.loli.net/2025/04/25/dTX37A9xPtFYVMR.png" alt="Snip20250424_4.png"></p>
+<h3 id="Maven安装-卡在Flutter-Running-Gradle-task-‘assembleDebug’-Exception-in-thread-“main”-java-util-zip-ZipException-zip-END-header-not-found"><a href="#Maven安装-卡在Flutter-Running-Gradle-task-‘assembleDebug’-Exception-in-thread-“main”-java-util-zip-ZipException-zip-END-header-not-found" class="headerlink" title="Maven安装:卡在Flutter:Running Gradle task ‘assembleDebug’ - Exception in thread “main” java.util.zip.ZipException: zip END header not found"></a>Maven安装:卡在Flutter:Running Gradle task ‘assembleDebug’ - Exception in thread “main” java.util.zip.ZipException: zip END header not found</h3><p>网上找的资料是<code>gradle-wrapper.properties</code>里的gradle的版本号</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">distributionUrl=https\://services.gradle.org/distributions/gradle-8.10.2-all.zip</span><br></pre></td></tr></tbody></table></figure>
+
+<p>本地gradle的安装目录,在~/.gradle目录,大小和<a target="_blank" rel="noopener" href="https://services.gradle.org/distributions/">gradle</a> 差距很大,所以应该是gradle.zip没下载成功导致的。</p>
+<p><strong>解决方案</strong>:可以通过浏览器下载后放到对应目录</p>
+<p><img src="https://s2.loli.net/2025/04/25/qveCzdLVpfT23S5.png" alt="Snip20250424_5.png"></p>
+<p>或者换源应该也可以,一开始没找到,所以用浏览器下载的方法。</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 换源改成腾讯的</span><br><span class="line">distributionUrl=https\://mirrors.cloud.tencent.com/gradle/gradle-8.10.2-all.zip</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Maven下载依赖包相关"><a href="#Maven下载依赖包相关" class="headerlink" title="Maven下载依赖包相关"></a>Maven下载依赖包相关</h3><h4 id="下载kotlin-compiler-embeddable超时"><a href="#下载kotlin-compiler-embeddable超时" class="headerlink" title="下载kotlin-compiler-embeddable超时"></a>下载kotlin-compiler-embeddable超时</h4><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">02e07463 Importing root project - 70% Download https://plugins.gradle.org/m2/org/jetbrains/kotlin/kotlin-compiler-embeddable/1.9.24/kotlin-compiler-embeddable-1.9.24.jar</span><br></pre></td></tr></tbody></table></figure>
+
+<p>从网上下载后放到这个路径下 <code>~/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.9.24/3fbd9c879bd84704a4c457237ce625d02f8f3d3c/</code></p>
+<h4 id="Maven依赖冲突"><a href="#Maven依赖冲突" class="headerlink" title="Maven依赖冲突"></a>Maven依赖冲突</h4><p>照着网上的在<code>settings.gradle.kts</code>加了国内的源之后</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* What went wrong:</span><br><span class="line">Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by build file 'build.gradle.kts'</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">* What went wrong:</span><br><span class="line">Build was configured to prefer settings repositories over project repositories but repository 'Google' was added by build file 'build.gradle.kts'</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>解决方案</strong>: 去掉<code>build.gradle.kts</code>文件中的allprojects下的repositories内容</p>
+<h4 id="安装冲突"><a href="#安装冲突" class="headerlink" title="安装冲突"></a>安装冲突</h4><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* What went wrong:</span><br><span class="line">An exception occurred applying plugin request [id: 'dev.flutter.flutter-gradle-plugin']</span><br><span class="line">&gt; Failed to apply plugin 'dev.flutter.flutter-gradle-plugin'.</span><br><span class="line">   &gt; Build was configured to prefer settings repositories over project repositories but repository 'maven' was added by plugin 'dev.flutter.flutter-gradle-plugin'</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这步卡了比较久,问了DeepSeek，是因为 <code>setting.gradle.kts</code> 里<code>repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)</code>指定包用setting显式设置的源才可以,<code>id("dev.flutter.flutter-plugin-loader") version "1.0.0"</code> 这一句加的源没在上面声明</p>
+<p><strong>解决方案</strong>:可以把配置改成</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="最终的build-gradle-kts-setting-gradle-kts"><a href="#最终的build-gradle-kts-setting-gradle-kts" class="headerlink" title="最终的build.gradle.kts + setting.gradle.kts"></a>最终的build.gradle.kts + setting.gradle.kts</h4><figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// build.gradle.kts</span></span><br><span class="line">allprojects {</span><br><span class="line">    repositories {</span><br><span class="line">        <span class="hljs-comment">// maven { url = uri("https://maven.aliyun.com/repository/public") }</span></span><br><span class="line">        <span class="hljs-comment">// maven { url = uri("https://maven.aliyun.com/repository/google") }</span></span><br><span class="line">        <span class="hljs-comment">// google()</span></span><br><span class="line">        <span class="hljs-comment">// mavenCentral()</span></span><br><span class="line">        <span class="hljs-comment">// google()</span></span><br><span class="line">        <span class="hljs-comment">// mavenCentral()</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">val newBuildDir: Directory = rootProject.layout.buildDirectory.dir(<span class="hljs-string">"../../build"</span>).get()</span><br><span class="line">rootProject.layout.buildDirectory.value(newBuildDir)</span><br><span class="line"></span><br><span class="line">subprojects {</span><br><span class="line">    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)</span><br><span class="line">    project.layout.buildDirectory.value(newSubprojectBuildDir)</span><br><span class="line">}</span><br><span class="line">subprojects {</span><br><span class="line">    project.evaluationDependsOn(<span class="hljs-string">":app"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">tasks.register&lt;Delete&gt;(<span class="hljs-string">"clean"</span>) {</span><br><span class="line">    delete(rootProject.layout.buildDirectory)</span><br><span class="line">}</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// settings.gradle.kts</span></span><br><span class="line">pluginManagement {</span><br><span class="line">    <span class="hljs-type">val</span> <span class="hljs-variable">flutterSdkPath</span> <span class="hljs-operator">=</span> run {</span><br><span class="line">        <span class="hljs-type">val</span> <span class="hljs-variable">properties</span> <span class="hljs-operator">=</span> java.util.Properties()</span><br><span class="line">        file(<span class="hljs-string">"local.properties"</span>).inputStream().use { properties.load(it) }</span><br><span class="line">        <span class="hljs-type">val</span> <span class="hljs-variable">flutterSdkPath</span> <span class="hljs-operator">=</span> properties.getProperty(<span class="hljs-string">"flutter.sdk"</span>)</span><br><span class="line">        require(flutterSdkPath != <span class="hljs-literal">null</span>) { <span class="hljs-string">"flutter.sdk not set in local.properties"</span> }</span><br><span class="line">        flutterSdkPath</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    includeBuild(<span class="hljs-string">"$flutterSdkPath/packages/flutter_tools/gradle"</span>)</span><br><span class="line"></span><br><span class="line">    repositories {</span><br><span class="line">        google()</span><br><span class="line">        mavenCentral()</span><br><span class="line">        gradlePluginPortal()</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">dependencyResolutionManagement {</span><br><span class="line">    <span class="hljs-comment">// repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)</span></span><br><span class="line">    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)</span><br><span class="line">    repositories {</span><br><span class="line">        <span class="hljs-comment">// 添加国内镜像源</span></span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://maven.aliyun.com/repository/public"</span>) }</span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://maven.aliyun.com/repository/google"</span>) }</span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://repo.huaweicloud.com/repository/maven"</span>) } <span class="hljs-comment">// 华为云</span></span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://mirrors.tencent.com/nexus/repository/maven-public"</span>) } <span class="hljs-comment">// 腾讯云</span></span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// 后面报错会用到</span></span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://storage.flutter-io.cn/download.flutter.io"</span>)}</span><br><span class="line">        maven { url = uri(<span class="hljs-string">"https://maven.aliyun.com/repository/jcenter"</span>)}</span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// 保留默认仓库（镜像源缺失时回退）</span></span><br><span class="line">        google()</span><br><span class="line">        mavenCentral()</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">plugins {</span><br><span class="line">    id(<span class="hljs-string">"dev.flutter.flutter-plugin-loader"</span>) version <span class="hljs-string">"1.0.0"</span></span><br><span class="line">    id(<span class="hljs-string">"com.android.application"</span>) version <span class="hljs-string">"8.7.0"</span> apply <span class="hljs-literal">false</span></span><br><span class="line">    <span class="title function_">id</span><span class="hljs-params">(<span class="hljs-string">"org.jetbrains.kotlin.android"</span>)</span> version <span class="hljs-string">"1.8.22"</span> apply <span class="hljs-literal">false</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">include(<span class="hljs-string">":app"</span>)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="小插曲-关闭gradle自动更新"><a href="#小插曲-关闭gradle自动更新" class="headerlink" title="小插曲: 关闭gradle自动更新"></a>小插曲: 关闭gradle自动更新</h4><p>每次打开gradle都自动更新,现在有问题,自动更新影响思考,先关闭，打开首选项 &gt; 设置，搜索Gradle，观后取消勾选。</p>
+<p><img src="https://s2.loli.net/2025/04/25/2K1SJhFgrdemcRH.png" alt="Snip20250425_7.png"></p>
+<h3 id="NDK-安装"><a href="#NDK-安装" class="headerlink" title="NDK 安装"></a>NDK 安装</h3><p>在VSCode的终端执行</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> android</span><br><span class="line">$ ./gradlew clean build --refresh-dependencies</span><br></pre></td></tr></tbody></table></figure>
+
+<p>又是等待…</p>
+<p><img src="https://s2.loli.net/2025/04/25/wgzKk7peLmXy9Rt.png" alt="Snip20250425_5.png"></p>
+<p>下载解压后放到sdk的对应目录下,重新执行gradle更新的命令</p>
+<h4 id="困惑-NDK的默认版本"><a href="#困惑-NDK的默认版本" class="headerlink" title="困惑:NDK的默认版本"></a>困惑:NDK的默认版本</h4><p>错误提示下载 26.3.11579264，但是<a target="_blank" rel="noopener" href="https://developer.android.google.cn/ndk/downloads?hl=zh-cn">NDK 下载</a> 已经标记过期了。</p>
+<p>下面的flutter.ndkVersion值定义在flutter sdk的安装目录下的 <code>.../flutter/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy</code></p>
+<figure class="highlight kotlin hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">android {</span><br><span class="line">    namespace = <span class="hljs-string">"com.example.helloworld"</span></span><br><span class="line">    compileSdk = flutter.compileSdkVersion</span><br><span class="line">    ndkVersion = flutter.ndkVersion</span><br><span class="line">    ...</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/25/R5aE6r2dSTLKqW7.png" alt="Snip20250425_8.png"></p>
+<p>没明白为什么会去下34的build-Tools,本地已经安装的是35和36,命令会下失败,手动下载34后放到sdk对应目录下</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Checking the license for package Android SDK Build-Tools 34 in ~/Library/Android/sdk/licenses</span><br><span class="line">License for package Android SDK Build-Tools 34 accepted.</span><br><span class="line">Preparing "Install Android SDK Build-Tools 34 v.34.0.0".</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="找不到flutter-embedding-debug包"><a href="#找不到flutter-embedding-debug包" class="headerlink" title="找不到flutter_embedding_debug包"></a>找不到flutter_embedding_debug包</h3><figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">The org.gradle.api.plugins.Convention type has been deprecated. This is scheduled to be removed in Gradle 9.0. Consult the upgrading guide for further information: https://docs.gradle.org/8.10.2/userguide/upgrading_version_8.html#deprecated_access_to_conventions</span><br><span class="line">        at Build_gradle$3.execute(build.gradle.kts:29)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>用的gradle是8.10.2,有警告,但是不阻塞</p>
+<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; Could not resolve all dependencies <span class="hljs-keyword">for</span> configuration <span class="hljs-string">':app:debugRuntimeClasspath'</span>.</span><br><span class="line">      &gt; Could not find io.flutter:flutter_embedding_debug:1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa.</span><br><span class="line"></span><br><span class="line">&gt; Could not resolve all dependencies <span class="hljs-keyword">for</span> configuration <span class="hljs-string">':app:debugRuntimeClasspath'</span>.</span><br><span class="line">      &gt; Could not find io.flutter:arm64_v8a_debug:1.0.0-cf56914b326edb0ccb123ffdc60f00060bd513fa.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上面两个包找不到导致无法继续执行</p>
+<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Task :app:checkDebugAarMetadata FAILED</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>根据参考4,在<code>settings.gradle.kts</code>添加</p>
+<figure class="highlight java hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">maven { url = uri(<span class="hljs-string">"https://storage.flutter-io.cn/download.flutter.io"</span>)}</span><br><span class="line">maven { url = uri(<span class="hljs-string">"https://maven.aliyun.com/repository/jcenter"</span>)}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2025/04/25/R4Yd921NI3gUHaZ.png" alt="2025-04-25 16.31.36.png"></p>
+<p><strong>网络差可能下载失败还会报错</strong>,只能重新执行</p>
+<h3 id="下指定版本的cmake"><a href="#下指定版本的cmake" class="headerlink" title="下指定版本的cmake"></a>下指定版本的cmake</h3><p><img src="https://s2.loli.net/2025/04/25/o4XOlYuzd5DKJvj.png" alt="2025-04-25 17.06.52.png"></p>
+<p><a target="_blank" rel="noopener" href="https://cmake.org/files/v3.22/">旧版本cmake下载</a></p>
+<p>本来要编译一个,但是下载下来了,这步跳过</p>
+<h3 id="成功"><a href="#成功" class="headerlink" title="成功"></a>成功</h3><p><img src="https://s2.loli.net/2025/04/25/J1XpiAwRnlb5D48.png" alt="2025-04-25 17.38.24.png"></p>
+<h2 id="体验与收获"><a href="#体验与收获" class="headerlink" title="体验与收获"></a>体验与收获</h2><ol>
+<li>本地搭了Android开发环境,了解了Android的几个目录的工具用途</li>
+<li>Flutter运行Android平台</li>
+<li>很多问题都是网络的原因,大部分时间在下载资源</li>
+<li>不兼容的问题蛮折腾,开发容易,维护难 </li>
+<li>多去使用AI</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/get-started/install/macos/mobile-android">开始在 macOS 上构建 Flutter Android 应用</a> </li>
+<li><a target="_blank" rel="noopener" href="https://www.oryoy.com/news/android-sdk-geng-xin-she-zhi-dai-li-xiang-jie-jie-jue-guo-nei-kai-fa-zhe-xia-zai-nan-ti.html">Android SDK更新设置代理详解：解决国内开发者下载难题</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b69231defaaf">【Flutter】flutter doctor network resources 报错，解决国内开发环境问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7136284554402218021">使用Android Studio开发flutter项目报错：Execution failed for task ‘:app:checkDebugAarMetad</a></li>
+</ol>
+</body></html>
+    
+    </div>
+    
+    
+    <div class="columns is-mobile is-multiline article-nav">
+        <span class="column is-12-mobile is-half-desktop is-hidden-mobile article-nav-prev">
+            
+        </span>
+        <span class="column is-12-mobile is-half-desktop  article-nav-next">
+            
+            <a href="/2025/04/23/Technology-learn-flutter-01/">Flutter 环境搭建</a>
+            
+        </span>
+    </div>
+    
+</article>
+
+
+
+
+    </div>
+</section>
+    <footer class="footer">
+    <div class="container">
+        <div class="columns content">
+            <div class="column is-narrow has-text-centered">
+                &copy; 2025 Shepherd&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
+            </div>
+            <div class="column is-hidden-mobile"></div>
+
+            
+            <div class="column is-narrow">
+                <div class="columns is-mobile is-multiline is-centered">
+                
+                    
+                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
+                    
+                    GitHub
+                    
+                </a>
+                
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</footer>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+
+<!-- test if the browser is outdated -->
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // plugin function, place inside DOM ready function
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        })
+    });
+</script>
+
+<script>
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
+    moment.locale("zh-CN");
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+</script>
+
+    
+    
+    
+    
+<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            if (typeof($.fn.lightGallery) === 'function') {
+                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof($.fn.justifiedGallery) === 'function') {
+                $('.justified-gallery > p > .gallery-item').unwrap();
+                $('.justified-gallery').justifiedGallery();
+            }
+        });
+    })(jQuery);
+</script>
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <style>
+        .hljs {
+            position: relative;
+        }
+
+        .hljs .clipboard-btn {
+            float: right;
+            color: #9a9a9a;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hljs .clipboard-btn:hover {
+          color: #8a8a8a;
+        }
+
+        .hljs > .clipboard-btn {
+            display: none;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+        }
+
+        .hljs:hover > .clipboard-btn {
+            display: inline;
+        }
+
+        .hljs > figcaption > .clipboard-btn {
+            margin-right: 4px;
+        }
+    </style>
+    <script>
+      $(document).ready(function () {
+        $('figure.hljs').each(function(i, figure) {
+          var codeId = 'code-' + i;
+          var code = figure.querySelector('.code');
+          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
+          code.id = codeId;
+          copyButton.addClass('clipboard-btn');
+          copyButton.attr('data-clipboard-target-id', codeId);
+
+          var figcaption = figure.querySelector('figcaption');
+
+          if (figcaption) {
+            figcaption.append(copyButton[0]);
+          } else {
+            figure.prepend(copyButton[0]);
+          }
+        })
+
+        var clipboard = new ClipboardJS('.clipboard-btn', {
+          target: function(trigger) {
+            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
+          }
+        });
+        clipboard.on('success', function(e) {
+          e.clearSelection();
+        })
+      })
+    </script>
+
+    
+    
+
+    
+
+
+
+<script src="/js/script.js"></script>
+
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-mask"></div>
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+    
+</body>
+</html>

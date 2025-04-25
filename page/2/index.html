@@ -128,6 +128,58 @@
         <article class="article content gallery" itemscope itemprop="blogPost">
     <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
         
+            <a href="/2025/04/11/Technology-learn-vue-04/" itemprop="url">Vue学习笔记 - 深入组件 - 注册,透传Attribute,异步组件</a>
+        
+    </h1>
+    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
+        <span class="column is-narrow">
+            
+                <time datetime="2025-04-11T08:59:29.000Z" itemprop="datePublished">4月 11 2025</time>
+            
+        </span>
+        <!--
+        
+        <span class="column is-narrow article-category">
+            <i class="far fa-folder"></i>
+            <a class="article-category-link" href="/categories/Technology/">Technology</a>
+        </span>
+         
+        -->
+        
+        <span class="column is-narrow">
+            
+            
+            11 分钟 读完 (约 1611 字)
+        </span>
+        
+    </div>
+    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+    
+        <html><head></head><body><p>学完互动教程,已经有个基本印象,再看看文档,基础部分有涉及了,所以看深入组件那部分文档</p>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><h3 id="全局注册"><a href="#全局注册" class="headerlink" title="全局注册"></a>全局注册</h3><p>可以使用 <code>Vue</code> 应用实例的 <code>.component()</code> 方法，让组件在当前 <code>Vue</code> 应用中全局可用</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> { createApp } <span class="hljs-keyword">from</span> <span class="hljs-string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">const</span> app = <span class="title function_">createApp</span>({})</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(</span><br><span class="line">  <span class="hljs-comment">// 注册的名字</span></span><br><span class="line">  <span class="hljs-string">'MyComponent'</span>,</span><br><span class="line">  <span class="hljs-comment">// 组件的实现</span></span><br><span class="line">  {</span><br><span class="line">    <span class="hljs-comment">/* ... */</span></span><br><span class="line">  }</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果使用单文件组件，你可以注册被导入的 <code>.vue</code> 文件：</p>
+<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">MyComponent</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./App.vue'</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">component</span>(<span class="hljs-string">'MyComponent'</span>, <span class="title class_">MyComponent</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>.component()</code> 方法可以被链式调用:</p>
+<p>全局注册的组件可以在此应用的任意组件的模板中使用</p></body></html>
+        <p class="article-more-link">
+            <a href="/2025/04/11/Technology-learn-vue-04/#more">阅读更多</a>
+        </p>
+    
+    </div>
+    
+    
+</article>
+
+
+
+
+    
+        <article class="article content gallery" itemscope itemprop="blogPost">
+    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
+        
             <a href="/2025/04/08/Technology-learn-vue-03/" itemprop="url">Vue学习笔记 - 互动教程 02</a>
         
     </h1>
@@ -572,58 +624,6 @@
 <p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p></body></html>
         <p class="article-more-link">
             <a href="/2025/03/28/Technology-win-mac-brige/#more">阅读更多</a>
-        </p>
-    
-    </div>
-    
-    
-</article>
-
-
-
-
-    
-        <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            <a href="/2025/03/27/Technology-learn-flask/" itemprop="url">Flask学习笔记 - 安装+基本概念</a>
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-03-27T03:48:49.000Z" itemprop="datePublished">3月 27 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            12 分钟 读完 (约 1873 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>4月就要待业家中,经过一两天的踌躇,觉着这其实是一个蛮好的学习与重新调整的机会,后面学习是不会有人提供薪水了，那自然可以更自由些。不过漫无目的的学习的效率比较低，可以根据BOSS上的岗位的关键词去了解相关的技术。</p>
-<p>自己喜欢折腾,对Python也蛮有兴趣,先学习下Flask</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p>如果遇到网的问题,可以Google搜索<code>pip 换源</code>,现在安装一些工具确实是没有什么门槛</p>
-<p>显示下安装后的效果</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 show Flask</span><br></pre></td></tr></tbody></table></figure>
-
-<p><img src="https://s2.loli.net/2025/03/27/I5CYVnd4bgAJkxh.png" alt="2025-03-27 11.59.35.png"></p></body></html>
-        <p class="article-more-link">
-            <a href="/2025/03/27/Technology-learn-flask/#more">阅读更多</a>
         </p>
     
     </div>
