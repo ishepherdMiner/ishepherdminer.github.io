@@ -1,376 +1,287 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>学习笔记 - Swfit 6.1 - 语法概览 - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="获取版本号1swift -version  Hello world1print(&quot;Hello, world!&quot;)  末尾不需要分号">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="获取版本号1swift -version  Hello world1print(&quot;Hello, world!&quot;)  末尾不需要分号">
 <meta property="og:type" content="article">
-<meta property="og:title" content="学习笔记 - Swfit 6.1 - 语法概览">
+<meta property="og:title" content="iOS - Swfit 6.1 - 语法概览">
 <meta property="og:url" content="http://yoursite.com/2025/04/15/Technology-learn-swift-01/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="获取版本号1swift -version  Hello world1print(&quot;Hello, world!&quot;)  末尾不需要分号">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-15T07:07:10.000Z">
-<meta property="article:modified_time" content="2025-04-15T07:08:33.396Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:27:11.253Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Swift">
 <meta name="twitter:card" content="summary">
 
+<link rel="canonical" href="http://yoursite.com/2025/04/15/Technology-learn-swift-01/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - Swfit 6.1 - 语法概览 | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#获取版本号">1&nbsp;&nbsp;<b>获取版本号</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#Hello-world">2&nbsp;&nbsp;<b>Hello world</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#值">3&nbsp;&nbsp;<b>值</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#常量-let-变量-var">3.1&nbsp;&nbsp;常量(let);变量(var)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#可以显式声明变量类型-若没有则隐式推断-类似下面的Double">3.2&nbsp;&nbsp;可以显式声明变量类型,若没有则隐式推断,类似下面的Double</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#赋值同一类型">3.3&nbsp;&nbsp;赋值同一类型</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#字符串中通过-变量-的方法得到变量的字符串表示">3.4&nbsp;&nbsp;字符串中通过\(变量)的方法得到变量的字符串表示</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#多行文本的写法">3.5&nbsp;&nbsp;多行文本的写法</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#数组-字典通过-遍历">3.6&nbsp;&nbsp;数组/字典通过 [] 遍历</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#控制流">4&nbsp;&nbsp;<b>控制流</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#可选型-optional">4.1&nbsp;&nbsp;可选型(optional)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#未使用的变量">4.1.1&nbsp;&nbsp;未使用的变量_</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#函数和闭包">5&nbsp;&nbsp;<b>函数和闭包</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#通过元组-tuple-可以处理多个值">5.1&nbsp;&nbsp;通过元组(tuple)可以处理多个值</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#嵌套函数">5.2&nbsp;&nbsp;嵌套函数</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#函数作返回值，参数">5.3&nbsp;&nbsp;函数作返回值，参数</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#闭包">5.4&nbsp;&nbsp;闭包</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#对象和类">6&nbsp;&nbsp;<b>对象和类</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#创建对象">6.1&nbsp;&nbsp;创建对象</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#初始化函数">6.2&nbsp;&nbsp;初始化函数</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#子类重写父类方法">6.3&nbsp;&nbsp;子类重写父类方法</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#属性访问器getter-amp-amp-setter">6.4&nbsp;&nbsp;属性访问器getter &amp;amp;&amp;amp; setter</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#计算属性">6.5&nbsp;&nbsp;计算属性</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#枚举和结构体">7&nbsp;&nbsp;<b>枚举和结构体</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#并发">8&nbsp;&nbsp;<b>并发</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#协议与扩展">9&nbsp;&nbsp;<b>协议与扩展</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#异常捕获">10&nbsp;&nbsp;<b>异常捕获</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#泛型">11&nbsp;&nbsp;<b>泛型</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">12&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            学习笔记 - Swfit 6.1 - 语法概览
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-15T07:07:10.000Z" itemprop="datePublished">4月 15 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            16 分钟 读完 (约 2384 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
-    
-        <html><head></head><body><h2 id="获取版本号"><a href="#获取版本号" class="headerlink" title="获取版本号"></a>获取版本号</h2><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swift <span class="hljs-operator">-</span>version</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">print</span>(<span class="hljs-string">"Hello, world!"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/15/Technology-learn-swift-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - Swfit 6.1 - 语法概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-15 15:07:10" itemprop="dateCreated datePublished" datetime="2025-04-15T15:07:10+08:00">2025-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:27:11" itemprop="dateModified" datetime="2025-04-26T22:27:11+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="获取版本号"><a href="#获取版本号" class="headerlink" title="获取版本号"></a>获取版本号</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swift <span class="operator">-</span>version</span><br></pre></td></tr></table></figure>
+
+<h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Hello, world!&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>末尾不需要分号</p>
 <span id="more"></span>
 
-<h2 id="值"><a href="#值" class="headerlink" title="值"></a>值</h2><h3 id="常量-let-变量-var"><a href="#常量-let-变量-var" class="headerlink" title="常量(let);变量(var)"></a>常量(let);变量(var)</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> myVariable <span class="hljs-operator">=</span> <span class="hljs-number">42</span></span><br><span class="line">myVariable <span class="hljs-operator">=</span> <span class="hljs-number">50</span></span><br><span class="line"><span class="hljs-keyword">let</span> myConstant <span class="hljs-operator">=</span> <span class="hljs-number">42</span></span><br></pre></td></tr></tbody></table></figure>
+<h2 id="值"><a href="#值" class="headerlink" title="值"></a>值</h2><h3 id="常量-let-变量-var"><a href="#常量-let-变量-var" class="headerlink" title="常量(let);变量(var)"></a>常量(let);变量(var)</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myVariable <span class="operator">=</span> <span class="number">42</span></span><br><span class="line">myVariable <span class="operator">=</span> <span class="number">50</span></span><br><span class="line"><span class="keyword">let</span> myConstant <span class="operator">=</span> <span class="number">42</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="可以显式声明变量类型-若没有则隐式推断-类似下面的Double"><a href="#可以显式声明变量类型-若没有则隐式推断-类似下面的Double" class="headerlink" title="可以显式声明变量类型,若没有则隐式推断,类似下面的Double"></a>可以显式声明变量类型,若没有则隐式推断,类似下面的<code>Double</code></h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> implicitInteger <span class="hljs-operator">=</span> <span class="hljs-number">70</span></span><br><span class="line"><span class="hljs-keyword">let</span> implicitDouble <span class="hljs-operator">=</span> <span class="hljs-number">70.0</span></span><br><span class="line"><span class="hljs-keyword">let</span> explicitDouble: <span class="hljs-type">Double</span> <span class="hljs-operator">=</span> <span class="hljs-number">70</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="可以显式声明变量类型-若没有则隐式推断-类似下面的Double"><a href="#可以显式声明变量类型-若没有则隐式推断-类似下面的Double" class="headerlink" title="可以显式声明变量类型,若没有则隐式推断,类似下面的Double"></a>可以显式声明变量类型,若没有则隐式推断,类似下面的<code>Double</code></h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> implicitInteger <span class="operator">=</span> <span class="number">70</span></span><br><span class="line"><span class="keyword">let</span> implicitDouble <span class="operator">=</span> <span class="number">70.0</span></span><br><span class="line"><span class="keyword">let</span> explicitDouble: <span class="type">Double</span> <span class="operator">=</span> <span class="number">70</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="赋值同一类型"><a href="#赋值同一类型" class="headerlink" title="赋值同一类型"></a>赋值同一类型</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> label <span class="hljs-operator">=</span> <span class="hljs-string">"The width is "</span></span><br><span class="line"><span class="hljs-keyword">let</span> width <span class="hljs-operator">=</span> <span class="hljs-number">94</span></span><br><span class="line"><span class="hljs-comment">// 去掉String报错</span></span><br><span class="line"><span class="hljs-comment">// Binary operator '+' cannot be applied to operands of type 'String' and 'Int'</span></span><br><span class="line"><span class="hljs-keyword">let</span> widthLabel <span class="hljs-operator">=</span> label <span class="hljs-operator">+</span> <span class="hljs-type">String</span>(width)</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="赋值同一类型"><a href="#赋值同一类型" class="headerlink" title="赋值同一类型"></a>赋值同一类型</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> label <span class="operator">=</span> <span class="string">&quot;The width is &quot;</span></span><br><span class="line"><span class="keyword">let</span> width <span class="operator">=</span> <span class="number">94</span></span><br><span class="line"><span class="comment">// 去掉String报错</span></span><br><span class="line"><span class="comment">// Binary operator &#x27;+&#x27; cannot be applied to operands of type &#x27;String&#x27; and &#x27;Int&#x27;</span></span><br><span class="line"><span class="keyword">let</span> widthLabel <span class="operator">=</span> label <span class="operator">+</span> <span class="type">String</span>(width)</span><br></pre></td></tr></table></figure>
 
-<h3 id="字符串中通过-变量-的方法得到变量的字符串表示"><a href="#字符串中通过-变量-的方法得到变量的字符串表示" class="headerlink" title="字符串中通过\(变量)的方法得到变量的字符串表示"></a>字符串中通过<code>\(变量)</code>的方法得到变量的字符串表示</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> apples <span class="hljs-operator">=</span> <span class="hljs-number">3</span></span><br><span class="line"><span class="hljs-keyword">let</span> oranges <span class="hljs-operator">=</span> <span class="hljs-number">5</span></span><br><span class="line"><span class="hljs-keyword">let</span> appleSummary <span class="hljs-operator">=</span> <span class="hljs-string">"I have <span class="hljs-subst">\(apples)</span> apples."</span></span><br><span class="line"><span class="hljs-keyword">let</span> fruitSummary <span class="hljs-operator">=</span> <span class="hljs-string">"I have <span class="hljs-subst">\(apples <span class="hljs-operator">+</span> oranges)</span> pieces of fruit."</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="字符串中通过-变量-的方法得到变量的字符串表示"><a href="#字符串中通过-变量-的方法得到变量的字符串表示" class="headerlink" title="字符串中通过\(变量)的方法得到变量的字符串表示"></a>字符串中通过<code>\(变量)</code>的方法得到变量的字符串表示</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> apples <span class="operator">=</span> <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> oranges <span class="operator">=</span> <span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> appleSummary <span class="operator">=</span> <span class="string">&quot;I have <span class="subst">\(apples)</span> apples.&quot;</span></span><br><span class="line"><span class="keyword">let</span> fruitSummary <span class="operator">=</span> <span class="string">&quot;I have <span class="subst">\(apples <span class="operator">+</span> oranges)</span> pieces of fruit.&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="多行文本的写法"><a href="#多行文本的写法" class="headerlink" title="多行文本的写法"></a>多行文本的写法</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// """ """ 包含的内容</span></span><br><span class="line"><span class="hljs-keyword">let</span> quotation <span class="hljs-operator">=</span> <span class="hljs-string">"""</span></span><br><span class="line"><span class="hljs-string">        Even though there's whitespace to the left,</span></span><br><span class="line"><span class="hljs-string">        the actual lines aren't indented.</span></span><br><span class="line"><span class="hljs-string">            Except for this line.</span></span><br><span class="line"><span class="hljs-string">        Double quotes (") can appear without being escaped.</span></span><br><span class="line"><span class="hljs-string"></span></span><br><span class="line"><span class="hljs-string">        I still have <span class="hljs-subst">\(apples <span class="hljs-operator">+</span> oranges)</span> pieces of fruit.</span></span><br><span class="line"><span class="hljs-string">        """</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="多行文本的写法"><a href="#多行文本的写法" class="headerlink" title="多行文本的写法"></a>多行文本的写法</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;&quot;&quot; &quot;&quot;&quot; 包含的内容</span></span><br><span class="line"><span class="keyword">let</span> quotation <span class="operator">=</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Even though there&#x27;s whitespace to the left,</span></span><br><span class="line"><span class="string">        the actual lines aren&#x27;t indented.</span></span><br><span class="line"><span class="string">            Except for this line.</span></span><br><span class="line"><span class="string">        Double quotes (&quot;) can appear without being escaped.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        I still have <span class="subst">\(apples <span class="operator">+</span> oranges)</span> pieces of fruit.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="数组-字典通过-遍历"><a href="#数组-字典通过-遍历" class="headerlink" title="数组/字典通过 [] 遍历"></a>数组/字典通过 [] 遍历</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> fruits <span class="hljs-operator">=</span> [<span class="hljs-string">"strawberries"</span>, <span class="hljs-string">"limes"</span>, <span class="hljs-string">"tangerines"</span>]</span><br><span class="line">fruits[<span class="hljs-number">1</span>] <span class="hljs-operator">=</span> <span class="hljs-string">"grapes"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> occupations <span class="hljs-operator">=</span> [</span><br><span class="line">    <span class="hljs-string">"Malcolm"</span>: <span class="hljs-string">"Captain"</span>,</span><br><span class="line">    <span class="hljs-string">"Kaylee"</span>: <span class="hljs-string">"Mechanic"</span>,</span><br><span class="line"> ]</span><br><span class="line">occupations[<span class="hljs-string">"Jayne"</span>] <span class="hljs-operator">=</span> <span class="hljs-string">"Public Relations"</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="数组-字典通过-遍历"><a href="#数组-字典通过-遍历" class="headerlink" title="数组/字典通过 [] 遍历"></a>数组/字典通过 [] 遍历</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fruits <span class="operator">=</span> [<span class="string">&quot;strawberries&quot;</span>, <span class="string">&quot;limes&quot;</span>, <span class="string">&quot;tangerines&quot;</span>]</span><br><span class="line">fruits[<span class="number">1</span>] <span class="operator">=</span> <span class="string">&quot;grapes&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> occupations <span class="operator">=</span> [</span><br><span class="line">    <span class="string">&quot;Malcolm&quot;</span>: <span class="string">&quot;Captain&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Kaylee&quot;</span>: <span class="string">&quot;Mechanic&quot;</span>,</span><br><span class="line"> ]</span><br><span class="line">occupations[<span class="string">&quot;Jayne&quot;</span>] <span class="operator">=</span> <span class="string">&quot;Public Relations&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>自动扩容</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fruits.append(<span class="hljs-string">"blueberries"</span>)</span><br><span class="line"><span class="hljs-built_in">print</span>(fruits)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fruits.append(<span class="string">&quot;blueberries&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(fruits)</span><br></pre></td></tr></table></figure>
 
 <p>空数组/字典</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fruits <span class="hljs-operator">=</span> []</span><br><span class="line">occupations <span class="hljs-operator">=</span> [:]</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 指定类型</span></span><br><span class="line"><span class="hljs-keyword">let</span> emptyArray: [<span class="hljs-type">String</span>] <span class="hljs-operator">=</span> []</span><br><span class="line"><span class="hljs-keyword">let</span> emptyDictionary: [<span class="hljs-type">String</span>: <span class="hljs-type">Float</span>] <span class="hljs-operator">=</span> [:]</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fruits <span class="operator">=</span> []</span><br><span class="line">occupations <span class="operator">=</span> [:]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定类型</span></span><br><span class="line"><span class="keyword">let</span> emptyArray: [<span class="type">String</span>] <span class="operator">=</span> []</span><br><span class="line"><span class="keyword">let</span> emptyDictionary: [<span class="type">String</span>: <span class="type">Float</span>] <span class="operator">=</span> [:]</span><br></pre></td></tr></table></figure>
 
 <h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><p>循环: <code>for-in</code>,<code>while</code>,<code>repeat-while</code><br>条件: <code>if</code></p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> individualScores <span class="hljs-operator">=</span> [<span class="hljs-number">75</span>, <span class="hljs-number">43</span>, <span class="hljs-number">103</span>, <span class="hljs-number">87</span>, <span class="hljs-number">12</span>]</span><br><span class="line"><span class="hljs-keyword">var</span> teamScore <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-keyword">for</span> score <span class="hljs-keyword">in</span> individualScores {</span><br><span class="line">    <span class="hljs-keyword">if</span> score <span class="hljs-operator">&gt;</span> <span class="hljs-number">50</span> {</span><br><span class="line">        teamScore <span class="hljs-operator">+=</span> <span class="hljs-number">3</span></span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        teamScore <span class="hljs-operator">+=</span> <span class="hljs-number">1</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(teamScore)</span><br><span class="line"><span class="hljs-comment">// Prints "11"</span></span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> individualScores <span class="operator">=</span> [<span class="number">75</span>, <span class="number">43</span>, <span class="number">103</span>, <span class="number">87</span>, <span class="number">12</span>]</span><br><span class="line"><span class="keyword">var</span> teamScore <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> score <span class="keyword">in</span> individualScores &#123;</span><br><span class="line">    <span class="keyword">if</span> score <span class="operator">&gt;</span> <span class="number">50</span> &#123;</span><br><span class="line">        teamScore <span class="operator">+=</span> <span class="number">3</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        teamScore <span class="operator">+=</span> <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(teamScore)</span><br><span class="line"><span class="comment">// Prints &quot;11&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p><code>if</code> + 赋值</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> scoreDecoration <span class="hljs-operator">=</span> <span class="hljs-keyword">if</span> teamScore <span class="hljs-operator">&gt;</span> <span class="hljs-number">10</span> {</span><br><span class="line">    <span class="hljs-string">"🎉"</span></span><br><span class="line">} <span class="hljs-keyword">else</span> {</span><br><span class="line">    <span class="hljs-string">""</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(<span class="hljs-string">"Score:"</span>, teamScore, scoreDecoration)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> scoreDecoration <span class="operator">=</span> <span class="keyword">if</span> teamScore <span class="operator">&gt;</span> <span class="number">10</span> &#123;</span><br><span class="line">    <span class="string">&quot;🎉&quot;</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Score:&quot;</span>, teamScore, scoreDecoration)</span><br></pre></td></tr></table></figure>
 
 <p>属于语法糖,少写一个赋值</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> n <span class="hljs-operator">=</span> <span class="hljs-number">2</span></span><br><span class="line"><span class="hljs-keyword">while</span> n <span class="hljs-operator">&lt;</span> <span class="hljs-number">100</span> {</span><br><span class="line">    n <span class="hljs-operator">*=</span> <span class="hljs-number">2</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(n)</span><br><span class="line"><span class="hljs-comment">// Prints "128"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> m <span class="hljs-operator">=</span> <span class="hljs-number">2</span></span><br><span class="line"><span class="hljs-comment">// 这个其它语言中一般是用do, 用repeat可能是为了强调循环?</span></span><br><span class="line"><span class="hljs-keyword">repeat</span> {</span><br><span class="line">    m <span class="hljs-operator">*=</span> <span class="hljs-number">2</span></span><br><span class="line">} <span class="hljs-keyword">while</span> m <span class="hljs-operator">&lt;</span> <span class="hljs-number">100</span></span><br><span class="line"><span class="hljs-built_in">print</span>(m)</span><br><span class="line"><span class="hljs-comment">// Prints "128"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">while</span> n <span class="operator">&lt;</span> <span class="number">100</span> &#123;</span><br><span class="line">    n <span class="operator">*=</span> <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(n)</span><br><span class="line"><span class="comment">// Prints &quot;128&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> m <span class="operator">=</span> <span class="number">2</span></span><br><span class="line"><span class="comment">// 这个其它语言中一般是用do, 用repeat可能是为了强调循环?</span></span><br><span class="line"><span class="keyword">repeat</span> &#123;</span><br><span class="line">    m <span class="operator">*=</span> <span class="number">2</span></span><br><span class="line">&#125; <span class="keyword">while</span> m <span class="operator">&lt;</span> <span class="number">100</span></span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="comment">// Prints &quot;128&quot;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> total <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-number">0</span><span class="hljs-operator">..&lt;</span><span class="hljs-number">4</span> {</span><br><span class="line">    total <span class="hljs-operator">+=</span> i</span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(total)</span><br><span class="line"><span class="hljs-comment">// Prints "6"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> total <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span><span class="number">4</span> &#123;</span><br><span class="line">    total <span class="operator">+=</span> i</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(total)</span><br><span class="line"><span class="comment">// Prints &quot;6&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>for i in 0..&lt;4</code>, <code>i</code>的遍历区间是<code>0,1,2,3</code></p>
 <h3 id="可选型-optional"><a href="#可选型-optional" class="headerlink" title="可选型(optional)"></a>可选型(optional)</h3><ol>
 <li>类型后面跟问号</li>
 <li><code>if let name = optionalName</code> 会解包,能确定<code>name</code>是<code>nil</code>还是有具体的值</li>
 </ol>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> optionalString: <span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-string">"Hello"</span></span><br><span class="line"><span class="hljs-built_in">print</span>(optionalString <span class="hljs-operator">==</span> <span class="hljs-literal">nil</span>)</span><br><span class="line"><span class="hljs-comment">// Prints "false"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> optionalName: <span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-string">"John Appleseed"</span></span><br><span class="line"><span class="hljs-keyword">var</span> greeting <span class="hljs-operator">=</span> <span class="hljs-string">"Hello!"</span></span><br><span class="line"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> name <span class="hljs-operator">=</span> optionalName {</span><br><span class="line">    greeting <span class="hljs-operator">=</span> <span class="hljs-string">"Hello, <span class="hljs-subst">\(name)</span>"</span></span><br><span class="line">    <span class="hljs-built_in">print</span>(greeting)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> optionalString: <span class="type">String</span>? <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span></span><br><span class="line"><span class="built_in">print</span>(optionalString <span class="operator">==</span> <span class="literal">nil</span>)</span><br><span class="line"><span class="comment">// Prints &quot;false&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> optionalName: <span class="type">String</span>? <span class="operator">=</span> <span class="string">&quot;John Appleseed&quot;</span></span><br><span class="line"><span class="keyword">var</span> greeting <span class="operator">=</span> <span class="string">&quot;Hello!&quot;</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> name <span class="operator">=</span> optionalName &#123;</span><br><span class="line">    greeting <span class="operator">=</span> <span class="string">&quot;Hello, <span class="subst">\(name)</span>&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(greeting)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>还有种处理可选型的方法是通过<code>??</code></p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> nickname: <span class="hljs-type">String</span>? <span class="hljs-operator">=</span> <span class="hljs-literal">nil</span></span><br><span class="line"><span class="hljs-keyword">let</span> fullName: <span class="hljs-type">String</span> <span class="hljs-operator">=</span> <span class="hljs-string">"John Appleseed"</span></span><br><span class="line"><span class="hljs-keyword">let</span> informalGreeting <span class="hljs-operator">=</span> <span class="hljs-string">"Hi <span class="hljs-subst">\(nickname <span class="hljs-operator">??</span> fullName)</span>"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> nickname: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line"><span class="keyword">let</span> fullName: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;John Appleseed&quot;</span></span><br><span class="line"><span class="keyword">let</span> informalGreeting <span class="operator">=</span> <span class="string">&quot;Hi <span class="subst">\(nickname <span class="operator">??</span> fullName)</span>&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>nickname</code> 有值则用<code>nickname</code>的值,没有值则用<code>??</code>后的值。这是种默认值的写法,更健壮的处理当数据可能为<code>nil</code>的情况。</p>
 <p><code>switch</code> 的写法</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> vegetable <span class="hljs-operator">=</span> <span class="hljs-string">"red pepper"</span></span><br><span class="line"><span class="hljs-keyword">switch</span> vegetable {</span><br><span class="line"><span class="hljs-keyword">case</span> <span class="hljs-string">"celery"</span>:</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Add some raisins and make ants on a log."</span>)</span><br><span class="line"><span class="hljs-keyword">case</span> <span class="hljs-string">"cucumber"</span>, <span class="hljs-string">"watercress"</span>:</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"That would make a good tea sandwich."</span>)</span><br><span class="line"><span class="hljs-keyword">case</span> <span class="hljs-keyword">let</span> x <span class="hljs-keyword">where</span> x.hasSuffix(<span class="hljs-string">"pepper"</span>):</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Is it a spicy <span class="hljs-subst">\(x)</span>?"</span>)</span><br><span class="line"><span class="hljs-keyword">default</span>:</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Everything tastes good in soup."</span>)</span><br><span class="line">}</span><br><span class="line"><span class="hljs-comment">// Prints "Is it a spicy red pepper?"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vegetable <span class="operator">=</span> <span class="string">&quot;red pepper&quot;</span></span><br><span class="line"><span class="keyword">switch</span> vegetable &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;celery&quot;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Add some raisins and make ants on a log.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="string">&quot;cucumber&quot;</span>, <span class="string">&quot;watercress&quot;</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;That would make a good tea sandwich.&quot;</span>)</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">let</span> x <span class="keyword">where</span> x.hasSuffix(<span class="string">&quot;pepper&quot;</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Is it a spicy <span class="subst">\(x)</span>?&quot;</span>)</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Everything tastes good in soup.&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Is it a spicy red pepper?&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>case</code>类型可以是<code>String</code>，这点比<code>Objective-C</code>方便很多，编程语言是给人读的。</p>
 <p>去掉<code>default</code>语句会报<code>Switch must be exhaustive</code>编译错误,这是编程的实践，避免开发者遗漏</p>
-<h4 id="未使用的变量"><a href="#未使用的变量" class="headerlink" title="未使用的变量_"></a>未使用的变量<code>_</code></h4><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> interestingNumbers <span class="hljs-operator">=</span> [</span><br><span class="line">    <span class="hljs-string">"Prime"</span>: [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>, <span class="hljs-number">13</span>],</span><br><span class="line">    <span class="hljs-string">"Fibonacci"</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">8</span>],</span><br><span class="line">    <span class="hljs-string">"Square"</span>: [<span class="hljs-number">1</span>, <span class="hljs-number">4</span>, <span class="hljs-number">9</span>, <span class="hljs-number">16</span>, <span class="hljs-number">25</span>],</span><br><span class="line">]</span><br><span class="line"><span class="hljs-keyword">var</span> largest <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">_</span>, numbers) <span class="hljs-keyword">in</span> interestingNumbers {</span><br><span class="line">    <span class="hljs-keyword">for</span> number <span class="hljs-keyword">in</span> numbers {</span><br><span class="line">        <span class="hljs-keyword">if</span> number <span class="hljs-operator">&gt;</span> largest {</span><br><span class="line">            largest <span class="hljs-operator">=</span> number</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(largest)</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="未使用的变量"><a href="#未使用的变量" class="headerlink" title="未使用的变量_"></a>未使用的变量<code>_</code></h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> interestingNumbers <span class="operator">=</span> [</span><br><span class="line">    <span class="string">&quot;Prime&quot;</span>: [<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>],</span><br><span class="line">    <span class="string">&quot;Fibonacci&quot;</span>: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>],</span><br><span class="line">    <span class="string">&quot;Square&quot;</span>: [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>],</span><br><span class="line">]</span><br><span class="line"><span class="keyword">var</span> largest <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">_</span>, numbers) <span class="keyword">in</span> interestingNumbers &#123;</span><br><span class="line">    <span class="keyword">for</span> number <span class="keyword">in</span> numbers &#123;</span><br><span class="line">        <span class="keyword">if</span> number <span class="operator">&gt;</span> largest &#123;</span><br><span class="line">            largest <span class="operator">=</span> number</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(largest)</span><br></pre></td></tr></table></figure>
 
 <p>访问<code>for</code>循环时没有使用到字典的<code>key</code>,用<code>_</code>可以告诉编译器这件事方便优化</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 如果非要定义了不用,会给一个警告</span></span><br><span class="line"><span class="hljs-type">Immutable</span> value 'key' was never used; consider replacing with '<span class="hljs-keyword">_</span>' or removing it</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果非要定义了不用,会给一个警告</span></span><br><span class="line"><span class="type">Immutable</span> value &#x27;key&#x27; was never used; consider replacing with &#x27;<span class="keyword">_</span>&#x27; or removing it</span><br></pre></td></tr></table></figure>
 
 <h2 id="函数和闭包"><a href="#函数和闭包" class="headerlink" title="函数和闭包"></a>函数和闭包</h2><ol>
 <li>函数关键字 <code>func</code></li>
 <li><code>-&gt;</code> 后跟返回值</li>
 <li>函数定义对参数的声明和<code>objective-c</code>类似</li>
 </ol>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">greet</span>(<span class="hljs-params">person</span>: <span class="hljs-type">String</span>, <span class="hljs-params">day</span>: <span class="hljs-type">String</span>) -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello <span class="hljs-subst">\(person)</span>, today is <span class="hljs-subst">\(day)</span>."</span></span><br><span class="line">}</span><br><span class="line">greet(person: <span class="hljs-string">"Bob"</span>, day: <span class="hljs-string">"Tuesday"</span>)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">greet</span>(<span class="params">person</span>: <span class="type">String</span>, <span class="params">day</span>: <span class="type">String</span>) -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Hello <span class="subst">\(person)</span>, today is <span class="subst">\(day)</span>.&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">greet(person: <span class="string">&quot;Bob&quot;</span>, day: <span class="string">&quot;Tuesday&quot;</span>)</span><br></pre></td></tr></table></figure>
 
-<h3 id="通过元组-tuple-可以处理多个值"><a href="#通过元组-tuple-可以处理多个值" class="headerlink" title="通过元组(tuple)可以处理多个值"></a>通过元组(<code>tuple</code>)可以处理多个值</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">calculateStatistics</span>(<span class="hljs-params">scores</span>: [<span class="hljs-type">Int</span>]) -&gt; (min: <span class="hljs-type">Int</span>, max: <span class="hljs-type">Int</span>, sum: <span class="hljs-type">Int</span>) {</span><br><span class="line">    <span class="hljs-keyword">var</span> min <span class="hljs-operator">=</span> scores[<span class="hljs-number">0</span>]</span><br><span class="line">    <span class="hljs-keyword">var</span> max <span class="hljs-operator">=</span> scores[<span class="hljs-number">0</span>]</span><br><span class="line">    <span class="hljs-keyword">var</span> sum <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span> score <span class="hljs-keyword">in</span> scores {</span><br><span class="line">        <span class="hljs-keyword">if</span> score <span class="hljs-operator">&gt;</span> max {</span><br><span class="line">            max <span class="hljs-operator">=</span> score</span><br><span class="line">        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> score <span class="hljs-operator">&lt;</span> min {</span><br><span class="line">            min <span class="hljs-operator">=</span> score</span><br><span class="line">        }</span><br><span class="line">        sum <span class="hljs-operator">+=</span> score</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> (min, max, sum)</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">let</span> statistics <span class="hljs-operator">=</span> calculateStatistics(scores: [<span class="hljs-number">5</span>, <span class="hljs-number">3</span>, <span class="hljs-number">100</span>, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>])</span><br><span class="line"><span class="hljs-built_in">print</span>(statistics.sum)</span><br><span class="line"><span class="hljs-comment">// Prints "120"</span></span><br><span class="line"><span class="hljs-built_in">print</span>(statistics.<span class="hljs-number">2</span>)</span><br><span class="line"><span class="hljs-comment">// Prints "120"</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="通过元组-tuple-可以处理多个值"><a href="#通过元组-tuple-可以处理多个值" class="headerlink" title="通过元组(tuple)可以处理多个值"></a>通过元组(<code>tuple</code>)可以处理多个值</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">calculateStatistics</span>(<span class="params">scores</span>: [<span class="type">Int</span>]) -&gt; (min: <span class="type">Int</span>, max: <span class="type">Int</span>, sum: <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> min <span class="operator">=</span> scores[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> max <span class="operator">=</span> scores[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">var</span> sum <span class="operator">=</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> score <span class="keyword">in</span> scores &#123;</span><br><span class="line">        <span class="keyword">if</span> score <span class="operator">&gt;</span> max &#123;</span><br><span class="line">            max <span class="operator">=</span> score</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> score <span class="operator">&lt;</span> min &#123;</span><br><span class="line">            min <span class="operator">=</span> score</span><br><span class="line">        &#125;</span><br><span class="line">        sum <span class="operator">+=</span> score</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (min, max, sum)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> statistics <span class="operator">=</span> calculateStatistics(scores: [<span class="number">5</span>, <span class="number">3</span>, <span class="number">100</span>, <span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"><span class="built_in">print</span>(statistics.sum)</span><br><span class="line"><span class="comment">// Prints &quot;120&quot;</span></span><br><span class="line"><span class="built_in">print</span>(statistics.<span class="number">2</span>)</span><br><span class="line"><span class="comment">// Prints &quot;120&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="嵌套函数"><a href="#嵌套函数" class="headerlink" title="嵌套函数"></a>嵌套函数</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">returnFifteen</span>() -&gt; <span class="hljs-type">Int</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> y <span class="hljs-operator">=</span> <span class="hljs-number">10</span></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">add</span>() {</span><br><span class="line">        y <span class="hljs-operator">+=</span> <span class="hljs-number">5</span></span><br><span class="line">    }</span><br><span class="line">    add()</span><br><span class="line">    <span class="hljs-keyword">return</span> y</span><br><span class="line">}</span><br><span class="line">returnFifteen()</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="嵌套函数"><a href="#嵌套函数" class="headerlink" title="嵌套函数"></a>嵌套函数</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">returnFifteen</span>() -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> y <span class="operator">=</span> <span class="number">10</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">add</span>() &#123;</span><br><span class="line">        y <span class="operator">+=</span> <span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">    add()</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line">&#125;</span><br><span class="line">returnFifteen()</span><br></pre></td></tr></table></figure>
 
 <p>这个见的少,只见过类似概念的<code>Java</code>里的内部类</p>
 <h3 id="函数作返回值，参数"><a href="#函数作返回值，参数" class="headerlink" title="函数作返回值，参数"></a>函数作返回值，参数</h3><blockquote>
@@ -380,76 +291,76 @@
 <p>类型：规定了变量可以取的值得范围，以及该类型的值可以进行的操作。根据类型的值的可赋值状况，可以把类型分为三类：<br>1、一级的（first class）。该等级类型的值可以传给子程序作为参数，可以从子程序里返回，可以赋给变量。大多数程序设计语言里，整型、字符类型等简单类型都是一级的。<br>2、二级的（second class）。该等级类型的值可以传给子程序作为参数，但是不能从子程序里返回，也不能赋给变量。<br>3、三级的（third class）。该等级类型的值连作为参数传递也不行。</p>
 </blockquote>
 <p>函数当返回值</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">makeIncrementer</span>() -&gt; ((<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span>) {</span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">addOne</span>(<span class="hljs-params">number</span>: <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-operator">+</span> number</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> addOne</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> increment <span class="hljs-operator">=</span> makeIncrementer()</span><br><span class="line">increment(<span class="hljs-number">7</span>)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">makeIncrementer</span>() -&gt; ((<span class="type">Int</span>) -&gt; <span class="type">Int</span>) &#123;</span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">addOne</span>(<span class="params">number</span>: <span class="type">Int</span>) -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="operator">+</span> number</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> addOne</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> increment <span class="operator">=</span> makeIncrementer()</span><br><span class="line">increment(<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
 
 <p>函数当参数</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">hasAnyMatches</span>(<span class="hljs-params">list</span>: [<span class="hljs-type">Int</span>], <span class="hljs-params">condition</span>: (<span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Bool</span>) -&gt; <span class="hljs-type">Bool</span> {</span><br><span class="line">    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> list {</span><br><span class="line">        <span class="hljs-keyword">if</span> condition(item) {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">lessThanTen</span>(<span class="hljs-params">number</span>: <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Bool</span> {</span><br><span class="line">    <span class="hljs-keyword">return</span> number <span class="hljs-operator">&lt;</span> <span class="hljs-number">10</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> numbers <span class="hljs-operator">=</span> [<span class="hljs-number">20</span>, <span class="hljs-number">19</span>, <span class="hljs-number">7</span>, <span class="hljs-number">12</span>]</span><br><span class="line"><span class="hljs-comment">// lessThanTen 函数作为参数</span></span><br><span class="line">hasAnyMatches(list: numbers, condition: lessThanTen)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">hasAnyMatches</span>(<span class="params">list</span>: [<span class="type">Int</span>], <span class="params">condition</span>: (<span class="type">Int</span>) -&gt; <span class="type">Bool</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> list &#123;</span><br><span class="line">        <span class="keyword">if</span> condition(item) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">lessThanTen</span>(<span class="params">number</span>: <span class="type">Int</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> number <span class="operator">&lt;</span> <span class="number">10</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> numbers <span class="operator">=</span> [<span class="number">20</span>, <span class="number">19</span>, <span class="number">7</span>, <span class="number">12</span>]</span><br><span class="line"><span class="comment">// lessThanTen 函数作为参数</span></span><br><span class="line">hasAnyMatches(list: numbers, condition: lessThanTen)</span><br></pre></td></tr></table></figure>
 
 <h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p>函数是一种特殊的闭包，有名字的闭包(<code>closures</code>)</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// {} 内的是闭包</span></span><br><span class="line">numbers.map({ (number: <span class="hljs-type">Int</span>) -&gt; <span class="hljs-type">Int</span> <span class="hljs-keyword">in</span></span><br><span class="line">    <span class="hljs-keyword">let</span> result <span class="hljs-operator">=</span> <span class="hljs-number">3</span> <span class="hljs-operator">*</span> number</span><br><span class="line">    <span class="hljs-keyword">return</span> result</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#123;&#125; 内的是闭包</span></span><br><span class="line">numbers.map(&#123; (number: <span class="type">Int</span>) -&gt; <span class="type">Int</span> <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> <span class="number">3</span> <span class="operator">*</span> number</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <p>简化闭包写法</p>
 <p>省略<code>return</code></p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> mappedNumbers <span class="hljs-operator">=</span> numbers.map({ number <span class="hljs-keyword">in</span> <span class="hljs-number">3</span> <span class="hljs-operator">*</span> number })</span><br><span class="line"><span class="hljs-built_in">print</span>(mappedNumbers)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mappedNumbers <span class="operator">=</span> numbers.map(&#123; number <span class="keyword">in</span> <span class="number">3</span> <span class="operator">*</span> number &#125;)</span><br><span class="line"><span class="built_in">print</span>(mappedNumbers)</span><br></pre></td></tr></table></figure>
 
 <p>当闭包是函数的唯一参数时，可以完全省略括号</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> sortedNumbers <span class="hljs-operator">=</span> numbers.sorted { <span class="hljs-variable">$0</span> <span class="hljs-operator">&gt;</span> <span class="hljs-variable">$1</span> }</span><br><span class="line"><span class="hljs-built_in">print</span>(sortedNumbers)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sortedNumbers <span class="operator">=</span> numbers.sorted &#123; <span class="variable">$0</span> <span class="operator">&gt;</span> <span class="variable">$1</span> &#125;</span><br><span class="line"><span class="built_in">print</span>(sortedNumbers)</span><br></pre></td></tr></table></figure>
 
-<h2 id="对象和类"><a href="#对象和类" class="headerlink" title="对象和类"></a>对象和类</h2><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">Shape</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> numberOfSides <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">"A shape with <span class="hljs-subst">\(numberOfSides)</span> sides."</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="对象和类"><a href="#对象和类" class="headerlink" title="对象和类"></a>对象和类</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Shape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> numberOfSides <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;A shape with <span class="subst">\(numberOfSides)</span> sides.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> shape <span class="hljs-operator">=</span> <span class="hljs-type">Shape</span>()</span><br><span class="line">shape.numberOfSides <span class="hljs-operator">=</span> <span class="hljs-number">7</span></span><br><span class="line"><span class="hljs-keyword">var</span> shapeDescription <span class="hljs-operator">=</span> shape.simpleDescription()</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> shape <span class="operator">=</span> <span class="type">Shape</span>()</span><br><span class="line">shape.numberOfSides <span class="operator">=</span> <span class="number">7</span></span><br><span class="line"><span class="keyword">var</span> shapeDescription <span class="operator">=</span> shape.simpleDescription()</span><br></pre></td></tr></table></figure>
 
-<h3 id="初始化函数"><a href="#初始化函数" class="headerlink" title="初始化函数"></a>初始化函数</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">NamedShape</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> numberOfSides: <span class="hljs-type">Int</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span></span><br><span class="line">    <span class="hljs-keyword">var</span> name: <span class="hljs-type">String</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">init</span>(<span class="hljs-params">name</span>: <span class="hljs-type">String</span>) {</span><br><span class="line">       <span class="hljs-keyword">self</span>.name <span class="hljs-operator">=</span> name</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">       <span class="hljs-keyword">return</span> <span class="hljs-string">"A shape with <span class="hljs-subst">\(numberOfSides)</span> sides."</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="初始化函数"><a href="#初始化函数" class="headerlink" title="初始化函数"></a>初始化函数</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> numberOfSides: <span class="type">Int</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">       <span class="keyword">self</span>.name <span class="operator">=</span> name</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="string">&quot;A shape with <span class="subst">\(numberOfSides)</span> sides.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h3 id="子类重写父类方法"><a href="#子类重写父类方法" class="headerlink" title="子类重写父类方法"></a>子类重写父类方法</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">Square</span>: <span class="title class_ inherited__">NamedShape</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> sideLength: <span class="hljs-type">Double</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">init</span>(<span class="hljs-params">sideLength</span>: <span class="hljs-type">Double</span>, <span class="hljs-params">name</span>: <span class="hljs-type">String</span>) {</span><br><span class="line">        <span class="hljs-keyword">self</span>.sideLength <span class="hljs-operator">=</span> sideLength</span><br><span class="line">        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="hljs-operator">=</span> <span class="hljs-number">4</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">area</span>() -&gt; <span class="hljs-type">Double</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> sideLength <span class="hljs-operator">*</span> sideLength</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">"A square with sides of length <span class="hljs-subst">\(sideLength)</span>."</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">let</span> test <span class="hljs-operator">=</span> <span class="hljs-type">Square</span>(sideLength: <span class="hljs-number">5.2</span>, name: <span class="hljs-string">"my test square"</span>)</span><br><span class="line">test.area()</span><br><span class="line">test.simpleDescription()</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="子类重写父类方法"><a href="#子类重写父类方法" class="headerlink" title="子类重写父类方法"></a>子类重写父类方法</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Square</span>: <span class="title class_ inherited__">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sideLength: <span class="type">Double</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">sideLength</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.sideLength <span class="operator">=</span> sideLength</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="operator">=</span> <span class="number">4</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">area</span>() -&gt; <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> sideLength <span class="operator">*</span> sideLength</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;A square with sides of length <span class="subst">\(sideLength)</span>.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> test <span class="operator">=</span> <span class="type">Square</span>(sideLength: <span class="number">5.2</span>, name: <span class="string">&quot;my test square&quot;</span>)</span><br><span class="line">test.area()</span><br><span class="line">test.simpleDescription()</span><br></pre></td></tr></table></figure>
 
-<h3 id="属性访问器getter-amp-amp-setter"><a href="#属性访问器getter-amp-amp-setter" class="headerlink" title="属性访问器getter &amp;&amp; setter"></a>属性访问器<code>getter</code> &amp;&amp; <code>setter</code></h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">EquilateralTriangle</span>: <span class="title class_ inherited__">NamedShape</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> sideLength: <span class="hljs-type">Double</span> <span class="hljs-operator">=</span> <span class="hljs-number">0.0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">init</span>(<span class="hljs-params">sideLength</span>: <span class="hljs-type">Double</span>, <span class="hljs-params">name</span>: <span class="hljs-type">String</span>) {</span><br><span class="line">        <span class="hljs-keyword">self</span>.sideLength <span class="hljs-operator">=</span> sideLength</span><br><span class="line">        <span class="hljs-keyword">super</span>.<span class="hljs-keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="hljs-operator">=</span> <span class="hljs-number">3</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">var</span> perimeter: <span class="hljs-type">Double</span> {</span><br><span class="line">        <span class="hljs-keyword">get</span> {</span><br><span class="line">             <span class="hljs-keyword">return</span> <span class="hljs-number">3.0</span> <span class="hljs-operator">*</span> sideLength</span><br><span class="line">        }</span><br><span class="line">        <span class="hljs-keyword">set</span> {</span><br><span class="line">            sideLength <span class="hljs-operator">=</span> newValue <span class="hljs-operator">/</span> <span class="hljs-number">3.0</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">override</span> <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">"An equilateral triangle with sides of length <span class="hljs-subst">\(sideLength)</span>."</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> triangle <span class="hljs-operator">=</span> <span class="hljs-type">EquilateralTriangle</span>(sideLength: <span class="hljs-number">3.1</span>, name: <span class="hljs-string">"a triangle"</span>)</span><br><span class="line"><span class="hljs-built_in">print</span>(triangle.perimeter)</span><br><span class="line"><span class="hljs-comment">// Prints "9.3"</span></span><br><span class="line">triangle.perimeter <span class="hljs-operator">=</span> <span class="hljs-number">9.9</span></span><br><span class="line"><span class="hljs-built_in">print</span>(triangle.sideLength)</span><br><span class="line"><span class="hljs-comment">// Prints "3.3000000000000003"</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="属性访问器getter-amp-amp-setter"><a href="#属性访问器getter-amp-amp-setter" class="headerlink" title="属性访问器getter &amp;&amp; setter"></a>属性访问器<code>getter</code> &amp;&amp; <code>setter</code></h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">EquilateralTriangle</span>: <span class="title class_ inherited__">NamedShape</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sideLength: <span class="type">Double</span> <span class="operator">=</span> <span class="number">0.0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">init</span>(<span class="params">sideLength</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.sideLength <span class="operator">=</span> sideLength</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(name: name)</span><br><span class="line">        numberOfSides <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> perimeter: <span class="type">Double</span> &#123;</span><br><span class="line">        <span class="keyword">get</span> &#123;</span><br><span class="line">             <span class="keyword">return</span> <span class="number">3.0</span> <span class="operator">*</span> sideLength</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">set</span> &#123;</span><br><span class="line">            sideLength <span class="operator">=</span> newValue <span class="operator">/</span> <span class="number">3.0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;An equilateral triangle with sides of length <span class="subst">\(sideLength)</span>.&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> triangle <span class="operator">=</span> <span class="type">EquilateralTriangle</span>(sideLength: <span class="number">3.1</span>, name: <span class="string">&quot;a triangle&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(triangle.perimeter)</span><br><span class="line"><span class="comment">// Prints &quot;9.3&quot;</span></span><br><span class="line">triangle.perimeter <span class="operator">=</span> <span class="number">9.9</span></span><br><span class="line"><span class="built_in">print</span>(triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints &quot;3.3000000000000003&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">TriangleAndSquare</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> triangle: <span class="hljs-type">EquilateralTriangle</span> {</span><br><span class="line">        <span class="hljs-keyword">willSet</span> {</span><br><span class="line">            square.sideLength <span class="hljs-operator">=</span> newValue.sideLength</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">var</span> square: <span class="hljs-type">Square</span> {</span><br><span class="line">        <span class="hljs-keyword">willSet</span> {</span><br><span class="line">            triangle.sideLength <span class="hljs-operator">=</span> newValue.sideLength</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">init</span>(<span class="hljs-params">size</span>: <span class="hljs-type">Double</span>, <span class="hljs-params">name</span>: <span class="hljs-type">String</span>) {</span><br><span class="line">        square <span class="hljs-operator">=</span> <span class="hljs-type">Square</span>(sideLength: size, name: name)</span><br><span class="line">        triangle <span class="hljs-operator">=</span> <span class="hljs-type">EquilateralTriangle</span>(sideLength: size, name: name)</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> triangleAndSquare <span class="hljs-operator">=</span> <span class="hljs-type">TriangleAndSquare</span>(size: <span class="hljs-number">10</span>, name: <span class="hljs-string">"another test shape"</span>)</span><br><span class="line"><span class="hljs-built_in">print</span>(triangleAndSquare.square.sideLength)</span><br><span class="line"><span class="hljs-comment">// Prints "10.0"</span></span><br><span class="line"><span class="hljs-built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="hljs-comment">// Prints "10.0"</span></span><br><span class="line">triangleAndSquare.square <span class="hljs-operator">=</span> <span class="hljs-type">Square</span>(sideLength: <span class="hljs-number">50</span>, name: <span class="hljs-string">"larger square"</span>)</span><br><span class="line"><span class="hljs-built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="hljs-comment">// Prints "50.0"</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TriangleAndSquare</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> triangle: <span class="type">EquilateralTriangle</span> &#123;</span><br><span class="line">        <span class="keyword">willSet</span> &#123;</span><br><span class="line">            square.sideLength <span class="operator">=</span> newValue.sideLength</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> square: <span class="type">Square</span> &#123;</span><br><span class="line">        <span class="keyword">willSet</span> &#123;</span><br><span class="line">            triangle.sideLength <span class="operator">=</span> newValue.sideLength</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">init</span>(<span class="params">size</span>: <span class="type">Double</span>, <span class="params">name</span>: <span class="type">String</span>) &#123;</span><br><span class="line">        square <span class="operator">=</span> <span class="type">Square</span>(sideLength: size, name: name)</span><br><span class="line">        triangle <span class="operator">=</span> <span class="type">EquilateralTriangle</span>(sideLength: size, name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> triangleAndSquare <span class="operator">=</span> <span class="type">TriangleAndSquare</span>(size: <span class="number">10</span>, name: <span class="string">&quot;another test shape&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.square.sideLength)</span><br><span class="line"><span class="comment">// Prints &quot;10.0&quot;</span></span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints &quot;10.0&quot;</span></span><br><span class="line">triangleAndSquare.square <span class="operator">=</span> <span class="type">Square</span>(sideLength: <span class="number">50</span>, name: <span class="string">&quot;larger square&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(triangleAndSquare.triangle.sideLength)</span><br><span class="line"><span class="comment">// Prints &quot;50.0&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="枚举和结构体"><a href="#枚举和结构体" class="headerlink" title="枚举和结构体"></a>枚举和结构体</h2><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">enum</span> <span class="title class_">Rank</span>: <span class="title class_ inherited__">Int</span> {</span><br><span class="line">    <span class="hljs-keyword">case</span> ace <span class="hljs-operator">=</span> <span class="hljs-number">1</span></span><br><span class="line">    <span class="hljs-keyword">case</span> two, three, four, five, six, seven, eight, nine, ten</span><br><span class="line">    <span class="hljs-keyword">case</span> jack, queen, king</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">switch</span> <span class="hljs-keyword">self</span> {</span><br><span class="line">        <span class="hljs-keyword">case</span> .ace:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"ace"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .jack:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"jack"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .queen:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"queen"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .king:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"king"</span></span><br><span class="line">        <span class="hljs-keyword">default</span>:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-type">String</span>(<span class="hljs-keyword">self</span>.rawValue)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">let</span> ace <span class="hljs-operator">=</span> <span class="hljs-type">Rank</span>.ace</span><br><span class="line"><span class="hljs-keyword">let</span> aceRawValue <span class="hljs-operator">=</span> ace.rawValue</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="枚举和结构体"><a href="#枚举和结构体" class="headerlink" title="枚举和结构体"></a>枚举和结构体</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Rank</span>: <span class="title class_ inherited__">Int</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> ace <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">case</span> two, three, four, five, six, seven, eight, nine, ten</span><br><span class="line">    <span class="keyword">case</span> jack, queen, king</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .ace:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;ace&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .jack:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;jack&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .queen:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;queen&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .king:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;king&quot;</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="type">String</span>(<span class="keyword">self</span>.rawValue)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> ace <span class="operator">=</span> <span class="type">Rank</span>.ace</span><br><span class="line"><span class="keyword">let</span> aceRawValue <span class="operator">=</span> ace.rawValue</span><br></pre></td></tr></table></figure>
 
 <p><code>rawValue</code> 默认0开始，然后递增</p>
 <p>枚举的 <code>case</code> 值是实际值，而不仅仅是编写其原始值的另一种方式。事实上，在没有有意义的原始值的情况下，可以不必提供原始值。</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">enum</span> <span class="title class_">Suit</span> {</span><br><span class="line">    <span class="hljs-keyword">case</span> spades, hearts, diamonds, clubs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">switch</span> <span class="hljs-keyword">self</span> {</span><br><span class="line">        <span class="hljs-keyword">case</span> .spades:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"spades"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .hearts:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"hearts"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .diamonds:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"diamonds"</span></span><br><span class="line">        <span class="hljs-keyword">case</span> .clubs:</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"clubs"</span></span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">let</span> hearts <span class="hljs-operator">=</span> <span class="hljs-type">Suit</span>.hearts</span><br><span class="line"><span class="hljs-keyword">let</span> heartsDescription <span class="hljs-operator">=</span> hearts.simpleDescription()</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Suit</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> spades, hearts, diamonds, clubs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">func</span> <span class="title function_">simpleDescription</span>() -&gt; <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> .spades:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;spades&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .hearts:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;hearts&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .diamonds:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;diamonds&quot;</span></span><br><span class="line">        <span class="keyword">case</span> .clubs:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;clubs&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> hearts <span class="operator">=</span> <span class="type">Suit</span>.hearts</span><br><span class="line"><span class="keyword">let</span> heartsDescription <span class="operator">=</span> hearts.simpleDescription()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><p>异步方法的关键字 <code>async</code>，调用异步方法前面加<code>await</code></p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">fetchUserID</span>(<span class="hljs-params">from</span> <span class="hljs-params">server</span>: <span class="hljs-type">String</span>) <span class="hljs-keyword">async</span> -&gt; <span class="hljs-type">Int</span> {</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"fetchUserID"</span>)</span><br><span class="line">    <span class="hljs-keyword">if</span> server <span class="hljs-operator">==</span> <span class="hljs-string">"primary"</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-number">97</span></span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">501</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">fetchUsername</span>(<span class="hljs-params">from</span> <span class="hljs-params">server</span>: <span class="hljs-type">String</span>) <span class="hljs-keyword">async</span> -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"fetchUsername"</span>)</span><br><span class="line">    <span class="hljs-keyword">let</span> userID <span class="hljs-operator">=</span> <span class="hljs-keyword">await</span> fetchUserID(from: server)</span><br><span class="line">    <span class="hljs-keyword">if</span> userID <span class="hljs-operator">==</span> <span class="hljs-number">501</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">"John Appleseed"</span></span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">"Guest"</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">connectUser</span>(<span class="hljs-params">to</span> <span class="hljs-params">server</span>: <span class="hljs-type">String</span>) <span class="hljs-keyword">async</span> {</span><br><span class="line">    <span class="hljs-comment">// 异步调用</span></span><br><span class="line">    <span class="hljs-keyword">async</span> <span class="hljs-keyword">let</span> userID <span class="hljs-operator">=</span> fetchUserID(from: server)</span><br><span class="line">    <span class="hljs-keyword">async</span> <span class="hljs-keyword">let</span> username <span class="hljs-operator">=</span> fetchUsername(from: server)</span><br><span class="line">    <span class="hljs-comment">// 等待返回后执行下一句</span></span><br><span class="line">    <span class="hljs-keyword">let</span> greeting <span class="hljs-operator">=</span> <span class="hljs-keyword">await</span> <span class="hljs-string">"Hello <span class="hljs-subst">\(username)</span>, user ID <span class="hljs-subst">\(userID)</span>"</span></span><br><span class="line">    <span class="hljs-built_in">print</span>(greeting)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-type">Task</span> {</span><br><span class="line">    <span class="hljs-keyword">await</span> connectUser(to: <span class="hljs-string">"primary2"</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">fetchUserID</span>(<span class="params">from</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;fetchUserID&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> server <span class="operator">==</span> <span class="string">&quot;primary&quot;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">97</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">501</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">fetchUsername</span>(<span class="params">from</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;fetchUsername&quot;</span>)</span><br><span class="line">    <span class="keyword">let</span> userID <span class="operator">=</span> <span class="keyword">await</span> fetchUserID(from: server)</span><br><span class="line">    <span class="keyword">if</span> userID <span class="operator">==</span> <span class="number">501</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;John Appleseed&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Guest&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">connectUser</span>(<span class="params">to</span> <span class="params">server</span>: <span class="type">String</span>) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">// 异步调用</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">let</span> userID <span class="operator">=</span> fetchUserID(from: server)</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">let</span> username <span class="operator">=</span> fetchUsername(from: server)</span><br><span class="line">    <span class="comment">// 等待返回后执行下一句</span></span><br><span class="line">    <span class="keyword">let</span> greeting <span class="operator">=</span> <span class="keyword">await</span> <span class="string">&quot;Hello <span class="subst">\(username)</span>, user ID <span class="subst">\(userID)</span>&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(greeting)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Task</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> connectUser(to: <span class="string">&quot;primary2&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>等待任务组</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">let</span> userIDs <span class="hljs-operator">=</span> <span class="hljs-keyword">await</span> withTaskGroup(of: <span class="hljs-type">Int</span>.<span class="hljs-keyword">self</span>) { group <span class="hljs-keyword">in</span></span><br><span class="line">    <span class="hljs-keyword">for</span> server <span class="hljs-keyword">in</span> [<span class="hljs-string">"primary"</span>, <span class="hljs-string">"secondary"</span>, <span class="hljs-string">"development"</span>] {</span><br><span class="line">        group.addTask {</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> fetchUserID(from: server)</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">var</span> results: [<span class="hljs-type">Int</span>] <span class="hljs-operator">=</span> []</span><br><span class="line">    <span class="hljs-keyword">for</span> <span class="hljs-keyword">await</span> result <span class="hljs-keyword">in</span> group {</span><br><span class="line">        results.append(result)</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> results</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> userIDs <span class="operator">=</span> <span class="keyword">await</span> withTaskGroup(of: <span class="type">Int</span>.<span class="keyword">self</span>) &#123; group <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">for</span> server <span class="keyword">in</span> [<span class="string">&quot;primary&quot;</span>, <span class="string">&quot;secondary&quot;</span>, <span class="string">&quot;development&quot;</span>] &#123;</span><br><span class="line">        group.addTask &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">await</span> fetchUserID(from: server)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> results: [<span class="type">Int</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">await</span> result <span class="keyword">in</span> group &#123;</span><br><span class="line">        results.append(result)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> results</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="协议与扩展"><a href="#协议与扩展" class="headerlink" title="协议与扩展"></a>协议与扩展</h2><p>使用关键字<code>Protocol</code>定义协议</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">protocol</span> <span class="title class_">ExampleProtocol</span> {</span><br><span class="line">     <span class="hljs-keyword">var</span> simpleDescription: <span class="hljs-type">String</span> { <span class="hljs-keyword">get</span> }</span><br><span class="line">     <span class="hljs-keyword">mutating</span> <span class="hljs-keyword">func</span> <span class="title function_">adjust</span>()</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protocol</span> <span class="title class_">ExampleProtocol</span> &#123;</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">     <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>类,枚举和结构体都可以实现协议</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">SimpleClass</span>: <span class="title class_ inherited__">ExampleProtocol</span> {</span><br><span class="line">     <span class="hljs-keyword">var</span> simpleDescription: <span class="hljs-type">String</span> <span class="hljs-operator">=</span> <span class="hljs-string">"A very simple class."</span></span><br><span class="line">     <span class="hljs-keyword">var</span> anotherProperty: <span class="hljs-type">Int</span> <span class="hljs-operator">=</span> <span class="hljs-number">69105</span></span><br><span class="line">     <span class="hljs-keyword">func</span> <span class="title function_">adjust</span>() {</span><br><span class="line">          simpleDescription <span class="hljs-operator">+=</span> <span class="hljs-string">"  Now 100% adjusted."</span></span><br><span class="line">     }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> a <span class="hljs-operator">=</span> <span class="hljs-type">SimpleClass</span>()</span><br><span class="line">a.adjust()</span><br><span class="line"><span class="hljs-keyword">let</span> aDescription <span class="hljs-operator">=</span> a.simpleDescription</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">struct</span> <span class="title class_">SimpleStructure</span>: <span class="title class_ inherited__">ExampleProtocol</span> {</span><br><span class="line">     <span class="hljs-keyword">var</span> simpleDescription: <span class="hljs-type">String</span> <span class="hljs-operator">=</span> <span class="hljs-string">"A simple structure"</span></span><br><span class="line">     <span class="hljs-keyword">mutating</span> <span class="hljs-keyword">func</span> <span class="title function_">adjust</span>() {</span><br><span class="line">          simpleDescription <span class="hljs-operator">+=</span> <span class="hljs-string">" (adjusted)"</span></span><br><span class="line">     }</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">var</span> b <span class="hljs-operator">=</span> <span class="hljs-type">SimpleStructure</span>()</span><br><span class="line">b.adjust()</span><br><span class="line"><span class="hljs-keyword">let</span> bDescription <span class="hljs-operator">=</span> b.simpleDescription</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">SimpleClass</span>: <span class="title class_ inherited__">ExampleProtocol</span> &#123;</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;A very simple class.&quot;</span></span><br><span class="line">     <span class="keyword">var</span> anotherProperty: <span class="type">Int</span> <span class="operator">=</span> <span class="number">69105</span></span><br><span class="line">     <span class="keyword">func</span> <span class="title function_">adjust</span>() &#123;</span><br><span class="line">          simpleDescription <span class="operator">+=</span> <span class="string">&quot;  Now 100% adjusted.&quot;</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a <span class="operator">=</span> <span class="type">SimpleClass</span>()</span><br><span class="line">a.adjust()</span><br><span class="line"><span class="keyword">let</span> aDescription <span class="operator">=</span> a.simpleDescription</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SimpleStructure</span>: <span class="title class_ inherited__">ExampleProtocol</span> &#123;</span><br><span class="line">     <span class="keyword">var</span> simpleDescription: <span class="type">String</span> <span class="operator">=</span> <span class="string">&quot;A simple structure&quot;</span></span><br><span class="line">     <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>() &#123;</span><br><span class="line">          simpleDescription <span class="operator">+=</span> <span class="string">&quot; (adjusted)&quot;</span></span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> b <span class="operator">=</span> <span class="type">SimpleStructure</span>()</span><br><span class="line">b.adjust()</span><br><span class="line"><span class="keyword">let</span> bDescription <span class="operator">=</span> b.simpleDescription</span><br></pre></td></tr></table></figure>
 
 <p>结构体的<code>adjust</code>方法前有<code>mutating</code>修饰用于修改结构体的成员</p>
 <p>可以使用扩展来为已有的类型添加方法</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">extension</span> <span class="title class_">Int</span>: <span class="title class_ inherited__">ExampleProtocol</span> {</span><br><span class="line">    <span class="hljs-keyword">var</span> simpleDescription: <span class="hljs-type">String</span> {</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-string">"The number <span class="hljs-subst">\(<span class="hljs-keyword">self</span>)</span>"</span></span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">mutating</span> <span class="hljs-keyword">func</span> <span class="title function_">adjust</span>() {</span><br><span class="line">        <span class="hljs-keyword">self</span> <span class="hljs-operator">+=</span> <span class="hljs-number">42</span></span><br><span class="line">    }</span><br><span class="line"> }</span><br><span class="line"><span class="hljs-built_in">print</span>(<span class="hljs-number">7</span>.simpleDescription)</span><br><span class="line"><span class="hljs-comment">// Prints "The number 7"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">Int</span>: <span class="title class_ inherited__">ExampleProtocol</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> simpleDescription: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;The number <span class="subst">\(<span class="keyword">self</span>)</span>&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">mutating</span> <span class="keyword">func</span> <span class="title function_">adjust</span>() &#123;</span><br><span class="line">        <span class="keyword">self</span> <span class="operator">+=</span> <span class="number">42</span></span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="number">7</span>.simpleDescription)</span><br><span class="line"><span class="comment">// Prints &quot;The number 7&quot;</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="异常捕获"><a href="#异常捕获" class="headerlink" title="异常捕获"></a>异常捕获</h2><p>通过实现<code>Error</code>协议来表示错误类型</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">enum</span> <span class="title class_">PrinterError</span>: <span class="title class_ inherited__">Error</span> {</span><br><span class="line">    <span class="hljs-keyword">case</span> outOfPaper</span><br><span class="line">    <span class="hljs-keyword">case</span> noToner</span><br><span class="line">    <span class="hljs-keyword">case</span> onFire</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">PrinterError</span>: <span class="title class_ inherited__">Error</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> outOfPaper</span><br><span class="line">    <span class="keyword">case</span> noToner</span><br><span class="line">    <span class="keyword">case</span> onFire</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>throws</code> 关键字来抛出异常</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">send</span>(<span class="hljs-params">job</span>: <span class="hljs-type">Int</span>, <span class="hljs-params">toPrinter</span> <span class="hljs-params">printerName</span>: <span class="hljs-type">String</span>) <span class="hljs-keyword">throws</span> -&gt; <span class="hljs-type">String</span> {</span><br><span class="line">    <span class="hljs-keyword">if</span> printerName <span class="hljs-operator">==</span> <span class="hljs-string">"Never Has Toner"</span> {</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-type">PrinterError</span>.noToner</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-string">"Job sent"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">send</span>(<span class="params">job</span>: <span class="type">Int</span>, <span class="params">toPrinter</span> <span class="params">printerName</span>: <span class="type">String</span>) <span class="keyword">throws</span> -&gt; <span class="type">String</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> printerName <span class="operator">==</span> <span class="string">&quot;Never Has Toner&quot;</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="type">PrinterError</span>.noToner</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Job sent&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以使用 <code>do-catch</code> 来捕获异常，<code>try</code> 修饰可能会抛出异常的代码</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">do</span> {</span><br><span class="line">    <span class="hljs-keyword">let</span> printerResponse <span class="hljs-operator">=</span> <span class="hljs-keyword">try</span> send(job: <span class="hljs-number">1040</span>, toPrinter: <span class="hljs-string">"Bi Sheng"</span>)</span><br><span class="line">    <span class="hljs-built_in">print</span>(printerResponse)</span><br><span class="line">} <span class="hljs-keyword">catch</span> {</span><br><span class="line">    <span class="hljs-built_in">print</span>(error)</span><br><span class="line">}</span><br><span class="line"><span class="hljs-comment">// Prints "Job sent"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> printerResponse <span class="operator">=</span> <span class="keyword">try</span> send(job: <span class="number">1040</span>, toPrinter: <span class="string">&quot;Bi Sheng&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(printerResponse)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(error)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Job sent&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>多种异常的处理</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">do</span> {</span><br><span class="line">    <span class="hljs-keyword">let</span> printerResponse <span class="hljs-operator">=</span> <span class="hljs-keyword">try</span> send(job: <span class="hljs-number">1440</span>, toPrinter: <span class="hljs-string">"Gutenberg"</span>)</span><br><span class="line">    <span class="hljs-built_in">print</span>(printerResponse)</span><br><span class="line">} <span class="hljs-keyword">catch</span> <span class="hljs-type">PrinterError</span>.onFire {</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"I'll just put this over here, with the rest of the fire."</span>)</span><br><span class="line">} <span class="hljs-keyword">catch</span> <span class="hljs-keyword">let</span> printerError <span class="hljs-keyword">as</span> <span class="hljs-type">PrinterError</span> {</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Printer error: <span class="hljs-subst">\(printerError)</span>."</span>)</span><br><span class="line">} <span class="hljs-keyword">catch</span> {</span><br><span class="line">    <span class="hljs-built_in">print</span>(error)</span><br><span class="line">}</span><br><span class="line"><span class="hljs-comment">// Prints "Job sent"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> printerResponse <span class="operator">=</span> <span class="keyword">try</span> send(job: <span class="number">1440</span>, toPrinter: <span class="string">&quot;Gutenberg&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(printerResponse)</span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="type">PrinterError</span>.onFire &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;I&#x27;ll just put this over here, with the rest of the fire.&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> <span class="keyword">let</span> printerError <span class="keyword">as</span> <span class="type">PrinterError</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Printer error: <span class="subst">\(printerError)</span>.&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(error)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Prints &quot;Job sent&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p><code>defer</code>关键词修饰的代码会在函数所有代码执行完成后，函数<code>return</code>返回前执行。<br>无论代码是否抛出异常都会执行。它一般用于建立或清理代码。</p>
 <p>有点类似<code>finally</code> 部分,可以避免异常的时候没释放内存。这在某个函数有多个返回出口的时候特别有用。</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> fridgeIsOpen <span class="hljs-operator">=</span> <span class="hljs-literal">false</span></span><br><span class="line"><span class="hljs-keyword">let</span> fridgeContent <span class="hljs-operator">=</span> [<span class="hljs-string">"milk"</span>, <span class="hljs-string">"eggs"</span>, <span class="hljs-string">"leftovers"</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">fridgeContains</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">food</span>: <span class="hljs-type">String</span>) -&gt; <span class="hljs-type">Bool</span> {</span><br><span class="line">    fridgeIsOpen <span class="hljs-operator">=</span> <span class="hljs-literal">true</span></span><br><span class="line">    <span class="hljs-keyword">defer</span> {</span><br><span class="line">        fridgeIsOpen <span class="hljs-operator">=</span> <span class="hljs-literal">false</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">let</span> result <span class="hljs-operator">=</span> fridgeContent.contains(food)</span><br><span class="line">    <span class="hljs-keyword">return</span> result</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">if</span> fridgeContains(<span class="hljs-string">"banana"</span>) {</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"Found a banana"</span>)</span><br><span class="line">}</span><br><span class="line"><span class="hljs-built_in">print</span>(fridgeIsOpen)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fridgeIsOpen <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line"><span class="keyword">let</span> fridgeContent <span class="operator">=</span> [<span class="string">&quot;milk&quot;</span>, <span class="string">&quot;eggs&quot;</span>, <span class="string">&quot;leftovers&quot;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">fridgeContains</span>(<span class="keyword">_</span> <span class="params">food</span>: <span class="type">String</span>) -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">    fridgeIsOpen <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">    <span class="keyword">defer</span> &#123;</span><br><span class="line">        fridgeIsOpen <span class="operator">=</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> result <span class="operator">=</span> fridgeContent.contains(food)</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> fridgeContains(<span class="string">&quot;banana&quot;</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Found a banana&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(fridgeIsOpen)</span><br></pre></td></tr></table></figure>
 
 <h2 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h2><p>泛型: &lt;类型&gt;</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">makeArray</span>&lt;<span class="hljs-type">Item</span>&gt;(<span class="hljs-params">repeating</span> <span class="hljs-params">item</span>: <span class="hljs-type">Item</span>, <span class="hljs-params">numberOfTimes</span>: <span class="hljs-type">Int</span>) -&gt; [<span class="hljs-type">Item</span>] {</span><br><span class="line">    <span class="hljs-keyword">var</span> result: [<span class="hljs-type">Item</span>] <span class="hljs-operator">=</span> []</span><br><span class="line">    <span class="hljs-keyword">for</span> <span class="hljs-keyword">_</span> <span class="hljs-keyword">in</span> <span class="hljs-number">0</span><span class="hljs-operator">..&lt;</span>numberOfTimes {</span><br><span class="line">         result.append(item)</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> result</span><br><span class="line">}</span><br><span class="line">makeArray(repeating: <span class="hljs-string">"knock"</span>, numberOfTimes: <span class="hljs-number">4</span>)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">makeArray</span>&lt;<span class="type">Item</span>&gt;(<span class="params">repeating</span> <span class="params">item</span>: <span class="type">Item</span>, <span class="params">numberOfTimes</span>: <span class="type">Int</span>) -&gt; [<span class="type">Item</span>] &#123;</span><br><span class="line">    <span class="keyword">var</span> result: [<span class="type">Item</span>] <span class="operator">=</span> []</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>numberOfTimes &#123;</span><br><span class="line">         result.append(item)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line">makeArray(repeating: <span class="string">&quot;knock&quot;</span>, numberOfTimes: <span class="number">4</span>)</span><br></pre></td></tr></table></figure>
 
 <p>可以对方法，函数，类，枚举，结构体应用泛型</p>
-<figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// where T.Element: Equatable , T.Element == U.Element表示：只有元素遵循 Equatable 协议且内部的类型一致时才可以使用anyCommonElements方法</span></span><br><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">anyCommonElements</span>&lt;<span class="hljs-type">T</span>: <span class="hljs-type">Sequence</span>, <span class="hljs-type">U</span>: <span class="hljs-type">Sequence</span>&gt;(<span class="hljs-keyword">_</span> <span class="hljs-params">lhs</span>: <span class="hljs-type">T</span>, <span class="hljs-keyword">_</span> <span class="hljs-params">rhs</span>: <span class="hljs-type">U</span>) -&gt; <span class="hljs-type">Bool</span></span><br><span class="line">    <span class="hljs-keyword">where</span> <span class="hljs-type">T</span>.<span class="hljs-type">Element</span>: <span class="hljs-type">Equatable</span>, <span class="hljs-type">T</span>.<span class="hljs-type">Element</span> <span class="hljs-operator">==</span> <span class="hljs-type">U</span>.<span class="hljs-type">Element</span></span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">for</span> lhsItem <span class="hljs-keyword">in</span> lhs {</span><br><span class="line">        <span class="hljs-keyword">for</span> rhsItem <span class="hljs-keyword">in</span> rhs {</span><br><span class="line">            <span class="hljs-keyword">if</span> lhsItem <span class="hljs-operator">==</span> rhsItem {</span><br><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></span><br><span class="line">            }</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line">   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span><br><span class="line">}</span><br><span class="line">anyCommonElements([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>], [<span class="hljs-number">3</span>])</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// where T.Element: Equatable , T.Element == U.Element表示：只有元素遵循 Equatable 协议且内部的类型一致时才可以使用anyCommonElements方法</span></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">anyCommonElements</span>&lt;<span class="type">T</span>: <span class="type">Sequence</span>, <span class="type">U</span>: <span class="type">Sequence</span>&gt;(<span class="keyword">_</span> <span class="params">lhs</span>: <span class="type">T</span>, <span class="keyword">_</span> <span class="params">rhs</span>: <span class="type">U</span>) -&gt; <span class="type">Bool</span></span><br><span class="line">    <span class="keyword">where</span> <span class="type">T</span>.<span class="type">Element</span>: <span class="type">Equatable</span>, <span class="type">T</span>.<span class="type">Element</span> <span class="operator">==</span> <span class="type">U</span>.<span class="type">Element</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> lhsItem <span class="keyword">in</span> lhs &#123;</span><br><span class="line">        <span class="keyword">for</span> rhsItem <span class="keyword">in</span> rhs &#123;</span><br><span class="line">            <span class="keyword">if</span> lhsItem <span class="operator">==</span> rhsItem &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br><span class="line">anyCommonElements([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
 
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour/">Swift-Doc</a></li>
@@ -457,237 +368,202 @@
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7036626686737121287">Swift系列之关于Swift defer的正确使用</a></li>
 <li><a target="_blank" rel="noopener" href="https://fangjunyu.com/2024/11/01/swift-%e9%99%90%e5%ae%9a%e6%b3%9b%e5%9e%8b%e3%80%81%e5%8d%8f%e8%ae%ae%e6%89%a9%e5%b1%95%e6%88%96%e7%ba%a6%e6%9d%9f%e7%9a%84where/">Swift限定泛型、协议扩展或约束的where</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2025/04/16/Technology-learn-media-01/">音频基础概念</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2025/04/14/Technology-learn-vue-06/">Vue 学习笔记 - 内置组件 - Transition</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swift/" rel="tag"># Swift</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/14/Technology-learn-vue-06/" rel="prev" title="Vue 学习笔记 - 内置组件 - Transition">
+      <i class="fa fa-chevron-left"></i> Vue 学习笔记 - 内置组件 - Transition
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/16/Technology-learn-media-01/" rel="next" title="音视频 - 音频基础概念">
+      音视频 - 音频基础概念 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="nav-number">1.</span> <span class="nav-text">获取版本号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-world"><span class="nav-number">2.</span> <span class="nav-text">Hello world</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%80%BC"><span class="nav-number">3.</span> <span class="nav-text">值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F-let-%E5%8F%98%E9%87%8F-var"><span class="nav-number">3.1.</span> <span class="nav-text">常量(let);变量(var)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E4%BB%A5%E6%98%BE%E5%BC%8F%E5%A3%B0%E6%98%8E%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B-%E8%8B%A5%E6%B2%A1%E6%9C%89%E5%88%99%E9%9A%90%E5%BC%8F%E6%8E%A8%E6%96%AD-%E7%B1%BB%E4%BC%BC%E4%B8%8B%E9%9D%A2%E7%9A%84Double"><span class="nav-number">3.2.</span> <span class="nav-text">可以显式声明变量类型,若没有则隐式推断,类似下面的Double</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%8B%E5%80%BC%E5%90%8C%E4%B8%80%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">赋值同一类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E9%80%9A%E8%BF%87-%E5%8F%98%E9%87%8F-%E7%9A%84%E6%96%B9%E6%B3%95%E5%BE%97%E5%88%B0%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8%E7%A4%BA"><span class="nav-number">3.4.</span> <span class="nav-text">字符串中通过\(变量)的方法得到变量的字符串表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%8C%E6%96%87%E6%9C%AC%E7%9A%84%E5%86%99%E6%B3%95"><span class="nav-number">3.5.</span> <span class="nav-text">多行文本的写法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84-%E5%AD%97%E5%85%B8%E9%80%9A%E8%BF%87-%E9%81%8D%E5%8E%86"><span class="nav-number">3.6.</span> <span class="nav-text">数组&#x2F;字典通过 [] 遍历</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">控制流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%80%89%E5%9E%8B-optional"><span class="nav-number">4.1.</span> <span class="nav-text">可选型(optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AA%E4%BD%BF%E7%94%A8%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">4.1.1.</span> <span class="nav-text">未使用的变量_</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%92%8C%E9%97%AD%E5%8C%85"><span class="nav-number">5.</span> <span class="nav-text">函数和闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%85%83%E7%BB%84-tuple-%E5%8F%AF%E4%BB%A5%E5%A4%84%E7%90%86%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="nav-number">5.1.</span> <span class="nav-text">通过元组(tuple)可以处理多个值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0"><span class="nav-number">5.2.</span> <span class="nav-text">嵌套函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BD%9C%E8%BF%94%E5%9B%9E%E5%80%BC%EF%BC%8C%E5%8F%82%E6%95%B0"><span class="nav-number">5.3.</span> <span class="nav-text">函数作返回值，参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85"><span class="nav-number">5.4.</span> <span class="nav-text">闭包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">对象和类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.1.</span> <span class="nav-text">创建对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%87%BD%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text">初始化函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%B1%BB%E9%87%8D%E5%86%99%E7%88%B6%E7%B1%BB%E6%96%B9%E6%B3%95"><span class="nav-number">6.3.</span> <span class="nav-text">子类重写父类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E8%AE%BF%E9%97%AE%E5%99%A8getter-amp-amp-setter"><span class="nav-number">6.4.</span> <span class="nav-text">属性访问器getter &amp;&amp; setter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7"><span class="nav-number">6.5.</span> <span class="nav-text">计算属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E5%92%8C%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">7.</span> <span class="nav-text">枚举和结构体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91"><span class="nav-number">8.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%89%A9%E5%B1%95"><span class="nav-number">9.</span> <span class="nav-text">协议与扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7"><span class="nav-number">10.</span> <span class="nav-text">异常捕获</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B"><span class="nav-number">11.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">12.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

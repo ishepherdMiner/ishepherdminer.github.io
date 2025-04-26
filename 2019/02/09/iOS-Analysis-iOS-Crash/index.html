@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境 macOS Mojave 10.14.3Xcode10.1iPhone6S 10.0.1  获得崩溃日志方式一:Xcode菜单 &gt; Window &gt; Devices and Simulators 选择设备并查看设备日志(View Device Logs) 方式二:手机设置 &gt; 隐私 &gt; 诊断与用量 &gt; 诊断与用量数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS - 崩溃日志分析">
+<meta property="og:url" content="http://yoursite.com/2019/02/09/iOS-Analysis-iOS-Crash/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="环境 macOS Mojave 10.14.3Xcode10.1iPhone6S 10.0.1  获得崩溃日志方式一:Xcode菜单 &gt; Window &gt; Devices and Simulators 选择设备并查看设备日志(View Device Logs) 方式二:手机设置 &gt; 隐私 &gt; 诊断与用量 &gt; 诊断与用量数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3065d3d64.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3065bbbe7.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3065be846.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3065d620b.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e30657abff.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e30662d74b.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3066110ad.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e30666b349.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e30705b060.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e307076899.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e3066cffbb.png">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e30706411c.jpg">
+<meta property="og:image" content="https://i.loli.net/2019/02/09/5c5e306717570.jpg">
+<meta property="article:published_time" content="2019-02-09T01:46:02.000Z">
+<meta property="article:modified_time" content="2025-04-26T14:35:46.783Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Crash">
+<meta property="article:tag" content="Mechanism">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/02/09/5c5e3065d3d64.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2019/02/09/iOS-Analysis-iOS-Crash/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - 崩溃日志分析 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/09/iOS-Analysis-iOS-Crash/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - 崩溃日志分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-09 09:46:02" itemprop="dateCreated datePublished" datetime="2019-02-09T09:46:02+08:00">2019-02-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:35:46" itemprop="dateModified" datetime="2025-04-26T22:35:46+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p><code>macOS Mojave 10.14.3</code><br><code>Xcode10.1</code><br><code>iPhone6S 10.0.1</code></p>
+</blockquote>
+<h2 id="获得崩溃日志"><a href="#获得崩溃日志" class="headerlink" title="获得崩溃日志"></a>获得崩溃日志</h2><h3 id="方式一-Xcode"><a href="#方式一-Xcode" class="headerlink" title="方式一:Xcode"></a>方式一:<code>Xcode</code></h3><p>菜单 &gt; <code>Window</code> &gt; <code>Devices and Simulators</code></p>
+<p>选择设备并查看设备日志(<code>View Device Logs</code>)</p>
+<h3 id="方式二-手机"><a href="#方式二-手机" class="headerlink" title="方式二:手机"></a>方式二:手机</h3><p>设置 &gt; 隐私 &gt; 诊断与用量 &gt; 诊断与用量数据</p>
+<span id="more"></span>
+
+<h2 id="崩溃日志的结构"><a href="#崩溃日志的结构" class="headerlink" title="崩溃日志的结构"></a>崩溃日志的结构</h2><h3 id="头部-Header"><a href="#头部-Header" class="headerlink" title="头部(Header)"></a>头部(Header)</h3><ul>
+<li><code>Incident Identifier</code>: 崩溃日志的唯一标识</li>
+<li><code>CrashReporter Key</code>: 匿名的设备标识</li>
+<li><code>Process</code>:进程名</li>
+<li><code>Path</code>:二进制文件路径</li>
+<li><code>Identifier</code>:包名</li>
+<li><code>Version</code>:应用版本号</li>
+<li><code>Code Type</code>: 目标架构</li>
+<li><code>Role</code>:进程终止时进程被赋予的<a target="_blank" rel="noopener" href="https://opensource.apple.com/source/xnu/xnu-3248.60.10/osfmk/mach/task_policy.h"><code>task_role</code></a>枚举值<br>…</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Incident Identifier: F21EC10C-018D-494F-997D-E9C9D82B2F7F</span><br><span class="line">CrashReporter Key:   ab7fcdf6938542fd82446362e0481f7fddba141f</span><br><span class="line">Hardware Model:      iPhone6,2</span><br><span class="line">Process:             JACrash [27195]</span><br><span class="line">Path:                /private/var/containers/Bundle/Application/EDDDCB8E-75CE-4638-84CA-5B7971F6EFE0/JACrash.app/JACrash</span><br><span class="line">Identifier:          com.ishepherdme.JACrash</span><br><span class="line">Version:             1 (1.0)</span><br><span class="line">Code Type:           ARM-64 (Native)</span><br><span class="line">Role:                Foreground</span><br><span class="line">Parent Process:      launchd [1]</span><br><span class="line">Coalition:           com.ishepherdme.JACrash [4182]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Date/Time:           2019-02-08 13:03:58.7771 +0800</span><br><span class="line">Launch Time:         2019-02-08 13:03:58.3811 +0800</span><br><span class="line">OS Version:          iPhone OS 10.0.1 (14A403)</span><br><span class="line">Report Version:      104</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="异常信息-Exception-Information"><a href="#异常信息-Exception-Information" class="headerlink" title="异常信息(Exception Information)"></a>异常信息(Exception Information)</h3><ul>
+<li><code>Triggered by Thread</code>: 产生崩溃的线程</li>
+<li><code>Exception Type</code>: 崩溃类型<br>…</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_CRASH (SIGABRT)</span><br><span class="line">Exception Codes: 0x0000000000000000, 0x0000000000000000</span><br><span class="line">Exception Note:  EXC_CORPSE_NOTIFY</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+<h3 id="其他诊断信息"><a href="#其他诊断信息" class="headerlink" title="其他诊断信息"></a>其他诊断信息</h3><ul>
+<li><code>Application Specific Information</code>:在进程终止时框架捕获的错误信息<br>…</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Application Specific Information:</span><br><span class="line">abort() called</span><br><span class="line"></span><br><span class="line">Filtered syslog:</span><br><span class="line">None found</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程回溯"><a href="#线程回溯" class="headerlink" title="线程回溯"></a>线程回溯</h3><p>罗列崩溃时每个线程的调用栈情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Thread 0 name:  Dispatch queue: com.apple.main-thread</span><br><span class="line">Thread 0 Crashed:</span><br><span class="line">0   libsystem_kernel.dylib        	0x000000018af0e014 __pthread_kill + 8</span><br><span class="line">1   libsystem_pthread.dylib       	0x000000018afd5460 pthread_kill + 112</span><br><span class="line">2   libsystem_c.dylib             	0x000000018ae823f4 abort + 140</span><br><span class="line">3   libc++abi.dylib               	0x000000018a94d2d4 __cxa_bad_cast + 0</span><br><span class="line">4   libc++abi.dylib               	0x000000018a96acc0 default_unexpected_handler+ 126144 () + 0</span><br><span class="line">5   libobjc.A.dylib               	0x000000018a978844 _objc_terminate+ 34884 () + 124</span><br><span class="line">6   libc++abi.dylib               	0x000000018a96766c std::__terminate(void (*)+ 112236 ()) + 16</span><br><span class="line">7   libc++abi.dylib               	0x000000018a967234 __cxa_rethrow + 144</span><br><span class="line">8   libobjc.A.dylib               	0x000000018a97871c objc_exception_rethrow + 44</span><br><span class="line">9   CoreFoundation                	0x000000018be1a0bc CFRunLoopRunSpecific + 560</span><br><span class="line">10  UIKit                         	0x0000000191df37cc -[UIApplication _run] + 608</span><br><span class="line">11  UIKit                         	0x0000000191dee550 UIApplicationMain + 208</span><br><span class="line">12  JACrash                       	0x000000010007de90 0x100078000 + 24208</span><br><span class="line">13  libdyld.dylib                 	0x000000018adfc5b8 start + 4</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h3><p>列出崩溃线程的线程状态。这是一个寄存器列表及其执行停止时的值。在阅读崩溃报告时，无需了解线程状态，但可以使用此信息更好地了解崩溃的情况。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Thread 0 crashed with ARM Thread State (64-bit):</span><br><span class="line">    x0: 0x0000000000000000   x1: 0x0000000000000000   x2: 0x0000000000000000   x3: 0x00000001740e9737</span><br><span class="line">    x4: 0x000000018a96bbc3   x5: 0x000000016fd87520   x6: 0x000000000000006e   x7: 0xffffffffffffffec</span><br><span class="line">    x8: 0x0000000008000000   x9: 0x0000000004000000  x10: 0x000000000000000b  x11: 0x0000000000000010</span><br><span class="line">   x12: 0x000000018ae99792  x13: 0x0000000000000000  x14: 0x0000030000000300  x15: 0x0000000000000000</span><br><span class="line">   x16: 0x0000000000000148  x17: 0x0000000000000000  x18: 0x0000000000000000  x19: 0x0000000000000006</span><br><span class="line">   x20: 0x00000001b0bf8c40  x21: 0x000000016fd87520  x22: 0x00000001b0bffbb8  x23: 0x0000000000000001</span><br><span class="line">   x24: 0x0000000170011110  x25: 0x0000000000000000  x26: 0x0000000000000001  x27: 0x0000000000000000</span><br><span class="line">   x28: 0x000000016fd87b80   fp: 0x000000016fd87480   lr: 0x000000018afd5460</span><br><span class="line">    sp: 0x000000016fd87460   pc: 0x000000018af0e014 cpsr: 0x00000000</span><br></pre></td></tr></table></figure>
+
+<h3 id="二进制镜像"><a href="#二进制镜像" class="headerlink" title="二进制镜像"></a>二进制镜像</h3><p>进程二进制文件加载的地址区间,动态库加载的地址区间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Binary Images:</span><br><span class="line">0x100078000 - 0x10007ffff JACrash arm64  &lt;2fd461c16e7239489a037c6c1141c134&gt; /var/containers/Bundle/Application/A55333A1-CD62-41A2-AE96-F3411ECD3447/JACrash.app/JACrash</span><br><span class="line">0x10009c000 - 0x10009ffff MobileSubstrate.dylib arm64  &lt;3134cfb2f722310ea2c742ae4dc131ab&gt; /Library/MobileSubstrate/MobileSubstrate.dylib</span><br><span class="line">0x1000a8000 - 0x1000affff libswiftCoreFoundation.dylib arm64  &lt;47deeaa1967b3e339dfcb48535a994e1&gt; /var/containers/Bundle/Application/A55333A1-CD62-41A2-AE96-F3411ECD3447/JACrash.app/Frameworks/libswiftCoreFoundation.dylib</span><br><span class="line">0x1000bc000 - 0x1000cbfff libswiftCoreGraphics.dylib arm64  &lt;25fe91aa901b3cf6a443b498012ab5af&gt; /var/containers/Bundle/Application/A55333A1-CD62-41A2-AE96-F3411ECD3447/JACrash.app/Frameworks/libswiftCoreGraphics.dylib</span><br><span class="line">0x1000f0000 - 0x1000f7fff libswiftCoreImage.dylib arm64  </span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于异常类型-Exception-Type"><a href="#关于异常类型-Exception-Type" class="headerlink" title="关于异常类型(Exception Type)"></a>关于异常类型(<code>Exception Type</code>)</h3><h4 id="野指针-Bad-Memory-Access-EXC-BAD-ACCESS-SIGSEGV-SIGBUS"><a href="#野指针-Bad-Memory-Access-EXC-BAD-ACCESS-SIGSEGV-SIGBUS" class="headerlink" title="野指针(Bad Memory Access [EXC_BAD_ACCESS // SIGSEGV // SIGBUS])"></a>野指针(<code>Bad Memory Access [EXC_BAD_ACCESS // SIGSEGV // SIGBUS]</code>)</h4><p>尝试访问了非法的内存地址,或访问了受保护的地址</p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e3065d3d64.jpg"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_BAD_ACCESS (SIGSEGV)</span><br><span class="line">Exception Subtype: KERN_INVALID_ADDRESS at 0x000000064229beb8</span><br><span class="line">Termination Signal: Segmentation fault: 11</span><br><span class="line">Termination Reason: Namespace SIGNAL, Code 0xb</span><br><span class="line">Terminating Process: exc handler [0]</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+
+<p>比如在<code>MRC</code>环境下尝试发送消息给已释放的对象,调用栈的特点是<code>objc_msgSend</code>/<code>objc_release</code>在调用栈顶</p>
+<h4 id="异常退出-Abnormal-Exit-EXC-CRASH-SIGABRT"><a href="#异常退出-Abnormal-Exit-EXC-CRASH-SIGABRT" class="headerlink" title="异常退出(Abnormal Exit [EXC_CRASH // SIGABRT])"></a>异常退出(<code>Abnormal Exit [EXC_CRASH // SIGABRT]</code>)</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">    [<span class="keyword">self</span> callCrashMethod];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)callCrashMethod &#123;</span><br><span class="line">    [<span class="keyword">self</span> arrayOutOfBounds];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)arrayOutOfBounds &#123;</span><br><span class="line">    <span class="built_in">NSArray</span> *arr = @[<span class="string">@&quot;0&quot;</span>,<span class="string">@&quot;1&quot;</span>];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>,arr[<span class="number">2</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_CRASH (SIGABRT)</span><br><span class="line">Exception Codes: 0x0000000000000000, 0x0000000000000000</span><br><span class="line">Exception Note:  EXC_CORPSE_NOTIFY</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2019/02/09/5c5e3065bbbe7.jpg"></p>
+<p>崩溃会直接到<code>main</code>,因为调用栈中包含<code>objc_exception_rethrow</code>栈帧,根据<a href="#refer1">参考1</a>,进行如下的配置,设置异常的断点</p>
+<blockquote>
+<p><strong>The Exception Breakpoint</strong><br>So how do you find the line in the code that made the app crash? Well, whenever you get a stacktrace like this, an exception was thrown by the app. (You can tell because one of the functions in the call stack is named objc_exception_rethrow.)</p>
+</blockquote>
+<p><img src="https://i.loli.net/2019/02/09/5c5e3065be846.jpg"></p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e3065d620b.jpg"></p>
+<h4 id="追踪陷阱-Trace-Trap-EXC-BREAKPOINT-SIGTRAP"><a href="#追踪陷阱-Trace-Trap-EXC-BREAKPOINT-SIGTRAP" class="headerlink" title="追踪陷阱(Trace Trap [EXC_BREAKPOINT // SIGTRAP])"></a>追踪陷阱(<code>Trace Trap [EXC_BREAKPOINT // SIGTRAP]</code>)</h4><p>这个异常是为调试器提供在进程执行的特定点中断进程的机会。</p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e30657abff.jpg"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_BREAKPOINT (SIGTRAP)</span><br><span class="line">Exception Codes: 0x0000000000000001, 0x000000010006e588</span><br><span class="line">Termination Signal: Trace/BPT trap: 5</span><br><span class="line">Termination Reason: Namespace SIGNAL, Code 0x5</span><br><span class="line">Terminating Process: exc handler [0]</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+<h4 id="非法指令-Illegal-Instruction"><a href="#非法指令-Illegal-Instruction" class="headerlink" title="非法指令(Illegal Instruction)"></a>非法指令(<code>Illegal Instruction</code>)</h4><p>进程试图执行非法或未定义指令。这个进程可能试图通过一个配置错误的函数指针，跳到一个无效的地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_CRASH (SIGILL)</span><br><span class="line">Exception Codes: 0x0000000000000000, 0x0000000000000000</span><br><span class="line">Exception Note:  EXC_CORPSE_NOTIFY</span><br><span class="line">Termination Signal: Illegal instruction: 4</span><br><span class="line">Termination Reason: Namespace SIGNAL, Code 0x4</span><br><span class="line">Terminating Process: neteasemusic [6562]</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+<h4 id="被杀死-Killed-SIGKILL"><a href="#被杀死-Killed-SIGKILL" class="headerlink" title="被杀死(Killed[SIGKILL])"></a>被杀死(<code>Killed[SIGKILL]</code>)</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exception Type:  EXC_CRASH (SIGKILL)</span><br><span class="line">Exception Codes: 0x0000000000000000, 0x0000000000000000</span><br><span class="line">Exception Note:  EXC_CORPSE_NOTIFY</span><br><span class="line">Termination Reason: Namespace SPRINGBOARD, Code 0x8badf00d</span><br><span class="line">Triggered by Thread:  0</span><br></pre></td></tr></table></figure>
+
+<h4 id="资源限制-Resource-Limit-EXC-RESOURCE"><a href="#资源限制-Resource-Limit-EXC-RESOURCE" class="headerlink" title="资源限制(Resource Limit [EXC_RESOURCE])"></a>资源限制(<code>Resource Limit [EXC_RESOURCE]</code>)</h4><p>这个进程超出了资源消耗的限制。</p>
+<h2 id="符号化"><a href="#符号化" class="headerlink" title="符号化"></a>符号化</h2><p><img src="https://i.loli.net/2019/02/09/5c5e30662d74b.jpg"></p>
+<p>来自<a href="#refer3">参考3</a></p>
+<h3 id="方式一-dSYM文件"><a href="#方式一-dSYM文件" class="headerlink" title="方式一:dSYM文件"></a>方式一:<code>dSYM</code>文件</h3><p><code>DWARF</code> 即<code>Debugging with Attributed Record Formats</code>,<code>Xcode</code>使用它来生成符号表,生成的符号表放在<code>.dSYM</code>文件中,在<code>Debug</code>模式下,默认不会生成<code>.dSYM</code>文件,可以在<code>Build Settings</code>中进行设置</p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e3066110ad.jpg"></p>
+<p>编译后,在工程中<code>Product</code>目录下,选择应用程序,<code>Show in Finder</code>,会发现生成了应用的<code>.dSYM</code>文件</p>
+<h4 id="获取UUID"><a href="#获取UUID" class="headerlink" title="获取UUID"></a>获取<code>UUID</code></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Binary Images:</span><br><span class="line">0x1000f8000 - 0x1000fffff JACrash arm64  &lt;2fd461c16e7239489a037c6c1141c134&gt; /var/containers/Bundle/Application/7B72F18F-930E-42CB-B69C-FED75161A03F/JACrash.app/JACrash</span><br></pre></td></tr></table></figure>
+
+<p><code>UUID:2fd461c16e7239489a037c6c1141c134</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">% dwarfdump --uuid path/to/Your.app.dSYM/Contents/Resources/DWARF/JACrash</span><br><span class="line">...</span><br><span class="line">UUID: 2FD461C1-6E72-3948-9A03-7C6C1141C134 (arm64) /Users/Jason/Library/Developer/Xcode/DerivedData/JACrash-bntjxfwsvrraeuevozrbvraorxqv/Build/Products/Debug-iphoneos/JACrash.app.dSYM/Contents/Resources/DWARF/JACrash</span><br></pre></td></tr></table></figure>
+
+<p>两者<code>UDID</code>一致即可</p>
+<h4 id="定位崩溃地址"><a href="#定位崩溃地址" class="headerlink" title="定位崩溃地址"></a>定位崩溃地址</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">% atos -o path/to/Your.app.dSYM/Contents/Resources/DWARF/Your -arch arm64 -l 0x1000f8000 0x1000fdda8</span><br><span class="line"></span><br><span class="line">-[ViewController arrayOutOfBounds] (in JACrash) (ViewController.m:33)</span><br></pre></td></tr></table></figure>
+
+<p><code>0x1000f8000</code>: 运行时应用基地址<br><code>0x1000fdda8</code>: 运行时崩溃地址(待符号化的地址)</p>
+<h4 id="支持bitcode"><a href="#支持bitcode" class="headerlink" title="支持bitcode"></a>支持<code>bitcode</code></h4><p><img src="https://i.loli.net/2019/02/09/5c5e30666b349.jpg"></p>
+<p>支持<code>bitcode</code>的情况下,因为最终的二进制文件由<code>Apple Store</code>后台生成,本地是没有对应的<code>.dSYM</code>文件,可以从<code>Xcode</code>或<code>iTunes Connect</code>上下载</p>
+<h3 id="方式二-崩溃日志-Hopper"><a href="#方式二-崩溃日志-Hopper" class="headerlink" title="方式二:崩溃日志 + Hopper"></a>方式二:崩溃日志 + <code>Hopper</code></h3><p>如果没有<code>.dSYM</code>文件,但有崩溃日志的情况时</p>
+<p><strong>崩溃地址 = 基地址 + <a href="#refer4"><code>ASLR</code></a> + 方法偏移地址</strong></p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e30705b060.jpg"></p>
+<p><strong>方法相对基地址的偏移地址是不变的</strong>,因此只要把<code>ASLR</code>从崩溃地址中移除,再加上方法的偏移地址即可</p>
+<p>用<code>hopper</code>找出基地址,再加上方法偏移地址</p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e307076899.jpg"></p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e3066cffbb.png" alt="Snip20190208_26"></p>
+<p><img src="https://i.loli.net/2019/02/09/5c5e30706411c.jpg"></p>
+<h2 id="异常捕获监听"><a href="#异常捕获监听" class="headerlink" title="异常捕获监听"></a>异常捕获监听</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 函数指针,用于自定义捕获异常后要进行的操作</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">void</span> <span class="built_in">NSUncaughtExceptionHandler</span>(<span class="built_in">NSException</span> *exception);</span><br><span class="line"></span><br><span class="line">FOUNDATION_EXPORT <span class="built_in">NSUncaughtExceptionHandler</span> * _Nullable <span class="built_in">NSGetUncaughtExceptionHandler</span>(<span class="type">void</span>);</span><br><span class="line">FOUNDATION_EXPORT <span class="type">void</span> <span class="built_in">NSSetUncaughtExceptionHandler</span>(<span class="built_in">NSUncaughtExceptionHandler</span> * _Nullable);</span><br></pre></td></tr></table></figure>
+
+<p>在程序启动时加上一个异常捕获监听，用来处理程序崩溃时的回调动作</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> exceptionHandler(<span class="built_in">NSException</span> *exception) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>, [exception reason]);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>, [exception userInfo]);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>, [exception callStackSymbols]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="built_in">NSSetUncaughtExceptionHandler</span>(&amp;exceptionHandler);</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate <span class="keyword">class</span>]));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2019/02/09/5c5e306717570.jpg"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><span id="refer1"><a target="_blank" rel="noopener" href="https://www.raywenderlich.com/2943-my-app-crashed-now-what-part-1">My App Crashed, Now What? – Part 1</a></span></li>
+<li><a target="_blank" rel="noopener" href="http://foggry.com/blog/2015/07/27/ru-he-shou-dong-jie-xi-crashlog/">手动解析CrashLog之—-方法篇</a></li>
+<li><span id="refer3"><a target="_blank" rel="noopener" href="https://developer.apple.com/library/archive/technotes/tn2151/_index.html">Understanding and Analyzing Application Crash Reports</a></span></li>
+<li><span id="refer4"><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Address_space_layout_randomization">Address space layout randomization</a></span></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1128539/nssetuncaughtexceptionhandler-not-catch-all-errors-on-iphone">NSSetUncaughtExceptionHandler not catch all errors on iPhone
+</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Crash/" rel="tag"># Crash</a>
+              <a href="/tags/Mechanism/" rel="tag"># Mechanism</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/01/09/Technology-Charles-capture-principle/" rel="prev" title="Charles HTTP抓包原理">
+      <i class="fa fa-chevron-left"></i> Charles HTTP抓包原理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/22/Technology-ReactNative-Intro/" rel="next" title="ReactNative 入门体验">
+      ReactNative 入门体验 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%B4%A9%E6%BA%83%E6%97%A5%E5%BF%97"><span class="nav-number">2.</span> <span class="nav-text">获得崩溃日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80-Xcode"><span class="nav-number">2.1.</span> <span class="nav-text">方式一:Xcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-%E6%89%8B%E6%9C%BA"><span class="nav-number">2.2.</span> <span class="nav-text">方式二:手机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B4%A9%E6%BA%83%E6%97%A5%E5%BF%97%E7%9A%84%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">崩溃日志的结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B4%E9%83%A8-Header"><span class="nav-number">3.1.</span> <span class="nav-text">头部(Header)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF-Exception-Information"><span class="nav-number">3.2.</span> <span class="nav-text">异常信息(Exception Information)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%AF%8A%E6%96%AD%E4%BF%A1%E6%81%AF"><span class="nav-number">3.3.</span> <span class="nav-text">其他诊断信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%9B%9E%E6%BA%AF"><span class="nav-number">3.4.</span> <span class="nav-text">线程回溯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">3.5.</span> <span class="nav-text">线程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%95%9C%E5%83%8F"><span class="nav-number">3.6.</span> <span class="nav-text">二进制镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%9E%8B-Exception-Type"><span class="nav-number">3.7.</span> <span class="nav-text">关于异常类型(Exception Type)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8E%E6%8C%87%E9%92%88-Bad-Memory-Access-EXC-BAD-ACCESS-SIGSEGV-SIGBUS"><span class="nav-number">3.7.1.</span> <span class="nav-text">野指针(Bad Memory Access [EXC_BAD_ACCESS &#x2F;&#x2F; SIGSEGV &#x2F;&#x2F; SIGBUS])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA-Abnormal-Exit-EXC-CRASH-SIGABRT"><span class="nav-number">3.7.2.</span> <span class="nav-text">异常退出(Abnormal Exit [EXC_CRASH &#x2F;&#x2F; SIGABRT])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%BD%E8%B8%AA%E9%99%B7%E9%98%B1-Trace-Trap-EXC-BREAKPOINT-SIGTRAP"><span class="nav-number">3.7.3.</span> <span class="nav-text">追踪陷阱(Trace Trap [EXC_BREAKPOINT &#x2F;&#x2F; SIGTRAP])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E6%B3%95%E6%8C%87%E4%BB%A4-Illegal-Instruction"><span class="nav-number">3.7.4.</span> <span class="nav-text">非法指令(Illegal Instruction)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A2%AB%E6%9D%80%E6%AD%BB-Killed-SIGKILL"><span class="nav-number">3.7.5.</span> <span class="nav-text">被杀死(Killed[SIGKILL])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6-Resource-Limit-EXC-RESOURCE"><span class="nav-number">3.7.6.</span> <span class="nav-text">资源限制(Resource Limit [EXC_RESOURCE])</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">符号化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80-dSYM%E6%96%87%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">方式一:dSYM文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96UUID"><span class="nav-number">4.1.1.</span> <span class="nav-text">获取UUID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E5%B4%A9%E6%BA%83%E5%9C%B0%E5%9D%80"><span class="nav-number">4.1.2.</span> <span class="nav-text">定位崩溃地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%AF%E6%8C%81bitcode"><span class="nav-number">4.1.3.</span> <span class="nav-text">支持bitcode</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C-%E5%B4%A9%E6%BA%83%E6%97%A5%E5%BF%97-Hopper"><span class="nav-number">4.2.</span> <span class="nav-text">方式二:崩溃日志 + Hopper</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E6%8D%95%E8%8E%B7%E7%9B%91%E5%90%AC"><span class="nav-number">5.</span> <span class="nav-text">异常捕获监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

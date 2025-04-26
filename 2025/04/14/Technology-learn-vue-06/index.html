@@ -1,258 +1,237 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>Vue 学习笔记 - 内置组件 - Transition - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="Transition&lt;Transition&gt; 会在一个元素或组件进入和离开 DOM 时应用动画。本章节会介绍如何使用它。 内置组件可以在任意的组件中被使用，无需注册。它可以将进入和和离开动画应用到传递给它的元素或组件上 进入或离开的触发条件  由 v-if 所触发的切换 由 v-show 所触发的切换 由特殊元素  切换的动态组件 改变特殊的 key 属性  1234&lt;butto">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Transition&lt;Transition&gt; 会在一个元素或组件进入和离开 DOM 时应用动画。本章节会介绍如何使用它。 内置组件可以在任意的组件中被使用，无需注册。它可以将进入和和离开动画应用到传递给它的元素或组件上 进入或离开的触发条件  由 v-if 所触发的切换 由 v-show 所触发的切换 由特殊元素  切换的动态组件 改变特殊的 key 属性  1234&lt;butto">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue 学习笔记 - 内置组件 - Transition">
 <meta property="og:url" content="http://yoursite.com/2025/04/14/Technology-learn-vue-06/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="Transition&lt;Transition&gt; 会在一个元素或组件进入和离开 DOM 时应用动画。本章节会介绍如何使用它。 内置组件可以在任意的组件中被使用，无需注册。它可以将进入和和离开动画应用到传递给它的元素或组件上 进入或离开的触发条件  由 v-if 所触发的切换 由 v-show 所触发的切换 由特殊元素  切换的动态组件 改变特殊的 key 属性  1234&lt;butto">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2025/04/14/jd2lCOeSkfa6U91.jpg">
 <meta property="article:published_time" content="2025-04-14T02:25:53.000Z">
-<meta property="article:modified_time" content="2025-04-14T02:46:58.589Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:28:10.958Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2025/04/14/jd2lCOeSkfa6U91.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2025/04/14/Technology-learn-vue-06/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Vue 学习笔记 - 内置组件 - Transition | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Transition">1&nbsp;&nbsp;<b>Transition</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#基于CSS的过渡效果">1.1&nbsp;&nbsp;基于CSS的过渡效果</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#为过渡效果命名">1.2&nbsp;&nbsp;为过渡效果命名</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#CSS的transition">1.3&nbsp;&nbsp;CSS的transition</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#CSS的animation">1.4&nbsp;&nbsp;CSS的animation</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#自定义过渡-class">1.5&nbsp;&nbsp;自定义过渡 class</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#同时使用transition和animation">1.6&nbsp;&nbsp;同时使用transition和animation</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#深层级过渡与显式过渡时长">1.7&nbsp;&nbsp;深层级过渡与显式过渡时长</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#JavaScript-钩子">1.8&nbsp;&nbsp;JavaScript 钩子</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#可复用过渡效果">1.9&nbsp;&nbsp;可复用过渡效果</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#出现时过渡">1.10&nbsp;&nbsp;出现时过渡</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#元素间过渡">1.11&nbsp;&nbsp;元素间过渡</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#过渡模式">1.12&nbsp;&nbsp;过渡模式</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#组件间过渡">1.13&nbsp;&nbsp;组件间过渡</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#动态过渡">1.14&nbsp;&nbsp;动态过渡</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#使用-Key-Attribute-过渡">1.15&nbsp;&nbsp;使用 Key Attribute 过渡</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">2&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            Vue 学习笔记 - 内置组件 - Transition
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-14T02:25:53.000Z" itemprop="datePublished">4月 14 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            18 分钟 读完 (约 2730 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="Transition"><a href="#Transition" class="headerlink" title="Transition"></a>Transition</h2><p><code>&lt;Transition&gt;</code> 会在一个元素或组件进入和离开 <code>DOM</code> 时应用动画。本章节会介绍如何使用它。</p>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/14/Technology-learn-vue-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue 学习笔记 - 内置组件 - Transition
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-14 10:25:53" itemprop="dateCreated datePublished" datetime="2025-04-14T10:25:53+08:00">2025-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:28:10" itemprop="dateModified" datetime="2025-04-26T22:28:10+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Transition"><a href="#Transition" class="headerlink" title="Transition"></a>Transition</h2><p><code>&lt;Transition&gt;</code> 会在一个元素或组件进入和离开 <code>DOM</code> 时应用动画。本章节会介绍如何使用它。</p>
 <p>内置组件可以在任意的组件中被使用，无需注册。它可以将进入和和离开动画应用到传递给它的元素或组件上</p>
 <p>进入或离开的触发条件</p>
 <ul>
 <li>由 v-if 所触发的切换</li>
 <li>由 v-show 所触发的切换</li>
-<li>由特殊元素 <component> 切换的动态组件</component></li>
+<li>由特殊元素 <component> 切换的动态组件</li>
 <li>改变特殊的 key 属性</li>
 </ul>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;button @click=<span class="hljs-string">"show = !show"</span>&gt;<span class="title class_">Toggle</span>&lt;/button&gt;</span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">Transition</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;button @click=<span class="string">&quot;show = !show&quot;</span>&gt;<span class="title class_">Toggle</span>&lt;/button&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">Transition</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <span id="more"></span>
 
 
-<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-selector-class">.v-enter-active</span>,</span><br><span class="line"><span class="hljs-selector-class">.v-leave-active</span> {</span><br><span class="line">  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">0.5s</span> ease; <span class="hljs-comment">/* 0.5s内透明:慢速开始，然后变快，然后慢速结束的过渡效果（cubic-bezier(0.25,0.1,0.25,1)）（相对于匀速，中间快，两头慢）。*/</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-selector-class">.v-enter-from</span>,</span><br><span class="line"><span class="hljs-selector-class">.v-leave-to</span> {</span><br><span class="line">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.v-enter-active</span>,</span><br><span class="line"><span class="selector-class">.v-leave-active</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: opacity <span class="number">0.5s</span> ease; <span class="comment">/* 0.5s内透明:慢速开始，然后变快，然后慢速结束的过渡效果（cubic-bezier(0.25,0.1,0.25,1)）（相对于匀速，中间快，两头慢）。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.v-enter-from</span>,</span><br><span class="line"><span class="selector-class">.v-leave-to</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>&lt;Transition&gt;</code> 仅支持单个元素或组件作为其内容。如果内容是一个组件，这个组件必须仅有一个根元素。</p>
 <p>当一个 <code>&lt;Transition&gt;</code> 组件中的元素被插入或移除时，会发生下面这些事情：</p>
@@ -271,77 +250,77 @@
 <li><code>v-leave-active</code>：离开动画的生效状态。应用于整个离开动画阶段。在离开过渡效果被触发时立即添加，在过渡或动画完成之后移除。这个 <code>class</code> 可以被用来定义离开动画的<strong>持续时间</strong>、延迟与速度曲线类型。</li>
 <li><code>v-leave-to</code>：离开动画的结束状态。在一个离开动画被触发后的下一帧被添加 (也就是 <code>v-leave-from</code> 被移除的同时)，在过渡或动画完成之后移除。</li>
 </ol>
-<h4 id="为过渡效果命名"><a href="#为过渡效果命名" class="headerlink" title="为过渡效果命名"></a>为过渡效果命名</h4><figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="hljs-string">"fade"</span>&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="为过渡效果命名"><a href="#为过渡效果命名" class="headerlink" title="为过渡效果命名"></a>为过渡效果命名</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="string">&quot;fade&quot;</span>&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <p>那前面那几个对应的<code>class</code>会以其姓名而不是<code>v</code>作为前缀</p>
-<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-selector-class">.fade-enter-active</span>,</span><br><span class="line"><span class="hljs-selector-class">.fade-leave-active</span> {</span><br><span class="line">  <span class="hljs-attribute">transition</span>: opacity <span class="hljs-number">0.5s</span> ease;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-selector-class">.fade-enter-from</span>,</span><br><span class="line"><span class="hljs-selector-class">.fade-leave-to</span> {</span><br><span class="line">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.fade-enter-active</span>,</span><br><span class="line"><span class="selector-class">.fade-leave-active</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: opacity <span class="number">0.5s</span> ease;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.fade-enter-from</span>,</span><br><span class="line"><span class="selector-class">.fade-leave-to</span> &#123;</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="CSS的transition"><a href="#CSS的transition" class="headerlink" title="CSS的transition"></a>CSS的transition</h4><p><code>&lt;Transition&gt;</code> 一般都会搭配原生 <code>CSS</code> 过渡一起使用，这个 <code>transition CSS</code> 属性是一个简写形式，使我们可以一次定义一个过渡的各个方面，包括需要执行动画的属性、持续时间和速度曲线。</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="hljs-string">"slide-fade"</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="string">&quot;slide-fade&quot;</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">  进入和离开动画可以使用不同</span></span><br><span class="line"><span class="hljs-comment">  持续时间和速度曲线。</span></span><br><span class="line"><span class="hljs-comment">*/</span></span><br><span class="line"><span class="hljs-selector-class">.slide-fade-enter-active</span> {</span><br><span class="line">  <span class="hljs-attribute">transition</span>: all <span class="hljs-number">0.3s</span> ease-out;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-selector-class">.slide-fade-leave-active</span> {</span><br><span class="line">  <span class="hljs-attribute">transition</span>: all <span class="hljs-number">0.8s</span> <span class="hljs-built_in">cubic-bezier</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0.5</span>, <span class="hljs-number">0.8</span>, <span class="hljs-number">1</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-selector-class">.slide-fade-enter-from</span>,</span><br><span class="line"><span class="hljs-selector-class">.slide-fade-leave-to</span> {</span><br><span class="line">  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">20px</span>);</span><br><span class="line">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  进入和离开动画可以使用不同</span></span><br><span class="line"><span class="comment">  持续时间和速度曲线。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="selector-class">.slide-fade-enter-active</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.slide-fade-leave-active</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.8s</span> <span class="built_in">cubic-bezier</span>(<span class="number">1</span>, <span class="number">0.5</span>, <span class="number">0.8</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.slide-fade-enter-from</span>,</span><br><span class="line"><span class="selector-class">.slide-fade-leave-to</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">20px</span>);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="CSS的animation"><a href="#CSS的animation" class="headerlink" title="CSS的animation"></a>CSS的animation</h4><p>原生 <code>CSS</code> 动画和 <code>CSS transition</code> 的应用方式基本上是相同的，只有一点不同，那就是 <code>*-enter-from</code> 不是在元素插入后立即移除，而是在一个 <code>animationend</code> 事件触发时被移除。</p>
 <p>对于大多数的 <code>CSS</code> 动画，我们可以简单地在 <code>*-enter-active</code> 和 <code>*-leave-active class</code> 下声明它们</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="hljs-string">"bounce"</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span> <span class="hljs-attr">style</span>=<span class="hljs-string">"text-align: center;"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    Hello here is some bouncy text!</span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="string">&quot;bounce&quot;</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span> <span class="attr">style</span>=<span class="string">&quot;text-align: center;&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    Hello here is some bouncy text!</span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-selector-class">.bounce-enter-active</span> {</span><br><span class="line">  <span class="hljs-attribute">animation</span>: bounce-in <span class="hljs-number">0.5s</span>; <span class="hljs-comment">/* 展示时0.5s完成bounce-in这个动画 */</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-selector-class">.bounce-leave-active</span> { </span><br><span class="line">  <span class="hljs-attribute">animation</span>: bounce-in <span class="hljs-number">0.5s</span> reverse; <span class="hljs-comment">/* 隐藏时使用相反的动画效果 */</span></span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">@keyframes</span> bounce-in {</span><br><span class="line">  <span class="hljs-number">0%</span> {</span><br><span class="line">    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">0</span>);</span><br><span class="line">  }</span><br><span class="line">  <span class="hljs-number">50%</span> {</span><br><span class="line">    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">1.25</span>);</span><br><span class="line">  }</span><br><span class="line">  <span class="hljs-number">100%</span> {</span><br><span class="line">    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">scale</span>(<span class="hljs-number">1</span>);</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.bounce-enter-active</span> &#123;</span><br><span class="line">  <span class="attribute">animation</span>: bounce-in <span class="number">0.5s</span>; <span class="comment">/* 展示时0.5s完成bounce-in这个动画 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.bounce-leave-active</span> &#123; </span><br><span class="line">  <span class="attribute">animation</span>: bounce-in <span class="number">0.5s</span> reverse; <span class="comment">/* 隐藏时使用相反的动画效果 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@keyframes</span> bounce-in &#123;</span><br><span class="line">  <span class="number">0%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="number">50%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.25</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="number">100%</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>关键帧 <code>@keyframes</code> 规则通过在动画序列中定义关键帧（或 <code>waypoints</code>）的样式来控制 <code>CSS</code> 动画序列中的中间步骤。</p>
 <p>即先0 -&gt; 放大1.25 -&gt; 原来大小</p>
 <h4 id="自定义过渡-class"><a href="#自定义过渡-class" class="headerlink" title="自定义过渡 class"></a>自定义过渡 class</h4><p>也可以向 <code>&lt;Transition&gt;</code> 传递以下的 <code>props</code> 来指定自定义的过渡 <code>class</code></p>
 <p>传入的<code>class</code>会覆盖相应阶段的默认<code>class</code>名。这个功能在想要集成其它的第三方<code>CSS</code>动画库时非常有用</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 假设你已经在页面中引入了 <span class="title class_">Animate</span>.<span class="hljs-property">css</span> --&gt;</span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Transition</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">  <span class="hljs-attr">name</span>=<span class="hljs-string">"custom-classes"</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">  <span class="hljs-attr">enter-active-class</span>=<span class="hljs-string">"animate__animated animate__tada"</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">  <span class="hljs-attr">leave-active-class</span>=<span class="hljs-string">"animate__animated animate__bounceOutRight"</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span>&gt;</span>hello<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">Transition</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 假设你已经在页面中引入了 <span class="title class_">Animate</span>.<span class="property">css</span> --&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">Transition</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">name</span>=<span class="string">&quot;custom-classes&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">enter-active-class</span>=<span class="string">&quot;animate__animated animate__tada&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">  <span class="attr">leave-active-class</span>=<span class="string">&quot;animate__animated animate__bounceOutRight&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">Transition</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <h4 id="同时使用transition和animation"><a href="#同时使用transition和animation" class="headerlink" title="同时使用transition和animation"></a>同时使用transition和animation</h4><p><code>Vue</code> 需要附加事件监听器，以便知道过渡何时结束。可以是 <code>transitionend</code> 或 <code>animationend</code>，这取决于你所应用的 <code>CSS</code> 规则。如果你仅仅使用二者的其中之一，<code>Vue</code> 可以自动探测到正确的类型。</p>
 <p>然而在某些场景中，你或许想要在同一个元素上同时使用它们两个。举例来说，<code>Vue</code> 触发了一个 <code>CSS</code> 动画，同时鼠标悬停触发另一个 <code>CSS</code> 过渡。此时你需要显式地传入 <code>type prop</code> 来声明，告诉 <code>Vue</code> 需要关心哪种类型，传入的值是 <code>animation</code> 或 <code>transition</code>：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> type=<span class="hljs-string">"animation"</span>&gt;...&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> type=<span class="string">&quot;animation&quot;</span>&gt;...&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="深层级过渡与显式过渡时长"><a href="#深层级过渡与显式过渡时长" class="headerlink" title="深层级过渡与显式过渡时长"></a>深层级过渡与显式过渡时长</h4><p>尽管过渡 <code>class</code> 仅能应用在 <code>&lt;Transition&gt;</code> 的直接子元素上，我们还是可以使用深层级的 <code>CSS</code> 选择器，在深层级的元素上触发过渡效果：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="hljs-string">"nested"</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"outer"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"inner"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">      Hello</span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="string">&quot;nested&quot;</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span> <span class="attr">class</span>=<span class="string">&quot;outer&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      Hello</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight css hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/* 应用于嵌套元素的规则 */</span></span><br><span class="line"><span class="hljs-selector-class">.nested-enter-active</span> <span class="hljs-selector-class">.inner</span>,</span><br><span class="line"><span class="hljs-selector-class">.nested-leave-active</span> <span class="hljs-selector-class">.inner</span> {</span><br><span class="line">  <span class="hljs-attribute">transition</span>: all <span class="hljs-number">0.3s</span> ease-in-out;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-selector-class">.nested-enter-from</span> <span class="hljs-selector-class">.inner</span>,</span><br><span class="line"><span class="hljs-selector-class">.nested-leave-to</span> <span class="hljs-selector-class">.inner</span> {</span><br><span class="line">  <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">translateX</span>(<span class="hljs-number">30px</span>);</span><br><span class="line">  <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/* ... 省略了其他必要的 CSS */</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 应用于嵌套元素的规则 */</span></span><br><span class="line"><span class="selector-class">.nested-enter-active</span> <span class="selector-class">.inner</span>,</span><br><span class="line"><span class="selector-class">.nested-leave-active</span> <span class="selector-class">.inner</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: all <span class="number">0.3s</span> ease-in-out;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.nested-enter-from</span> <span class="selector-class">.inner</span>,</span><br><span class="line"><span class="selector-class">.nested-leave-to</span> <span class="selector-class">.inner</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">30px</span>);</span><br><span class="line">  <span class="attribute">opacity</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* ... 省略了其他必要的 CSS */</span></span><br></pre></td></tr></table></figure>
 
 <p>然而，这会带来一个小问题。默认情况下，<code>&lt;Transition&gt;</code> 组件会通过监听过渡根元素上的第一个 <code>transitionend</code> 或者 <code>animationend</code> 事件来尝试自动判断过渡何时结束。而在嵌套的过渡中，期望的行为应该是等待所有内部元素的过渡完成。</p>
 <p>在这种情况下，你可以通过向 <code>&lt;Transition&gt;</code> 组件传入 <code>duration prop</code> 来显式指定过渡的持续时间 (以毫秒为单位)。总持续时间应该匹配延迟加上内部元素的过渡持续时间：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> :duration=<span class="hljs-string">"{ enter: 500, leave: 800 }"</span>&gt;...&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> :duration=<span class="string">&quot;&#123; enter: 500, leave: 800 &#125;&quot;</span>&gt;...&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<h4 id="JavaScript-钩子"><a href="#JavaScript-钩子" class="headerlink" title="JavaScript 钩子"></a>JavaScript 钩子</h4><figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span></span><br><span class="line">  @before-enter=<span class="hljs-string">"onBeforeEnter"</span></span><br><span class="line">  @enter=<span class="hljs-string">"onEnter"</span></span><br><span class="line">  @after-enter=<span class="hljs-string">"onAfterEnter"</span></span><br><span class="line">  @enter-cancelled=<span class="hljs-string">"onEnterCancelled"</span></span><br><span class="line">  @before-leave=<span class="hljs-string">"onBeforeLeave"</span></span><br><span class="line">  @leave=<span class="hljs-string">"onLeave"</span></span><br><span class="line">  @after-leave=<span class="hljs-string">"onAfterLeave"</span></span><br><span class="line">  @leave-cancelled=<span class="hljs-string">"onLeaveCancelled"</span></span><br><span class="line">&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="JavaScript-钩子"><a href="#JavaScript-钩子" class="headerlink" title="JavaScript 钩子"></a>JavaScript 钩子</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span></span><br><span class="line">  @before-enter=<span class="string">&quot;onBeforeEnter&quot;</span></span><br><span class="line">  @enter=<span class="string">&quot;onEnter&quot;</span></span><br><span class="line">  @after-enter=<span class="string">&quot;onAfterEnter&quot;</span></span><br><span class="line">  @enter-cancelled=<span class="string">&quot;onEnterCancelled&quot;</span></span><br><span class="line">  @before-leave=<span class="string">&quot;onBeforeLeave&quot;</span></span><br><span class="line">  @leave=<span class="string">&quot;onLeave&quot;</span></span><br><span class="line">  @after-leave=<span class="string">&quot;onAfterLeave&quot;</span></span><br><span class="line">  @leave-cancelled=<span class="string">&quot;onLeaveCancelled&quot;</span></span><br><span class="line">&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-comment">// ...</span></span><br><span class="line">  <span class="hljs-attr">methods</span>: {</span><br><span class="line">    <span class="hljs-comment">// 在元素被插入到 DOM 之前被调用</span></span><br><span class="line">    <span class="hljs-comment">// 用这个来设置元素的 "enter-from" 状态</span></span><br><span class="line">    <span class="title function_">onBeforeEnter</span>(<span class="hljs-params">el</span>) {},</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 在元素被插入到 DOM 之后的下一帧被调用</span></span><br><span class="line">    <span class="hljs-comment">// 用这个来开始进入动画</span></span><br><span class="line">    <span class="title function_">onEnter</span>(<span class="hljs-params">el, done</span>) {</span><br><span class="line">      <span class="hljs-comment">// 调用回调函数 done 表示过渡结束</span></span><br><span class="line">      <span class="hljs-comment">// 如果与 CSS 结合使用，则这个回调是可选参数</span></span><br><span class="line">      <span class="title function_">done</span>()</span><br><span class="line">    },</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 当进入过渡完成时调用。</span></span><br><span class="line">    <span class="title function_">onAfterEnter</span>(<span class="hljs-params">el</span>) {},</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 当进入过渡在完成之前被取消时调用</span></span><br><span class="line">    <span class="title function_">onEnterCancelled</span>(<span class="hljs-params">el</span>) {},</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 在 leave 钩子之前调用</span></span><br><span class="line">    <span class="hljs-comment">// 大多数时候，你应该只会用到 leave 钩子</span></span><br><span class="line">    <span class="title function_">onBeforeLeave</span>(<span class="hljs-params">el</span>) {},</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 在离开过渡开始时调用</span></span><br><span class="line">    <span class="hljs-comment">// 用这个来开始离开动画</span></span><br><span class="line">    <span class="title function_">onLeave</span>(<span class="hljs-params">el, done</span>) {</span><br><span class="line">      <span class="hljs-comment">// 调用回调函数 done 表示过渡结束</span></span><br><span class="line">      <span class="hljs-comment">// 如果与 CSS 结合使用，则这个回调是可选参数</span></span><br><span class="line">      <span class="title function_">done</span>()</span><br><span class="line">    },</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 在离开过渡完成、</span></span><br><span class="line">    <span class="hljs-comment">// 且元素已从 DOM 中移除时调用</span></span><br><span class="line">    <span class="title function_">onAfterLeave</span>(<span class="hljs-params">el</span>) {},</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// 仅在 v-show 过渡中可用</span></span><br><span class="line">    <span class="title function_">onLeaveCancelled</span>(<span class="hljs-params">el</span>) {}</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="comment">// 在元素被插入到 DOM 之前被调用</span></span><br><span class="line">    <span class="comment">// 用这个来设置元素的 &quot;enter-from&quot; 状态</span></span><br><span class="line">    <span class="title function_">onBeforeEnter</span>(<span class="params">el</span>) &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在元素被插入到 DOM 之后的下一帧被调用</span></span><br><span class="line">    <span class="comment">// 用这个来开始进入动画</span></span><br><span class="line">    <span class="title function_">onEnter</span>(<span class="params">el, done</span>) &#123;</span><br><span class="line">      <span class="comment">// 调用回调函数 done 表示过渡结束</span></span><br><span class="line">      <span class="comment">// 如果与 CSS 结合使用，则这个回调是可选参数</span></span><br><span class="line">      <span class="title function_">done</span>()</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当进入过渡完成时调用。</span></span><br><span class="line">    <span class="title function_">onAfterEnter</span>(<span class="params">el</span>) &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当进入过渡在完成之前被取消时调用</span></span><br><span class="line">    <span class="title function_">onEnterCancelled</span>(<span class="params">el</span>) &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在 leave 钩子之前调用</span></span><br><span class="line">    <span class="comment">// 大多数时候，你应该只会用到 leave 钩子</span></span><br><span class="line">    <span class="title function_">onBeforeLeave</span>(<span class="params">el</span>) &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在离开过渡开始时调用</span></span><br><span class="line">    <span class="comment">// 用这个来开始离开动画</span></span><br><span class="line">    <span class="title function_">onLeave</span>(<span class="params">el, done</span>) &#123;</span><br><span class="line">      <span class="comment">// 调用回调函数 done 表示过渡结束</span></span><br><span class="line">      <span class="comment">// 如果与 CSS 结合使用，则这个回调是可选参数</span></span><br><span class="line">      <span class="title function_">done</span>()</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在离开过渡完成、</span></span><br><span class="line">    <span class="comment">// 且元素已从 DOM 中移除时调用</span></span><br><span class="line">    <span class="title function_">onAfterLeave</span>(<span class="params">el</span>) &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 仅在 v-show 过渡中可用</span></span><br><span class="line">    <span class="title function_">onLeaveCancelled</span>(<span class="params">el</span>) &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>在使用仅由 <code>JavaScript</code> 执行的动画时，最好是添加一个 <code>:css="false" prop</code>。这显式地向 <code>Vue</code> 表明可以跳过对 <code>CSS</code> 过渡的自动探测。除了性能稍好一些之外，还可以防止 <code>CSS</code> 规则意外地干扰过渡效果：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span></span><br><span class="line">  ...</span><br><span class="line">  :css=<span class="hljs-string">"false"</span></span><br><span class="line">&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>在使用仅由 <code>JavaScript</code> 执行的动画时，最好是添加一个 <code>:css=&quot;false&quot; prop</code>。这显式地向 <code>Vue</code> 表明可以跳过对 <code>CSS</code> 过渡的自动探测。除了性能稍好一些之外，还可以防止 <code>CSS</code> 规则意外地干扰过渡效果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span></span><br><span class="line">  ...</span><br><span class="line">  :css=<span class="string">&quot;false&quot;</span></span><br><span class="line">&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="可复用过渡效果"><a href="#可复用过渡效果" class="headerlink" title="可复用过渡效果"></a>可复用过渡效果</h4><p>创建一个<code>MyTransition.vue</code>组件</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- <span class="title class_">MyTransition</span>.<span class="hljs-property">vue</span> --&gt;</span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="hljs-language-javascript"></span></span></span><br><span class="line"><span class="hljs-language-javascript"><span class="hljs-language-xml"><span class="hljs-comment">// JavaScript 钩子逻辑...</span></span></span></span><br><span class="line"><span class="hljs-language-javascript"><span class="hljs-language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-comment">&lt;!-- 包装内置的 Transition 组件 --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">Transition</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">    <span class="hljs-attr">name</span>=<span class="hljs-string">"my-transition"</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">    @<span class="hljs-attr">enter</span>=<span class="hljs-string">"onEnter"</span></span></span></span><br><span class="line"><span class="hljs-tag"><span class="hljs-language-xml">    @<span class="hljs-attr">leave</span>=<span class="hljs-string">"onLeave"</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">slot</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">slot</span>&gt;</span> <span class="hljs-comment">&lt;!-- 向内传递插槽内容 --&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="hljs-language-xml"></span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml">/*</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml">  必要的 CSS...</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml">  注意：避免在这里使用 <span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">scoped</span>&gt;</span></span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml">  因为那不会应用到插槽内容上</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml">*/</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- <span class="title class_">MyTransition</span>.<span class="property">vue</span> --&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="comment">// JavaScript 钩子逻辑...</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="comment">&lt;!-- 包装内置的 Transition 组件 --&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">Transition</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    <span class="attr">name</span>=<span class="string">&quot;my-transition&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    @<span class="attr">enter</span>=<span class="string">&quot;onEnter&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    @<span class="attr">leave</span>=<span class="string">&quot;onLeave&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">slot</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span> <span class="comment">&lt;!-- 向内传递插槽内容 --&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-xml"></span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml">/*</span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml">  必要的 CSS...</span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml">  注意：避免在这里使用 <span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml">  因为那不会应用到插槽内容上</span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml">*/</span></span></span><br><span class="line"><span class="language-xml"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <p><code>scoped</code>属性是<code>HTML5</code>中的新属性,是一个布尔属性。如果使用该属性，则样式仅仅应用到<code>style</code>元素的父元素及其子元素</p>
 <p>现在 <code>MyTransition</code> 可以在导入后像内置组件那样使用了：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">MyTransition</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"show"</span>&gt;</span>Hello<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">MyTransition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">MyTransition</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-if</span>=<span class="string">&quot;show&quot;</span>&gt;</span>Hello<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">MyTransition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="出现时过渡"><a href="#出现时过渡" class="headerlink" title="出现时过渡"></a>出现时过渡</h4><p>在某个节点初次渲染时应用一个过渡效果</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> appear&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> appear&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="元素间过渡"><a href="#元素间过渡" class="headerlink" title="元素间过渡"></a>元素间过渡</h4><p>除了通过 <code>v-if</code> / <code>v-show</code> 切换一个元素，我们也可以通过 <code>v-if</code> / <code>v-else</code> / <code>v-else-if</code> 在几个组件间进行切换，只要确保任一时刻只会有一个元素被渲染即可：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">"docState === 'saved'"</span>&gt;</span>Edit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-else-if</span>=<span class="hljs-string">"docState === 'edited'"</span>&gt;</span>Save<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">v-else-if</span>=<span class="hljs-string">"docState === 'editing'"</span>&gt;</span>Cancel<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-if</span>=<span class="string">&quot;docState === &#x27;saved&#x27;&quot;</span>&gt;</span>Edit<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-else-if</span>=<span class="string">&quot;docState === &#x27;edited&#x27;&quot;</span>&gt;</span>Save<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> <span class="attr">v-else-if</span>=<span class="string">&quot;docState === &#x27;editing&#x27;&quot;</span>&gt;</span>Cancel<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="过渡模式"><a href="#过渡模式" class="headerlink" title="过渡模式"></a>过渡模式</h4><p>在之前的例子中，进入和离开的元素都是在同时开始动画的，因此我们不得不将它们设为 <code>position: absolute</code> 以避免二者同时存在时出现的布局问题。</p>
 <p>然而，很多情况下这可能并不符合需求。我们可能想要先执行离开动画，然后在其完成之后再执行元素的进入动画。手动编排这样的动画是非常复杂的，好在我们可以通过向 <code>&lt;Transition&gt;</code> 传入一个 <code>mode prop</code> 来实现这个行为：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> mode=<span class="hljs-string">"out-in"</span>&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> mode=<span class="string">&quot;out-in&quot;</span>&gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="组件间过渡"><a href="#组件间过渡" class="headerlink" title="组件间过渡"></a>组件间过渡</h4><p><code>&lt;Transition&gt;</code> 也可以作用于动态组件之间的切换：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="hljs-string">"fade"</span> mode=<span class="hljs-string">"out-in"</span>&gt;</span><br><span class="line">  <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">component</span> <span class="hljs-attr">:is</span>=<span class="hljs-string">"activeComponent"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> name=<span class="string">&quot;fade&quot;</span> mode=<span class="string">&quot;out-in&quot;</span>&gt;</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">component</span> <span class="attr">:is</span>=<span class="string">&quot;activeComponent&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">component</span>&gt;</span></span></span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">CompA</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./CompA.vue'</span></span><br><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">CompB</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'./CompB.vue'</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="hljs-attr">components</span>: { <span class="title class_">CompA</span>, <span class="title class_">CompB</span> },</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">activeComponent</span>: <span class="hljs-string">'CompA'</span></span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;label&gt;</span><br><span class="line">	 &lt;!-- v-model与activeComponent建立双向绑定 --&gt;</span><br><span class="line">    &lt;input type="radio" v-model="activeComponent" value="CompA"&gt; A</span><br><span class="line">  &lt;/label&gt;</span><br><span class="line">  &lt;label&gt;</span><br><span class="line">    &lt;input type="radio" v-model="activeComponent" value="CompB"&gt; B</span><br><span class="line">  &lt;/label&gt;</span><br><span class="line">  &lt;Transition name="fade" mode="out-in"&gt;</span><br><span class="line">    &lt;component :is="activeComponent"&gt;&lt;/component&gt;</span><br><span class="line">  &lt;/Transition&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.fade-enter-active,</span><br><span class="line">.fade-leave-active {</span><br><span class="line">  transition: opacity 0.5s ease;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">.fade-enter-from,</span><br><span class="line">.fade-leave-to {</span><br><span class="line">  opacity: 0;</span><br><span class="line">}</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CompA</span> <span class="keyword">from</span> <span class="string">&#x27;./CompA.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">CompB</span> <span class="keyword">from</span> <span class="string">&#x27;./CompB.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">components</span>: &#123; <span class="title class_">CompA</span>, <span class="title class_">CompB</span> &#125;,</span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">activeComponent</span>: <span class="string">&#x27;CompA&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;label&gt;</span><br><span class="line">	 &lt;!-- v-model与activeComponent建立双向绑定 --&gt;</span><br><span class="line">    &lt;input type=&quot;radio&quot; v-model=&quot;activeComponent&quot; value=&quot;CompA&quot;&gt; A</span><br><span class="line">  &lt;/label&gt;</span><br><span class="line">  &lt;label&gt;</span><br><span class="line">    &lt;input type=&quot;radio&quot; v-model=&quot;activeComponent&quot; value=&quot;CompB&quot;&gt; B</span><br><span class="line">  &lt;/label&gt;</span><br><span class="line">  &lt;Transition name=&quot;fade&quot; mode=&quot;out-in&quot;&gt;</span><br><span class="line">    &lt;component :is=&quot;activeComponent&quot;&gt;&lt;/component&gt;</span><br><span class="line">  &lt;/Transition&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.fade-enter-active,</span><br><span class="line">.fade-leave-active &#123;</span><br><span class="line">  transition: opacity 0.5s ease;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.fade-enter-from,</span><br><span class="line">.fade-leave-to &#123;</span><br><span class="line">  opacity: 0;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
 
 <h4 id="动态过渡"><a href="#动态过渡" class="headerlink" title="动态过渡"></a>动态过渡</h4><p><code>&lt;Transition&gt;</code> 的 <code>props</code> (比如 <code>name</code>) 也可以是动态的！这让我们可以根据状态变化动态地应用不同类型的过渡：</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> :name=<span class="hljs-string">"transitionName"</span>&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="title class_">Transition</span> :name=<span class="string">&quot;transitionName&quot;</span>&gt;</span><br><span class="line">  &lt;!-- ... --&gt;</span><br><span class="line">&lt;/<span class="title class_">Transition</span>&gt;</span><br></pre></td></tr></table></figure>
 
 <p>这个特性的用处是可以提前定义好多组 <code>CSS</code> 过渡或动画的 <code>class</code>，然后在它们之间动态切换。</p>
 <h4 id="使用-Key-Attribute-过渡"><a href="#使用-Key-Attribute-过渡" class="headerlink" title="使用 Key Attribute 过渡"></a>使用 Key Attribute 过渡</h4><p>有时为了触发过渡，需要强制重新渲染 <code>DOM</code> 元素。</p>
 <p>比如计数器组件</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {</span><br><span class="line">  <span class="title function_">data</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">return</span> {</span><br><span class="line">      <span class="hljs-attr">count</span>: <span class="hljs-number">1</span>,</span><br><span class="line">      <span class="hljs-attr">interval</span>: <span class="hljs-literal">null</span> </span><br><span class="line">    }</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">mounted</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="variable language_">this</span>.<span class="hljs-property">interval</span> = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> {</span><br><span class="line">      <span class="variable language_">this</span>.<span class="hljs-property">count</span>++;</span><br><span class="line">    }, <span class="hljs-number">1000</span>)</span><br><span class="line">  },</span><br><span class="line">  <span class="title function_">beforeDestroy</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="hljs-property">interval</span>)</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;<span class="hljs-name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">"count"</span>&gt;</span>{{ count }}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="title function_">data</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="attr">count</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">interval</span>: <span class="literal">null</span> </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">mounted</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">interval</span> = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span>++;</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">beforeDestroy</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="property">interval</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">:key</span>=<span class="string">&quot;count&quot;</span>&gt;</span>&#123;&#123; count &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">Transition</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
 <p>有了 <code>key</code> 属性，<code>Vue</code> 就知道在 <code>count</code> 改变时创建一个新的 <code>span</code> 元素，因此 <code>Transition</code> 组件有两个不同的元素在它们之间进行过渡</p>
 <p>小结:</p>
@@ -354,237 +333,202 @@
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/@keyframes">@keyframes</a></li>
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/maidu_xbd/article/details/106361205">vue—style scoped属性的作用和原理、scoped穿透</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2025/04/15/Technology-learn-swift-01/">学习笔记 - Swfit 6.1 - 语法概览</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2025/04/12/Technology-learn-vue-05/">Vue学习笔记 - 插件</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/12/Technology-learn-vue-05/" rel="prev" title="Vue学习笔记 - 插件">
+      <i class="fa fa-chevron-left"></i> Vue学习笔记 - 插件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/15/Technology-learn-swift-01/" rel="next" title="iOS - Swfit 6.1 - 语法概览">
+      iOS - Swfit 6.1 - 语法概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transition"><span class="nav-number">1.</span> <span class="nav-text">Transition</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8ECSS%E7%9A%84%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C"><span class="nav-number">1.0.1.</span> <span class="nav-text">基于CSS的过渡效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C%E5%91%BD%E5%90%8D"><span class="nav-number">1.0.2.</span> <span class="nav-text">为过渡效果命名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CSS%E7%9A%84transition"><span class="nav-number">1.0.3.</span> <span class="nav-text">CSS的transition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CSS%E7%9A%84animation"><span class="nav-number">1.0.4.</span> <span class="nav-text">CSS的animation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%B8%A1-class"><span class="nav-number">1.0.5.</span> <span class="nav-text">自定义过渡 class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8transition%E5%92%8Canimation"><span class="nav-number">1.0.6.</span> <span class="nav-text">同时使用transition和animation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B1%E5%B1%82%E7%BA%A7%E8%BF%87%E6%B8%A1%E4%B8%8E%E6%98%BE%E5%BC%8F%E8%BF%87%E6%B8%A1%E6%97%B6%E9%95%BF"><span class="nav-number">1.0.7.</span> <span class="nav-text">深层级过渡与显式过渡时长</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript-%E9%92%A9%E5%AD%90"><span class="nav-number">1.0.8.</span> <span class="nav-text">JavaScript 钩子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E5%A4%8D%E7%94%A8%E8%BF%87%E6%B8%A1%E6%95%88%E6%9E%9C"><span class="nav-number">1.0.9.</span> <span class="nav-text">可复用过渡效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BA%E7%8E%B0%E6%97%B6%E8%BF%87%E6%B8%A1"><span class="nav-number">1.0.10.</span> <span class="nav-text">出现时过渡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E9%97%B4%E8%BF%87%E6%B8%A1"><span class="nav-number">1.0.11.</span> <span class="nav-text">元素间过渡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.0.12.</span> <span class="nav-text">过渡模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E9%97%B4%E8%BF%87%E6%B8%A1"><span class="nav-number">1.0.13.</span> <span class="nav-text">组件间过渡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%BF%87%E6%B8%A1"><span class="nav-number">1.0.14.</span> <span class="nav-text">动态过渡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Key-Attribute-%E8%BF%87%E6%B8%A1"><span class="nav-number">1.0.15.</span> <span class="nav-text">使用 Key Attribute 过渡</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

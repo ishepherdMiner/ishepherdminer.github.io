@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>ReactNative 入门体验 - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="环境 macOS Mojave Version 10.14.3Xcode 10.1iPhone 5s 10.0.1node v11.10.0npm 6.7.0React Native 0.58react 16.6.3  新建ReactNative项目12brew install nodebrew install watchman  安装React Native命令行工具1npm install -">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境 macOS Mojave Version 10.14.3Xcode 10.1iPhone 5s 10.0.1node v11.10.0npm 6.7.0React Native 0.58react 16.6.3  新建ReactNative项目12brew install nodebrew install watchman  安装React Native命令行工具1npm install -">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ReactNative 入门体验">
 <meta property="og:url" content="http://yoursite.com/2019/02/22/Technology-ReactNative-Intro/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="环境 macOS Mojave Version 10.14.3Xcode 10.1iPhone 5s 10.0.1node v11.10.0npm 6.7.0React Native 0.58react 16.6.3  新建ReactNative项目12brew install nodebrew install watchman  安装React Native命令行工具1npm install -">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg">
@@ -39,283 +41,232 @@
 <meta property="og:image" content="https://i.loli.net/2019/02/22/5c70115a2fcb6.jpg">
 <meta property="og:image" content="https://i.loli.net/2019/02/22/5c70115a2e090.jpg">
 <meta property="article:published_time" content="2019-02-22T15:15:22.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:09:37.700Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:29:29.337Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="RN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2019/02/22/Technology-ReactNative-Intro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ReactNative 入门体验 | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#环境">1&nbsp;&nbsp;<b>环境</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#新建ReactNative项目">2&nbsp;&nbsp;<b>新建ReactNative项目</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#安装React-Native命令行工具">2.1&nbsp;&nbsp;安装React Native命令行工具</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#安装Xcode及命令行相关工具">2.2&nbsp;&nbsp;安装Xcode及命令行相关工具</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#创建新应用">2.3&nbsp;&nbsp;创建新应用</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#命令行">2.3.1&nbsp;&nbsp;命令行</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#WebStorm">2.3.2&nbsp;&nbsp;WebStorm</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#运行React-Native应用">2.4&nbsp;&nbsp;运行React Native应用</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#查找">2.4.1&nbsp;&nbsp;查找</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#为什么有">2.4.2&nbsp;&nbsp;为什么有../../</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#解决方法">2.4.3&nbsp;&nbsp;解决方法</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Hello-world">2.5&nbsp;&nbsp;Hello world</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#集成ReactNative到已有项目">3&nbsp;&nbsp;<b>集成ReactNative到已有项目</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#建立目录结构">3.1&nbsp;&nbsp;建立目录结构</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#安装JavaScript依赖库">3.2&nbsp;&nbsp;安装JavaScript依赖库</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#使用CocoaPods集成">3.3&nbsp;&nbsp;使用CocoaPods集成</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#代码集成">3.4&nbsp;&nbsp;代码集成</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#创建index-js-amp-amp-添加RN代码">3.4.1&nbsp;&nbsp;创建index.js &amp;amp;&amp;amp; 添加RN代码</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#添加RCTRootView">3.4.2&nbsp;&nbsp;添加RCTRootView</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#允许网络访问">3.4.3&nbsp;&nbsp;允许网络访问</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#运行开发服务器">3.4.4&nbsp;&nbsp;运行开发服务器</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#注意事项">3.4.5&nbsp;&nbsp;注意事项</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">4&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            ReactNative 入门体验
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2019-02-22T15:15:22.000Z" itemprop="datePublished">2月 22 2019</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            20 分钟 读完 (约 3045 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/22/Technology-ReactNative-Intro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ReactNative 入门体验
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-02-22 23:15:22" itemprop="dateCreated datePublished" datetime="2019-02-22T23:15:22+08:00">2019-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:29:29" itemprop="dateModified" datetime="2025-04-26T22:29:29+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>macOS Mojave Version 10.14.3<br>Xcode 10.1<br>iPhone 5s 10.0.1<br>node v11.10.0<br>npm 6.7.0<br>React Native 0.58<br>react 16.6.3</p>
 </blockquote>
-<h2 id="新建ReactNative项目"><a href="#新建ReactNative项目" class="headerlink" title="新建ReactNative项目"></a>新建<code>ReactNative</code>项目</h2><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br><span class="line">brew install watchman</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="新建ReactNative项目"><a href="#新建ReactNative项目" class="headerlink" title="新建ReactNative项目"></a>新建<code>ReactNative</code>项目</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install node</span><br><span class="line">brew install watchman</span><br></pre></td></tr></table></figure>
 
-<h3 id="安装React-Native命令行工具"><a href="#安装React-Native命令行工具" class="headerlink" title="安装React Native命令行工具"></a>安装<code>React Native</code>命令行工具</h3><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="安装React-Native命令行工具"><a href="#安装React-Native命令行工具" class="headerlink" title="安装React Native命令行工具"></a>安装<code>React Native</code>命令行工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="安装Xcode及命令行相关工具"><a href="#安装Xcode及命令行相关工具" class="headerlink" title="安装Xcode及命令行相关工具"></a>安装<code>Xcode</code>及命令行相关工具</h3><p><img src="https://i.loli.net/2019/02/22/5c7011541a9e5.jpg"><br>或者</p>
 <span id="more"></span>
 
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## man xcode-select</span></span><br><span class="line"><span class="hljs-comment">## xcode-select - Manages the active developer directory for Xcode and BSD</span></span><br><span class="line"><span class="hljs-comment">##       tools.</span></span><br><span class="line"><span class="hljs-comment">## --install</span></span><br><span class="line"><span class="hljs-comment">##              Opens a user interface dialog to request automatic  installation</span></span><br><span class="line"><span class="hljs-comment">##              of the command line developer tools.</span></span><br><span class="line">xcode-select --install</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## man xcode-select</span></span><br><span class="line"><span class="comment">## xcode-select - Manages the active developer directory for Xcode and BSD</span></span><br><span class="line"><span class="comment">##       tools.</span></span><br><span class="line"><span class="comment">## --install</span></span><br><span class="line"><span class="comment">##              Opens a user interface dialog to request automatic  installation</span></span><br><span class="line"><span class="comment">##              of the command line developer tools.</span></span><br><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
 
 <p>详情参考<a href="#refer2">英文-doc 链接2</a>/<a href="#refer11">中文-doc 链接11</a></p>
-<h3 id="创建新应用"><a href="#创建新应用" class="headerlink" title="创建新应用"></a>创建新应用</h3><h4 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init AwesomeProject</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="创建新应用"><a href="#创建新应用" class="headerlink" title="创建新应用"></a>创建新应用</h3><h4 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init AwesomeProject</span><br></pre></td></tr></table></figure>
 
 <h4 id="WebStorm"><a href="#WebStorm" class="headerlink" title="WebStorm"></a>WebStorm</h4><p><img src="https://i.loli.net/2019/02/22/5c7011544c147.jpg"></p>
 <p>若<code>node</code>版本过低可能出现<code>Command yarn add react-native --exact` failed.</code>,可参考<a href="#refer3">Upgrade Node.js to the latest version on Mac OS</a>升级<code>node</code></p>
 <p>观察日志的输出生成工程执行的是</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/`userName`/.nvm/versions/node/v11.10.0/bin/node /Users/`userName`/.nvm/versions/node/v11.10.0/lib/node_modules/react-native-cli/index.js init AwesomeProject</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Users/`userName`/.nvm/versions/node/v11.10.0/bin/node /Users/`userName`/.nvm/versions/node/v11.10.0/lib/node_modules/react-native-cli/index.js init AwesomeProject</span><br></pre></td></tr></table></figure>
 
 <p>查看<code>react-native</code>位置</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">which</span> react-native</span><br><span class="line"><span class="hljs-comment">## 输出</span></span><br><span class="line">/Users/`userName`/.nvm/versions/node/v11.10.0/bin/react-native</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> react-native</span><br><span class="line"><span class="comment">## 输出</span></span><br><span class="line">/Users/`userName`/.nvm/versions/node/v11.10.0/bin/react-native</span><br></pre></td></tr></table></figure>
 
 <h3 id="运行React-Native应用"><a href="#运行React-Native应用" class="headerlink" title="运行React Native应用"></a>运行<code>React Native</code>应用</h3><p>同样根据窗口日志的输出,<code>iOS</code>运行的方法可以用命令行或直接使用<code>Xcode</code>打开运行</p>
 <p>使用命令行方式</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## cd到工程目录下</span></span><br><span class="line"><span class="hljs-built_in">cd</span> /Users/`userName`/WebstormProjects/AwesomeProject</span><br><span class="line"><span class="hljs-comment">## 执行</span></span><br><span class="line">react-native run-ios</span><br><span class="line"></span><br><span class="line">Found Xcode project AwesomeProject.xcodeproj</span><br><span class="line">... bla bla bla</span><br><span class="line">&gt; Running script <span class="hljs-string">'Install Third Party'</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## cd到工程目录下</span></span><br><span class="line"><span class="built_in">cd</span> /Users/`userName`/WebstormProjects/AwesomeProject</span><br><span class="line"><span class="comment">## 执行</span></span><br><span class="line">react-native run-ios</span><br><span class="line"></span><br><span class="line">Found Xcode project AwesomeProject.xcodeproj</span><br><span class="line">... bla bla bla</span><br><span class="line">&gt; Running script <span class="string">&#x27;Install Third Party&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <p>启动模拟器,然后安装下载第三方的组件,下载的脚本是<a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/blob/master/scripts/ios-install-third-party.sh">scripts/ios-install-third-party.sh</a></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">if</span> [ -d <span class="hljs-string">"<span class="hljs-variable">$HOME</span>/.rncache"</span> ]; <span class="hljs-keyword">then</span></span><br><span class="line">  cachedir=<span class="hljs-string">"<span class="hljs-variable">$HOME</span>/.rncache"</span> <span class="hljs-comment"># react-native 0.57.8 and older</span></span><br><span class="line"><span class="hljs-keyword">else</span></span><br><span class="line">  cachedir=<span class="hljs-string">"<span class="hljs-variable">$HOME</span>/Library/Caches/com.facebook.ReactNativeBuild"</span></span><br><span class="line"><span class="hljs-keyword">fi</span></span><br><span class="line"><span class="hljs-built_in">mkdir</span> -p <span class="hljs-string">"<span class="hljs-variable">$cachedir</span>"</span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> [ -d <span class="string">&quot;<span class="variable">$HOME</span>/.rncache&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  cachedir=<span class="string">&quot;<span class="variable">$HOME</span>/.rncache&quot;</span> <span class="comment"># react-native 0.57.8 and older</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">  cachedir=<span class="string">&quot;<span class="variable">$HOME</span>/Library/Caches/com.facebook.ReactNativeBuild&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$cachedir</span>&quot;</span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>缓存目录旧版在家目录的<code>.rncache</code>,如果存在该目录,则下载的库就会安装在此处,若网络原因无法下载,可参考<a href="#refer4">iOS RN 0.45以上版本所需的第三方编译库(boost等)</a>,手动下载即可</p>
 <p>但是,运行失败了</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Installing build/Build/Products/Debug-iphonesimulator/AwesomeProject.app</span><br><span class="line">An error was encountered processing the <span class="hljs-built_in">command</span> (domain=NSPOSIXErrorDomain, code=22):</span><br><span class="line">Failed to install the requested application</span><br><span class="line">The bundle identifier of the application could not be determined.</span><br><span class="line">Ensure that the application<span class="hljs-string">'s Info.plist contains a value for CFBundleIdentifier.</span></span><br><span class="line"><span class="hljs-string">Print: Entry, ":CFBundleIdentifier", Does Not Exist</span></span><br><span class="line"><span class="hljs-string"></span></span><br><span class="line"><span class="hljs-string">Command failed: /usr/libexec/PlistBuddy -c Print:CFBundleIdentifier build/Build/Products/Debug-iphonesimulator/AwesomeProject.app/Info.plist</span></span><br><span class="line"><span class="hljs-string">Print: Entry, ":CFBundleIdentifier", Does Not Exist</span></span><br><span class="line"><span class="hljs-string"></span></span><br><span class="line"><span class="hljs-string"></span></span><br><span class="line"><span class="hljs-string">Error: Command failed: /usr/libexec/PlistBuddy -c Print:CFBundleIdentifier build/Build/Products/Debug-iphonesimulator/AwesomeProject.app/Info.plist</span></span><br><span class="line"><span class="hljs-string">Print: Entry, ":CFBundleIdentifier", Does Not Exist</span></span><br><span class="line"><span class="hljs-string"></span></span><br><span class="line"><span class="hljs-string">    at checkExecSyncError (child_process.js:637:11)</span></span><br><span class="line"><span class="hljs-string">    at Object.execFileSync (child_process.js:655:13)</span></span><br><span class="line"><span class="hljs-string">    at Promise.then (/Users/Jason/WebstormProjects/AwesomeProject/node_modules/react-native/local-cli/runIOS/runIOS.js:208:5)</span></span><br><span class="line"><span class="hljs-string">    at processTicksAndRejections (internal/process/next_tick.js:81:5)</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Installing build/Build/Products/Debug-iphonesimulator/AwesomeProject.app</span><br><span class="line">An error was encountered processing the <span class="built_in">command</span> (domain=NSPOSIXErrorDomain, code=22):</span><br><span class="line">Failed to install the requested application</span><br><span class="line">The bundle identifier of the application could not be determined.</span><br><span class="line">Ensure that the application<span class="string">&#x27;s Info.plist contains a value for CFBundleIdentifier.</span></span><br><span class="line"><span class="string">Print: Entry, &quot;:CFBundleIdentifier&quot;, Does Not Exist</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Command failed: /usr/libexec/PlistBuddy -c Print:CFBundleIdentifier build/Build/Products/Debug-iphonesimulator/AwesomeProject.app/Info.plist</span></span><br><span class="line"><span class="string">Print: Entry, &quot;:CFBundleIdentifier&quot;, Does Not Exist</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Error: Command failed: /usr/libexec/PlistBuddy -c Print:CFBundleIdentifier build/Build/Products/Debug-iphonesimulator/AwesomeProject.app/Info.plist</span></span><br><span class="line"><span class="string">Print: Entry, &quot;:CFBundleIdentifier&quot;, Does Not Exist</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    at checkExecSyncError (child_process.js:637:11)</span></span><br><span class="line"><span class="string">    at Object.execFileSync (child_process.js:655:13)</span></span><br><span class="line"><span class="string">    at Promise.then (/Users/Jason/WebstormProjects/AwesomeProject/node_modules/react-native/local-cli/runIOS/runIOS.js:208:5)</span></span><br><span class="line"><span class="string">    at processTicksAndRejections (internal/process/next_tick.js:81:5)</span></span><br></pre></td></tr></table></figure>
 
 <p>再往上看,编译时就已经失败了</p>
-<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">❌  /Users/Jason/WebstormProjects/AwesomeProject/node_modules/react-native/third-party/folly-2018.10.22.00/folly/detail/RangeCommon.h:22:10: 'glog/logging.h' file not found</span><br><span class="line"></span><br><span class="line">#include &lt;glog/logging.h&gt;</span><br><span class="line">       ^</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">❌  /Users/Jason/WebstormProjects/AwesomeProject/node_modules/react-native/third-party/folly-2018.10.22.00/folly/detail/RangeCommon.h:22:10: &#x27;glog/logging.h&#x27; file not found</span><br><span class="line"></span><br><span class="line">#include &lt;glog/logging.h&gt;</span><br><span class="line">       ^</span><br></pre></td></tr></table></figure>
 
 <p>用<code>Xcode</code> 的方式试试</p>
 <p>选择模拟器并编译</p>
@@ -327,12 +278,12 @@
 <p><img src="https://i.loli.net/2019/02/22/5c70115450ed5.jpg"></p>
 <p><code>jsi</code>依赖于<code>double-conversion</code><br><code>double-conversion</code>执行了<code>ios-install-third-party.sh</code>,并未能成功输出需要的头文件</p>
 <p><img src="https://i.loli.net/2019/02/22/5c701154982ca.jpg"></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## ios-install-third-party.sh</span></span><br><span class="line"><span class="hljs-keyword">function</span> <span class="hljs-function"><span class="hljs-title">fetch_and_unpack</span></span> () {</span><br><span class="line">    file=<span class="hljs-variable">$1</span></span><br><span class="line">    url=<span class="hljs-variable">$2</span></span><br><span class="line">    <span class="hljs-built_in">hash</span>=<span class="hljs-variable">$3</span></span><br><span class="line">    cmd=<span class="hljs-variable">$4</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="hljs-keyword">if</span> [ <span class="hljs-string">"<span class="hljs-variable">$fetched</span>"</span> = <span class="hljs-string">"yes"</span> ] || [ ! -f <span class="hljs-string">"third-party/<span class="hljs-variable">$dir</span>/.installed"</span> ]; <span class="hljs-keyword">then</span></span><br><span class="line">        (<span class="hljs-built_in">cd</span> third-party;</span><br><span class="line">        <span class="hljs-comment">## &lt;2&gt;</span></span><br><span class="line">         <span class="hljs-built_in">rm</span> -rf <span class="hljs-string">"<span class="hljs-variable">$dir</span>"</span></span><br><span class="line">         <span class="hljs-built_in">echo</span> Unpacking <span class="hljs-string">"<span class="hljs-variable">$cachedir</span>/<span class="hljs-variable">$file</span>"</span>...</span><br><span class="line">         <span class="hljs-keyword">if</span> ! tar zxf <span class="hljs-string">"<span class="hljs-variable">$cachedir</span>/<span class="hljs-variable">$file</span>"</span>; <span class="hljs-keyword">then</span></span><br><span class="line">             file_fail <span class="hljs-string">"<span class="hljs-variable">$cachedir</span>/<span class="hljs-variable">$file</span>"</span> <span class="hljs-string">"Unpacking '<span class="hljs-variable">$cachedir</span>/<span class="hljs-variable">$file</span>' failed"</span></span><br><span class="line">         <span class="hljs-keyword">fi</span></span><br><span class="line">         <span class="hljs-built_in">cd</span> <span class="hljs-string">"<span class="hljs-variable">$dir</span>"</span></span><br><span class="line">         <span class="hljs-built_in">eval</span> <span class="hljs-string">"<span class="hljs-variable">${cmd:-true}</span>"</span> &amp;&amp; <span class="hljs-built_in">touch</span> .installed)</span><br><span class="line">    <span class="hljs-keyword">fi</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## &lt;1&gt;</span></span><br><span class="line"><span class="hljs-built_in">mkdir</span> -p third-party</span><br><span class="line"></span><br><span class="line">SCRIPTDIR=$(<span class="hljs-built_in">dirname</span> <span class="hljs-string">"<span class="hljs-variable">$0</span>"</span>)</span><br><span class="line"></span><br><span class="line">fetch_and_unpack glog-0.3.5.tar.gz https://github.com/google/glog/archive/v0.3.5.tar.gz 61067502c5f9769d111ea1ee3f74e6ddf0a5f9cc <span class="hljs-string">"\"<span class="hljs-variable">$SCRIPTDIR</span>/ios-configure-glog.sh\""</span></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## ios-install-third-party.sh</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fetch_and_unpack</span></span> () &#123;</span><br><span class="line">    file=<span class="variable">$1</span></span><br><span class="line">    url=<span class="variable">$2</span></span><br><span class="line">    <span class="built_in">hash</span>=<span class="variable">$3</span></span><br><span class="line">    cmd=<span class="variable">$4</span></span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$fetched</span>&quot;</span> = <span class="string">&quot;yes&quot;</span> ] || [ ! -f <span class="string">&quot;third-party/<span class="variable">$dir</span>/.installed&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        (<span class="built_in">cd</span> third-party;</span><br><span class="line">        <span class="comment">## &lt;2&gt;</span></span><br><span class="line">         <span class="built_in">rm</span> -rf <span class="string">&quot;<span class="variable">$dir</span>&quot;</span></span><br><span class="line">         <span class="built_in">echo</span> Unpacking <span class="string">&quot;<span class="variable">$cachedir</span>/<span class="variable">$file</span>&quot;</span>...</span><br><span class="line">         <span class="keyword">if</span> ! tar zxf <span class="string">&quot;<span class="variable">$cachedir</span>/<span class="variable">$file</span>&quot;</span>; <span class="keyword">then</span></span><br><span class="line">             file_fail <span class="string">&quot;<span class="variable">$cachedir</span>/<span class="variable">$file</span>&quot;</span> <span class="string">&quot;Unpacking &#x27;<span class="variable">$cachedir</span>/<span class="variable">$file</span>&#x27; failed&quot;</span></span><br><span class="line">         <span class="keyword">fi</span></span><br><span class="line">         <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$dir</span>&quot;</span></span><br><span class="line">         <span class="built_in">eval</span> <span class="string">&quot;<span class="variable">$&#123;cmd:-true&#125;</span>&quot;</span> &amp;&amp; <span class="built_in">touch</span> .installed)</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## &lt;1&gt;</span></span><br><span class="line"><span class="built_in">mkdir</span> -p third-party</span><br><span class="line"></span><br><span class="line">SCRIPTDIR=$(<span class="built_in">dirname</span> <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">fetch_and_unpack glog-0.3.5.tar.gz https://github.com/google/glog/archive/v0.3.5.tar.gz 61067502c5f9769d111ea1ee3f74e6ddf0a5f9cc <span class="string">&quot;\&quot;<span class="variable">$SCRIPTDIR</span>/ios-configure-glog.sh\&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p><code>cd</code>到<code>third-party</code>目录,将缓存目录下的包解压缩,并执行对应的指令,比如<code>glog-0.3.5</code>就执行</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-variable">$SCRIPTDIR</span>/ios-configure-glog.sh</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$SCRIPTDIR</span>/ios-configure-glog.sh</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">### ios-configure-glog.sh</span></span><br><span class="line"></span><br><span class="line">./configure --host arm-apple-darwin</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># Fix build for tvOS</span></span><br><span class="line"><span class="hljs-built_in">cat</span> &lt;&lt; <span class="hljs-string">EOF &gt;&gt; src/config.h</span></span><br><span class="line"><span class="hljs-string">...</span></span><br><span class="line"><span class="hljs-string"># Prepare exported header include</span></span><br><span class="line"><span class="hljs-string">EXPORTED_INCLUDE_DIR="exported/glog"</span></span><br><span class="line"><span class="hljs-string">mkdir -p exported/glog</span></span><br><span class="line"><span class="hljs-string">cp -f src/glog/log_severity.h "$EXPORTED_INCLUDE_DIR/"</span></span><br><span class="line"><span class="hljs-string">cp -f src/glog/logging.h "$EXPORTED_INCLUDE_DIR/"</span></span><br><span class="line"><span class="hljs-string">cp -f src/glog/raw_logging.h "$EXPORTED_INCLUDE_DIR/"</span></span><br><span class="line"><span class="hljs-string">cp -f src/glog/stl_logging.h "$EXPORTED_INCLUDE_DIR/"</span></span><br><span class="line"><span class="hljs-string">cp -f src/glog/vlog_is_on.h "$EXPORTED_INCLUDE_DIR/"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### ios-configure-glog.sh</span></span><br><span class="line"></span><br><span class="line">./configure --host arm-apple-darwin</span><br><span class="line"></span><br><span class="line"><span class="comment"># Fix build for tvOS</span></span><br><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">EOF &gt;&gt; src/config.h</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="string"># Prepare exported header include</span></span><br><span class="line"><span class="string">EXPORTED_INCLUDE_DIR=&quot;exported/glog&quot;</span></span><br><span class="line"><span class="string">mkdir -p exported/glog</span></span><br><span class="line"><span class="string">cp -f src/glog/log_severity.h &quot;$EXPORTED_INCLUDE_DIR/&quot;</span></span><br><span class="line"><span class="string">cp -f src/glog/logging.h &quot;$EXPORTED_INCLUDE_DIR/&quot;</span></span><br><span class="line"><span class="string">cp -f src/glog/raw_logging.h &quot;$EXPORTED_INCLUDE_DIR/&quot;</span></span><br><span class="line"><span class="string">cp -f src/glog/stl_logging.h &quot;$EXPORTED_INCLUDE_DIR/&quot;</span></span><br><span class="line"><span class="string">cp -f src/glog/vlog_is_on.h &quot;$EXPORTED_INCLUDE_DIR/&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>执行该脚本执行<code>configure</code>并创建<code>exported/glog</code>目录,然后将<code>configure</code>过程中生成的文件<code>cp</code>到该目录,执行<code>ios-configure-glog.sh</code>后</p>
 <p>结果如下:</p>
@@ -340,85 +291,85 @@
 <p><img src="https://i.loli.net/2019/02/22/5c701154c195a.jpg"></p>
 <p>这是正常的,但是<code>⌘ + B</code>再次编译后又报了相同的错误,对比<code>Xcode</code>与终端执行的日志结果发现,<code>Xcode</code>执行时<code>checking whether the C compiler works... </code> 失败了</p>
 <p><img src="https://i.loli.net/2019/02/22/5c70115a4758e.jpg"></p>
-<h4 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h4><p>关于<code>'glog/logging.h' file not found</code>,根据<a href="#refer6">‘glog/logging.h’ file not found</a>得到的解决方案是</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">cd</span> node_modules/react-native/third-party/glog-0.3.5</span><br><span class="line">sh ../../scripts/ios-configure-glog.sh</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h4><p>关于<code>&#39;glog/logging.h&#39; file not found</code>,根据<a href="#refer6">‘glog/logging.h’ file not found</a>得到的解决方案是</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> node_modules/react-native/third-party/glog-0.3.5</span><br><span class="line">sh ../../scripts/ios-configure-glog.sh</span><br></pre></td></tr></table></figure>
 
 <p>上面已经执行过了,用<code>Xcode</code>重新编译还会出现问题</p>
 <p>参考<a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/pull/23511">react-native/pull/23511</a></p>
 <p><img src="https://i.loli.net/2019/02/22/5c701154c4dce.jpg"></p>
 <p>手动修改<code>ios-configure-glog.sh</code>文件</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="hljs-built_in">export</span> CXX=<span class="hljs-string">"<span class="hljs-subst">$(xcrun -find -sdk $PLATFORM_NAME cc)</span> -arch <span class="hljs-variable">$CURRENT_ARCH</span> -isysroot <span class="hljs-subst">$(xcrun -sdk $PLATFORM_NAME --show-sdk-path)</span>"</span></span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="built_in">export</span> CXX=<span class="string">&quot;<span class="subst">$(xcrun -find -sdk $PLATFORM_NAME cc)</span> -arch <span class="variable">$CURRENT_ARCH</span> -isysroot <span class="subst">$(xcrun -sdk $PLATFORM_NAME --show-sdk-path)</span>&quot;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>试了以后,用<code>Xcode</code>编译依然报错ㄟ( ▔, ▔ )ㄏ</p>
 <h4 id="为什么有"><a href="#为什么有" class="headerlink" title="为什么有../../"></a>为什么有<code>../../</code></h4><p>在上面的代码的&lt;1&gt;处可知,<code>../..</code>后,当前位置会在<code>.../react-native</code>目录下,要在该目录下创建<code>third-party</code>目录,同时又要保证<code>SCRIPTDIR</code>能正确定位到<code>ios-configure-glog.sh</code>去执行。</p>
 <p>这样做后还是失败,因为&lt;2&gt;处移除后,重新执行,同样因为<code>configure</code>失败导致无法生成<code>.h</code>文件。</p>
 <h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h4><p>在终端根据上面提到的方法执行<code>ios-install-third-party.sh</code>后</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 注释下面这句</span></span><br><span class="line"><span class="hljs-comment"># fetch_and_unpack glog-0.3.5.tar.gz https://github.com/google/glog/archive/v0.3.5.tar.gz 61067502c5f9769d111ea1ee3f74e6ddf0a5f9cc "\"$SCRIPTDIR/ios-configure-glog.sh\""</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注释下面这句</span></span><br><span class="line"><span class="comment"># fetch_and_unpack glog-0.3.5.tar.gz https://github.com/google/glog/archive/v0.3.5.tar.gz 61067502c5f9769d111ea1ee3f74e6ddf0a5f9cc &quot;\&quot;$SCRIPTDIR/ios-configure-glog.sh\&quot;&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>避免去删除<code>glog</code>这个包,然后再用Xcode进行编译就正常了,运行时模拟器下还是会崩溃,真机能正常运行。</p>
 <p><img src="https://i.loli.net/2019/02/22/5c70115a2fcb6.jpg"></p>
 <p>资源地址获取不正确,有网络代理工具的情况时,比如<code>SS</code>,将其调成自动代理或关闭</p>
 <p><img src="https://i.loli.net/2019/02/22/5c70115a2e090.jpg"></p>
 <h3 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a><code>Hello world</code></h3><p>修改<code>App.js</code></p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="title class_">App</span> <span class="hljs-keyword">extends</span> <span class="title class_ inherited__">Component</span>&lt;<span class="title class_">Props</span>&gt; {</span><br><span class="line">  <span class="title function_">render</span>(<span class="hljs-params"></span>) {</span><br><span class="line">  <span class="hljs-comment">//   return (</span></span><br><span class="line">  <span class="hljs-comment">//     &lt;View style={styles.container}&gt;</span></span><br><span class="line">  <span class="hljs-comment">//       &lt;Text style={styles.welcome}&gt;Welcome to React Native!&lt;/Text&gt;</span></span><br><span class="line">  <span class="hljs-comment">//       &lt;Text style={styles.instructions}&gt;To get started, edit App.js&lt;/Text&gt;</span></span><br><span class="line">  <span class="hljs-comment">//       &lt;Text style={styles.instructions}&gt;{instructions}&lt;/Text&gt;</span></span><br><span class="line">  <span class="hljs-comment">//     &lt;/View&gt;</span></span><br><span class="line">  <span class="hljs-comment">//   );</span></span><br><span class="line">    <span class="hljs-keyword">return</span> (</span><br><span class="line">        <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">flex:</span> <span class="hljs-attr">1</span>, <span class="hljs-attr">justifyContent:</span> "<span class="hljs-attr">center</span>", <span class="hljs-attr">alignItems:</span> "<span class="hljs-attr">center</span>",<span class="hljs-attr">backgroundColor:</span> '#<span class="hljs-attr">F5FCFF</span>', }}&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">          <span class="hljs-tag">&lt;<span class="hljs-name">Text</span>&gt;</span>Hello world!<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">App</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Component</span>&lt;<span class="title class_">Props</span>&gt; &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">//   return (</span></span><br><span class="line">  <span class="comment">//     &lt;View style=&#123;styles.container&#125;&gt;</span></span><br><span class="line">  <span class="comment">//       &lt;Text style=&#123;styles.welcome&#125;&gt;Welcome to React Native!&lt;/Text&gt;</span></span><br><span class="line">  <span class="comment">//       &lt;Text style=&#123;styles.instructions&#125;&gt;To get started, edit App.js&lt;/Text&gt;</span></span><br><span class="line">  <span class="comment">//       &lt;Text style=&#123;styles.instructions&#125;&gt;&#123;instructions&#125;&lt;/Text&gt;</span></span><br><span class="line">  <span class="comment">//     &lt;/View&gt;</span></span><br><span class="line">  <span class="comment">//   );</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        <span class="language-xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">flex:</span> <span class="attr">1</span>, <span class="attr">justifyContent:</span> &quot;<span class="attr">center</span>&quot;, <span class="attr">alignItems:</span> &quot;<span class="attr">center</span>&quot;,<span class="attr">backgroundColor:</span> &#x27;#<span class="attr">F5FCFF</span>&#x27;, &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">Text</span>&gt;</span>Hello world!<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>要使用<code>backgroundColor: '#F5FCFF'</code>设置背景色</p>
+<p>要使用<code>backgroundColor: &#39;#F5FCFF&#39;</code>设置背景色</p>
 <h2 id="集成ReactNative到已有项目"><a href="#集成ReactNative到已有项目" class="headerlink" title="集成ReactNative到已有项目"></a>集成<code>ReactNative</code>到已有项目</h2><h3 id="建立目录结构"><a href="#建立目录结构" class="headerlink" title="建立目录结构"></a>建立目录结构</h3><p>新建一个目录去集成<code>RN</code>工程,将<code>Xcode</code>工程复制到<code>RN</code>下的<code>ios</code>子目录</p>
 <h3 id="安装JavaScript依赖库"><a href="#安装JavaScript依赖库" class="headerlink" title="安装JavaScript依赖库"></a>安装<code>JavaScript</code>依赖库</h3><p>在<code>RN</code>工程根目录下,创建<code>package.json</code>文件</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">{</span><br><span class="line">  <span class="hljs-string">"name"</span>: <span class="hljs-string">"AnNativeApp"</span>,</span><br><span class="line">  <span class="hljs-string">"version"</span>: <span class="hljs-string">"0.0.1"</span>,</span><br><span class="line">  <span class="hljs-string">"private"</span>: <span class="hljs-literal">true</span>,</span><br><span class="line">  <span class="hljs-string">"scripts"</span>: {</span><br><span class="line">    <span class="hljs-string">"start"</span>: <span class="hljs-string">"node node_modules/react-native/local-cli/cli.js start"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;AnNativeApp&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;private&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;start&quot;</span>: <span class="string">&quot;node node_modules/react-native/local-cli/cli.js start&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## 若 yarn 不存在,安装</span></span><br><span class="line"><span class="hljs-comment">## brew install yarn</span></span><br><span class="line"></span><br><span class="line">yarn add react-native</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## 安装React</span></span><br><span class="line"><span class="hljs-comment"># warning " &gt; react-native@0.58.5" has unmet peer dependency "react@16.6.3".</span></span><br><span class="line"><span class="hljs-comment"># 而且原来使用``WebStorm``生成的``package.json``中包含的``react``和``react-native``,所以``react``也选16.6.3</span></span><br><span class="line"><span class="hljs-comment"># "dependencies": {</span></span><br><span class="line"><span class="hljs-comment">#		"react": "16.6.3",</span></span><br><span class="line"><span class="hljs-comment">#		"react-native": "0.58.5"</span></span><br><span class="line"><span class="hljs-comment"># },</span></span><br><span class="line">yarn add react@version_printed_above</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 若 yarn 不存在,安装</span></span><br><span class="line"><span class="comment">## brew install yarn</span></span><br><span class="line"></span><br><span class="line">yarn add react-native</span><br><span class="line"></span><br><span class="line"><span class="comment">## 安装React</span></span><br><span class="line"><span class="comment"># warning &quot; &gt; react-native@0.58.5&quot; has unmet peer dependency &quot;react@16.6.3&quot;.</span></span><br><span class="line"><span class="comment"># 而且原来使用``WebStorm``生成的``package.json``中包含的``react``和``react-native``,所以``react``也选16.6.3</span></span><br><span class="line"><span class="comment"># &quot;dependencies&quot;: &#123;</span></span><br><span class="line"><span class="comment">#		&quot;react&quot;: &quot;16.6.3&quot;,</span></span><br><span class="line"><span class="comment">#		&quot;react-native&quot;: &quot;0.58.5&quot;</span></span><br><span class="line"><span class="comment"># &#125;,</span></span><br><span class="line">yarn add react@version_printed_above</span><br></pre></td></tr></table></figure>
 
 <p>把<code>node_modules</code>添加到<code>.gitignore</code>文件中</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 将``WebStorm``生成的.gitignore复制到``RN``根目录下即可</span></span><br><span class="line"><span class="hljs-built_in">cp</span> .gitignore  ~/Desktop/AnNativeApp/</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将``WebStorm``生成的.gitignore复制到``RN``根目录下即可</span></span><br><span class="line"><span class="built_in">cp</span> .gitignore  ~/Desktop/AnNativeApp/</span><br></pre></td></tr></table></figure>
 
 <h3 id="使用CocoaPods集成"><a href="#使用CocoaPods集成" class="headerlink" title="使用CocoaPods集成"></a>使用<code>CocoaPods</code>集成</h3><p>在<code>ios</code>目录下,初始化<code>pod init</code>配置</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod init</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod init</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, '9.0'</span><br><span class="line"></span><br><span class="line">target 'AnNativeApp' do</span><br><span class="line">  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks</span><br><span class="line">  # use_frameworks!</span><br><span class="line">  # Your 'node_modules' directory is probably in the root of your project,</span><br><span class="line">  # but if not, adjust the `:path` accordingly</span><br><span class="line">  pod 'React', :path =&gt; '../node_modules/react-native', :subspecs =&gt; [</span><br><span class="line">    'Core',</span><br><span class="line">    'CxxBridge', # Include this for RN &gt;= 0.47</span><br><span class="line">    'DevSupport', # Include this to enable In-App Devmenu if RN &gt;= 0.43</span><br><span class="line">    'RCTText',</span><br><span class="line">    'RCTNetwork',</span><br><span class="line">    'RCTWebSocket', # Needed for debugging</span><br><span class="line">    'RCTAnimation', # Needed for FlatList and animations running on native UI thread</span><br><span class="line">    # Add any other subspecs you want to use in your project</span><br><span class="line">  ]</span><br><span class="line">  # Explicitly include Yoga if you are using RN &gt;= 0.42.0</span><br><span class="line">  pod 'yoga', :path =&gt; '../node_modules/react-native/ReactCommon/yoga'</span><br><span class="line"></span><br><span class="line">  # Third party deps podspec link</span><br><span class="line">  pod 'DoubleConversion', :podspec =&gt; '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'</span><br><span class="line">  pod 'glog', :podspec =&gt; '../node_modules/react-native/third-party-podspecs/glog.podspec'</span><br><span class="line">  pod 'Folly', :podspec =&gt; '../node_modules/react-native/third-party-podspecs/Folly.podspec'</span><br><span class="line"></span><br><span class="line">  target 'AnNativeAppTests' do</span><br><span class="line">    inherit! :search_paths</span><br><span class="line">    # Pods for testing</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  target 'AnNativeAppUITests' do</span><br><span class="line">    inherit! :search_paths</span><br><span class="line">    # Pods for testing</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">platform :ios, &#x27;9.0&#x27;</span><br><span class="line"></span><br><span class="line">target &#x27;AnNativeApp&#x27; do</span><br><span class="line">  # Uncomment the next line if you&#x27;re using Swift or would like to use dynamic frameworks</span><br><span class="line">  # use_frameworks!</span><br><span class="line">  # Your &#x27;node_modules&#x27; directory is probably in the root of your project,</span><br><span class="line">  # but if not, adjust the `:path` accordingly</span><br><span class="line">  pod &#x27;React&#x27;, :path =&gt; &#x27;../node_modules/react-native&#x27;, :subspecs =&gt; [</span><br><span class="line">    &#x27;Core&#x27;,</span><br><span class="line">    &#x27;CxxBridge&#x27;, # Include this for RN &gt;= 0.47</span><br><span class="line">    &#x27;DevSupport&#x27;, # Include this to enable In-App Devmenu if RN &gt;= 0.43</span><br><span class="line">    &#x27;RCTText&#x27;,</span><br><span class="line">    &#x27;RCTNetwork&#x27;,</span><br><span class="line">    &#x27;RCTWebSocket&#x27;, # Needed for debugging</span><br><span class="line">    &#x27;RCTAnimation&#x27;, # Needed for FlatList and animations running on native UI thread</span><br><span class="line">    # Add any other subspecs you want to use in your project</span><br><span class="line">  ]</span><br><span class="line">  # Explicitly include Yoga if you are using RN &gt;= 0.42.0</span><br><span class="line">  pod &#x27;yoga&#x27;, :path =&gt; &#x27;../node_modules/react-native/ReactCommon/yoga&#x27;</span><br><span class="line"></span><br><span class="line">  # Third party deps podspec link</span><br><span class="line">  pod &#x27;DoubleConversion&#x27;, :podspec =&gt; &#x27;../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec&#x27;</span><br><span class="line">  pod &#x27;glog&#x27;, :podspec =&gt; &#x27;../node_modules/react-native/third-party-podspecs/glog.podspec&#x27;</span><br><span class="line">  pod &#x27;Folly&#x27;, :podspec =&gt; &#x27;../node_modules/react-native/third-party-podspecs/Folly.podspec&#x27;</span><br><span class="line"></span><br><span class="line">  target &#x27;AnNativeAppTests&#x27; do</span><br><span class="line">    inherit! :search_paths</span><br><span class="line">    # Pods for testing</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  target &#x27;AnNativeAppUITests&#x27; do</span><br><span class="line">    inherit! :search_paths</span><br><span class="line">    # Pods for testing</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
 
 <p>可能会碰到如下的错误</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Installing boost-for-react-native (1.63.0)</span><br><span class="line"></span><br><span class="line">[!] Error installing boost-for-react-native</span><br><span class="line">[!] /usr/local/bin/git <span class="hljs-built_in">clone</span> https://github.com/react-native-community/boost-for-react-native.git /var/folders/lk/znn1qp4925j412wt4t_qkplc0000gn/T/d20190222-11171-yp7x2 --template= --single-branch --depth 1 --branch v1.63.0-0</span><br><span class="line"></span><br><span class="line">Cloning into <span class="hljs-string">'/var/folders/lk/znn1qp4925j412wt4t_qkplc0000gn/T/d20190222-11171-yp7x2'</span>...</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding <span class="hljs-built_in">read</span> data remaining</span><br><span class="line">fatal: The remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Installing boost-for-react-native (1.63.0)</span><br><span class="line"></span><br><span class="line">[!] Error installing boost-for-react-native</span><br><span class="line">[!] /usr/local/bin/git <span class="built_in">clone</span> https://github.com/react-native-community/boost-for-react-native.git /var/folders/lk/znn1qp4925j412wt4t_qkplc0000gn/T/d20190222-11171-yp7x2 --template= --single-branch --depth 1 --branch v1.63.0-0</span><br><span class="line"></span><br><span class="line">Cloning into <span class="string">&#x27;/var/folders/lk/znn1qp4925j412wt4t_qkplc0000gn/T/d20190222-11171-yp7x2&#x27;</span>...</span><br><span class="line">error: RPC failed; curl 18 transfer closed with outstanding <span class="built_in">read</span> data remaining</span><br><span class="line">fatal: The remote end hung up unexpectedly</span><br><span class="line">fatal: early EOF</span><br><span class="line">fatal: index-pack failed</span><br></pre></td></tr></table></figure>
 
 <p>因为仓库太大了,搜索后大致有两种办法</p>
 <p>方式一</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">## man git-config</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## http.postBuffer</span></span><br><span class="line"><span class="hljs-comment">##           Maximum size in bytes of the buffer used by smart HTTP transports when POSTing data to the remote system. For requests larger than</span></span><br><span class="line"><span class="hljs-comment">##           this buffer size, HTTP/1.1 and Transfer-Encoding: chunked is used to avoid creating a massive pack file locally. Default is 1 MiB,</span></span><br><span class="line"><span class="hljs-comment">##           which is sufficient for most requests.</span></span><br><span class="line">git config --global http.postBuffer 524288000</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## man git-config</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## http.postBuffer</span></span><br><span class="line"><span class="comment">##           Maximum size in bytes of the buffer used by smart HTTP transports when POSTing data to the remote system. For requests larger than</span></span><br><span class="line"><span class="comment">##           this buffer size, HTTP/1.1 and Transfer-Encoding: chunked is used to avoid creating a massive pack file locally. Default is 1 MiB,</span></span><br><span class="line"><span class="comment">##           which is sufficient for most requests.</span></span><br><span class="line">git config --global http.postBuffer 524288000</span><br></pre></td></tr></table></figure>
 
 <p>方式二</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="hljs-built_in">clone</span> http://github.com/large-repository --depth 1</span><br><span class="line"><span class="hljs-built_in">cd</span> large-repository</span><br><span class="line">git fetch --unshallow</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> http://github.com/large-repository --depth 1</span><br><span class="line"><span class="built_in">cd</span> large-repository</span><br><span class="line">git fetch --unshallow</span><br></pre></td></tr></table></figure>
 
 <p>使用了方式一正常解决了。因为根据错误信息说明已经是用<code>--depth 1</code>去下载了,但是可以去了解一下</p>
 <p>通过<code>[!] Error installing</code>作为关键词去<a target="_blank" rel="noopener" href="https://github.com/CocoaPods/CocoaPods">CocoaPods</a>搜索</p>
 <p><code>CocoaPods/lib/cocoapods/downloader/cache.rb</code></p>
-<figure class="highlight rb hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Downloads the Pod from the given `request`</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># <span class="hljs-doctag">@param</span>  [Request] request</span></span><br><span class="line"><span class="hljs-comment">#         the request to be downloaded.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># <span class="hljs-doctag">@return</span> [Response] the response from downloading `request`</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-keyword">def</span> <span class="title function_">download_pod</span>(<span class="hljs-params">request</span>)</span><br><span class="line">  cached_pod(request) |<span class="hljs-params"></span>| uncached_pod(request)</span><br><span class="line"><span class="hljs-keyword">rescue</span> <span class="title class_">Informative</span></span><br><span class="line">  <span class="hljs-keyword">raise</span></span><br><span class="line"><span class="hljs-keyword">rescue</span></span><br><span class="line">  <span class="hljs-keyword">raise</span></span><br><span class="line"><span class="hljs-keyword">end</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight rb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Downloads the Pod from the given `request`</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">@param</span>  [Request] request</span></span><br><span class="line"><span class="comment">#         the request to be downloaded.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># <span class="doctag">@return</span> [Response] the response from downloading `request`</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download_pod</span>(<span class="params">request</span>)</span><br><span class="line">  cached_pod(request) |<span class="params"></span>| uncached_pod(request)</span><br><span class="line"><span class="keyword">rescue</span> <span class="title class_">Informative</span></span><br><span class="line">  <span class="keyword">raise</span></span><br><span class="line"><span class="keyword">rescue</span></span><br><span class="line">  <span class="keyword">raise</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 <p>调用</p>
-<figure class="highlight rb hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">def</span> <span class="title function_">cached_pod</span>(<span class="hljs-params">request</span>)</span><br><span class="line">  cached_spec = cached_spec(request)</span><br><span class="line">  path = path_for_pod(request)</span><br><span class="line"></span><br><span class="line">  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> cached_spec &amp;&amp; path.directory?</span><br><span class="line">  spec = request.spec |<span class="hljs-params"></span>| cached_spec</span><br><span class="line">  <span class="title class_">Response</span>.new(path, spec, request.params)</span><br><span class="line"><span class="hljs-keyword">end</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight rb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cached_pod</span>(<span class="params">request</span>)</span><br><span class="line">  cached_spec = cached_spec(request)</span><br><span class="line">  path = path_for_pod(request)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">unless</span> cached_spec &amp;&amp; path.directory?</span><br><span class="line">  spec = request.spec |<span class="params"></span>| cached_spec</span><br><span class="line">  <span class="title class_">Response</span>.new(path, spec, request.params)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 
 <p>因为是用<code>gem</code>安装的</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem <span class="hljs-built_in">env</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem <span class="built_in">env</span></span><br></pre></td></tr></table></figure>
 
 <p>获得<code>gem</code>包的安装位置,定位到<code>cache.rb</code>,经过一些步骤之后,</p>
 <p><code>cocoapods-downloader/lib/cocoapods-downloader/git.rb</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># Clones the repo. If possible the repo will be shallowly cloned.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># @note   The `:commit` option requires a specific strategy as it is not</span></span><br><span class="line"><span class="hljs-comment">#         possible to specify the commit to the `clone` command.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># @note   `--branch` command line option can also take tags and detaches</span></span><br><span class="line"><span class="hljs-comment">#         the HEAD.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># @param  [Bool] force_head</span></span><br><span class="line"><span class="hljs-comment">#         If any specific option should be ignored and the HEAD of the</span></span><br><span class="line"><span class="hljs-comment">#         repo should be cloned.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line"><span class="hljs-comment"># @param  [Bool] shallow_clone</span></span><br><span class="line"><span class="hljs-comment">#         Whether a shallow clone of the repo should be attempted, if</span></span><br><span class="line"><span class="hljs-comment">#         possible given the specified {#options}.</span></span><br><span class="line"><span class="hljs-comment">#</span></span><br><span class="line">def <span class="hljs-built_in">clone</span>(force_head = <span class="hljs-literal">false</span>, shallow_clone = <span class="hljs-literal">true</span>)</span><br><span class="line">  ui_sub_action(<span class="hljs-string">'Git download'</span>) <span class="hljs-keyword">do</span></span><br><span class="line">    begin</span><br><span class="line">      git! clone_arguments(force_head, shallow_clone)</span><br><span class="line">      update_submodules</span><br><span class="line">    rescue DownloaderError =&gt; e</span><br><span class="line">      <span class="hljs-keyword">if</span> e.message =~ /^fatal:.*does not support (--depth|shallow capabilities)$/im</span><br><span class="line">        <span class="hljs-built_in">clone</span>(force_head, <span class="hljs-literal">false</span>)</span><br><span class="line">      <span class="hljs-keyword">else</span></span><br><span class="line">        raise</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Clones the repo. If possible the repo will be shallowly cloned.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @note   The `:commit` option requires a specific strategy as it is not</span></span><br><span class="line"><span class="comment">#         possible to specify the commit to the `clone` command.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @note   `--branch` command line option can also take tags and detaches</span></span><br><span class="line"><span class="comment">#         the HEAD.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @param  [Bool] force_head</span></span><br><span class="line"><span class="comment">#         If any specific option should be ignored and the HEAD of the</span></span><br><span class="line"><span class="comment">#         repo should be cloned.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># @param  [Bool] shallow_clone</span></span><br><span class="line"><span class="comment">#         Whether a shallow clone of the repo should be attempted, if</span></span><br><span class="line"><span class="comment">#         possible given the specified &#123;#options&#125;.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">def <span class="built_in">clone</span>(force_head = <span class="literal">false</span>, shallow_clone = <span class="literal">true</span>)</span><br><span class="line">  ui_sub_action(<span class="string">&#x27;Git download&#x27;</span>) <span class="keyword">do</span></span><br><span class="line">    begin</span><br><span class="line">      git! clone_arguments(force_head, shallow_clone)</span><br><span class="line">      update_submodules</span><br><span class="line">    rescue DownloaderError =&gt; e</span><br><span class="line">      <span class="keyword">if</span> e.message =~ /^fatal:.*does not support (--depth|shallow capabilities)$/im</span><br><span class="line">        <span class="built_in">clone</span>(force_head, <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        raise</span><br><span class="line">      end</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
 
 <h3 id="代码集成"><a href="#代码集成" class="headerlink" title="代码集成"></a>代码集成</h3><h4 id="创建index-js-amp-amp-添加RN代码"><a href="#创建index-js-amp-amp-添加RN代码" class="headerlink" title="创建index.js &amp;&amp; 添加RN代码"></a>创建<code>index.js</code> &amp;&amp; 添加<code>RN</code>代码</h4><p>可以参考<code>WebStorm</code>创建的<code>index.js</code>和<code>App.js</code></p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> <span class="title class_">React</span>, {<span class="title class_">Component</span>} <span class="hljs-keyword">from</span> <span class="hljs-string">'react'</span>;</span><br><span class="line"><span class="hljs-keyword">import</span> {<span class="title class_">Platform</span>, <span class="title class_">StyleSheet</span>, <span class="title class_">Text</span>, <span class="title class_">View</span>} <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// &lt;1&gt;</span></span><br><span class="line"><span class="hljs-keyword">class</span> <span class="title class_">RNHighScores</span> <span class="hljs-keyword">extends</span> <span class="title class_ inherited__">React.Component</span> {</span><br><span class="line">  <span class="title function_">render</span>(<span class="hljs-params"></span>) {</span><br><span class="line">    <span class="hljs-keyword">var</span> contents = <span class="variable language_">this</span>.<span class="hljs-property">props</span>[<span class="hljs-string">'scores'</span>].<span class="title function_">map</span>(<span class="hljs-function">(<span class="hljs-params">score</span>) =&gt;</span> (</span><br><span class="line">      <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">key</span>=<span class="hljs-string">{score.name}</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        {score.name}:{score.value}</span></span><br><span class="line"><span class="hljs-language-xml">        {'\n'}</span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span></span><br><span class="line">    ));</span><br><span class="line">    <span class="hljs-keyword">return</span> (</span><br><span class="line">      <span class="hljs-language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">View</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{styles.container}</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{styles.highScoresTitle}</span>&gt;</span>2048 High Scores!<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">        // &lt;2&gt;</span></span><br><span class="line"><span class="hljs-language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">Text</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{styles.scores}</span>&gt;</span>{contents}<span class="hljs-tag">&lt;/<span class="hljs-name">Text</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">View</span>&gt;</span></span></span><br><span class="line"><span class="hljs-language-xml">    );</span></span><br><span class="line"><span class="hljs-language-xml">  }</span></span><br><span class="line"><span class="hljs-language-xml">}</span></span><br><span class="line"><span class="hljs-language-xml"></span></span><br><span class="line"><span class="hljs-language-xml">const styles = StyleSheet.create({</span></span><br><span class="line"><span class="hljs-language-xml">  container: {</span></span><br><span class="line"><span class="hljs-language-xml">    flex: 1,</span></span><br><span class="line"><span class="hljs-language-xml">		...</span></span><br><span class="line"><span class="hljs-language-xml">  },</span></span><br><span class="line"><span class="hljs-language-xml">  highScoresTitle: {</span></span><br><span class="line"><span class="hljs-language-xml">    fontSize: 20,</span></span><br><span class="line"><span class="hljs-language-xml">		...</span></span><br><span class="line"><span class="hljs-language-xml">  },</span></span><br><span class="line"><span class="hljs-language-xml">  scores: {</span></span><br><span class="line"><span class="hljs-language-xml">    textAlign: 'center',</span></span><br><span class="line"><span class="hljs-language-xml">    ...</span></span><br><span class="line"><span class="hljs-language-xml">  },</span></span><br><span class="line"><span class="hljs-language-xml">});</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123;<span class="title class_">Component</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;<span class="title class_">Platform</span>, <span class="title class_">StyleSheet</span>, <span class="title class_">Text</span>, <span class="title class_">View</span>&#125; <span class="keyword">from</span> <span class="string">&#x27;react-native&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &lt;1&gt;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RNHighScores</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> contents = <span class="variable language_">this</span>.<span class="property">props</span>[<span class="string">&#x27;scores&#x27;</span>].<span class="title function_">map</span>(<span class="function">(<span class="params">score</span>) =&gt;</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">Text</span> <span class="attr">key</span>=<span class="string">&#123;score.name&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        &#123;score.name&#125;:&#123;score.value&#125;</span></span><br><span class="line"><span class="language-xml">        &#123;&#x27;\n&#x27;&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line">    ));</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="language-xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">style</span>=<span class="string">&#123;styles.container&#125;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.highScoresTitle&#125;</span>&gt;</span>2048 High Scores!<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        // &lt;2&gt;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">Text</span> <span class="attr">style</span>=<span class="string">&#123;styles.scores&#125;</span>&gt;</span>&#123;contents&#125;<span class="tag">&lt;/<span class="name">Text</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    );</span></span><br><span class="line"><span class="language-xml">  &#125;</span></span><br><span class="line"><span class="language-xml">&#125;</span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">const styles = StyleSheet.create(&#123;</span></span><br><span class="line"><span class="language-xml">  container: &#123;</span></span><br><span class="line"><span class="language-xml">    flex: 1,</span></span><br><span class="line"><span class="language-xml">		...</span></span><br><span class="line"><span class="language-xml">  &#125;,</span></span><br><span class="line"><span class="language-xml">  highScoresTitle: &#123;</span></span><br><span class="line"><span class="language-xml">    fontSize: 20,</span></span><br><span class="line"><span class="language-xml">		...</span></span><br><span class="line"><span class="language-xml">  &#125;,</span></span><br><span class="line"><span class="language-xml">  scores: &#123;</span></span><br><span class="line"><span class="language-xml">    textAlign: &#x27;center&#x27;,</span></span><br><span class="line"><span class="language-xml">    ...</span></span><br><span class="line"><span class="language-xml">  &#125;,</span></span><br><span class="line"><span class="language-xml">&#125;);</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="添加RCTRootView"><a href="#添加RCTRootView" class="headerlink" title="添加RCTRootView"></a>添加<code>RCTRootView</code></h4><p>在<code>Xcode</code>的<code>ViewController</code>中</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// &lt;3&gt;</span></span><br><span class="line">    <span class="hljs-built_in">NSURL</span> *jsCodeLocation = [<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-string">@"http://192.168.31.191:8081/index.bundle?platform=ios"</span>];</span><br><span class="line">    <span class="hljs-comment">// [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];    </span></span><br><span class="line">    </span><br><span class="line">    RCTRootView *rootView =</span><br><span class="line">    [[RCTRootView alloc] initWithBundleURL: jsCodeLocation</span><br><span class="line">                                moduleName: <span class="hljs-string">@"AnNativeApp"</span> <span class="hljs-comment">// &lt;4&gt;</span></span><br><span class="line">                         initialProperties:</span><br><span class="line">                         @{</span><br><span class="line">                           <span class="hljs-string">@"scores"</span> : @[</span><br><span class="line">                                   @{</span><br><span class="line">                                       <span class="hljs-string">@"name"</span> : <span class="hljs-string">@"Alex"</span>,</span><br><span class="line">                                       <span class="hljs-string">@"value"</span>: <span class="hljs-string">@"42"</span></span><br><span class="line">                                       },</span><br><span class="line">                                   @{</span><br><span class="line">                                       <span class="hljs-string">@"name"</span> : <span class="hljs-string">@"Joel"</span>,</span><br><span class="line">                                       <span class="hljs-string">@"value"</span>: <span class="hljs-string">@"10"</span></span><br><span class="line">                                       }</span><br><span class="line">                                   ]</span><br><span class="line">                           }</span><br><span class="line">                         launchOptions: <span class="hljs-literal">nil</span>];</span><br><span class="line"><span class="hljs-comment">// &lt;5&gt;                         </span></span><br><span class="line">    [<span class="hljs-keyword">self</span>.view addSubview:rootView];</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &lt;3&gt;</span></span><br><span class="line">    <span class="built_in">NSURL</span> *jsCodeLocation = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@&quot;http://192.168.31.191:8081/index.bundle?platform=ios&quot;</span>];</span><br><span class="line">    <span class="comment">// [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@&quot;index&quot; fallbackResource:nil];    </span></span><br><span class="line">    </span><br><span class="line">    RCTRootView *rootView =</span><br><span class="line">    [[RCTRootView alloc] initWithBundleURL: jsCodeLocation</span><br><span class="line">                                moduleName: <span class="string">@&quot;AnNativeApp&quot;</span> <span class="comment">// &lt;4&gt;</span></span><br><span class="line">                         initialProperties:</span><br><span class="line">                         @&#123;</span><br><span class="line">                           <span class="string">@&quot;scores&quot;</span> : @[</span><br><span class="line">                                   @&#123;</span><br><span class="line">                                       <span class="string">@&quot;name&quot;</span> : <span class="string">@&quot;Alex&quot;</span>,</span><br><span class="line">                                       <span class="string">@&quot;value&quot;</span>: <span class="string">@&quot;42&quot;</span></span><br><span class="line">                                       &#125;,</span><br><span class="line">                                   @&#123;</span><br><span class="line">                                       <span class="string">@&quot;name&quot;</span> : <span class="string">@&quot;Joel&quot;</span>,</span><br><span class="line">                                       <span class="string">@&quot;value&quot;</span>: <span class="string">@&quot;10&quot;</span></span><br><span class="line">                                       &#125;</span><br><span class="line">                                   ]</span><br><span class="line">                           &#125;</span><br><span class="line">                         launchOptions: <span class="literal">nil</span>];</span><br><span class="line"><span class="comment">// &lt;5&gt;                         </span></span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:rootView];</span><br></pre></td></tr></table></figure>
 
-<h4 id="允许网络访问"><a href="#允许网络访问" class="headerlink" title="允许网络访问"></a>允许网络访问</h4><figure class="highlight xml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>NSAppTransportSecurity<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>NSExceptionDomains<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>localhost<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>NSTemporaryExceptionAllowsInsecureHTTPLoads<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line">            <span class="hljs-tag">&lt;<span class="hljs-name">true</span>/&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<h4 id="允许网络访问"><a href="#允许网络访问" class="headerlink" title="允许网络访问"></a>允许网络访问</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>NSAppTransportSecurity<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>NSExceptionDomains<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>localhost<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">key</span>&gt;</span>NSTemporaryExceptionAllowsInsecureHTTPLoads<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="运行开发服务器"><a href="#运行开发服务器" class="headerlink" title="运行开发服务器"></a>运行开发服务器</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="运行开发服务器"><a href="#运行开发服务器" class="headerlink" title="运行开发服务器"></a>运行开发服务器</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></table></figure>
 
 <p>然后就可以运行<code>Xcode</code>项目,观察效果了</p>
 <h4 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h4><p>&lt;1&gt; 教程中是把所有的都写在<code>index.js</code>中的,而目前是参考<code>WebStorm</code>创建的工程,除了<code>index.js</code>还有<code>App.js</code>,会报错,修改</p>
-<figure class="highlight js hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="title class_">RNHighScores</span> <span class="hljs-keyword">extends</span> <span class="title class_ inherited__">React.Component</span> {</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">RNHighScores</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br></pre></td></tr></table></figure>
 
-<p>&lt;2&gt; 获取变量的方法可以用<code>{}</code></p>
+<p>&lt;2&gt; 获取变量的方法可以用<code>&#123;&#125;</code></p>
 <p>&lt;3&gt;</p>
 <blockquote>
 <p>When you build a React Native application, you use the React Native packager to create an index.bundle that will be served by the React Native server. Inside index.bundle will be our RNHighScore module. So, we need to point our RCTRootView to the location of the index.bundle resource (via NSURL) and tie it to the module.</p>
@@ -430,7 +381,7 @@
 <li><code>moduleName:</code> 后面的参数</li>
 <li><code>AppRegistry.registerComponent(appName, () =&gt; App);</code></li>
 </ul>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-built_in">cat</span> package.json</span><br><span class="line">{</span><br><span class="line">  <span class="hljs-string">"name"</span>: <span class="hljs-string">"AnNativeApp"</span>,// &lt;= 这里</span><br><span class="line">  <span class="hljs-string">"version"</span>: <span class="hljs-string">"0.0.1"</span>,</span><br><span class="line">  <span class="hljs-string">"private"</span>: <span class="hljs-literal">true</span>,</span><br><span class="line">  <span class="hljs-string">"scripts"</span>: {</span><br><span class="line">    <span class="hljs-string">"start"</span>: <span class="hljs-string">"node node_modules/react-native/local-cli/cli.js start"</span></span><br><span class="line">  },</span><br><span class="line">  <span class="hljs-string">"dependencies"</span>: {</span><br><span class="line">    <span class="hljs-string">"react"</span>: <span class="hljs-string">"^16.6.3"</span>,</span><br><span class="line">    <span class="hljs-string">"react-native"</span>: <span class="hljs-string">"^0.58.5"</span></span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">## import {name as appName} from './app.json';</span></span><br><span class="line"><span class="hljs-built_in">cat</span> app.json</span><br><span class="line">{</span><br><span class="line">  <span class="hljs-string">"name"</span>: <span class="hljs-string">"AnNativeApp"</span>, &lt;= 这里</span><br><span class="line">  <span class="hljs-string">"displayName"</span>: <span class="hljs-string">"AnNativeApp"</span></span><br><span class="line">}%</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> package.json</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;AnNativeApp&quot;</span>,// &lt;= 这里</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;0.0.1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;private&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;start&quot;</span>: <span class="string">&quot;node node_modules/react-native/local-cli/cli.js start&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;react&quot;</span>: <span class="string">&quot;^16.6.3&quot;</span>,</span><br><span class="line">    <span class="string">&quot;react-native&quot;</span>: <span class="string">&quot;^0.58.5&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">## import &#123;name as appName&#125; from &#x27;./app.json&#x27;;</span></span><br><span class="line"><span class="built_in">cat</span> app.json</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;AnNativeApp&quot;</span>, &lt;= 这里</span><br><span class="line">  <span class="string">&quot;displayName&quot;</span>: <span class="string">&quot;AnNativeApp&quot;</span></span><br><span class="line">&#125;%</span><br></pre></td></tr></table></figure>
 
 <p>这三者是一致的</p>
 <p>&lt;5&gt; <code>RCTRootView</code>继承自<code>UIView</code>,要设置<code>frame</code></p>
@@ -441,243 +392,208 @@
 <li><span id="refer4"><a target="_blank" rel="noopener" href="http://bbs.reactnative.cn/topic/4301/ios-rn-0-45%E4%BB%A5%E4%B8%8A%E7%89%88%E6%9C%AC%E6%89%80%E9%9C%80%E7%9A%84%E7%AC%AC%E4%B8%89%E6%96%B9%E7%BC%96%E8%AF%91%E5%BA%93-boost%E7%AD%89">iOS RN 0.45以上版本所需的第三方编译库(boost等)</a></span></li>
 <li><span id="refer5"><a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/issues/19573">Supporting Xcode 10 and the new Xcode build system</a></span></li>
 <li><span id="refer6"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/49657043/glog-logging-h-file-not-found">‘glog/logging.h’ file not found</a></span></li>
-<li><span id="refer7"><a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/pull/23511">[iOS] Fix pod install error in configure: C compiler cannot create executables</a></span></li>
+<li><span id="refer7"><a target="_blank" rel="noopener" href="https://github.com/facebook/react-native/pull/23511">[iOS] Fix pod install error in configure: C compiler cannot create executables</a></li>
 <li><span id="refer8"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/50836558/react-native-config-h-not-found">React Native Config.h not found</a></span></li>
 <li><a target="_blank" rel="noopener" href="https://www.crifan.com/react_native_ios_run_again_error_no_bundle_url_present/">ReactNative iOS运行再次出错：No bundle URL present</a></li>
 <li><a target="_blank" rel="noopener" href="https://facebook.github.io/react-native/docs/integration-with-existing-apps.html">integration-with-existing-apps</a></li>
 <li><span id="refer11"><a target="_blank" rel="noopener" href="https://reactnative.cn/docs/getting-started/">搭建开发环境</a></span></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2019/11/25/iOSer-OC-Color-macro/">iOS 颜色宏</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2019/02/09/iOSer-Analysis-iOS-Crash/">iOS崩溃日志分析</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RN/" rel="tag"># RN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/09/iOS-Analysis-iOS-Crash/" rel="prev" title="iOS - 崩溃日志分析">
+      <i class="fa fa-chevron-left"></i> iOS - 崩溃日志分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/25/iOSer-OC-Color-macro/" rel="next" title="iOS 颜色宏">
+      iOS 颜色宏 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAReactNative%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">新建ReactNative项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85React-Native%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="nav-number">2.1.</span> <span class="nav-text">安装React Native命令行工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Xcode%E5%8F%8A%E5%91%BD%E4%BB%A4%E8%A1%8C%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.</span> <span class="nav-text">安装Xcode及命令行相关工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%96%B0%E5%BA%94%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">创建新应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">2.3.1.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WebStorm"><span class="nav-number">2.3.2.</span> <span class="nav-text">WebStorm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8CReact-Native%E5%BA%94%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">运行React Native应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-number">2.4.1.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89"><span class="nav-number">2.4.2.</span> <span class="nav-text">为什么有..&#x2F;..&#x2F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-world"><span class="nav-number">2.5.</span> <span class="nav-text">Hello world</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E6%88%90ReactNative%E5%88%B0%E5%B7%B2%E6%9C%89%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.</span> <span class="nav-text">集成ReactNative到已有项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">建立目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85JavaScript%E4%BE%9D%E8%B5%96%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">安装JavaScript依赖库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8CocoaPods%E9%9B%86%E6%88%90"><span class="nav-number">3.3.</span> <span class="nav-text">使用CocoaPods集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%9B%86%E6%88%90"><span class="nav-number">3.4.</span> <span class="nav-text">代码集成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAindex-js-amp-amp-%E6%B7%BB%E5%8A%A0RN%E4%BB%A3%E7%A0%81"><span class="nav-number">3.4.1.</span> <span class="nav-text">创建index.js &amp;&amp; 添加RN代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0RCTRootView"><span class="nav-number">3.4.2.</span> <span class="nav-text">添加RCTRootView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%81%E8%AE%B8%E7%BD%91%E7%BB%9C%E8%AE%BF%E9%97%AE"><span class="nav-number">3.4.3.</span> <span class="nav-text">允许网络访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.4.4.</span> <span class="nav-text">运行开发服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.4.5.</span> <span class="nav-text">注意事项</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

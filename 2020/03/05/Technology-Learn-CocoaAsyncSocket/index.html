@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>学习 CocoaAsyncSocket - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="Socket套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I&#x2F;O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。 大部分系统都提供了一组基于TCP或者UDP的应用程序编程接口（API），该接口通常以一组函数的形式出现，也称为套接字（Socket)">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Socket套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I&#x2F;O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。 大部分系统都提供了一组基于TCP或者UDP的应用程序编程接口（API），该接口通常以一组函数的形式出现，也称为套接字（Socket)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="学习 CocoaAsyncSocket">
+<meta property="og:title" content="iOS - CocoaAsyncSocket">
 <meta property="og:url" content="http://yoursite.com/2020/03/05/Technology-Learn-CocoaAsyncSocket/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="Socket套接字（socket）是一个抽象层，应用程序可以通过它发送或接收数据，可对其进行像对文件一样的打开、读写和关闭等操作。套接字允许应用程序将I&#x2F;O插入到网络中，并与网络中的其他应用程序进行通信。网络套接字是IP地址与端口的组合。 大部分系统都提供了一组基于TCP或者UDP的应用程序编程接口（API），该接口通常以一组函数的形式出现，也称为套接字（Socket)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/gallery/fog-g9da8a0c7a_1280.jpg">
@@ -42,194 +44,195 @@
 <meta property="og:image" content="https://i.loli.net/2020/03/05/38MQxJsyHCXuqRj.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/03/05/u2UlCbHMZd853ID.jpg">
 <meta property="article:published_time" content="2020-03-04T16:17:34.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:09:16.838Z">
-<meta property="article:author" content="Shepherd">
+<meta property="article:modified_time" content="2025-04-26T14:20:24.373Z">
+<meta property="article:author" content="忘川三">
 <meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/images/gallery/fog-g9da8a0c7a_1280.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2020/03/05/Technology-Learn-CocoaAsyncSocket/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - CocoaAsyncSocket | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Socket">1&nbsp;&nbsp;<b>Socket</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#环境说明">2&nbsp;&nbsp;<b>环境说明</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#实验">3&nbsp;&nbsp;<b>实验</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#Socket的流程">4&nbsp;&nbsp;<b>Socket的流程</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#CocoaAsyncSocket">5&nbsp;&nbsp;<b>CocoaAsyncSocket</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#客户端Socket">5.1&nbsp;&nbsp;客户端Socket</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#代理回调">5.1.1&nbsp;&nbsp;代理回调</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#连接">5.1.2&nbsp;&nbsp;连接</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            学习 CocoaAsyncSocket
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2020-03-04T16:17:34.000Z" itemprop="datePublished">3月 5 2020</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            11 分钟 读完 (约 1610 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><div class="gallery-item">
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/05/Technology-Learn-CocoaAsyncSocket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - CocoaAsyncSocket
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-05 00:17:34" itemprop="dateCreated datePublished" datetime="2020-03-05T00:17:34+08:00">2020-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:20:24" itemprop="dateModified" datetime="2025-04-26T22:20:24+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenSource/" itemprop="url" rel="index"><span itemprop="name">OpenSource</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="gallery-item">
 
 <p><img src="/images/gallery/fog-g9da8a0c7a_1280.jpg"></p>
 </div>
@@ -243,36 +246,36 @@
 </blockquote>
 <h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>使用<code>python</code>分别创建Socket服务器与客户端[2]</p>
 <p>服务端<code>socket_service.py</code></p>
-<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">ip_port = (<span class="hljs-string">'192.168.31.136'</span>, <span class="hljs-number">9999</span>)</span><br><span class="line"></span><br><span class="line">sk = socket.socket()            <span class="hljs-comment"># 创建套接字</span></span><br><span class="line">sk.bind(ip_port)                <span class="hljs-comment"># 绑定服务地址</span></span><br><span class="line">sk.listen(<span class="hljs-number">5</span>)                    <span class="hljs-comment"># 监听连接请求</span></span><br><span class="line"><span class="hljs-built_in">print</span>(<span class="hljs-string">'启动socket服务，等待客户端连接...'</span>)</span><br><span class="line">conn, address = sk.accept()     <span class="hljs-comment"># 等待连接，此处自动阻塞</span></span><br><span class="line"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:     <span class="hljs-comment"># 一个死循环，直到客户端发送‘exit’的信号，才关闭连接</span></span><br><span class="line">    client_data = conn.recv(<span class="hljs-number">1024</span>).decode(<span class="hljs-string">'utf-8'</span>)      <span class="hljs-comment"># 接收信息</span></span><br><span class="line">    <span class="hljs-keyword">if</span> client_data == <span class="hljs-string">"exit"</span>:       <span class="hljs-comment"># 判断是否退出连接</span></span><br><span class="line">        exit(<span class="hljs-string">"通信结束"</span>)</span><br><span class="line">    <span class="hljs-built_in">print</span>(<span class="hljs-string">"来自%s的客户端向你发来信息：%s"</span> % (address, client_data.encode(<span class="hljs-string">'utf-8'</span>)))</span><br><span class="line">    conn.sendall(<span class="hljs-string">'recv:'</span>+client_data.encode(<span class="hljs-string">'utf-8'</span>))    <span class="hljs-comment"># 回馈信息给客户端</span></span><br><span class="line">conn.close()    <span class="hljs-comment"># 关闭连接</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">ip_port = (<span class="string">&#x27;192.168.31.136&#x27;</span>, <span class="number">9999</span>)</span><br><span class="line"></span><br><span class="line">sk = socket.socket()            <span class="comment"># 创建套接字</span></span><br><span class="line">sk.bind(ip_port)                <span class="comment"># 绑定服务地址</span></span><br><span class="line">sk.listen(<span class="number">5</span>)                    <span class="comment"># 监听连接请求</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;启动socket服务，等待客户端连接...&#x27;</span>)</span><br><span class="line">conn, address = sk.accept()     <span class="comment"># 等待连接，此处自动阻塞</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:     <span class="comment"># 一个死循环，直到客户端发送‘exit’的信号，才关闭连接</span></span><br><span class="line">    client_data = conn.recv(<span class="number">1024</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>)      <span class="comment"># 接收信息</span></span><br><span class="line">    <span class="keyword">if</span> client_data == <span class="string">&quot;exit&quot;</span>:       <span class="comment"># 判断是否退出连接</span></span><br><span class="line">        exit(<span class="string">&quot;通信结束&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;来自%s的客户端向你发来信息：%s&quot;</span> % (address, client_data.encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">    conn.sendall(<span class="string">&#x27;recv:&#x27;</span>+client_data.encode(<span class="string">&#x27;utf-8&#x27;</span>))    <span class="comment"># 回馈信息给客户端</span></span><br><span class="line">conn.close()    <span class="comment"># 关闭连接</span></span><br></pre></td></tr></table></figure>
 
 <p>用户端<code>socket_client.py</code></p>
-<figure class="highlight py hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">ip_port = (<span class="hljs-string">'192.168.31.136'</span>, <span class="hljs-number">9999</span>) <span class="hljs-comment"># 192.168.31.136为本机地址 ifconfig 查看</span></span><br><span class="line"></span><br><span class="line">s = socket.socket()     <span class="hljs-comment"># 创建套接字</span></span><br><span class="line"></span><br><span class="line">s.connect(ip_port)      <span class="hljs-comment"># 连接服务器</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:     <span class="hljs-comment"># 通过一个死循环不断接收用户输入，并发送给服务器</span></span><br><span class="line">    inp = <span class="hljs-built_in">input</span>(<span class="hljs-string">"请输入要发送的信息： "</span>).strip()</span><br><span class="line">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> inp:     <span class="hljs-comment"># 防止输入空信息，导致异常退出</span></span><br><span class="line">        <span class="hljs-keyword">continue</span></span><br><span class="line">    s.sendall(inp.encode())</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> inp == <span class="hljs-string">"exit"</span>:   <span class="hljs-comment"># 如果输入的是‘exit’，表示断开连接</span></span><br><span class="line">        <span class="hljs-built_in">print</span>(<span class="hljs-string">"结束通信！"</span>)</span><br><span class="line">        <span class="hljs-keyword">break</span></span><br><span class="line"></span><br><span class="line">    server_reply = s.recv(<span class="hljs-number">1024</span>).decode()</span><br><span class="line">    <span class="hljs-built_in">print</span>(server_reply)</span><br><span class="line"></span><br><span class="line">s.close()       <span class="hljs-comment"># 关闭连接</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">ip_port = (<span class="string">&#x27;192.168.31.136&#x27;</span>, <span class="number">9999</span>) <span class="comment"># 192.168.31.136为本机地址 ifconfig 查看</span></span><br><span class="line"></span><br><span class="line">s = socket.socket()     <span class="comment"># 创建套接字</span></span><br><span class="line"></span><br><span class="line">s.connect(ip_port)      <span class="comment"># 连接服务器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:     <span class="comment"># 通过一个死循环不断接收用户输入，并发送给服务器</span></span><br><span class="line">    inp = <span class="built_in">input</span>(<span class="string">&quot;请输入要发送的信息： &quot;</span>).strip()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> inp:     <span class="comment"># 防止输入空信息，导致异常退出</span></span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    s.sendall(inp.encode())</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> inp == <span class="string">&quot;exit&quot;</span>:   <span class="comment"># 如果输入的是‘exit’，表示断开连接</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;结束通信！&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    server_reply = s.recv(<span class="number">1024</span>).decode()</span><br><span class="line">    <span class="built_in">print</span>(server_reply)</span><br><span class="line"></span><br><span class="line">s.close()       <span class="comment"># 关闭连接</span></span><br></pre></td></tr></table></figure>
 
 <p>在终端中启动<code>socket_service.py</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; python socket_service.py</span><br><span class="line">启动socket服务，等待客户端连接...</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-&gt; python socket_service.py</span><br><span class="line">启动socket服务，等待客户端连接...</span><br></pre></td></tr></table></figure>
 
 <p>启动<code>socket_client.py</code></p>
-<p>输入<code>"hello"</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 客户端</span></span><br><span class="line">-&gt; python socket_client.py</span><br><span class="line">请输入要发送的信息： <span class="hljs-string">"hello"</span></span><br><span class="line">recv:hello</span><br><span class="line">请输入要发送的信息：</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 服务器</span></span><br><span class="line">来自(<span class="hljs-string">'192.168.31.136'</span>, 58160)的客户端向你发来信息：hello</span><br></pre></td></tr></tbody></table></figure>
+<p>输入<code>&quot;hello&quot;</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 客户端</span></span><br><span class="line">-&gt; python socket_client.py</span><br><span class="line">请输入要发送的信息： <span class="string">&quot;hello&quot;</span></span><br><span class="line">recv:hello</span><br><span class="line">请输入要发送的信息：</span><br><span class="line"></span><br><span class="line"><span class="comment"># 服务器</span></span><br><span class="line">来自(<span class="string">&#x27;192.168.31.136&#x27;</span>, 58160)的客户端向你发来信息：hello</span><br></pre></td></tr></table></figure>
 
 <p>新开一个服务端<code>socket</code>窗口,使用浏览器访问</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 服务器</span></span><br><span class="line"></span><br><span class="line">来自(<span class="hljs-string">'192.168.31.136'</span>, 58258)的客户端向你发来信息：GET / HTTP/1.1</span><br><span class="line">Host: 192.168.31.136:9999</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 服务器</span></span><br><span class="line"></span><br><span class="line">来自(<span class="string">&#x27;192.168.31.136&#x27;</span>, 58258)的客户端向你发来信息：GET / HTTP/1.1</span><br><span class="line">Host: 192.168.31.136:9999</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7</span><br></pre></td></tr></table></figure>
 
 <p><strong>使用浏览器访问,使用<code>HTTP</code>协议访问,传输层实现了端到端的传输(能力),但是信息要被正确的理解,需要一些说明,比如上面<code>HTTP</code> 请求头</strong>,操作系统拥有传输层的能力,并包装了一组抽象的编程接口(<code>Socket</code>),应用层协议通过调用<code>Socket</code>实现信息的传输并制定格式用于理解信息。</p>
 <h2 id="Socket的流程"><a href="#Socket的流程" class="headerlink" title="Socket的流程"></a>Socket的流程</h2><p><img src="https://i.loli.net/2020/03/05/pPbR2VLmoYs8OzJ.jpg"></p>
 <p>来自网络</p>
 <h2 id="CocoaAsyncSocket"><a href="#CocoaAsyncSocket" class="headerlink" title="CocoaAsyncSocket"></a>CocoaAsyncSocket</h2><p>CocoaAsyncSocket为macOS，iOS和tvOS提供了易于使用且功能强大的异步套接字库。</p>
 <h3 id="客户端Socket"><a href="#客户端Socket" class="headerlink" title="客户端Socket"></a>客户端Socket</h3><p>实现客户端<code>socket</code>,参考上图,主要为创建<code>socket</code>,连接,发送,接收,关闭流程</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/// 创建``Socket``</span></span><br><span class="line"><span class="hljs-comment">/// 指定代理及代理回调的队列</span></span><br><span class="line">_socket = [[GCDAsyncSocket alloc] initWithDelegate:<span class="hljs-keyword">self</span> delegateQueue:dispatch_get_main_queue()];</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 连接</span></span><br><span class="line"><span class="hljs-built_in">NSError</span> *err = <span class="hljs-literal">nil</span>;</span><br><span class="line"><span class="hljs-keyword">if</span> (![_socket connectToHost:<span class="hljs-string">@"192.168.31.136"</span> onPort:<span class="hljs-number">9999</span> error:&amp;err]) {</span><br><span class="line">    <span class="hljs-comment">// If there was an error, it's likely something like "already connected" or "no delegate set"</span></span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"I goofed: %@"</span>, err);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 发送</span></span><br><span class="line"><span class="hljs-built_in">NSString</span> *requestString = <span class="hljs-string">@"AsyncSocket request string 1"</span>;</span><br><span class="line"><span class="hljs-built_in">NSData</span> *requestData = [requestString dataUsingEncoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    </span><br><span class="line">[_socket writeData:requestData withTimeout:<span class="hljs-number">-1</span> tag:<span class="hljs-number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 接收</span></span><br><span class="line">[_socket readDataWithTimeout:<span class="hljs-number">10</span> tag:<span class="hljs-number">1</span>];</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 创建``Socket``</span></span><br><span class="line"><span class="comment">/// 指定代理及代理回调的队列</span></span><br><span class="line">_socket = [[GCDAsyncSocket alloc] initWithDelegate:<span class="keyword">self</span> delegateQueue:dispatch_get_main_queue()];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 连接</span></span><br><span class="line"><span class="built_in">NSError</span> *err = <span class="literal">nil</span>;</span><br><span class="line"><span class="keyword">if</span> (![_socket connectToHost:<span class="string">@&quot;192.168.31.136&quot;</span> onPort:<span class="number">9999</span> error:&amp;err]) &#123;</span><br><span class="line">    <span class="comment">// If there was an error, it&#x27;s likely something like &quot;already connected&quot; or &quot;no delegate set&quot;</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;I goofed: %@&quot;</span>, err);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送</span></span><br><span class="line"><span class="built_in">NSString</span> *requestString = <span class="string">@&quot;AsyncSocket request string 1&quot;</span>;</span><br><span class="line"><span class="built_in">NSData</span> *requestData = [requestString dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    </span><br><span class="line">[_socket writeData:requestData withTimeout:<span class="number">-1</span> tag:<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接收</span></span><br><span class="line">[_socket readDataWithTimeout:<span class="number">10</span> tag:<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
 
 <h4 id="代理回调"><a href="#代理回调" class="headerlink" title="代理回调"></a>代理回调</h4><p>连接成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sock didConnectToHost:(<span class="hljs-built_in">NSString</span> *)host port:(uint16_t)port {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@ - %@ - %hu"</span>,sock,host,port);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)socket:(GCDAsyncSocket *)sock didConnectToHost:(<span class="built_in">NSString</span> *)host port:(uint16_t)port &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%@ - %@ - %hu&quot;</span>,sock,host,port);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>发送成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(<span class="hljs-type">long</span>)tag {</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"First request sent"</span>);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Second request sent"</span>);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(<span class="type">long</span>)tag &#123;</span><br><span class="line">    <span class="keyword">if</span> (tag == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;First request sent&quot;</span>);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(tag == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;Second request sent&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>接收成功</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="hljs-type">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="hljs-built_in">NSData</span> *)data withTag:(<span class="hljs-type">long</span>)tag</span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">1</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (tag == <span class="hljs-number">2</span>) {</span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,[[<span class="hljs-built_in">NSString</span> alloc] initWithData:data encoding:<span class="hljs-built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)socket:(GCDAsyncSocket *)sender didReadData:(<span class="built_in">NSData</span> *)data withTag:(<span class="type">long</span>)tag</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (tag == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>,[[<span class="built_in">NSString</span> alloc] initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> (tag == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>,[[<span class="built_in">NSString</span> alloc] initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>确保真机和<code>mac</code>处于同一局域网,输出效果如下:</p>
 <p><img src="https://i.loli.net/2020/03/05/M4eWodN3AP5E81z.jpg"></p>
@@ -280,9 +283,9 @@
 <h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><p>在连接的回调中设置断点,并进行追踪</p>
 <p><img src="https://i.loli.net/2020/03/05/IKhaREyQwut4i2X.jpg"></p>
 <p>对于连接操作,采用异步的并发队列进行管理,提高连接效率,调用系统提供<code>socket.h</code>中的<code>connect</code>方法</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">int</span>     <span class="title function_">connect</span><span class="hljs-params">(<span class="hljs-type">int</span>, <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> sockaddr *, <span class="hljs-type">socklen_t</span>)</span> __<span class="title function_">DARWIN_ALIAS_C</span><span class="hljs-params">(connect)</span>;</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>     <span class="title function_">connect</span><span class="params">(<span class="type">int</span>, <span class="type">const</span> <span class="keyword">struct</span> sockaddr *, <span class="type">socklen_t</span>)</span> __<span class="title function_">DARWIN_ALIAS_C</span><span class="params">(connect)</span>;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">connect - initiate a connection on a socket</span><br><span class="line"></span><br><span class="line">The connect() system call connects the socket referred to by the file</span><br><span class="line">    descriptor sockfd to the address specified by addr.  The addrlen</span><br><span class="line">    argument specifies the size of addr.  </span><br><span class="line"></span><br><span class="line">If the connection or binding succeeds, zero is returned.  On error,</span><br><span class="line">       -1 is returned, and errno is set appropriately.</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">connect - initiate a connection on a socket</span><br><span class="line"></span><br><span class="line">The connect() system call connects the socket referred to by the file</span><br><span class="line">    descriptor sockfd to the address specified by addr.  The addrlen</span><br><span class="line">    argument specifies the size of addr.  </span><br><span class="line"></span><br><span class="line">If the connection or binding succeeds, zero is returned.  On error,</span><br><span class="line">       -1 is returned, and errno is set appropriately.</span><br></pre></td></tr></table></figure>
 
 <p>连接完成后,统一回调到<code>socketQueue</code>队列,调用<code>didConnect:</code>方法</p>
 <p><img src="https://i.loli.net/2020/03/05/EUxhFXT5Bk971IG.jpg"></p>
@@ -310,243 +313,205 @@
 <p><img src="https://i.loli.net/2020/03/05/u2UlCbHMZd853ID.jpg"></p>
 <p>执行原来的两个读操作</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A5%97%E6%8E%A5%E5%AD%97/9637606?fromtitle=socket&amp;fromid=281150">百科 - 套接字</a></li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A5%97%E6%8E%A5%E5%AD%97/9637606?fromtitle=socket&fromid=281150">百科 - 套接字</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.liujiangblog.com/course/python/76">socket编程</a></li>
 <li><a target="_blank" rel="noopener" href="http://man7.org/linux/man-pages/man2/connect.2.html">connect2</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kesalin/archive/2013/04/14/ios_cfnetwork.html">iOS网络编程之CFNetwork</a></li>
 <li><a target="_blank" rel="noopener" href="http://www.kegel.com/dkftpbench/nonblocking.html">Introduction to non-blocking I/O</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2022/12/11/iOSer-Get-iPhone-udid/">Wiki - 通过配置获取iPhone的UDID</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2019/11/25/iOSer-OC-Color-macro/">iOS 颜色宏</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/25/iOSer-OC-Color-macro/" rel="prev" title="iOS 颜色宏">
+      <i class="fa fa-chevron-left"></i> iOS 颜色宏
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/12/11/iOS-Get-iPhone-udid/" rel="next" title="Wiki - 通过配置获取iPhone的UDID">
+      Wiki - 通过配置获取iPhone的UDID <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket"><span class="nav-number">1.</span> <span class="nav-text">Socket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">环境说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">Socket的流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CocoaAsyncSocket"><span class="nav-number">5.</span> <span class="nav-text">CocoaAsyncSocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AFSocket"><span class="nav-number">5.1.</span> <span class="nav-text">客户端Socket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E5%9B%9E%E8%B0%83"><span class="nav-number">5.1.1.</span> <span class="nav-text">代理回调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5"><span class="nav-number">5.1.2.</span> <span class="nav-text">连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

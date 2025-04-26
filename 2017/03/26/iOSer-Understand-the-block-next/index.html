@@ -1,264 +1,231 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>理解Block(下) - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="前言本文将会从内存结构上分析 OC 中的 Block 。 环境 macOS Sierra 10.12.3Xcode 8.2.1  关于 Block 的实现在 Block的实现 中的 Block 的结构声明如下">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言本文将会从内存结构上分析 OC 中的 Block 。 环境 macOS Sierra 10.12.3Xcode 8.2.1  关于 Block 的实现在 Block的实现 中的 Block 的结构声明如下">
 <meta property="og:type" content="article">
-<meta property="og:title" content="理解Block(下)">
+<meta property="og:title" content="iOS - 理解Block(下)">
 <meta property="og:url" content="http://yoursite.com/2017/03/26/iOSer-Understand-the-block-next/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="前言本文将会从内存结构上分析 OC 中的 Block 。 环境 macOS Sierra 10.12.3Xcode 8.2.1  关于 Block 的实现在 Block的实现 中的 Block 的结构声明如下">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/26/58d713941b51b.jpg">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/26/58d71395df78d.jpg">
 <meta property="article:published_time" content="2017-03-26T01:02:56.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:07:19.183Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:05:14.528Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="ObjC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/03/26/58d713941b51b.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2017/03/26/iOSer-Understand-the-block-next/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - 理解Block(下) | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#关于-Block-的实现">3&nbsp;&nbsp;<b>关于 Block 的实现</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#实践">4&nbsp;&nbsp;<b>实践</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#实践一-新建-Xcode-命令行工程">4.1&nbsp;&nbsp;实践一 : 新建 Xcode 命令行工程</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#小结一">4.2&nbsp;&nbsp;小结一</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#问题一">4.3&nbsp;&nbsp;问题一</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#实践二-clang-重写工程的-main-m-文件">4.4&nbsp;&nbsp;实践二 : clang 重写工程的 main.m 文件</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#小结二">4.5&nbsp;&nbsp;小结二</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#关于问题一">4.6&nbsp;&nbsp;关于问题一</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#实践三-捕获外部变量的-Block">4.7&nbsp;&nbsp;实践三 : 捕获外部变量的 Block</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#小结三">4.8&nbsp;&nbsp;小结三</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#实践四-Block-修饰捕获的变量">4.9&nbsp;&nbsp;实践四 : __Block 修饰捕获的变量</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#插曲">4.9.1&nbsp;&nbsp;插曲</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#回归">4.9.2&nbsp;&nbsp;回归</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#小结四">4.10&nbsp;&nbsp;小结四</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#总结">5&nbsp;&nbsp;<b>总结</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            理解Block(下)
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-03-26T01:02:56.000Z" itemprop="datePublished">3月 26 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            23 分钟 读完 (约 3452 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文将会从内存结构上分析 <code>OC</code> 中的 <code>Block</code> 。</p>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/26/iOSer-Understand-the-block-next/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - 理解Block(下)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-26 09:02:56" itemprop="dateCreated datePublished" datetime="2017-03-26T09:02:56+08:00">2017-03-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:05:14" itemprop="dateModified" datetime="2025-04-26T22:05:14+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文将会从内存结构上分析 <code>OC</code> 中的 <code>Block</code> 。</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>macOS Sierra 10.12.3<br>Xcode 8.2.1</p>
 </blockquote>
 <h2 id="关于-Block-的实现"><a href="#关于-Block-的实现" class="headerlink" title="关于 Block 的实现"></a>关于 <code>Block</code> 的实现</h2><p>在 <a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/Block-ABI-Apple.html"><em>Block的实现</em></a> 中的 <code>Block</code> 的结构声明如下</p>
 <span id="more"></span>
 
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> Block_literal_1 {</span><br><span class="line">    <span class="hljs-type">void</span> *isa; <span class="hljs-comment">// initialized to &amp;_NSConcreteStackBlock or &amp;_NSConcreteGlobalBlock</span></span><br><span class="line">    <span class="hljs-type">int</span> flags;</span><br><span class="line">    <span class="hljs-type">int</span> reserved;</span><br><span class="line">    <span class="hljs-type">void</span> (*invoke)(<span class="hljs-type">void</span> *, ...);</span><br><span class="line">    <span class="hljs-keyword">struct</span> Block_descriptor_1 {</span><br><span class="line">    		<span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> reserved;         <span class="hljs-comment">// NULL</span></span><br><span class="line">        <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span> size;         <span class="hljs-comment">// sizeof(struct Block_literal_1)</span></span><br><span class="line">        <span class="hljs-comment">// optional helper functions</span></span><br><span class="line">        <span class="hljs-type">void</span> (*copy_helper)(<span class="hljs-type">void</span> *dst, <span class="hljs-type">void</span> *src);     <span class="hljs-comment">// IFF (1&lt;&lt;25)</span></span><br><span class="line">        <span class="hljs-type">void</span> (*dispose_helper)(<span class="hljs-type">void</span> *src);             <span class="hljs-comment">// IFF (1&lt;&lt;25)</span></span><br><span class="line">        <span class="hljs-comment">// required ABI.2010.3.16</span></span><br><span class="line">        <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> *signature;                         <span class="hljs-comment">// IFF (1&lt;&lt;30)</span></span><br><span class="line">    } *descriptor;</span><br><span class="line">    <span class="hljs-comment">// imported variables</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Block_literal_1 &#123;</span><br><span class="line">    <span class="type">void</span> *isa; <span class="comment">// initialized to &amp;_NSConcreteStackBlock or &amp;_NSConcreteGlobalBlock</span></span><br><span class="line">    <span class="type">int</span> flags;</span><br><span class="line">    <span class="type">int</span> reserved;</span><br><span class="line">    <span class="type">void</span> (*invoke)(<span class="type">void</span> *, ...);</span><br><span class="line">    <span class="keyword">struct</span> Block_descriptor_1 &#123;</span><br><span class="line">    		<span class="type">unsigned</span> <span class="type">long</span> <span class="type">int</span> reserved;         <span class="comment">// NULL</span></span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> <span class="type">int</span> size;         <span class="comment">// sizeof(struct Block_literal_1)</span></span><br><span class="line">        <span class="comment">// optional helper functions</span></span><br><span class="line">        <span class="type">void</span> (*copy_helper)(<span class="type">void</span> *dst, <span class="type">void</span> *src);     <span class="comment">// IFF (1&lt;&lt;25)</span></span><br><span class="line">        <span class="type">void</span> (*dispose_helper)(<span class="type">void</span> *src);             <span class="comment">// IFF (1&lt;&lt;25)</span></span><br><span class="line">        <span class="comment">// required ABI.2010.3.16</span></span><br><span class="line">        <span class="keyword">const</span> <span class="type">char</span> *signature;                         <span class="comment">// IFF (1&lt;&lt;30)</span></span><br><span class="line">    &#125; *descriptor;</span><br><span class="line">    <span class="comment">// imported variables</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>关于 <code>ABI</code></p>
 <blockquote>
@@ -273,19 +240,19 @@
 <li><code>imported variables</code> : <code>capture</code> 过来的变量，<code>block</code> 能够访问它外部的局部变量，就是因为将这些变量（或变量的地址）复制到了结构体中。</li>
 </ol>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="实践一-新建-Xcode-命令行工程"><a href="#实践一-新建-Xcode-命令行工程" class="headerlink" title="实践一 : 新建 Xcode 命令行工程"></a>实践一 : 新建 <code>Xcode</code> 命令行工程</h3><p><code>main.m</code></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-comment">// insert code here...</span></span><br><span class="line">        <span class="hljs-type">void</span> (^blockDemo)() = ^() {</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello world"</span>);</span><br><span class="line">        };</span><br><span class="line">        </span><br><span class="line">        blockDemo();</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="type">void</span> (^blockDemo)() = ^() &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@&quot;Hello world&quot;</span>);</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        blockDemo();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>设置断点，编译并运行，按指令级别单步调试，可得到</p>
 <p><img src="https://ooo.0o0.ooo/2017/03/26/58d713941b51b.jpg"></p>
 <p>从上面的结果可知, <code>Block</code> 结构确实如上面所描述的, <code>isa</code> 指针指向的是 <code>__NSGlobalBlock__</code></p>
 <p>将工程的二进制文件放到 <code>Hopper</code> ，查看 <code>__main_block_invoke</code></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                     ___main_block_invoke:</span><br><span class="line"><span class="hljs-number">0000000100000</span>f10         push       rbp                                         ; Objective C Block defined at <span class="hljs-number">0x100001060</span>, XREF=<span class="hljs-number">0x100001070</span></span><br><span class="line"><span class="hljs-number">0000000100000</span>f11         mov        rbp, rsp</span><br><span class="line"><span class="hljs-number">0000000100000</span>f14         sub        rsp, <span class="hljs-number">0x10</span></span><br><span class="line"><span class="hljs-number">0000000100000</span>f18         lea        rax, qword [ds:cfstring_Hello_world]        ; <span class="hljs-string">@"Hello world"</span></span><br><span class="line"><span class="hljs-number">0000000100000</span>f1f         mov        qword [ss:rbp+var_8], rdi</span><br><span class="line"><span class="hljs-number">0000000100000</span>f23         mov        qword [ss:rbp+var_10], rdi</span><br><span class="line"><span class="hljs-number">0000000100000</span>f27         mov        rdi, rax                                    ; argument <span class="hljs-string">"format"</span> <span class="hljs-keyword">for</span> method imp___stubs__NSLog</span><br><span class="line"><span class="hljs-number">0000000100000</span>f2a         mov        al, <span class="hljs-number">0x0</span></span><br><span class="line"><span class="hljs-number">0000000100000</span>f2c         call       imp___stubs__NSLog</span><br><span class="line"><span class="hljs-number">0000000100000</span>f31         add        rsp, <span class="hljs-number">0x10</span></span><br><span class="line"><span class="hljs-number">0000000100000</span>f35         pop        rbp</span><br><span class="line"><span class="hljs-number">0000000100000</span>f36         ret        </span><br><span class="line">                        ; endp</span><br><span class="line"><span class="hljs-number">0000000100000</span>f37         db  <span class="hljs-number">0x90</span> ; <span class="hljs-string">'.'</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                     ___main_block_invoke:</span><br><span class="line"><span class="number">0000000100000</span>f10         push       rbp                                         ; Objective C Block defined at <span class="number">0x100001060</span>, XREF=<span class="number">0x100001070</span></span><br><span class="line"><span class="number">0000000100000</span>f11         mov        rbp, rsp</span><br><span class="line"><span class="number">0000000100000</span>f14         sub        rsp, <span class="number">0x10</span></span><br><span class="line"><span class="number">0000000100000</span>f18         lea        rax, qword [ds:cfstring_Hello_world]        ; <span class="string">@&quot;Hello world&quot;</span></span><br><span class="line"><span class="number">0000000100000</span>f1f         mov        qword [ss:rbp+var_8], rdi</span><br><span class="line"><span class="number">0000000100000</span>f23         mov        qword [ss:rbp+var_10], rdi</span><br><span class="line"><span class="number">0000000100000</span>f27         mov        rdi, rax                                    ; argument <span class="string">&quot;format&quot;</span> <span class="keyword">for</span> method imp___stubs__NSLog</span><br><span class="line"><span class="number">0000000100000</span>f2a         mov        al, <span class="number">0x0</span></span><br><span class="line"><span class="number">0000000100000</span>f2c         call       imp___stubs__NSLog</span><br><span class="line"><span class="number">0000000100000</span>f31         add        rsp, <span class="number">0x10</span></span><br><span class="line"><span class="number">0000000100000</span>f35         pop        rbp</span><br><span class="line"><span class="number">0000000100000</span>f36         ret        </span><br><span class="line">                        ; endp</span><br><span class="line"><span class="number">0000000100000</span>f37         db  <span class="number">0x90</span> ; <span class="string">&#x27;.&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <p>反汇编得到</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-type">void</span> ___main_block_invoke(<span class="hljs-type">void</span> * _block) {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello world"</span>);</span><br><span class="line">    <span class="hljs-keyword">return</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> ___main_block_invoke(<span class="type">void</span> * _block) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;Hello world&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>修改 <code>Xcode</code> 工程，用 <code>Block</code> 去捕获参数</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-comment">// insert code here...</span></span><br><span class="line">        <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *testString = <span class="hljs-string">@"2"</span>;</span><br><span class="line">        <span class="hljs-type">void</span> (^blockDemo)() = ^() {</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello world,%d,%@"</span>,a,testString);</span><br><span class="line">        };</span><br><span class="line">        </span><br><span class="line">        blockDemo();</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">NSString</span> *testString = <span class="string">@&quot;2&quot;</span>;</span><br><span class="line">        <span class="type">void</span> (^blockDemo)() = ^() &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@&quot;Hello world,%d,%@&quot;</span>,a,testString);</span><br><span class="line">        &#125;;</span><br><span class="line">        </span><br><span class="line">        blockDemo();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>同样操作得到如下截图</p>
 <p><img src="https://ooo.0o0.ooo/2017/03/26/58d71395df78d.jpg"></p>
@@ -297,14 +264,14 @@
 <h3 id="问题一"><a href="#问题一" class="headerlink" title="问题一"></a>问题一</h3><p><code>Block</code> 中 <code>isa</code> 指针指向的对象和 <code>Block的实现</code> 描述的有出入</p>
 <h3 id="实践二-clang-重写工程的-main-m-文件"><a href="#实践二-clang-重写工程的-main-m-文件" class="headerlink" title="实践二 : clang 重写工程的 main.m 文件"></a>实践二 : <code>clang</code> 重写工程的 <code>main.m</code> 文件</h3><p>找到 <code>main.m</code> 文件，在终端中用 <code>clang -rewrite-objc path/to/main.m</code> 生成对应的 <code>C++</code> 代码。</p>
 <p>参考本文后的引用链接 <em>3</em> 摘录出与 <code>Block</code> 相关的实现部分</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> BLOCK_IMPL</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> BLOCK_IMPL</span></span><br><span class="line"><span class="hljs-keyword">struct</span> __block_impl {</span><br><span class="line">  <span class="hljs-type">void</span> *isa;</span><br><span class="line">  <span class="hljs-type">int</span> Flags;</span><br><span class="line">  <span class="hljs-type">int</span> Reserved;</span><br><span class="line">  <span class="hljs-type">void</span> *FuncPtr;</span><br><span class="line">};</span><br><span class="line"><span class="hljs-comment">// Runtime copy/destroy helper functions (from Block_private.h)</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __OBJC_EXPORT_BLOCKS</span></span><br><span class="line"><span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> __declspec(dllexport) <span class="hljs-type">void</span> _Block_object_assign(<span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span>);</span><br><span class="line"><span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> __declspec(dllexport) <span class="hljs-type">void</span> _Block_object_dispose(<span class="hljs-keyword">const</span> <span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span>);</span><br><span class="line"><span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> __declspec(dllexport) <span class="hljs-type">void</span> *_NSConcreteGlobalBlock[<span class="hljs-number">32</span>];</span><br><span class="line"><span class="hljs-keyword">extern</span> <span class="hljs-string">"C"</span> __declspec(dllexport) <span class="hljs-type">void</span> *_NSConcreteStackBlock[<span class="hljs-number">32</span>];</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">else</span></span></span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="hljs-type">void</span> _Block_object_assign(<span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span>);</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="hljs-type">void</span> _Block_object_dispose(<span class="hljs-keyword">const</span> <span class="hljs-type">void</span> *, <span class="hljs-keyword">const</span> <span class="hljs-type">int</span>);</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="hljs-type">void</span> *_NSConcreteGlobalBlock[<span class="hljs-number">32</span>];</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="hljs-type">void</span> *_NSConcreteStackBlock[<span class="hljs-number">32</span>];</span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> __block</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> __weak</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> BLOCK_IMPL</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BLOCK_IMPL</span></span><br><span class="line"><span class="keyword">struct</span> __block_impl &#123;</span><br><span class="line">  <span class="type">void</span> *isa;</span><br><span class="line">  <span class="type">int</span> Flags;</span><br><span class="line">  <span class="type">int</span> Reserved;</span><br><span class="line">  <span class="type">void</span> *FuncPtr;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// Runtime copy/destroy helper functions (from Block_private.h)</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __OBJC_EXPORT_BLOCKS</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __declspec(dllexport) <span class="type">void</span> _Block_object_assign(<span class="type">void</span> *, <span class="keyword">const</span> <span class="type">void</span> *, <span class="keyword">const</span> <span class="type">int</span>);</span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __declspec(dllexport) <span class="type">void</span> _Block_object_dispose(<span class="keyword">const</span> <span class="type">void</span> *, <span class="keyword">const</span> <span class="type">int</span>);</span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __declspec(dllexport) <span class="type">void</span> *_NSConcreteGlobalBlock[<span class="number">32</span>];</span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> __declspec(dllexport) <span class="type">void</span> *_NSConcreteStackBlock[<span class="number">32</span>];</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="type">void</span> _Block_object_assign(<span class="type">void</span> *, <span class="keyword">const</span> <span class="type">void</span> *, <span class="keyword">const</span> <span class="type">int</span>);</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="type">void</span> _Block_object_dispose(<span class="keyword">const</span> <span class="type">void</span> *, <span class="keyword">const</span> <span class="type">int</span>);</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="type">void</span> *_NSConcreteGlobalBlock[<span class="number">32</span>];</span><br><span class="line">__OBJC_RW_DLLIMPORT <span class="type">void</span> *_NSConcreteStackBlock[<span class="number">32</span>];</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __block</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __weak</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-keyword">struct</span> __main_block_impl_0 {</span><br><span class="line">  <span class="hljs-keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="hljs-keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  __main_block_impl_0(<span class="hljs-type">void</span> *fp, <span class="hljs-keyword">struct</span> __main_block_desc_0 *desc, <span class="hljs-type">int</span> flags=<span class="hljs-number">0</span>) {</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_func_0(<span class="hljs-keyword">struct</span> __main_block_impl_0 *__cself) {</span><br><span class="line"></span><br><span class="line">            <span class="hljs-built_in">NSLog</span>((<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_8067ac_mi_0);</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> __main_block_desc_0 {</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">} __main_block_desc_0_DATA = { <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> __main_block_impl_0)};</span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-comment">/* @autoreleasepool */</span> { __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="hljs-type">void</span> (*blockDemo)() = ((<span class="hljs-type">void</span> (*)())&amp;__main_block_impl_0((<span class="hljs-type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA));</span><br><span class="line"></span><br><span class="line">        ((<span class="hljs-type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> IMAGE_INFO { <span class="hljs-type">unsigned</span> version; <span class="hljs-type">unsigned</span> flag; } _OBJC_IMAGE_INFO = { <span class="hljs-number">0</span>, <span class="hljs-number">2</span> };</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">  <span class="keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  __main_block_impl_0(<span class="type">void</span> *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="type">int</span> flags=<span class="number">0</span>) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_func_0(<span class="keyword">struct</span> __main_block_impl_0 *__cself) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSLog</span>((<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_8067ac_mi_0);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> __main_block_desc_0 &#123;</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> __main_block_impl_0)&#125;;</span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="type">void</span> (*blockDemo)() = ((<span class="type">void</span> (*)())&amp;__main_block_impl_0((<span class="type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA));</span><br><span class="line"></span><br><span class="line">        ((<span class="type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> IMAGE_INFO &#123; <span class="type">unsigned</span> version; <span class="type">unsigned</span> flag; &#125; _OBJC_IMAGE_INFO = &#123; <span class="number">0</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
 
 <p><code>main</code> 函数的执行流程</p>
 <ol>
 <li>函数 <code>__main_block_impl_0</code> 以 <code>__main_block_func_0</code> 与 <code>__main_block_desc_0_DATA</code> 作参数传入来完成结构体 <code>__main_block_impl_0</code> 的初始化</li>
-<li>函数 <code>__main_block_func_0</code> 在这里即为 <code>NSLog(@"Hello world")</code>，将其地址传递给结构体 <code>__main_block_impl_0</code> 中的 <code>__block_impl</code> 结构体 <code>impl</code> 的函数指针 <code>FuncPtr</code> </li>
+<li>函数 <code>__main_block_func_0</code> 在这里即为 <code>NSLog(@&quot;Hello world&quot;)</code>，将其地址传递给结构体 <code>__main_block_impl_0</code> 中的 <code>__block_impl</code> 结构体 <code>impl</code> 的函数指针 <code>FuncPtr</code> </li>
 <li>参数 <code>__main_block_desc_0</code> 传递到结构体 <code>__main_block_impl_0</code> 中的 <code>__main_block_desc_0</code> 结构体的 <code>Desc</code></li>
 <li><code>blockDemo</code> 函数指针引用了前面结构体初始化中获得的 <code>__main_block_impl_0</code> 结构体</li>
 <li><code>blockDemo</code> 函数指针引用的结构体强转为 <code>__block_impl *</code> 类型，因为结构体 <code>__main_block_impl_0</code> 的内存结构中最前面就是 <code>__block_impl</code> 结构体的 <code>impl</code>，因此在这里强转类型借用一下面向对象的概念就是子类强转成父类指针，是没有问题的。当然面向过程早于面向对象，面向对象为什么能实现父类指针强转成子类，反倒是应该要依赖两者兼容的内存结构。</li>
@@ -319,7 +286,7 @@
 <p>思考之后，我觉得是这样的:</p>
 <p>从内存角度上看，<code>isa</code> 中保存的就是一个内存地址。我们用 <code>po</code> 来输出时，就是告诉 <code>lldb</code> 把我传入的这个内存地址认为是一个对象的起始地址，以一个对象的角度去看它，因为 <code>Apple</code> 对 <code>Block</code> 进行了相应的封装，自然输出对应的 <code>Block</code> 对象类型。然后在 <code>clang</code> 翻译成 <code>C++</code> 后，是以 <code>_NSConcreteStackBlock</code> 这种变量地址的角度来看待它。简而言之，两者都没有问题，只是角度不同而已。</p>
 <h3 id="实践三-捕获外部变量的-Block"><a href="#实践三-捕获外部变量的-Block" class="headerlink" title="实践三 : 捕获外部变量的 Block"></a>实践三 : 捕获外部变量的 <code>Block</code></h3><p>类似实践二操作，查看捕获了外部变量的 <code>Block</code> 的实现</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> __main_block_impl_0 {</span><br><span class="line">  <span class="hljs-keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="hljs-keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  <span class="hljs-type">int</span> a;</span><br><span class="line">  <span class="hljs-built_in">NSString</span> *testString;</span><br><span class="line">  __main_block_impl_0(<span class="hljs-type">void</span> *fp, <span class="hljs-keyword">struct</span> __main_block_desc_0 *desc, <span class="hljs-type">int</span> _a, <span class="hljs-built_in">NSString</span> *_testString, <span class="hljs-type">int</span> flags=<span class="hljs-number">0</span>) : a(_a), testString(_testString) {</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_func_0(<span class="hljs-keyword">struct</span> __main_block_impl_0 *__cself) {</span><br><span class="line">  <span class="hljs-type">int</span> a = __cself-&gt;a; <span class="hljs-comment">// bound by copy</span></span><br><span class="line">  <span class="hljs-built_in">NSString</span> *testString = __cself-&gt;testString; <span class="hljs-comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            <span class="hljs-built_in">NSLog</span>((<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_6832f1_mi_1,a,testString);</span><br><span class="line">        }</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_copy_0(<span class="hljs-keyword">struct</span> __main_block_impl_0*dst, <span class="hljs-keyword">struct</span> __main_block_impl_0*src) {_Block_object_assign((<span class="hljs-type">void</span>*)&amp;dst-&gt;testString, (<span class="hljs-type">void</span>*)src-&gt;testString, <span class="hljs-number">3</span><span class="hljs-comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_dispose_0(<span class="hljs-keyword">struct</span> __main_block_impl_0*src) {_Block_object_dispose((<span class="hljs-type">void</span>*)src-&gt;testString, <span class="hljs-number">3</span><span class="hljs-comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> __main_block_desc_0 {</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  <span class="hljs-type">void</span> (*<span class="hljs-keyword">copy</span>)(<span class="hljs-keyword">struct</span> __main_block_impl_0*, <span class="hljs-keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">  <span class="hljs-type">void</span> (*dispose)(<span class="hljs-keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">} __main_block_desc_0_DATA = { <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0};</span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-comment">/* @autoreleasepool */</span> { __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *testString = (<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_6832f1_mi_0;</span><br><span class="line">        <span class="hljs-type">void</span> (*blockDemo)() = ((<span class="hljs-type">void</span> (*)())&amp;__main_block_impl_0((<span class="hljs-type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, <span class="hljs-number">570425344</span>));</span><br><span class="line"></span><br><span class="line">        ((<span class="hljs-type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> IMAGE_INFO { <span class="hljs-type">unsigned</span> version; <span class="hljs-type">unsigned</span> flag; } _OBJC_IMAGE_INFO = { <span class="hljs-number">0</span>, <span class="hljs-number">2</span> };</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">  <span class="keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  <span class="type">int</span> a;</span><br><span class="line">  <span class="built_in">NSString</span> *testString;</span><br><span class="line">  __main_block_impl_0(<span class="type">void</span> *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="type">int</span> _a, <span class="built_in">NSString</span> *_testString, <span class="type">int</span> flags=<span class="number">0</span>) : a(_a), testString(_testString) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_func_0(<span class="keyword">struct</span> __main_block_impl_0 *__cself) &#123;</span><br><span class="line">  <span class="type">int</span> a = __cself-&gt;a; <span class="comment">// bound by copy</span></span><br><span class="line">  <span class="built_in">NSString</span> *testString = __cself-&gt;testString; <span class="comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSLog</span>((<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_6832f1_mi_1,a,testString);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_copy_0(<span class="keyword">struct</span> __main_block_impl_0*dst, <span class="keyword">struct</span> __main_block_impl_0*src) &#123;_Block_object_assign((<span class="type">void</span>*)&amp;dst-&gt;testString, (<span class="type">void</span>*)src-&gt;testString, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_dispose_0(<span class="keyword">struct</span> __main_block_impl_0*src) &#123;_Block_object_dispose((<span class="type">void</span>*)src-&gt;testString, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> __main_block_desc_0 &#123;</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  <span class="type">void</span> (*<span class="keyword">copy</span>)(<span class="keyword">struct</span> __main_block_impl_0*, <span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">  <span class="type">void</span> (*dispose)(<span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0&#125;;</span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">NSString</span> *testString = (<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_6832f1_mi_0;</span><br><span class="line">        <span class="type">void</span> (*blockDemo)() = ((<span class="type">void</span> (*)())&amp;__main_block_impl_0((<span class="type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, <span class="number">570425344</span>));</span><br><span class="line"></span><br><span class="line">        ((<span class="type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> IMAGE_INFO &#123; <span class="type">unsigned</span> version; <span class="type">unsigned</span> flag; &#125; _OBJC_IMAGE_INFO = &#123; <span class="number">0</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="小结三"><a href="#小结三" class="headerlink" title="小结三"></a>小结三</h3><p><code>main</code> 函数的执行流程</p>
 <p>这次与实践二主要差别在</p>
@@ -329,10 +296,10 @@
 <li>多了 <code>__main_block_copy_0</code> 和 <code>__main_block_dispose_0</code> 两个静态方法</li>
 </ul>
 <p>查看 <code>Block-private.h</code></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Runtime support functions used by compiler when generating copy/dispose helpers</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// Values for _Block_object_assign() and _Block_object_dispose() parameters</span></span><br><span class="line"><span class="hljs-keyword">enum</span> {</span><br><span class="line">    <span class="hljs-comment">// see function implementation for a more complete description of these fields and combinations</span></span><br><span class="line">    BLOCK_FIELD_IS_OBJECT   =  <span class="hljs-number">3</span>,  <span class="hljs-comment">// id, NSObject, __attribute__((NSObject)), block, ...</span></span><br><span class="line">    BLOCK_FIELD_IS_BLOCK    =  <span class="hljs-number">7</span>,  <span class="hljs-comment">// a block variable</span></span><br><span class="line">    BLOCK_FIELD_IS_BYREF    =  <span class="hljs-number">8</span>,  <span class="hljs-comment">// the on stack structure holding the __block variable</span></span><br><span class="line">    BLOCK_FIELD_IS_WEAK     = <span class="hljs-number">16</span>,  <span class="hljs-comment">// declared __weak, only used in byref copy helpers</span></span><br><span class="line">    BLOCK_BYREF_CALLER      = <span class="hljs-number">128</span>, <span class="hljs-comment">// called from __block (byref) copy/dispose support routines.</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Runtime support functions used by compiler when generating copy/dispose helpers</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Values for _Block_object_assign() and _Block_object_dispose() parameters</span></span><br><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">    <span class="comment">// see function implementation for a more complete description of these fields and combinations</span></span><br><span class="line">    BLOCK_FIELD_IS_OBJECT   =  <span class="number">3</span>,  <span class="comment">// id, NSObject, __attribute__((NSObject)), block, ...</span></span><br><span class="line">    BLOCK_FIELD_IS_BLOCK    =  <span class="number">7</span>,  <span class="comment">// a block variable</span></span><br><span class="line">    BLOCK_FIELD_IS_BYREF    =  <span class="number">8</span>,  <span class="comment">// the on stack structure holding the __block variable</span></span><br><span class="line">    BLOCK_FIELD_IS_WEAK     = <span class="number">16</span>,  <span class="comment">// declared __weak, only used in byref copy helpers</span></span><br><span class="line">    BLOCK_BYREF_CALLER      = <span class="number">128</span>, <span class="comment">// called from __block (byref) copy/dispose support routines.</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>因为 <code>a</code> 不是对象，所以是以传值的方式进行传递过程。而 <code>testString</code> 是对象，会在函数 <code>__main_block_copy_0</code> 中以参数 <em>3</em> 去调用函数 <code>_Block_object_assign</code>，在函数 <code>__main_block_dispose_0</code> 中类似。</p>
-<h3 id="实践四-Block-修饰捕获的变量"><a href="#实践四-Block-修饰捕获的变量" class="headerlink" title="实践四 : __Block 修饰捕获的变量"></a>实践四 : <code>__Block</code> 修饰捕获的变量</h3><h4 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h4><figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-comment">// insert code here...</span></span><br><span class="line">        <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *testString = <span class="hljs-string">@"2"</span>;</span><br><span class="line">        __block <span class="hljs-type">int</span> b = <span class="hljs-number">2</span>;</span><br><span class="line">        __block <span class="hljs-built_in">NSString</span> *testString2 = <span class="hljs-string">@"3"</span>;</span><br><span class="line">        <span class="hljs-type">void</span> (^blockDemo)() = ^() {</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello world,%d,%d,%@,%@"</span>,a,b,testString,testString2);</span><br><span class="line">        };</span><br><span class="line">        blockDemo();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="实践四-Block-修饰捕获的变量"><a href="#实践四-Block-修饰捕获的变量" class="headerlink" title="实践四 : __Block 修饰捕获的变量"></a>实践四 : <code>__Block</code> 修饰捕获的变量</h3><h4 id="插曲"><a href="#插曲" class="headerlink" title="插曲"></a>插曲</h4><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">NSString</span> *testString = <span class="string">@&quot;2&quot;</span>;</span><br><span class="line">        __block <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">        __block <span class="built_in">NSString</span> *testString2 = <span class="string">@&quot;3&quot;</span>;</span><br><span class="line">        <span class="type">void</span> (^blockDemo)() = ^() &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@&quot;Hello world,%d,%d,%@,%@&quot;</span>,a,b,testString,testString2);</span><br><span class="line">        &#125;;</span><br><span class="line">        blockDemo();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>上面这段代码用 <code>clang -rewrite-objc</code> 会报 <code>clang: error: unable to execute command: Segmentation fault: 11</code> ，段错误，一般是访问了非法地址造成的。很多编程语言为了避免字符串被重复创建，一般都会有个字符串常量缓存池。而 <code>OC</code> 中也不例外，用字面量创建的字符串是放在数据段中的。</p>
 <blockquote>
@@ -340,19 +307,19 @@
 </blockquote>
 <p>这个区域的数据在应用启动后不会被改变，而用 <code>__block</code> 来修饰，很明显是想在 <code>block</code> 中进行修改，所以才会报段错误。</p>
 <h4 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h4><p>修改后的代码</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        <span class="hljs-comment">// insert code here...</span></span><br><span class="line">        <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *testString = <span class="hljs-string">@"2"</span>;</span><br><span class="line">        __block <span class="hljs-type">int</span> b = <span class="hljs-number">2</span>;</span><br><span class="line">        __block <span class="hljs-built_in">NSString</span> *testString2 = [[<span class="hljs-built_in">NSString</span> alloc] initWithString:<span class="hljs-string">@"3"</span>];</span><br><span class="line">        <span class="hljs-type">void</span> (^blockDemo)() = ^() {</span><br><span class="line">            <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"Hello world,%d,%d,%@,%@"</span>,a,b,testString,testString2);</span><br><span class="line">        };</span><br><span class="line">        blockDemo();</span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">NSString</span> *testString = <span class="string">@&quot;2&quot;</span>;</span><br><span class="line">        __block <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">        __block <span class="built_in">NSString</span> *testString2 = [[<span class="built_in">NSString</span> alloc] initWithString:<span class="string">@&quot;3&quot;</span>];</span><br><span class="line">        <span class="type">void</span> (^blockDemo)() = ^() &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@&quot;Hello world,%d,%d,%@,%@&quot;</span>,a,b,testString,testString2);</span><br><span class="line">        &#125;;</span><br><span class="line">        blockDemo();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>rewrite</code> 后的结果</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> __Block_byref_b_0 {</span><br><span class="line">  <span class="hljs-type">void</span> *__isa;</span><br><span class="line">__Block_byref_b_0 *__forwarding;</span><br><span class="line"> <span class="hljs-type">int</span> __flags;</span><br><span class="line"> <span class="hljs-type">int</span> __size;</span><br><span class="line"> <span class="hljs-type">int</span> b;</span><br><span class="line">};</span><br><span class="line"><span class="hljs-keyword">struct</span> __Block_byref_testString2_1 {</span><br><span class="line">  <span class="hljs-type">void</span> *__isa;</span><br><span class="line">__Block_byref_testString2_1 *__forwarding;</span><br><span class="line"> <span class="hljs-type">int</span> __flags;</span><br><span class="line"> <span class="hljs-type">int</span> __size;</span><br><span class="line"> <span class="hljs-type">void</span> (*__Block_byref_id_object_copy)(<span class="hljs-type">void</span>*, <span class="hljs-type">void</span>*);</span><br><span class="line"> <span class="hljs-type">void</span> (*__Block_byref_id_object_dispose)(<span class="hljs-type">void</span>*);</span><br><span class="line"> <span class="hljs-built_in">NSString</span> *testString2;</span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">struct</span> __main_block_impl_0 {</span><br><span class="line">  <span class="hljs-keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="hljs-keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  <span class="hljs-type">int</span> a;</span><br><span class="line">  <span class="hljs-built_in">NSString</span> *testString;</span><br><span class="line">  __Block_byref_b_0 *b; <span class="hljs-comment">// by ref</span></span><br><span class="line">  __Block_byref_testString2_1 *testString2; <span class="hljs-comment">// by ref</span></span><br><span class="line">  __main_block_impl_0(<span class="hljs-type">void</span> *fp, <span class="hljs-keyword">struct</span> __main_block_desc_0 *desc, <span class="hljs-type">int</span> _a, <span class="hljs-built_in">NSString</span> *_testString, __Block_byref_b_0 *_b, __Block_byref_testString2_1 *_testString2, <span class="hljs-type">int</span> flags=<span class="hljs-number">0</span>) : a(_a), testString(_testString), b(_b-&gt;__forwarding), testString2(_testString2-&gt;__forwarding) {</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  }</span><br><span class="line">};</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_func_0(<span class="hljs-keyword">struct</span> __main_block_impl_0 *__cself) {</span><br><span class="line">  __Block_byref_b_0 *b = __cself-&gt;b; <span class="hljs-comment">// bound by ref</span></span><br><span class="line">  __Block_byref_testString2_1 *testString2 = __cself-&gt;testString2; <span class="hljs-comment">// bound by ref</span></span><br><span class="line">  <span class="hljs-type">int</span> a = __cself-&gt;a; <span class="hljs-comment">// bound by copy</span></span><br><span class="line">  <span class="hljs-built_in">NSString</span> *testString = __cself-&gt;testString; <span class="hljs-comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            <span class="hljs-built_in">NSLog</span>((<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_2,a,(b-&gt;__forwarding-&gt;b),testString,(testString2-&gt;__forwarding-&gt;testString2));</span><br><span class="line">        }</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_copy_0(<span class="hljs-keyword">struct</span> __main_block_impl_0*dst, <span class="hljs-keyword">struct</span> __main_block_impl_0*src) {_Block_object_assign((<span class="hljs-type">void</span>*)&amp;dst-&gt;b, (<span class="hljs-type">void</span>*)src-&gt;b, <span class="hljs-number">8</span><span class="hljs-comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_assign((<span class="hljs-type">void</span>*)&amp;dst-&gt;testString, (<span class="hljs-type">void</span>*)src-&gt;testString, <span class="hljs-number">3</span><span class="hljs-comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_assign((<span class="hljs-type">void</span>*)&amp;dst-&gt;testString2, (<span class="hljs-type">void</span>*)src-&gt;testString2, <span class="hljs-number">8</span><span class="hljs-comment">/*BLOCK_FIELD_IS_BYREF*/</span>);}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> __main_block_dispose_0(<span class="hljs-keyword">struct</span> __main_block_impl_0*src) {_Block_object_dispose((<span class="hljs-type">void</span>*)src-&gt;b, <span class="hljs-number">8</span><span class="hljs-comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_dispose((<span class="hljs-type">void</span>*)src-&gt;testString, <span class="hljs-number">3</span><span class="hljs-comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_dispose((<span class="hljs-type">void</span>*)src-&gt;testString2, <span class="hljs-number">8</span><span class="hljs-comment">/*BLOCK_FIELD_IS_BYREF*/</span>);}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> __main_block_desc_0 {</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  <span class="hljs-type">void</span> (*<span class="hljs-keyword">copy</span>)(<span class="hljs-keyword">struct</span> __main_block_impl_0*, <span class="hljs-keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">  <span class="hljs-type">void</span> (*dispose)(<span class="hljs-keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">} __main_block_desc_0_DATA = { <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0};</span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-comment">/* @autoreleasepool */</span> { __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="hljs-type">int</span> a = <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-built_in">NSString</span> *testString = (<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_0;</span><br><span class="line">        __attribute__((__blocks__(<span class="hljs-keyword">byref</span>))) __Block_byref_b_0 b = {(<span class="hljs-type">void</span>*)<span class="hljs-number">0</span>,(__Block_byref_b_0 *)&amp;b, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(__Block_byref_b_0), <span class="hljs-number">2</span>};</span><br><span class="line">        __attribute__((__blocks__(<span class="hljs-keyword">byref</span>))) __Block_byref_testString2_1 testString2 = {(<span class="hljs-type">void</span>*)<span class="hljs-number">0</span>,(__Block_byref_testString2_1 *)&amp;testString2, <span class="hljs-number">33554432</span>, <span class="hljs-keyword">sizeof</span>(__Block_byref_testString2_1), __Block_byref_id_object_copy_131, __Block_byref_id_object_dispose_131, ((<span class="hljs-built_in">NSString</span> *(*)(<span class="hljs-type">id</span>, SEL, <span class="hljs-built_in">NSString</span> *))(<span class="hljs-type">void</span> *)objc_msgSend)((<span class="hljs-type">id</span>)((<span class="hljs-built_in">NSString</span> *(*)(<span class="hljs-type">id</span>, SEL))(<span class="hljs-type">void</span> *)objc_msgSend)((<span class="hljs-type">id</span>)objc_getClass(<span class="hljs-string">"NSString"</span>), sel_registerName(<span class="hljs-string">"alloc"</span>)), sel_registerName(<span class="hljs-string">"initWithString:"</span>), (<span class="hljs-built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_1)};</span><br><span class="line">        <span class="hljs-type">void</span> (*blockDemo)() = ((<span class="hljs-type">void</span> (*)())&amp;__main_block_impl_0((<span class="hljs-type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, (__Block_byref_b_0 *)&amp;b, (__Block_byref_testString2_1 *)&amp;testString2, <span class="hljs-number">570425344</span>));</span><br><span class="line">        ((<span class="hljs-type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> IMAGE_INFO { <span class="hljs-type">unsigned</span> version; <span class="hljs-type">unsigned</span> flag; } _OBJC_IMAGE_INFO = { <span class="hljs-number">0</span>, <span class="hljs-number">2</span> };</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __Block_byref_b_0 &#123;</span><br><span class="line">  <span class="type">void</span> *__isa;</span><br><span class="line">__Block_byref_b_0 *__forwarding;</span><br><span class="line"> <span class="type">int</span> __flags;</span><br><span class="line"> <span class="type">int</span> __size;</span><br><span class="line"> <span class="type">int</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> __Block_byref_testString2_1 &#123;</span><br><span class="line">  <span class="type">void</span> *__isa;</span><br><span class="line">__Block_byref_testString2_1 *__forwarding;</span><br><span class="line"> <span class="type">int</span> __flags;</span><br><span class="line"> <span class="type">int</span> __size;</span><br><span class="line"> <span class="type">void</span> (*__Block_byref_id_object_copy)(<span class="type">void</span>*, <span class="type">void</span>*);</span><br><span class="line"> <span class="type">void</span> (*__Block_byref_id_object_dispose)(<span class="type">void</span>*);</span><br><span class="line"> <span class="built_in">NSString</span> *testString2;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> __main_block_impl_0 &#123;</span><br><span class="line">  <span class="keyword">struct</span> __block_impl impl;</span><br><span class="line">  <span class="keyword">struct</span> __main_block_desc_0* Desc;</span><br><span class="line">  <span class="type">int</span> a;</span><br><span class="line">  <span class="built_in">NSString</span> *testString;</span><br><span class="line">  __Block_byref_b_0 *b; <span class="comment">// by ref</span></span><br><span class="line">  __Block_byref_testString2_1 *testString2; <span class="comment">// by ref</span></span><br><span class="line">  __main_block_impl_0(<span class="type">void</span> *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="type">int</span> _a, <span class="built_in">NSString</span> *_testString, __Block_byref_b_0 *_b, __Block_byref_testString2_1 *_testString2, <span class="type">int</span> flags=<span class="number">0</span>) : a(_a), testString(_testString), b(_b-&gt;__forwarding), testString2(_testString2-&gt;__forwarding) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_func_0(<span class="keyword">struct</span> __main_block_impl_0 *__cself) &#123;</span><br><span class="line">  __Block_byref_b_0 *b = __cself-&gt;b; <span class="comment">// bound by ref</span></span><br><span class="line">  __Block_byref_testString2_1 *testString2 = __cself-&gt;testString2; <span class="comment">// bound by ref</span></span><br><span class="line">  <span class="type">int</span> a = __cself-&gt;a; <span class="comment">// bound by copy</span></span><br><span class="line">  <span class="built_in">NSString</span> *testString = __cself-&gt;testString; <span class="comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSLog</span>((<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_2,a,(b-&gt;__forwarding-&gt;b),testString,(testString2-&gt;__forwarding-&gt;testString2));</span><br><span class="line">        &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_copy_0(<span class="keyword">struct</span> __main_block_impl_0*dst, <span class="keyword">struct</span> __main_block_impl_0*src) &#123;_Block_object_assign((<span class="type">void</span>*)&amp;dst-&gt;b, (<span class="type">void</span>*)src-&gt;b, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_assign((<span class="type">void</span>*)&amp;dst-&gt;testString, (<span class="type">void</span>*)src-&gt;testString, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_assign((<span class="type">void</span>*)&amp;dst-&gt;testString2, (<span class="type">void</span>*)src-&gt;testString2, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> __main_block_dispose_0(<span class="keyword">struct</span> __main_block_impl_0*src) &#123;_Block_object_dispose((<span class="type">void</span>*)src-&gt;b, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_dispose((<span class="type">void</span>*)src-&gt;testString, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_dispose((<span class="type">void</span>*)src-&gt;testString2, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> __main_block_desc_0 &#123;</span><br><span class="line">  size_t reserved;</span><br><span class="line">  size_t Block_size;</span><br><span class="line">  <span class="type">void</span> (*<span class="keyword">copy</span>)(<span class="keyword">struct</span> __main_block_impl_0*, <span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">  <span class="type">void</span> (*dispose)(<span class="keyword">struct</span> __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(<span class="keyword">struct</span> __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0&#125;;</span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">NSString</span> *testString = (<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_0;</span><br><span class="line">        __attribute__((__blocks__(<span class="keyword">byref</span>))) __Block_byref_b_0 b = &#123;(<span class="type">void</span>*)<span class="number">0</span>,(__Block_byref_b_0 *)&amp;b, <span class="number">0</span>, <span class="keyword">sizeof</span>(__Block_byref_b_0), <span class="number">2</span>&#125;;</span><br><span class="line">        __attribute__((__blocks__(<span class="keyword">byref</span>))) __Block_byref_testString2_1 testString2 = &#123;(<span class="type">void</span>*)<span class="number">0</span>,(__Block_byref_testString2_1 *)&amp;testString2, <span class="number">33554432</span>, <span class="keyword">sizeof</span>(__Block_byref_testString2_1), __Block_byref_id_object_copy_131, __Block_byref_id_object_dispose_131, ((<span class="built_in">NSString</span> *(*)(<span class="type">id</span>, SEL, <span class="built_in">NSString</span> *))(<span class="type">void</span> *)objc_msgSend)((<span class="type">id</span>)((<span class="built_in">NSString</span> *(*)(<span class="type">id</span>, SEL))(<span class="type">void</span> *)objc_msgSend)((<span class="type">id</span>)objc_getClass(<span class="string">&quot;NSString&quot;</span>), sel_registerName(<span class="string">&quot;alloc&quot;</span>)), sel_registerName(<span class="string">&quot;initWithString:&quot;</span>), (<span class="built_in">NSString</span> *)&amp;__NSConstantStringImpl__var_folders_lk_znn1qp4925j412wt4t_qkplc0000gn_T_main_894ba5_mi_1)&#125;;</span><br><span class="line">        <span class="type">void</span> (*blockDemo)() = ((<span class="type">void</span> (*)())&amp;__main_block_impl_0((<span class="type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, (__Block_byref_b_0 *)&amp;b, (__Block_byref_testString2_1 *)&amp;testString2, <span class="number">570425344</span>));</span><br><span class="line">        ((<span class="type">void</span> (*)(__block_impl *))((__block_impl *)blockDemo)-&gt;FuncPtr)((__block_impl *)blockDemo);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">struct</span> IMAGE_INFO &#123; <span class="type">unsigned</span> version; <span class="type">unsigned</span> flag; &#125; _OBJC_IMAGE_INFO = &#123; <span class="number">0</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="小结四"><a href="#小结四" class="headerlink" title="小结四"></a>小结四</h3><p>以 <code>__block</code> 修饰的外部变量被 <code>Block</code> 捕获时，会创建一个以 <code>__Block_byref_变量名_捕获顺序</code><br>为变量名的结构体</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((__blocks__(<span class="hljs-keyword">byref</span>))) __Block_byref_b_0 b = {(<span class="hljs-type">void</span>*)<span class="hljs-number">0</span>,(__Block_byref_b_0 *)&amp;b, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(__Block_byref_b_0), <span class="hljs-number">2</span>};</span><br><span class="line"></span><br><span class="line"><span class="hljs-type">void</span> (*blockDemo)() = ((<span class="hljs-type">void</span> (*)())&amp;__main_block_impl_0((<span class="hljs-type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, (__Block_byref_b_0 *)&amp;b, (__Block_byref_testString2_1 *)&amp;testString2, <span class="hljs-number">570425344</span>));</span><br><span class="line"></span><br><span class="line">__main_block_impl_0(<span class="hljs-type">void</span> *fp, <span class="hljs-keyword">struct</span> __main_block_desc_0 *desc, <span class="hljs-type">int</span> _a, <span class="hljs-built_in">NSString</span> *_testString, __Block_byref_b_0 *_b, __Block_byref_testString2_1 *_testString2, <span class="hljs-type">int</span> flags=<span class="hljs-number">0</span>) : a(_a), testString(_testString), b(_b-&gt;__forwarding), testString2(_testString2-&gt;__forwarding) {...}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((__blocks__(<span class="keyword">byref</span>))) __Block_byref_b_0 b = &#123;(<span class="type">void</span>*)<span class="number">0</span>,(__Block_byref_b_0 *)&amp;b, <span class="number">0</span>, <span class="keyword">sizeof</span>(__Block_byref_b_0), <span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> (*blockDemo)() = ((<span class="type">void</span> (*)())&amp;__main_block_impl_0((<span class="type">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, a, testString, (__Block_byref_b_0 *)&amp;b, (__Block_byref_testString2_1 *)&amp;testString2, <span class="number">570425344</span>));</span><br><span class="line"></span><br><span class="line">__main_block_impl_0(<span class="type">void</span> *fp, <span class="keyword">struct</span> __main_block_desc_0 *desc, <span class="type">int</span> _a, <span class="built_in">NSString</span> *_testString, __Block_byref_b_0 *_b, __Block_byref_testString2_1 *_testString2, <span class="type">int</span> flags=<span class="number">0</span>) : a(_a), testString(_testString), b(_b-&gt;__forwarding), testString2(_testString2-&gt;__forwarding) &#123;...&#125;</span><br></pre></td></tr></table></figure>
 
 <p>根据上面的代码,可以得出结构体 <code>__Block_byref_xxx_xx</code> 中的 <code>__forwarding</code> 就是指向这个结构体的地址，同时在结构体的初始化方法中传递的是变量地址的引用，并将这个引用传递给结构体 <code>__main_block_impl_0</code> 中对应的外部变量，因此用 <code>__block</code> 修饰的外部变量是以传址的方式被 <code>Block</code> 捕获的。</p>
 <p><code>OC</code> 的内存管理是基于引用计数的，拷贝到 <code>Block</code> 中的外部变量被结构体 <code>__Block_byref_xxx_xx</code> 的 <code>__forwarding</code> 所引用了，因此需要考虑维护对象的引用计数。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>最后，以我的话来总结下 <code>Block</code> 具体是什么?</p>
 <p><code>Block</code> 是一个结构体指针，初始化方法中接收捕获的外部变量，其中有 <code>__block</code> 修饰则传址，没有则传值， 结构体中的 <code>FuncPtr</code> 属性以函数指针的形式指向一个预定义的匿名函数，在调用时，会把 <code>Block</code> 作为参数传递到预定义的匿名函数中并执行。</p>
-<p><code>That's all</code></p>
+<p><code>That&#39;s all</code></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a target="_blank" rel="noopener" href="https://clang.llvm.org/docs/Block-ABI-Apple.html">Block Implementation Specification</a></li>
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Application_binary_interface">Wiki - Application binary interface</a></li>
@@ -361,237 +328,202 @@
 <li><a target="_blank" rel="noopener" href="http://www.galloway.me.uk/2013/05/a-look-inside-blocks-episode-3-block-copy/">a-look-inside-blocks-episode-3-block-copy</a></li>
 <li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/11249591/how-objective-c-handles-the-memory-of-immutable-strings">How Objective-C handles the memory of immutable strings </a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2017/03/28/iOSer-Readers-iOS-App-signature-principle/">阅读:iOS App签名的原理</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2017/03/21/Technology-Analysis-of-Https-protocol/">理解HTTPS协议</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ObjC/" rel="tag"># ObjC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/21/Technology-Analysis-of-Https-protocol/" rel="prev" title="HTTPS协议">
+      <i class="fa fa-chevron-left"></i> HTTPS协议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/28/iOSer-Readers-iOS-App-signature-principle/" rel="next" title="iOS - App签名的原理">
+      iOS - App签名的原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-Block-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">关于 Block 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-number">4.</span> <span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E4%B8%80-%E6%96%B0%E5%BB%BA-Xcode-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">实践一 : 新建 Xcode 命令行工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93%E4%B8%80"><span class="nav-number">4.2.</span> <span class="nav-text">小结一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80"><span class="nav-number">4.3.</span> <span class="nav-text">问题一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E4%BA%8C-clang-%E9%87%8D%E5%86%99%E5%B7%A5%E7%A8%8B%E7%9A%84-main-m-%E6%96%87%E4%BB%B6"><span class="nav-number">4.4.</span> <span class="nav-text">实践二 : clang 重写工程的 main.m 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93%E4%BA%8C"><span class="nav-number">4.5.</span> <span class="nav-text">小结二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E9%97%AE%E9%A2%98%E4%B8%80"><span class="nav-number">4.6.</span> <span class="nav-text">关于问题一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E4%B8%89-%E6%8D%95%E8%8E%B7%E5%A4%96%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84-Block"><span class="nav-number">4.7.</span> <span class="nav-text">实践三 : 捕获外部变量的 Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93%E4%B8%89"><span class="nav-number">4.8.</span> <span class="nav-text">小结三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E5%9B%9B-Block-%E4%BF%AE%E9%A5%B0%E6%8D%95%E8%8E%B7%E7%9A%84%E5%8F%98%E9%87%8F"><span class="nav-number">4.9.</span> <span class="nav-text">实践四 : __Block 修饰捕获的变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%92%E6%9B%B2"><span class="nav-number">4.9.1.</span> <span class="nav-text">插曲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9E%E5%BD%92"><span class="nav-number">4.9.2.</span> <span class="nav-text">回归</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93%E5%9B%9B"><span class="nav-number">4.10.</span> <span class="nav-text">小结四</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

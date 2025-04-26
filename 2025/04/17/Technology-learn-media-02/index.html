@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>音视频学习 - ffmpeg 编译与调试 - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="编译环境 macOS Ventrua 13.4ffmpeg 7.7.1Visual Studio Code Version: 1.99.0 (Universal)  操作FFmpeg 下载源码 1234567891011121314$ cd ffmpeg-x.y.z$ .&#x2F;configurenasm&#x2F;yasm not found or too old. Use --disable-x86asm f">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="编译环境 macOS Ventrua 13.4ffmpeg 7.7.1Visual Studio Code Version: 1.99.0 (Universal)  操作FFmpeg 下载源码 1234567891011121314$ cd ffmpeg-x.y.z$ .&#x2F;configurenasm&#x2F;yasm not found or too old. Use --disable-x86asm f">
 <meta property="og:type" content="article">
-<meta property="og:title" content="音视频学习 - ffmpeg 编译与调试">
+<meta property="og:title" content="音视频 - ffmpeg 编译与调试">
 <meta property="og:url" content="http://yoursite.com/2025/04/17/Technology-learn-media-02/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="编译环境 macOS Ventrua 13.4ffmpeg 7.7.1Visual Studio Code Version: 1.99.0 (Universal)  操作FFmpeg 下载源码 1234567891011121314$ cd ffmpeg-x.y.z$ .&#x2F;configurenasm&#x2F;yasm not found or too old. Use --disable-x86asm f">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2025/04/17/QIM2RXvfpKu8SUg.png">
@@ -34,188 +36,199 @@
 <meta property="og:image" content="https://s2.loli.net/2025/04/17/OKN3MzWuHr5hYT7.png">
 <meta property="og:image" content="https://s2.loli.net/2025/04/17/iqzMvgOTJa2KBb4.png">
 <meta property="article:published_time" content="2025-04-17T08:27:46.000Z">
-<meta property="article:modified_time" content="2025-04-17T08:28:56.882Z">
-<meta property="article:author" content="Shepherd">
+<meta property="article:modified_time" content="2025-04-26T14:26:49.468Z">
+<meta property="article:author" content="忘川三">
 <meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2025/04/17/QIM2RXvfpKu8SUg.png">
 
+<link rel="canonical" href="http://yoursite.com/2025/04/17/Technology-learn-media-02/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>音视频 - ffmpeg 编译与调试 | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#编译">1&nbsp;&nbsp;<b>编译</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#环境">1.1&nbsp;&nbsp;环境</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#操作">1.2&nbsp;&nbsp;操作</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#ffmpeg">2&nbsp;&nbsp;<b>ffmpeg</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#常用库简介">2.1&nbsp;&nbsp;常用库简介</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#准备">2.1.1&nbsp;&nbsp;准备</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#调试ffmpeg">2.1.2&nbsp;&nbsp;调试ffmpeg</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">3&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            音视频学习 - ffmpeg 编译与调试
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-17T08:27:46.000Z" itemprop="datePublished">4月 17 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            6 分钟 读完 (约 924 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><blockquote>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/17/Technology-learn-media-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          音视频 - ffmpeg 编译与调试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-17 16:27:46" itemprop="dateCreated datePublished" datetime="2025-04-17T16:27:46+08:00">2025-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:26:49" itemprop="dateModified" datetime="2025-04-26T22:26:49+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Media/" itemprop="url" rel="index"><span itemprop="name">Media</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><blockquote>
 <p>macOS Ventrua 13.4<br>ffmpeg 7.7.1<br>Visual Studio Code Version: 1.99.0 (Universal)</p>
 </blockquote>
 <h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p><a target="_blank" rel="noopener" href="https://ffmpeg.org/">FFmpeg</a> 下载源码</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="hljs-built_in">cd</span> ffmpeg-x.y.z</span><br><span class="line">$ ./configure</span><br><span class="line">nasm/yasm not found or too old. Use --disable-x86asm <span class="hljs-keyword">for</span> a crippled build.</span><br><span class="line"></span><br><span class="line">If you think configure made a mistake, make sure you are using the latest</span><br><span class="line">version from Git.  If the latest version fails, report the problem to the</span><br><span class="line">ffmpeg-user@ffmpeg.org mailing list or IRC <span class="hljs-comment">#ffmpeg on irc.libera.chat.</span></span><br><span class="line">Include the <span class="hljs-built_in">log</span> file <span class="hljs-string">"ffbuild/config.log"</span> produced by configure as this will <span class="hljs-built_in">help</span></span><br><span class="line">solve the problem.</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 听劝 + 考虑到后面需要调试</span></span><br><span class="line">$ <span class="hljs-built_in">mkdir</span> build</span><br><span class="line">$ ./configure --prefix=./build --disable-x86asm --enable-debug --disable-stripping</span><br><span class="line">$ make </span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ffmpeg-x.y.z</span><br><span class="line">$ ./configure</span><br><span class="line">nasm/yasm not found or too old. Use --disable-x86asm <span class="keyword">for</span> a crippled build.</span><br><span class="line"></span><br><span class="line">If you think configure made a mistake, make sure you are using the latest</span><br><span class="line">version from Git.  If the latest version fails, report the problem to the</span><br><span class="line">ffmpeg-user@ffmpeg.org mailing list or IRC <span class="comment">#ffmpeg on irc.libera.chat.</span></span><br><span class="line">Include the <span class="built_in">log</span> file <span class="string">&quot;ffbuild/config.log&quot;</span> produced by configure as this will <span class="built_in">help</span></span><br><span class="line">solve the problem.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 听劝 + 考虑到后面需要调试</span></span><br><span class="line">$ <span class="built_in">mkdir</span> build</span><br><span class="line">$ ./configure --prefix=./build --disable-x86asm --enable-debug --disable-stripping</span><br><span class="line">$ make </span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
 <p>编译成功后结果如下图</p>
@@ -261,21 +274,21 @@
 </tbody></table>
 <p><img src="https://s2.loli.net/2025/04/17/aiXw1HoD7n9O5AN.png" alt="2025-04-17 14.40.49.png"></p>
 <h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><h5 id="获取媒体信息"><a href="#获取媒体信息" class="headerlink" title="获取媒体信息"></a>获取媒体信息</h5><p>可以通过<code>ffmpeg</code>包含的工具命令<code>ffprobe</code></p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 获取mp3的信息</span></span><br><span class="line">$ ffprobe -show_format 天空之城.mp3</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取mp3的信息</span></span><br><span class="line">$ ffprobe -show_format 天空之城.mp3</span><br></pre></td></tr></table></figure>
 
 <p>输出结果如下,可知这个音频文件采样率是44.1KHz,双声道,码率是128kb</p>
 <blockquote>
 <p>一个采样率为44.1KHz，采样大小为16bit，双声道的 PCM编码的WAV文件，它的数据速率则为44.1K×16×2=1411.2Kb/s。我们常说128K的MP3，对应的WAV的参数，就是这个 1411.2Kb/s，这个参数也被称为数据带宽，它和ADSL中的带宽是一个概念。</p>
 </blockquote>
-<figure class="highlight plaintext hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Input #0, mp3, from '天空之城.mp3':</span><br><span class="line">  Duration: 00:03:00.35, start: 0.025057, bitrate: 128 kb/s</span><br><span class="line">  Stream #0:0: Audio: mp3, 44100 Hz, stereo, fltp, 128 kb/s</span><br><span class="line">    Metadata:</span><br><span class="line">      encoder         : LAME3.99r</span><br><span class="line">    Side data:</span><br><span class="line">      replaygain: track gain - -3.300000, track peak - unknown, album gain - unknown, album peak - unknown,</span><br><span class="line">[FORMAT]</span><br><span class="line">filename=天空之城.mp3</span><br><span class="line">nb_streams=1</span><br><span class="line">nb_programs=0</span><br><span class="line">format_name=mp3</span><br><span class="line">format_long_name=MP2/3 (MPEG audio layer 2/3)</span><br><span class="line">start_time=0.025057</span><br><span class="line">duration=180.349388</span><br><span class="line">size=2886135</span><br><span class="line">bit_rate=128024</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Input #0, mp3, from &#x27;天空之城.mp3&#x27;:</span><br><span class="line">  Duration: 00:03:00.35, start: 0.025057, bitrate: 128 kb/s</span><br><span class="line">  Stream #0:0: Audio: mp3, 44100 Hz, stereo, fltp, 128 kb/s</span><br><span class="line">    Metadata:</span><br><span class="line">      encoder         : LAME3.99r</span><br><span class="line">    Side data:</span><br><span class="line">      replaygain: track gain - -3.300000, track peak - unknown, album gain - unknown, album peak - unknown,</span><br><span class="line">[FORMAT]</span><br><span class="line">filename=天空之城.mp3</span><br><span class="line">nb_streams=1</span><br><span class="line">nb_programs=0</span><br><span class="line">format_name=mp3</span><br><span class="line">format_long_name=MP2/3 (MPEG audio layer 2/3)</span><br><span class="line">start_time=0.025057</span><br><span class="line">duration=180.349388</span><br><span class="line">size=2886135</span><br><span class="line">bit_rate=128024</span><br></pre></td></tr></table></figure>
 
 
 <h5 id="解封装"><a href="#解封装" class="headerlink" title="解封装"></a>解封装</h5><p>将mp3文件转成pcm,选择双声道,采样率44100</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># -y 允许覆盖</span></span><br><span class="line"><span class="hljs-comment"># -i 源文件</span></span><br><span class="line"><span class="hljs-comment"># -acodec pcm_s16le 编码器</span></span><br><span class="line"><span class="hljs-comment"># -f s16le 强制文件格式</span></span><br><span class="line"><span class="hljs-comment"># -ac 2 双声道</span></span><br><span class="line"><span class="hljs-comment"># -ar 44100 采样率</span></span><br><span class="line">$ ffmpeg -y -i 天空之城.mp3 -acodec pcm_s16le -f s16le -ac 2 -ar 44100 天空之城.pcm</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -y 允许覆盖</span></span><br><span class="line"><span class="comment"># -i 源文件</span></span><br><span class="line"><span class="comment"># -acodec pcm_s16le 编码器</span></span><br><span class="line"><span class="comment"># -f s16le 强制文件格式</span></span><br><span class="line"><span class="comment"># -ac 2 双声道</span></span><br><span class="line"><span class="comment"># -ar 44100 采样率</span></span><br><span class="line">$ ffmpeg -y -i 天空之城.mp3 -acodec pcm_s16le -f s16le -ac 2 -ar 44100 天空之城.pcm</span><br></pre></td></tr></table></figure>
 
 <p>mp3压缩率差不多在1:10到1:12,原来大小是2.9M，转换成31.8M，</p>
 <p>下载VLC来播放pcm文件</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /Applications/VLC.app/Contents/MacOS/VLC --demux=rawaud --rawaud-channels 2 --rawaud-samplerate 44100 天空之城.pcm</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /Applications/VLC.app/Contents/MacOS/VLC --demux=rawaud --rawaud-channels 2 --rawaud-samplerate 44100 天空之城.pcm</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/17/fnaimctrKdCDhHS.png" alt="2025-04-17 11.30.09.png"></p>
 <h4 id="调试ffmpeg"><a href="#调试ffmpeg" class="headerlink" title="调试ffmpeg"></a>调试ffmpeg</h4><p>本文在mac环境上使用vscode来调试ffmpeg</p>
@@ -288,7 +301,7 @@
 <p>选择CodeLLDB</p>
 <p><img src="https://s2.loli.net/2025/04/17/OKN3MzWuHr5hYT7.png" alt="2025-04-17 15.24.29.png"></p>
 <p>安装完成后再次点击,配置launch.json</p>
-<figure class="highlight json hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-punctuation">{</span></span><br><span class="line">    <span class="hljs-comment">// Use IntelliSense to learn about possible attributes.</span></span><br><span class="line">    <span class="hljs-comment">// Hover to view descriptions of existing attributes.</span></span><br><span class="line">    <span class="hljs-comment">// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="hljs-attr">"version"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"0.2.0"</span><span class="hljs-punctuation">,</span></span><br><span class="line">    <span class="hljs-attr">"configurations"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span></span><br><span class="line">        <span class="hljs-punctuation">{</span></span><br><span class="line">            <span class="hljs-attr">"name"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"ffmpeg"</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"type"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"cppdbg"</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"request"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"launch"</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"program"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"${workspaceFolder}/ffmpeg_g"</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"args"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">"-f"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"avfoundation"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"-list_devices"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"true"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"-i"</span><span class="hljs-punctuation">,</span> <span class="hljs-string">"\"\""</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"stopAtEntry"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"cwd"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"${fileDirname}"</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"environment"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"externalConsole"</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span></span><br><span class="line">            <span class="hljs-attr">"MIMode"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"lldb"</span></span><br><span class="line">        <span class="hljs-punctuation">}</span></span><br><span class="line">    <span class="hljs-punctuation">]</span></span><br><span class="line"><span class="hljs-punctuation">}</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// Use IntelliSense to learn about possible attributes.</span></span><br><span class="line">    <span class="comment">// Hover to view descriptions of existing attributes.</span></span><br><span class="line">    <span class="comment">// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span></span><br><span class="line">    <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.2.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;configurations&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ffmpeg&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cppdbg&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;request&quot;</span><span class="punctuation">:</span> <span class="string">&quot;launch&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;program&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;workspaceFolder&#125;/ffmpeg_g&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;-f&quot;</span><span class="punctuation">,</span> <span class="string">&quot;avfoundation&quot;</span><span class="punctuation">,</span> <span class="string">&quot;-list_devices&quot;</span><span class="punctuation">,</span> <span class="string">&quot;true&quot;</span><span class="punctuation">,</span> <span class="string">&quot;-i&quot;</span><span class="punctuation">,</span> <span class="string">&quot;\&quot;\&quot;&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;stopAtEntry&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;cwd&quot;</span><span class="punctuation">:</span> <span class="string">&quot;$&#123;fileDirname&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;environment&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;externalConsole&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;MIMode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lldb&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
 <p>设置断点,点击调试</p>
 <p><img src="https://s2.loli.net/2025/04/17/iqzMvgOTJa2KBb4.png" alt="2025-04-17 16.07.09.png"></p>
@@ -300,237 +313,199 @@
 <li><a target="_blank" rel="noopener" href="https://www.mo4tech.com/the-macos-platform-uses-vscode-to-debug-ffmpeg.html">The macOS platform uses vscode to debug ffmpeg</a></li>
 <li><a target="_blank" rel="noopener" href="https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/ubuntu18-clion.html">https://ffmpeg.xianwaizhiyin.net/base-knowledge/base-knowledge.html</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2025/04/19/Technology-learn-ios-100/">学习笔记 Mach-O 文件</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2025/04/16/Technology-learn-media-01/">音频基础概念</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/16/Technology-learn-media-01/" rel="prev" title="音视频 - 音频基础概念">
+      <i class="fa fa-chevron-left"></i> 音视频 - 音频基础概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/19/Technology-learn-ios-100/" rel="next" title="iOS - Mach-O 文件">
+      iOS - Mach-O 文件 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg"><span class="nav-number">2.</span> <span class="nav-text">ffmpeg</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BA%93%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">常用库简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">2.1.1.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%AA%92%E4%BD%93%E4%BF%A1%E6%81%AF"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">获取媒体信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%B0%81%E8%A3%85"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">解封装</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B0%83%E8%AF%95ffmpeg"><span class="nav-number">2.1.2.</span> <span class="nav-text">调试ffmpeg</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

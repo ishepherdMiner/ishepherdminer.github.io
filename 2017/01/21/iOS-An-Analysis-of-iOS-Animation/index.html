@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概要 启动图的价值 ?如何设置启动图 ?常见的启动图形式 ?  启动图的价值 A launch screen appears instantly when your app starts up. The launch screen is quickly replaced with the first screen of your app, giving the impression that yo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS - 应用的启动图动画">
+<meta property="og:url" content="http://yoursite.com/2017/01/21/iOS-An-Analysis-of-iOS-Animation/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="概要 启动图的价值 ?如何设置启动图 ?常见的启动图形式 ?  启动图的价值 A launch screen appears instantly when your app starts up. The launch screen is quickly replaced with the first screen of your app, giving the impression that yo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58832db1011e5.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58832db6250ea.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58832f5a20b83.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58832f5a68b7b.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/5883329e855ac.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58833348536f4.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/588333525fde8.png">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/21/58832db061c6e.jpg">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/23/588533f06ba65.gif">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/23/588533d931697.gif">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/23/588533db5f65e.gif">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/01/23/588533f7f3731.gif">
+<meta property="article:published_time" content="2017-01-21T09:41:11.000Z">
+<meta property="article:modified_time" content="2025-04-26T13:36:54.007Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Animation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/01/21/58832db1011e5.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2017/01/21/iOS-An-Analysis-of-iOS-Animation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - 应用的启动图动画 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/21/iOS-An-Analysis-of-iOS-Animation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - 应用的启动图动画
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-01-21 17:41:11" itemprop="dateCreated datePublished" datetime="2017-01-21T17:41:11+08:00">2017-01-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 21:36:54" itemprop="dateModified" datetime="2025-04-26T21:36:54+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><blockquote>
+<p>启动图的价值 ?<br>如何设置启动图 ?<br>常见的启动图形式 ?</p>
+</blockquote>
+<h2 id="启动图的价值"><a href="#启动图的价值" class="headerlink" title="启动图的价值"></a>启动图的价值</h2><blockquote>
+<p>A launch screen appears instantly when your app starts up. The launch screen is quickly replaced with the first screen of your app, giving the impression that your app is fast and responsive. The launch screen isn’t an opportunity for artistic expression. It’s solely intended to enhance the perception of your app as quick to launch and immediately ready for use. Every app must supply a launch screen.</p>
+</blockquote>
+<p><strong>启动屏</strong>主要是为了<strong>优化</strong>用户体验的</p>
+<p>在启动屏上显示文字或广告的行为在<em>Apple</em>的设计规范上并不提倡</p>
+<span id="more"></span>
+
+<h2 id="如何设置启动图"><a href="#如何设置启动图" class="headerlink" title="如何设置启动图"></a>如何设置启动图</h2><ul>
+<li><p>iOS8以下</p>
+<p>  针对不同尺寸的设备通过静态图片进行设置<br>  <img src="https://ooo.0o0.ooo/2017/01/21/58832db1011e5.jpg" alt="14844893364283.jpg"></p>
+</li>
+</ul>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/58832db6250ea.jpg" alt="14846093620387.jpg"></p>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/58832f5a20b83.jpg" alt="14846093935172.jpg"></p>
+<p>也可以将图片命名成系统指定的名称,程序运行时会默认使用该文件<br>可参考<em>demo</em>中的<em>LaunchAnimate</em></p>
+<p>注意:这两种方式都要把工程中的<em>Launch Screen File</em>内容置空,默认该配置的优先级最高</p>
+<ul>
+<li><p>iOS8以上(包括iOS8)</p>
+<p>  可以使用<em>LaunchScreen.storyboard</em>进行设置</p>
+</li>
+</ul>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/58832f5a68b7b.jpg" alt="14846094464304.jpg"></p>
+<p><strong>启动图片将在运行时生成?</strong></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/videos/wwdc2014/#102">WWDC 2014 Platform State of the Union</a></p>
+<p>通过<em>Xcode</em>导出沙盒文件,显示包内容<em>AppData/Library/Cache/Snapshots/<code>包名</code>/<a href="mailto:&#x78;&#x78;&#120;&#x40;&#x33;&#120;&#46;&#x6b;&#x74;&#x78;">&#x78;&#x78;&#120;&#x40;&#x33;&#120;&#46;&#x6b;&#x74;&#x78;</a>或<a href="mailto:&#120;&#120;&#x78;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#x67;">&#120;&#120;&#x78;&#64;&#50;&#x78;&#46;&#x70;&#x6e;&#x67;</a></em></p>
+<blockquote>
+<p>一般只有几百字节到2,3KB,虽然称之为快照,但是看上去和原图差别还是挺大的,酷狗的启动图,只生成一张纯白的图,而纯色的启动图看上去确实进行了截屏,算是证明会在运行时生成启动图吧?</p>
+</blockquote>
+<h2 id="常见的启动图形式"><a href="#常见的启动图形式" class="headerlink" title="常见的启动图形式"></a>常见的启动图形式</h2><ol>
+<li>静态图片,比如微信</li>
+<li>启动图上有动态文字或动画,比如酷狗音乐,手机京东</li>
+<li>启动图内容可变化(产品宣传/节日祝福/广告等),比如新浪微博,喜马拉雅</li>
+</ol>
+<p>微信</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/5883329e855ac.png" alt="IMG_0785.png"></p>
+<p>酷狗启动图</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/58833348536f4.png" alt="IMG_0800.png"></p>
+<p>微博</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/588333525fde8.png" alt="IMG_0807.png"></p>
+<h2 id="启动图动画设置"><a href="#启动图动画设置" class="headerlink" title="启动图动画设置"></a>启动图动画设置</h2><p><strong>限制</strong>:由上可知,<em>LaunchScreen.storyboard</em>方式下,运行时会生成截图,以后启动就会直接使用该截图,因此应用启动后的初识样式在设置后是不能改变的,然后在<em>LaunchScreen.Storyboard</em>不能是自定义的控制器,也不能放置自定义的视图。</p>
+<p><img src="https://ooo.0o0.ooo/2017/01/21/58832db061c6e.jpg" alt="14849891410454.jpg"></p>
+<p><strong>方案</strong>:根据限制,不要琢磨往真正的启动图上去添加动态文字或是动画,而采用当启动图结束后再进行操作,从<em>iOS8</em>开始通过<em>LaunchScreen.storyboard</em>可以获得一个<em>UIViewController</em>,虽然不能绑定自定义类,但是既然是控制器,自然有它的<em>view</em>,可以选择获取启动图的<em>view</em>,然后添加到合适的父视图中(差不多就是<em>UIWindow</em>,其他的视图如果有导航栏效果会不好),最后执行其他操作,<strong>可实现添加动态文字与动画的效果</strong>,iOS8以下也类似,只要确保启动图消失后新出现的视图和原来一致即可</p>
+<blockquote>
+<p>如何实现启动图有广告/节日图的效果呢?</p>
+</blockquote>
+<p>原理也差不多,启动图上半部分淡色一些,可以是纯白,底部有公司名称,logo等信息,全白肯定不好看,等启动图消失后,请求广告,如果有,就把广告加到视图的上半部分,本地有一张占位图,没广告或祝福就显示那一张,广告可以做个预加载,效果会好一些,至于底部同样是公司名称,<em>logo</em>等信息</p>
+<h3 id="启动图动态文字与动画"><a href="#启动图动态文字与动画" class="headerlink" title="启动图动态文字与动画"></a>启动图动态文字与动画</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// - 别忘了在LaunchScreen.storyboard文件中要添加标记</span></span><br><span class="line"><span class="built_in">UIViewController</span> *viewController = [[<span class="built_in">UIStoryboard</span> storyboardWithName:<span class="string">@&quot;LaunchScreen&quot;</span> bundle:<span class="literal">nil</span>] instantiateViewControllerWithIdentifier:<span class="string">@&quot;LaunchScreen&quot;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// - 获取view</span></span><br><span class="line"><span class="built_in">UIView</span> *launchView = viewController.view;</span><br><span class="line">[<span class="keyword">self</span> compatibleWithLaunchView:launchView];</span><br><span class="line">    </span><br><span class="line"><span class="built_in">UIWindow</span> *mainWindow = [<span class="built_in">UIApplication</span> sharedApplication].keyWindow;</span><br><span class="line">launchView.frame = [<span class="built_in">UIApplication</span> sharedApplication].keyWindow.frame;</span><br><span class="line">[launchView addSubview:<span class="keyword">self</span>.dynamicLabel];</span><br><span class="line">[mainWindow addSubview:launchView];</span><br><span class="line"></span><br><span class="line"><span class="comment">// - 动画</span></span><br><span class="line">[<span class="built_in">UIView</span> animateWithDuration:<span class="number">1.0</span>f delay:<span class="number">0.5</span>f options:<span class="built_in">UIViewAnimationOptionCurveLinear</span> animations:^&#123;</span><br><span class="line"></span><br><span class="line">   launchView.alpha = <span class="number">0.0</span>f;</span><br><span class="line">   launchView.layer.transform = <span class="built_in">CATransform3DScale</span>(<span class="built_in">CATransform3DIdentity</span>, <span class="number">2.0</span>f, <span class="number">2.0</span>f, <span class="number">1.0</span>f);</span><br><span class="line"></span><br><span class="line">&#125; completion:^(<span class="type">BOOL</span> finished) &#123;</span><br><span class="line">   [launchView removeFromSuperview];</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动图添加广告-节日祝福"><a href="#启动图添加广告-节日祝福" class="headerlink" title="启动图添加广告/节日祝福"></a>启动图添加广告/节日祝福</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.splashView];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 忽略有广告时状态栏需要隐藏再出现</span></span><br><span class="line">    <span class="type">BOOL</span> hasAd = arc4random() % <span class="number">3</span> == <span class="number">1</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (hasAd) &#123;</span><br><span class="line">        <span class="comment">// - 可以把下一张广告图也请求下来,实现预加载,看上去效果会比较好</span></span><br><span class="line">        [<span class="keyword">self</span>.adImgView sd_setImageWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@&quot;https://ooo.0o0.ooo/2017/01/20/58821a46b366e.png&quot;</span>]];</span><br><span class="line">        [<span class="keyword">self</span>.splashView addSubview:<span class="keyword">self</span>.adImgView];</span><br><span class="line">        [<span class="keyword">self</span>.splashView addSubview:<span class="keyword">self</span>.splashImgView];</span><br><span class="line">        </span><br><span class="line">        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(<span class="number">2.5</span> * <span class="built_in">NSEC_PER_SEC</span>)), dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            [<span class="keyword">self</span>.splashView removeFromSuperview];</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        </span><br><span class="line">        [<span class="keyword">self</span>.splashView addSubview:<span class="keyword">self</span>.avatorImgView];</span><br><span class="line">        </span><br><span class="line">        [<span class="built_in">UIView</span> animateWithDuration:<span class="number">1.5</span> animations:^&#123;</span><br><span class="line">            <span class="keyword">self</span>.avatorImgView.transform = <span class="built_in">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">-60</span>);</span><br><span class="line">        &#125; completion:^(<span class="type">BOOL</span> finished) &#123;</span><br><span class="line">            [<span class="keyword">self</span>.splashView removeFromSuperview];</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// - 显示控制器页面逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="https://ooo.0o0.ooo/2017/01/23/588533f06ba65.gif" alt="Launch_Wechat.gif"><br><img src="https://ooo.0o0.ooo/2017/01/23/588533d931697.gif" alt="Launch_Kugou.gif"><br><img src="https://ooo.0o0.ooo/2017/01/23/588533db5f65e.gif" alt="Launch_Weibo.gif"><br><img src="https://ooo.0o0.ooo/2017/01/23/588533f7f3731.gif" alt="Launch_Weibo2.gif"></p>
+<h2 id="更新-170419"><a href="#更新-170419" class="headerlink" title="更新 170419"></a>更新 170419</h2><h3 id="注意点"><a href="#注意点" class="headerlink" title="注意点"></a>注意点</h3><p>测试过程中发现, <em>LaunchScreen.storyboard</em> 时,顶部约束要离 <em>Top Layout Guide</em> <em>20</em> 个点,不然显示时能有变形感觉。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/LaunchAnimate">demo</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/ios/human-interface-guidelines/graphics/launch-screen/">iOS Human Interface Guidelines - Launch Screen</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/77054dccafdb">iOS开发时如何使用 Launch Screen Storyboard</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/2f1149269cd0">通过LaunchScreen自定义启动动画</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Flying-Einstein/LaunchScreenTest">LaunchScreenTest</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Animation/" rel="tag"># Animation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/01/21/iOSer-How-to-export-the-ipa-file-for-other-apps-on-iOS9/" rel="prev" title="iOS9上如何导出其他应用的.ipa文件">
+      <i class="fa fa-chevron-left"></i> iOS9上如何导出其他应用的.ipa文件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/01/27/iOSer-Understand-objc-runtime-4-runtime-process-analysis/" rel="next" title="iOS - objc运行时四-运行时流程分析">
+      iOS - objc运行时四-运行时流程分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%9B%BE%E7%9A%84%E4%BB%B7%E5%80%BC"><span class="nav-number">2.</span> <span class="nav-text">启动图的价值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E5%90%AF%E5%8A%A8%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">如何设置启动图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E5%90%AF%E5%8A%A8%E5%9B%BE%E5%BD%A2%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">常见的启动图形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%9B%BE%E5%8A%A8%E7%94%BB%E8%AE%BE%E7%BD%AE"><span class="nav-number">5.</span> <span class="nav-text">启动图动画设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%9B%BE%E5%8A%A8%E6%80%81%E6%96%87%E5%AD%97%E4%B8%8E%E5%8A%A8%E7%94%BB"><span class="nav-number">5.1.</span> <span class="nav-text">启动图动态文字与动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%9B%BE%E6%B7%BB%E5%8A%A0%E5%B9%BF%E5%91%8A-%E8%8A%82%E6%97%A5%E7%A5%9D%E7%A6%8F"><span class="nav-number">5.2.</span> <span class="nav-text">启动图添加广告&#x2F;节日祝福</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%88%E6%9E%9C%E5%9B%BE"><span class="nav-number">6.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0-170419"><span class="nav-number">7.</span> <span class="nav-text">更新 170419</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">7.1.</span> <span class="nav-text">注意点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">8.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

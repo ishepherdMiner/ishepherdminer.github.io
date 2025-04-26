@@ -1,243 +1,225 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>实践 - Touch ID 解锁功能 - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="导语iOS 8 引入了 Touch ID 认证的方式来解决输入密码的麻烦操作，Swift 最低需要 iOS 8，因此本文会用 Swift 来实现 Touch ID 功能 环境 macOS Sierra 10.12.4Xcode 8.3.1Swift 3.0iPhone 6S 10.1.1   Touch ID 需要硬件支持">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="导语iOS 8 引入了 Touch ID 认证的方式来解决输入密码的麻烦操作，Swift 最低需要 iOS 8，因此本文会用 Swift 来实现 Touch ID 功能 环境 macOS Sierra 10.12.4Xcode 8.3.1Swift 3.0iPhone 6S 10.1.1   Touch ID 需要硬件支持">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实践 - Touch ID 解锁功能">
+<meta property="og:title" content="iOS - Touch ID 解锁功能">
 <meta property="og:url" content="http://yoursite.com/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="导语iOS 8 引入了 Touch ID 认证的方式来解决输入密码的麻烦操作，Swift 最低需要 iOS 8，因此本文会用 Swift 来实现 Touch ID 功能 环境 macOS Sierra 10.12.4Xcode 8.3.1Swift 3.0iPhone 6S 10.1.1   Touch ID 需要硬件支持">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/04/26/59001658aecb8.jpg">
 <meta property="article:published_time" content="2017-04-28T23:58:00.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:06:17.256Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:33:54.184Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="LocalAuthtication">
+<meta property="article:tag" content="Mechanism">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - Touch ID 解锁功能 | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#导语">1&nbsp;&nbsp;<b>导语</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#LocalAuthentication-framework">3&nbsp;&nbsp;<b>LocalAuthentication.framework</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#LAContext">4&nbsp;&nbsp;<b>LAContext</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#能不能">4.1&nbsp;&nbsp;能不能?</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#LAPolicy">4.1.1&nbsp;&nbsp;LAPolicy</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#NSErrorPointer">4.1.2&nbsp;&nbsp;NSErrorPointer</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#流程-显示什么-结果如何">4.2&nbsp;&nbsp;流程(显示什么,结果如何?)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#localizedReason">4.2.1&nbsp;&nbsp;localizedReason</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#reply">4.2.2&nbsp;&nbsp;reply</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#LAError">5&nbsp;&nbsp;<b>LAError</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#Code">6&nbsp;&nbsp;<b>Code</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#总结">6.1&nbsp;&nbsp;总结</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            实践 - Touch ID 解锁功能
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-04-28T23:58:00.000Z" itemprop="datePublished">4月 29 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            4 分钟 读完 (约 584 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8</em>，因此本文会用 <em>Swift</em> 来实现 <em>Touch ID</em> 功能</p>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - Touch ID 解锁功能
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-29 07:58:00" itemprop="dateCreated datePublished" datetime="2017-04-29T07:58:00+08:00">2017-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:33:54" itemprop="dateModified" datetime="2025-04-26T22:33:54+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8</em>，因此本文会用 <em>Swift</em> 来实现 <em>Touch ID</em> 功能</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Swift 3.0<br>iPhone 6S 10.1.1 </p>
 </blockquote>
@@ -249,14 +231,14 @@
 <p><img src="https://ooo.0o0.ooo/2017/04/26/59001658aecb8.jpg"></p>
 <h2 id="LAContext"><a href="#LAContext" class="headerlink" title="LAContext"></a><code>LAContext</code></h2><p><em>Touch ID</em> 认证的上下文对象</p>
 <p>有两个方法</p>
-<h3 id="能不能"><a href="#能不能" class="headerlink" title="能不能?"></a>能不能?</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">open</span> <span class="hljs-keyword">func</span> <span class="title function_">canEvaluatePolicy</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">policy</span>: <span class="hljs-type">LAPolicy</span>, <span class="hljs-params">error</span>: <span class="hljs-type">NSErrorPointer</span>) -&gt; <span class="hljs-type">Bool</span></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="能不能"><a href="#能不能" class="headerlink" title="能不能?"></a>能不能?</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">canEvaluatePolicy</span>(<span class="keyword">_</span> <span class="params">policy</span>: <span class="type">LAPolicy</span>, <span class="params">error</span>: <span class="type">NSErrorPointer</span>) -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="LAPolicy"><a href="#LAPolicy" class="headerlink" title="LAPolicy"></a><code>LAPolicy</code></h4><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="title class_">LAPolicy</span> : <span class="title class_ inherited__">Int</span> {</span><br><span class="line"><span class="hljs-comment">/// Device owner was authenticated using a biometric method (Touch ID).</span></span><br><span class="line"><span class="hljs-keyword">@available</span>(<span class="hljs-keyword">iOS</span> <span class="hljs-number">8.0</span>, <span class="hljs-operator">*</span>)</span><br><span class="line">    <span class="hljs-keyword">case</span> deviceOwnerAuthenticationWithBiometrics</span><br><span class="line">    </span><br><span class="line"><span class="hljs-comment">/// Device owner was authenticated by Touch ID or device passcode.</span></span><br><span class="line"><span class="hljs-keyword">@available</span>(<span class="hljs-keyword">iOS</span> <span class="hljs-number">9.0</span>, <span class="hljs-operator">*</span>)</span><br><span class="line">    <span class="hljs-keyword">case</span> deviceOwnerAuthentication</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="LAPolicy"><a href="#LAPolicy" class="headerlink" title="LAPolicy"></a><code>LAPolicy</code></h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">LAPolicy</span> : <span class="title class_ inherited__">Int</span> &#123;</span><br><span class="line"><span class="comment">/// Device owner was authenticated using a biometric method (Touch ID).</span></span><br><span class="line"><span class="keyword">@available</span>(<span class="keyword">iOS</span> <span class="number">8.0</span>, <span class="operator">*</span>)</span><br><span class="line">    <span class="keyword">case</span> deviceOwnerAuthenticationWithBiometrics</span><br><span class="line">    </span><br><span class="line"><span class="comment">/// Device owner was authenticated by Touch ID or device passcode.</span></span><br><span class="line"><span class="keyword">@available</span>(<span class="keyword">iOS</span> <span class="number">9.0</span>, <span class="operator">*</span>)</span><br><span class="line">    <span class="keyword">case</span> deviceOwnerAuthentication</span><br></pre></td></tr></table></figure>
 
 <p>具体用那种策略去验证。</p>
-<h4 id="NSErrorPointer"><a href="#NSErrorPointer" class="headerlink" title="NSErrorPointer"></a><code>NSErrorPointer</code></h4><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">typealias</span> <span class="hljs-type">NSErrorPointer</span> <span class="hljs-operator">=</span> <span class="hljs-type">AutoreleasingUnsafeMutablePointer</span>&lt;<span class="hljs-type">NSError</span>?&gt;?</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="NSErrorPointer"><a href="#NSErrorPointer" class="headerlink" title="NSErrorPointer"></a><code>NSErrorPointer</code></h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">typealias</span> <span class="type">NSErrorPointer</span> <span class="operator">=</span> <span class="type">AutoreleasingUnsafeMutablePointer</span>&lt;<span class="type">NSError</span>?&gt;?</span><br></pre></td></tr></table></figure>
 
-<h3 id="流程-显示什么-结果如何"><a href="#流程-显示什么-结果如何" class="headerlink" title="流程(显示什么,结果如何?)"></a>流程(显示什么,结果如何?)</h3><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">open</span> <span class="hljs-keyword">func</span> <span class="title function_">evaluatePolicy</span>(<span class="hljs-keyword">_</span> <span class="hljs-params">policy</span>: <span class="hljs-type">LAPolicy</span>, <span class="hljs-params">localizedReason</span>: <span class="hljs-type">String</span>, <span class="hljs-params">reply</span>: <span class="hljs-keyword">@escaping</span> (<span class="hljs-type">Bool</span>, <span class="hljs-type">Error</span>?) -&gt; <span class="hljs-type">Swift</span>.<span class="hljs-type">Void</span>)</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="流程-显示什么-结果如何"><a href="#流程-显示什么-结果如何" class="headerlink" title="流程(显示什么,结果如何?)"></a>流程(显示什么,结果如何?)</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="keyword">func</span> <span class="title function_">evaluatePolicy</span>(<span class="keyword">_</span> <span class="params">policy</span>: <span class="type">LAPolicy</span>, <span class="params">localizedReason</span>: <span class="type">String</span>, <span class="params">reply</span>: <span class="keyword">@escaping</span> (<span class="type">Bool</span>, <span class="type">Error</span>?) -&gt; <span class="type">Swift</span>.<span class="type">Void</span>)</span><br></pre></td></tr></table></figure>
 
 <h4 id="localizedReason"><a href="#localizedReason" class="headerlink" title="localizedReason"></a><code>localizedReason</code></h4><p> 要求 <em>Touch ID</em> 验证的原因</p>
 <h4 id="reply"><a href="#reply" class="headerlink" title="reply"></a><code>reply</code></h4><p>返回的结果后的回调</p>
@@ -277,7 +259,7 @@
 <li><em>LAContext</em> 上下文对象有不合法</li>
 </ul>
 <p>具体详情可以查看 <em>LAError</em> 枚举的定义</p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a><code>Code</code></h2><figure class="highlight swift hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">func</span> <span class="title function_">authenticateUser</span>() {</span><br><span class="line">   <span class="hljs-comment">// Get the local authentication context.</span></span><br><span class="line">   <span class="hljs-keyword">let</span> context <span class="hljs-operator">=</span> <span class="hljs-type">LAContext</span>()</span><br><span class="line">   </span><br><span class="line">   <span class="hljs-comment">// Declare a NSError variable.</span></span><br><span class="line">   <span class="hljs-keyword">var</span> error: <span class="hljs-type">NSError</span>?</span><br><span class="line">   </span><br><span class="line">   <span class="hljs-comment">// Set the reason string that will appear on the authentication alert.</span></span><br><span class="line">   <span class="hljs-keyword">let</span> reasonString <span class="hljs-operator">=</span> <span class="hljs-string">"请画押🐾"</span></span><br><span class="line">   </span><br><span class="line">   <span class="hljs-keyword">if</span> context.canEvaluatePolicy(<span class="hljs-type">LAPolicy</span>.deviceOwnerAuthenticationWithBiometrics, error: <span class="hljs-operator">&amp;</span>error) {</span><br><span class="line">       <span class="hljs-keyword">_</span> <span class="hljs-operator">=</span> [context .evaluatePolicy(<span class="hljs-type">LAPolicy</span>.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: { (success: <span class="hljs-type">Bool</span>, evalPolicyError: <span class="hljs-type">Error</span>?) -&gt; <span class="hljs-type">Swift</span>.<span class="hljs-type">Void</span> <span class="hljs-keyword">in</span></span><br><span class="line">           </span><br><span class="line">           <span class="hljs-keyword">if</span> success {</span><br><span class="line">               <span class="hljs-built_in">print</span>(<span class="hljs-string">"Authentication success"</span>)</span><br><span class="line">           } <span class="hljs-keyword">else</span>{</span><br><span class="line"></span><br><span class="line">               <span class="hljs-keyword">let</span> err : <span class="hljs-type">LAError</span> <span class="hljs-operator">=</span> <span class="hljs-type">LAError</span>(_nsError: evalPolicyError<span class="hljs-operator">!</span> <span class="hljs-keyword">as</span> <span class="hljs-type">NSError</span>)</span><br><span class="line">               <span class="hljs-keyword">switch</span> err.code.rawValue {</span><br><span class="line">               <span class="hljs-keyword">case</span> <span class="hljs-type">LAError</span>.systemCancel.rawValue:</span><br><span class="line">                   <span class="hljs-built_in">print</span>(<span class="hljs-string">"Authentication was cancelled by the system"</span>)</span><br><span class="line">               <span class="hljs-keyword">case</span> <span class="hljs-type">LAError</span>.userCancel.rawValue:</span><br><span class="line">                   <span class="hljs-built_in">print</span>(<span class="hljs-string">"Authentication was cancelled by the user"</span>)</span><br><span class="line">               <span class="hljs-keyword">case</span> <span class="hljs-type">LAError</span>.userFallback.rawValue:</span><br><span class="line">                   <span class="hljs-built_in">print</span>(<span class="hljs-string">"User selected to enter custom password"</span>)</span><br><span class="line">               default:</span><br><span class="line">                   <span class="hljs-built_in">print</span>(<span class="hljs-string">"Authentication failed"</span>)</span><br><span class="line">                   <span class="hljs-keyword">break</span></span><br><span class="line">               }</span><br><span class="line">           }</span><br><span class="line">           </span><br><span class="line">       } )]</span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a><code>Code</code></h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">func</span> <span class="title function_">authenticateUser</span>() &#123;</span><br><span class="line">   <span class="comment">// Get the local authentication context.</span></span><br><span class="line">   <span class="keyword">let</span> context <span class="operator">=</span> <span class="type">LAContext</span>()</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Declare a NSError variable.</span></span><br><span class="line">   <span class="keyword">var</span> error: <span class="type">NSError</span>?</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// Set the reason string that will appear on the authentication alert.</span></span><br><span class="line">   <span class="keyword">let</span> reasonString <span class="operator">=</span> <span class="string">&quot;请画押🐾&quot;</span></span><br><span class="line">   </span><br><span class="line">   <span class="keyword">if</span> context.canEvaluatePolicy(<span class="type">LAPolicy</span>.deviceOwnerAuthenticationWithBiometrics, error: <span class="operator">&amp;</span>error) &#123;</span><br><span class="line">       <span class="keyword">_</span> <span class="operator">=</span> [context .evaluatePolicy(<span class="type">LAPolicy</span>.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: &#123; (success: <span class="type">Bool</span>, evalPolicyError: <span class="type">Error</span>?) -&gt; <span class="type">Swift</span>.<span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">           </span><br><span class="line">           <span class="keyword">if</span> success &#123;</span><br><span class="line">               <span class="built_in">print</span>(<span class="string">&quot;Authentication success&quot;</span>)</span><br><span class="line">           &#125; <span class="keyword">else</span>&#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">let</span> err : <span class="type">LAError</span> <span class="operator">=</span> <span class="type">LAError</span>(_nsError: evalPolicyError<span class="operator">!</span> <span class="keyword">as</span> <span class="type">NSError</span>)</span><br><span class="line">               <span class="keyword">switch</span> err.code.rawValue &#123;</span><br><span class="line">               <span class="keyword">case</span> <span class="type">LAError</span>.systemCancel.rawValue:</span><br><span class="line">                   <span class="built_in">print</span>(<span class="string">&quot;Authentication was cancelled by the system&quot;</span>)</span><br><span class="line">               <span class="keyword">case</span> <span class="type">LAError</span>.userCancel.rawValue:</span><br><span class="line">                   <span class="built_in">print</span>(<span class="string">&quot;Authentication was cancelled by the user&quot;</span>)</span><br><span class="line">               <span class="keyword">case</span> <span class="type">LAError</span>.userFallback.rawValue:</span><br><span class="line">                   <span class="built_in">print</span>(<span class="string">&quot;User selected to enter custom password&quot;</span>)</span><br><span class="line">               default:</span><br><span class="line">                   <span class="built_in">print</span>(<span class="string">&quot;Authentication failed&quot;</span>)</span><br><span class="line">                   <span class="keyword">break</span></span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">           </span><br><span class="line">       &#125; )]</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/Daily_modules">Demo</a></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>　　<em>Touch ID</em> 功能的设计其实比较直观，实现也挺容易的，遇到的干扰主要是 <em>Swift</em> 由于版本迭代语法上的差异。</p>
@@ -287,237 +269,203 @@
 <li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Touch_ID">Touch ID</a></li>
 <li><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/37843049/xcode-8-swift-3-expression-of-type-uiviewcontroller-is-unused-warning">Xcode 8 / Swift 3: “Expression of type UIViewController? is unused” warning</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2017/05/05/iOSer-objc-709-project-structures/">objc4-709工程搭建</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2017/04/27/iOSer-Small-note-Apple-developer-renewal/">小记 - Apple 开发者续费</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/LocalAuthtication/" rel="tag"># LocalAuthtication</a>
+              <a href="/tags/Mechanism/" rel="tag"># Mechanism</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/27/iOSer-Small-note-Apple-developer-renewal/" rel="prev" title="小记 - Apple 开发者续费">
+      <i class="fa fa-chevron-left"></i> 小记 - Apple 开发者续费
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/05/iOSer-objc-709-project-structures/" rel="next" title="iOS - objc4-709工程搭建">
+      iOS - objc4-709工程搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E8%AF%AD"><span class="nav-number">1.</span> <span class="nav-text">导语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalAuthentication-framework"><span class="nav-number">3.</span> <span class="nav-text">LocalAuthentication.framework</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LAContext"><span class="nav-number">4.</span> <span class="nav-text">LAContext</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E4%B8%8D%E8%83%BD"><span class="nav-number">4.1.</span> <span class="nav-text">能不能?</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LAPolicy"><span class="nav-number">4.1.1.</span> <span class="nav-text">LAPolicy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSErrorPointer"><span class="nav-number">4.1.2.</span> <span class="nav-text">NSErrorPointer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B-%E6%98%BE%E7%A4%BA%E4%BB%80%E4%B9%88-%E7%BB%93%E6%9E%9C%E5%A6%82%E4%BD%95"><span class="nav-number">4.2.</span> <span class="nav-text">流程(显示什么,结果如何?)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#localizedReason"><span class="nav-number">4.2.1.</span> <span class="nav-text">localizedReason</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reply"><span class="nav-number">4.2.2.</span> <span class="nav-text">reply</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LAError"><span class="nav-number">5.</span> <span class="nav-text">LAError</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">6.</span> <span class="nav-text">Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

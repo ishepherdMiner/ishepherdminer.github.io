@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>ObjC Runtime 中 Weak 属性的实现 (上) - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="前言　 OC 中的 weak 属性是怎么实现的，为什么在对象释放后会自动变成 nil？本文对这个问题进行了一点探讨。 环境　  mac OS Sierra 10.12.4objc709  参考答案　 搜索后发现runtime 如何实现 weak 属性给出了一个参考答案。  runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言　 OC 中的 weak 属性是怎么实现的，为什么在对象释放后会自动变成 nil？本文对这个问题进行了一点探讨。 环境　  mac OS Sierra 10.12.4objc709  参考答案　 搜索后发现runtime 如何实现 weak 属性给出了一个参考答案。  runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ObjC Runtime 中 Weak 属性的实现 (上)">
+<meta property="og:title" content="iOS - ObjC Runtime 中 Weak 属性的实现 (上)">
 <meta property="og:url" content="http://yoursite.com/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="前言　 OC 中的 weak 属性是怎么实现的，为什么在对象释放后会自动变成 nil？本文对这个问题进行了一点探讨。 环境　  mac OS Sierra 10.12.4objc709  参考答案　 搜索后发现runtime 如何实现 weak 属性给出了一个参考答案。  runtime 对注册的类， 会进行布局，对于 weak 对象会放入一个 hash 表中。 用 weak 指向的对象内存地址作">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/05/29/592bf9410efbb.jpg">
@@ -33,236 +35,196 @@
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/05/29/592bf940c681b.jpg">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/05/29/592bf9425970f.jpg">
 <meta property="article:published_time" content="2017-05-29T10:34:18.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:05:14.743Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:35:08.499Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Runtime">
+<meta property="article:tag" content="Mechanism">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/05/29/592bf9410efbb.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - ObjC Runtime 中 Weak 属性的实现 (上) | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考答案">3&nbsp;&nbsp;<b>参考答案</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#测试">4&nbsp;&nbsp;<b>测试</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#代码">4.1&nbsp;&nbsp;代码</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#结果">4.2&nbsp;&nbsp;结果</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#相关函数">4.3&nbsp;&nbsp;相关函数</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#小结">4.4&nbsp;&nbsp;小结</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#观察-amp-分析">5&nbsp;&nbsp;<b>观察 &amp;amp; 分析</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#观察-id-objc-storeWeak-id-location-id-newObj">5.1&nbsp;&nbsp;观察: id objc_storeWeak(id *location, id newObj)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#观察-void-objc-destroyWeak-id-location">5.2&nbsp;&nbsp;观察: void objc_destroyWeak(id *location)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#函数-storeWeak-源码">5.3&nbsp;&nbsp;函数 storeWeak 源码</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#分析-id-objc-storeWeak-id-location-id-newObj">5.4&nbsp;&nbsp;分析: id objc_storeWeak(id *location, id newObj)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#铺垫-SideTable">5.4.1&nbsp;&nbsp;铺垫: SideTable</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#正文-id-objc-storeWeak-id-location-id-newObj">5.4.2&nbsp;&nbsp;正文: id objc_storeWeak(id *location, id newObj)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#分析-void-objc-destroyWeak-id-location">5.5&nbsp;&nbsp;分析: void objc_destroyWeak(id *location)</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#分析-id-objc-loadWeakRetained-id-location">5.6&nbsp;&nbsp;分析: id objc_loadWeakRetained(id *location)</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#总结">6&nbsp;&nbsp;<b>总结</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">7&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            ObjC Runtime 中 Weak 属性的实现 (上)
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-05-29T10:34:18.000Z" itemprop="datePublished">5月 29 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            19 分钟 读完 (约 2810 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - ObjC Runtime 中 Weak 属性的实现 (上)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-05-29 18:34:18" itemprop="dateCreated datePublished" datetime="2017-05-29T18:34:18+08:00">2017-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:35:08" itemprop="dateModified" datetime="2025-04-26T22:35:08+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
 <p><code>OC</code> 中的 <code>weak</code> 属性是怎么实现的，为什么在对象释放后会自动变成 <em>nil</em>？本文对这个问题进行了一点探讨。</p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
 <blockquote>
@@ -277,7 +239,7 @@
 
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>　</p>
 <h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@interface</span> <span class="hljs-title">WeakProperty</span> : <span class="hljs-title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@property</span> (<span class="hljs-keyword">nonatomic</span>,<span class="hljs-keyword">weak</span>) <span class="hljs-built_in">NSObject</span> *obj;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">@implementation</span> <span class="hljs-title">WeakProperty</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="hljs-type">void</span>)dealloc {</span><br><span class="line">    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%s"</span>,__func__);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="hljs-type">int</span> main(<span class="hljs-type">int</span> argc, <span class="hljs-keyword">const</span> <span class="hljs-type">char</span> * argv[]) {</span><br><span class="line">    <span class="hljs-keyword">@autoreleasepool</span> {</span><br><span class="line">        WeakProperty *property = [[WeakProperty alloc] init];</span><br><span class="line">        <span class="hljs-built_in">NSObject</span> *obj = [[<span class="hljs-built_in">NSObject</span> alloc] init];</span><br><span class="line">        property.obj = obj;     </span><br><span class="line">        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"%@"</span>,property.obj);   </span><br><span class="line">        </span><br><span class="line">        <span class="hljs-comment">// 会触发函数 ``id objc_initWeak(id *location, id newObj)``       </span></span><br><span class="line">        <span class="hljs-comment">// NSObject *obj = [[NSObject alloc] init];</span></span><br><span class="line">        <span class="hljs-comment">// __weak NSObject *obj2 = obj;</span></span><br><span class="line">        <span class="hljs-comment">// 会触发函数 ``void objc_copyWeak(id *dst, id *src)``</span></span><br><span class="line">        <span class="hljs-comment">// __weak NSObject *obj3 = obj2;</span></span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">WeakProperty</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">weak</span>) <span class="built_in">NSObject</span> *obj;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">WeakProperty</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="type">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;%s&quot;</span>,__func__);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        WeakProperty *property = [[WeakProperty alloc] init];</span><br><span class="line">        <span class="built_in">NSObject</span> *obj = [[<span class="built_in">NSObject</span> alloc] init];</span><br><span class="line">        property.obj = obj;     </span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;%@&quot;</span>,property.obj);   </span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 会触发函数 ``id objc_initWeak(id *location, id newObj)``       </span></span><br><span class="line">        <span class="comment">// NSObject *obj = [[NSObject alloc] init];</span></span><br><span class="line">        <span class="comment">// __weak NSObject *obj2 = obj;</span></span><br><span class="line">        <span class="comment">// 会触发函数 ``void objc_copyWeak(id *dst, id *src)``</span></span><br><span class="line">        <span class="comment">// __weak NSObject *obj3 = obj2;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>　</p>
 <p>对象的 <code>weak</code> 属性调用 <code>setter</code> 时</p>
@@ -322,19 +284,19 @@
 <li>函数 <code>id objc_loadWeakRetained(id *location)</code></li>
 </ol>
 <h3 id="观察-id-objc-storeWeak-id-location-id-newObj"><a href="#观察-id-objc-storeWeak-id-location-id-newObj" class="headerlink" title="观察: id objc_storeWeak(id *location, id newObj)"></a>观察: <code>id objc_storeWeak(id *location, id newObj)</code></h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * This function stores a new value into a __weak variable. It would</span></span><br><span class="line"><span class="hljs-comment"> * be used anywhere a __weak variable is the target of an assignment.</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param location The address of the weak pointer itself</span></span><br><span class="line"><span class="hljs-comment"> * @param newObj The new object this weak ptr should now point to</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @return \e newObj</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-type">id</span></span><br><span class="line">objc_storeWeak(<span class="hljs-type">id</span> *location, <span class="hljs-type">id</span> newObj)</span><br><span class="line">{</span><br><span class="line">    <span class="hljs-keyword">return</span> storeWeak&lt;DoHaveOld, DoHaveNew, DoCrashIfDeallocating&gt;</span><br><span class="line">        (location, (objc_object *)newObj);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * This function stores a new value into a __weak variable. It would</span></span><br><span class="line"><span class="comment"> * be used anywhere a __weak variable is the target of an assignment.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * @param location The address of the weak pointer itself</span></span><br><span class="line"><span class="comment"> * @param newObj The new object this weak ptr should now point to</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * @return \e newObj</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">id</span></span><br><span class="line">objc_storeWeak(<span class="type">id</span> *location, <span class="type">id</span> newObj)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> storeWeak&lt;DoHaveOld, DoHaveNew, DoCrashIfDeallocating&gt;</span><br><span class="line">        (location, (objc_object *)newObj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>该函数单纯的调用了 <code>storeWeak</code> 函数</p>
 <h3 id="观察-void-objc-destroyWeak-id-location"><a href="#观察-void-objc-destroyWeak-id-location" class="headerlink" title="观察: void objc_destroyWeak(id *location)"></a>观察: <code>void objc_destroyWeak(id *location)</code></h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/** </span></span><br><span class="line"><span class="hljs-comment"> * Destroys the relationship between a weak pointer</span></span><br><span class="line"><span class="hljs-comment"> * and the object it is referencing in the internal weak</span></span><br><span class="line"><span class="hljs-comment"> * table. If the weak pointer is not referencing anything, </span></span><br><span class="line"><span class="hljs-comment"> * there is no need to edit the weak table. </span></span><br><span class="line"><span class="hljs-comment"> *</span></span><br><span class="line"><span class="hljs-comment"> * This function IS NOT thread-safe with respect to concurrent </span></span><br><span class="line"><span class="hljs-comment"> * modifications to the weak variable. (Concurrent weak clear is safe.)</span></span><br><span class="line"><span class="hljs-comment"> * </span></span><br><span class="line"><span class="hljs-comment"> * @param location The weak pointer address. </span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-type">void</span></span><br><span class="line">objc_destroyWeak(<span class="hljs-type">id</span> *location)</span><br><span class="line">{</span><br><span class="line">    (<span class="hljs-type">void</span>)storeWeak&lt;DoHaveOld, DontHaveNew, DontCrashIfDeallocating&gt;</span><br><span class="line">        (location, <span class="hljs-literal">nil</span>);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * Destroys the relationship between a weak pointer</span></span><br><span class="line"><span class="comment"> * and the object it is referencing in the internal weak</span></span><br><span class="line"><span class="comment"> * table. If the weak pointer is not referencing anything, </span></span><br><span class="line"><span class="comment"> * there is no need to edit the weak table. </span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This function IS NOT thread-safe with respect to concurrent </span></span><br><span class="line"><span class="comment"> * modifications to the weak variable. (Concurrent weak clear is safe.)</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * @param location The weak pointer address. </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line">objc_destroyWeak(<span class="type">id</span> *location)</span><br><span class="line">&#123;</span><br><span class="line">    (<span class="type">void</span>)storeWeak&lt;DoHaveOld, DontHaveNew, DontCrashIfDeallocating&gt;</span><br><span class="line">        (location, <span class="literal">nil</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>该函数也只是单纯的调用了 <code>storeWeak</code> 函数</p>
 <h3 id="函数-storeWeak-源码"><a href="#函数-storeWeak-源码" class="headerlink" title="函数 storeWeak 源码"></a>函数 <code>storeWeak</code> 源码</h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">template &lt;HaveOld haveOld, HaveNew haveNew,</span><br><span class="line">          CrashIfDeallocating crashIfDeallocating&gt;</span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">id</span> </span><br><span class="line">storeWeak(<span class="hljs-type">id</span> *location, objc_object *newObj)</span><br><span class="line">{</span><br><span class="line">    assert(haveOld  ||  haveNew);</span><br><span class="line">    <span class="hljs-keyword">if</span> (!haveNew) assert(newObj == <span class="hljs-literal">nil</span>);</span><br><span class="line"></span><br><span class="line">    Class previouslyInitializedClass = <span class="hljs-literal">nil</span>;</span><br><span class="line">    <span class="hljs-type">id</span> oldObj;</span><br><span class="line">    SideTable *oldTable;</span><br><span class="line">    SideTable *newTable;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Acquire locks for old and new values.</span></span><br><span class="line">    <span class="hljs-comment">// Order by lock address to prevent lock ordering problems. </span></span><br><span class="line">    <span class="hljs-comment">// Retry if the old value changes underneath us.</span></span><br><span class="line"> retry:</span><br><span class="line">    <span class="hljs-keyword">if</span> (haveOld) {</span><br><span class="line">        oldObj = *location;</span><br><span class="line">        oldTable = &amp;SideTables()[oldObj];</span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        oldTable = <span class="hljs-literal">nil</span>;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">if</span> (haveNew) {</span><br><span class="line">        newTable = &amp;SideTables()[newObj];</span><br><span class="line">    } <span class="hljs-keyword">else</span> {</span><br><span class="line">        newTable = <span class="hljs-literal">nil</span>;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    SideTable::lockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (haveOld  &amp;&amp;  *location != oldObj) {</span><br><span class="line">        SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line">        <span class="hljs-keyword">goto</span> retry;</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Prevent a deadlock between the weak reference machinery</span></span><br><span class="line">    <span class="hljs-comment">// and the +initialize machinery by ensuring that no </span></span><br><span class="line">    <span class="hljs-comment">// weakly-referenced object has an un-+initialized isa.</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (haveNew  &amp;&amp;  newObj) {</span><br><span class="line">        Class cls = newObj-&gt;getIsa();</span><br><span class="line">        <span class="hljs-keyword">if</span> (cls != previouslyInitializedClass  &amp;&amp;  </span><br><span class="line">            !((objc_class *)cls)-&gt;isInitialized()) </span><br><span class="line">        {</span><br><span class="line">            SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line">            _class_initialize(_class_getNonMetaClass(cls, (<span class="hljs-type">id</span>)newObj));</span><br><span class="line"></span><br><span class="line">            <span class="hljs-comment">// If this class is finished with +initialize then we're good.</span></span><br><span class="line">            <span class="hljs-comment">// If this class is still running +initialize on this thread </span></span><br><span class="line">            <span class="hljs-comment">// (i.e. +initialize called storeWeak on an instance of itself)</span></span><br><span class="line">            <span class="hljs-comment">// then we may proceed but it will appear initializing and </span></span><br><span class="line">            <span class="hljs-comment">// not yet initialized to the check above.</span></span><br><span class="line">            <span class="hljs-comment">// Instead set previouslyInitializedClass to recognize it on retry.</span></span><br><span class="line">            previouslyInitializedClass = cls;</span><br><span class="line"></span><br><span class="line">            <span class="hljs-keyword">goto</span> retry;</span><br><span class="line">        }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Clean up old value, if any.</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (haveOld) {</span><br><span class="line">        weak_unregister_no_lock(&amp;oldTable-&gt;weak_table, oldObj, location);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Assign new value, if any.</span></span><br><span class="line">    <span class="hljs-keyword">if</span> (haveNew) {</span><br><span class="line">        newObj = (objc_object *)</span><br><span class="line">            weak_register_no_lock(&amp;newTable-&gt;weak_table, (<span class="hljs-type">id</span>)newObj, location, </span><br><span class="line">                                  crashIfDeallocating);</span><br><span class="line">        <span class="hljs-comment">// weak_register_no_lock returns nil if weak store should be rejected</span></span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// Set is-weakly-referenced bit in refcount table.</span></span><br><span class="line">        <span class="hljs-keyword">if</span> (newObj  &amp;&amp;  !newObj-&gt;isTaggedPointer()) {</span><br><span class="line">            newObj-&gt;setWeaklyReferenced_nolock();</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="hljs-comment">// Do not set *location anywhere else. That would introduce a race.</span></span><br><span class="line">        *location = (<span class="hljs-type">id</span>)newObj;</span><br><span class="line">    }</span><br><span class="line">    <span class="hljs-keyword">else</span> {</span><br><span class="line">        <span class="hljs-comment">// No new value. The storage is not changed.</span></span><br><span class="line">    }</span><br><span class="line">    </span><br><span class="line">    SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-type">id</span>)newObj;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">template &lt;HaveOld haveOld, HaveNew haveNew,</span><br><span class="line">          CrashIfDeallocating crashIfDeallocating&gt;</span><br><span class="line"><span class="keyword">static</span> <span class="type">id</span> </span><br><span class="line">storeWeak(<span class="type">id</span> *location, objc_object *newObj)</span><br><span class="line">&#123;</span><br><span class="line">    assert(haveOld  ||  haveNew);</span><br><span class="line">    <span class="keyword">if</span> (!haveNew) assert(newObj == <span class="literal">nil</span>);</span><br><span class="line"></span><br><span class="line">    Class previouslyInitializedClass = <span class="literal">nil</span>;</span><br><span class="line">    <span class="type">id</span> oldObj;</span><br><span class="line">    SideTable *oldTable;</span><br><span class="line">    SideTable *newTable;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Acquire locks for old and new values.</span></span><br><span class="line">    <span class="comment">// Order by lock address to prevent lock ordering problems. </span></span><br><span class="line">    <span class="comment">// Retry if the old value changes underneath us.</span></span><br><span class="line"> retry:</span><br><span class="line">    <span class="keyword">if</span> (haveOld) &#123;</span><br><span class="line">        oldObj = *location;</span><br><span class="line">        oldTable = &amp;SideTables()[oldObj];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        oldTable = <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (haveNew) &#123;</span><br><span class="line">        newTable = &amp;SideTables()[newObj];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        newTable = <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SideTable::lockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (haveOld  &amp;&amp;  *location != oldObj) &#123;</span><br><span class="line">        SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line">        <span class="keyword">goto</span> retry;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prevent a deadlock between the weak reference machinery</span></span><br><span class="line">    <span class="comment">// and the +initialize machinery by ensuring that no </span></span><br><span class="line">    <span class="comment">// weakly-referenced object has an un-+initialized isa.</span></span><br><span class="line">    <span class="keyword">if</span> (haveNew  &amp;&amp;  newObj) &#123;</span><br><span class="line">        Class cls = newObj-&gt;getIsa();</span><br><span class="line">        <span class="keyword">if</span> (cls != previouslyInitializedClass  &amp;&amp;  </span><br><span class="line">            !((objc_class *)cls)-&gt;isInitialized()) </span><br><span class="line">        &#123;</span><br><span class="line">            SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line">            _class_initialize(_class_getNonMetaClass(cls, (<span class="type">id</span>)newObj));</span><br><span class="line"></span><br><span class="line">            <span class="comment">// If this class is finished with +initialize then we&#x27;re good.</span></span><br><span class="line">            <span class="comment">// If this class is still running +initialize on this thread </span></span><br><span class="line">            <span class="comment">// (i.e. +initialize called storeWeak on an instance of itself)</span></span><br><span class="line">            <span class="comment">// then we may proceed but it will appear initializing and </span></span><br><span class="line">            <span class="comment">// not yet initialized to the check above.</span></span><br><span class="line">            <span class="comment">// Instead set previouslyInitializedClass to recognize it on retry.</span></span><br><span class="line">            previouslyInitializedClass = cls;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">goto</span> retry;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Clean up old value, if any.</span></span><br><span class="line">    <span class="keyword">if</span> (haveOld) &#123;</span><br><span class="line">        weak_unregister_no_lock(&amp;oldTable-&gt;weak_table, oldObj, location);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Assign new value, if any.</span></span><br><span class="line">    <span class="keyword">if</span> (haveNew) &#123;</span><br><span class="line">        newObj = (objc_object *)</span><br><span class="line">            weak_register_no_lock(&amp;newTable-&gt;weak_table, (<span class="type">id</span>)newObj, location, </span><br><span class="line">                                  crashIfDeallocating);</span><br><span class="line">        <span class="comment">// weak_register_no_lock returns nil if weak store should be rejected</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set is-weakly-referenced bit in refcount table.</span></span><br><span class="line">        <span class="keyword">if</span> (newObj  &amp;&amp;  !newObj-&gt;isTaggedPointer()) &#123;</span><br><span class="line">            newObj-&gt;setWeaklyReferenced_nolock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Do not set *location anywhere else. That would introduce a race.</span></span><br><span class="line">        *location = (<span class="type">id</span>)newObj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// No new value. The storage is not changed.</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (<span class="type">id</span>)newObj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>可以结合 <code>lldb</code> 边调试边对其进行分析，</p>
 <h3 id="分析-id-objc-storeWeak-id-location-id-newObj"><a href="#分析-id-objc-storeWeak-id-location-id-newObj" class="headerlink" title="分析: id objc_storeWeak(id *location, id newObj)"></a>分析: <code>id objc_storeWeak(id *location, id newObj)</code></h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Template parameters.</span></span><br><span class="line"><span class="hljs-keyword">enum</span> HaveOld { DontHaveOld = <span class="hljs-literal">false</span>, DoHaveOld = <span class="hljs-literal">true</span> };</span><br><span class="line"><span class="hljs-keyword">enum</span> HaveNew { DontHaveNew = <span class="hljs-literal">false</span>, DoHaveNew = <span class="hljs-literal">true</span> };</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Template parameters.</span></span><br><span class="line"><span class="keyword">enum</span> HaveOld &#123; DontHaveOld = <span class="literal">false</span>, DoHaveOld = <span class="literal">true</span> &#125;;</span><br><span class="line"><span class="keyword">enum</span> HaveNew &#123; DontHaveNew = <span class="literal">false</span>, DoHaveNew = <span class="literal">true</span> &#125;;</span><br></pre></td></tr></table></figure>
 
 <p>对于模板参数，传递的是 <code>DoHaveOld(true) &amp; DoHaveNew(true)</code></p>
 <p><img src="https://ooo.0o0.ooo/2017/05/29/592bf9439ecc9.jpg"></p>
@@ -344,18 +306,18 @@
 <p><img src="https://ooo.0o0.ooo/2017/05/29/592bf9417add1.jpg"></p>
 <h4 id="铺垫-SideTable"><a href="#铺垫-SideTable" class="headerlink" title="铺垫: SideTable"></a>铺垫: <code>SideTable</code></h4><p>　</p>
 <p>关于结构体 <code>SideTable</code>，在本文中当做黑盒来处理</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">struct</span> SideTable {</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts;</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line"></span><br><span class="line">    SideTable() {</span><br><span class="line">        memset(&amp;weak_table, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(weak_table));</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    ~SideTable() {</span><br><span class="line">        _objc_fatal(<span class="hljs-string">"Do not delete SideTable."</span>);</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-type">void</span> lock() { slock.lock(); }</span><br><span class="line">    <span class="hljs-type">void</span> unlock() { slock.unlock(); }</span><br><span class="line">    <span class="hljs-type">void</span> forceReset() { slock.forceReset(); }</span><br><span class="line"></span><br><span class="line">    <span class="hljs-comment">// Address-ordered lock discipline for a pair of side tables.</span></span><br><span class="line"></span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> lockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="hljs-keyword">static</span> <span class="hljs-type">void</span> unlockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> SideTable &#123;</span><br><span class="line">    spinlock_t slock;</span><br><span class="line">    RefcountMap refcnts;</span><br><span class="line">    weak_table_t weak_table;</span><br><span class="line"></span><br><span class="line">    SideTable() &#123;</span><br><span class="line">        memset(&amp;weak_table, <span class="number">0</span>, <span class="keyword">sizeof</span>(weak_table));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~SideTable() &#123;</span><br><span class="line">        _objc_fatal(<span class="string">&quot;Do not delete SideTable.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">void</span> lock() &#123; slock.lock(); &#125;</span><br><span class="line">    <span class="type">void</span> unlock() &#123; slock.unlock(); &#125;</span><br><span class="line">    <span class="type">void</span> forceReset() &#123; slock.forceReset(); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Address-ordered lock discipline for a pair of side tables.</span></span><br><span class="line"></span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">void</span> lockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">    template&lt;HaveOld, HaveNew&gt;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">void</span> unlockTwo(SideTable *lock1, SideTable *lock2);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>关于 <code>spinlock_t</code>，<code>Wiki</code> 上关于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Spinlock"><code>Spinlock</code></a> 词条的解释如下</p>
 <blockquote>
 <p>In software engineering, a spinlock is a lock which causes a thread trying to acquire it to simply wait in a loop (“spin”) while repeatedly checking if the lock is available. Since the thread remains active but is not performing a useful task, the use of such a lock is a kind of busy waiting. Once acquired, spinlocks will usually be held until they are explicitly released, although in some implementations they may be automatically released if the thread being waited on (that which holds the lock) blocks, or “goes to sleep.</p>
 </blockquote>
 <p>例子</p>
-<figure class="highlight x86asm hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">; Intel syntax</span></span><br><span class="line"><span class="hljs-symbol"></span></span><br><span class="line"><span class="hljs-symbol">locked:</span>                      <span class="hljs-comment">; The lock variable. 1 = locked, 0 = unlocked.</span></span><br><span class="line">     <span class="hljs-built_in">dd</span>      <span class="hljs-number">0</span>               <span class="hljs-comment">; 定义 lock 变量 默认为 0 </span></span><br><span class="line"><span class="hljs-symbol"></span></span><br><span class="line"><span class="hljs-symbol">spin_lock:</span></span><br><span class="line">     <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">eax</span>, <span class="hljs-number">1</span>          <span class="hljs-comment">; Set the EAX register to 1. </span></span><br><span class="line">     									<span class="hljs-comment">; 设置 EAX 寄存器的值为 1 </span></span><br><span class="line"></span><br><span class="line">     <span class="hljs-keyword">xchg</span>    <span class="hljs-built_in">eax</span>, [locked]   <span class="hljs-comment">; Atomically swap the EAX register with</span></span><br><span class="line">                             <span class="hljs-comment">;  the lock variable.</span></span><br><span class="line">                             <span class="hljs-comment">; This will always store 1 to the lock, leaving</span></span><br><span class="line">                             <span class="hljs-comment">;  the previous value in the EAX register.</span></span><br><span class="line">                             <span class="hljs-comment">; 交换 eax 与 lock 变量的值，根据上一步可知，lock 肯定会被赋值为1</span></span><br><span class="line"></span><br><span class="line">     <span class="hljs-keyword">test</span>    <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">eax</span>        <span class="hljs-comment">; Test EAX with itself. Among other things, this will</span></span><br><span class="line">                             <span class="hljs-comment">;  set the processor's Zero Flag if EAX is 0.</span></span><br><span class="line">                             <span class="hljs-comment">; If EAX is 0, then the lock was unlocked and</span></span><br><span class="line">                             <span class="hljs-comment">; we just locked it.</span></span><br><span class="line">                             <span class="hljs-comment">; Otherwise, EAX is 1 and we didn't acquire the lock.</span></span><br><span class="line">										<span class="hljs-comment">; 将 EAX 与 自身比较，如果 EAX 是 0 则设置 Zeor Flag ，表明当前未加锁，只要加锁操作即可，反之证明已被加锁，不设置 Zero Flag。</span></span><br><span class="line">     <span class="hljs-keyword">jnz</span>     spin_lock       <span class="hljs-comment">; Jump back to the MOV instruction if the Zero Flag is</span></span><br><span class="line">                             <span class="hljs-comment">;  not set; the lock was previously locked, and so</span></span><br><span class="line">                             <span class="hljs-comment">; we need to spin until it becomes unlocked.</span></span><br><span class="line">										<span class="hljs-comment">; 如果 Zero Flag 未被设置，则跳转继续 spin_lock</span></span><br><span class="line">     <span class="hljs-keyword">ret</span>                     <span class="hljs-comment">; The lock has been acquired, return to the calling</span></span><br><span class="line">                             <span class="hljs-comment">;  function.</span></span><br><span class="line">                             <span class="hljs-comment">; 获得锁后，继续执行</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">; 当获得所的操作执行完成后，则 locked 变成 0，另一个线程再次进行 spin_lock 操作 locked 为 0，导致 EAX 为0 ，重新获得了锁，同时 locked 变成 1...</span></span><br><span class="line"><span class="hljs-symbol"></span></span><br><span class="line"><span class="hljs-symbol">spin_unlock:</span></span><br><span class="line">     <span class="hljs-keyword">mov</span>     <span class="hljs-built_in">eax</span>, <span class="hljs-number">0</span>          <span class="hljs-comment">; Set the EAX register to 0.</span></span><br><span class="line"></span><br><span class="line">     <span class="hljs-keyword">xchg</span>    <span class="hljs-built_in">eax</span>, [locked]   <span class="hljs-comment">; Atomically swap the EAX register with</span></span><br><span class="line">                             <span class="hljs-comment">;  the lock variable.</span></span><br><span class="line"></span><br><span class="line">     <span class="hljs-keyword">ret</span>                     <span class="hljs-comment">; The lock has been released.</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">; Intel syntax</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">locked:</span>                      <span class="comment">; The lock variable. 1 = locked, 0 = unlocked.</span></span><br><span class="line">     <span class="built_in">dd</span>      <span class="number">0</span>               <span class="comment">; 定义 lock 变量 默认为 0 </span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">spin_lock:</span></span><br><span class="line">     <span class="keyword">mov</span>     <span class="built_in">eax</span>, <span class="number">1</span>          <span class="comment">; Set the EAX register to 1. </span></span><br><span class="line">     									<span class="comment">; 设置 EAX 寄存器的值为 1 </span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">xchg</span>    <span class="built_in">eax</span>, [locked]   <span class="comment">; Atomically swap the EAX register with</span></span><br><span class="line">                             <span class="comment">;  the lock variable.</span></span><br><span class="line">                             <span class="comment">; This will always store 1 to the lock, leaving</span></span><br><span class="line">                             <span class="comment">;  the previous value in the EAX register.</span></span><br><span class="line">                             <span class="comment">; 交换 eax 与 lock 变量的值，根据上一步可知，lock 肯定会被赋值为1</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">test</span>    <span class="built_in">eax</span>, <span class="built_in">eax</span>        <span class="comment">; Test EAX with itself. Among other things, this will</span></span><br><span class="line">                             <span class="comment">;  set the processor&#x27;s Zero Flag if EAX is 0.</span></span><br><span class="line">                             <span class="comment">; If EAX is 0, then the lock was unlocked and</span></span><br><span class="line">                             <span class="comment">; we just locked it.</span></span><br><span class="line">                             <span class="comment">; Otherwise, EAX is 1 and we didn&#x27;t acquire the lock.</span></span><br><span class="line">										<span class="comment">; 将 EAX 与 自身比较，如果 EAX 是 0 则设置 Zeor Flag ，表明当前未加锁，只要加锁操作即可，反之证明已被加锁，不设置 Zero Flag。</span></span><br><span class="line">     <span class="keyword">jnz</span>     spin_lock       <span class="comment">; Jump back to the MOV instruction if the Zero Flag is</span></span><br><span class="line">                             <span class="comment">;  not set; the lock was previously locked, and so</span></span><br><span class="line">                             <span class="comment">; we need to spin until it becomes unlocked.</span></span><br><span class="line">										<span class="comment">; 如果 Zero Flag 未被设置，则跳转继续 spin_lock</span></span><br><span class="line">     <span class="keyword">ret</span>                     <span class="comment">; The lock has been acquired, return to the calling</span></span><br><span class="line">                             <span class="comment">;  function.</span></span><br><span class="line">                             <span class="comment">; 获得锁后，继续执行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">; 当获得所的操作执行完成后，则 locked 变成 0，另一个线程再次进行 spin_lock 操作 locked 为 0，导致 EAX 为0 ，重新获得了锁，同时 locked 变成 1...</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">spin_unlock:</span></span><br><span class="line">     <span class="keyword">mov</span>     <span class="built_in">eax</span>, <span class="number">0</span>          <span class="comment">; Set the EAX register to 0.</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">xchg</span>    <span class="built_in">eax</span>, [locked]   <span class="comment">; Atomically swap the EAX register with</span></span><br><span class="line">                             <span class="comment">;  the lock variable.</span></span><br><span class="line"></span><br><span class="line">     <span class="keyword">ret</span>                     <span class="comment">; The lock has been released.</span></span><br></pre></td></tr></table></figure>
 
 <p>配合 <code>google</code> 的翻译可知，自旋锁会循环等待直到锁可用。</p>
 <p>从 <code>weak_table_t</code> 结构体的注释说明了，它会保存 <code>ids</code> 和 <code>keys</code> 的形式保存对象</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment"> * The global weak references table. Stores object ids as keys,</span></span><br><span class="line"><span class="hljs-comment"> * and weak_entry_t structs as their values.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-keyword">struct</span> weak_table_t {</span><br><span class="line">    weak_entry_t *weak_entries;</span><br><span class="line">    size_t    num_entries;</span><br><span class="line">    uintptr_t mask;</span><br><span class="line">    uintptr_t max_hash_displacement;</span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The global weak references table. Stores object ids as keys,</span></span><br><span class="line"><span class="comment"> * and weak_entry_t structs as their values.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">struct</span> weak_table_t &#123;</span><br><span class="line">    weak_entry_t *weak_entries;</span><br><span class="line">    size_t    num_entries;</span><br><span class="line">    uintptr_t mask;</span><br><span class="line">    uintptr_t max_hash_displacement;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>结构体 <code>SideTable</code> 可看做是一个带加锁功能的集合，其中的元素以键值对的形式存放。</p>
 <p>在 <code>ObjC</code> 的入口函数 <code>_objc_init</code> 会调用函数 <code>arr_init</code> 来初始化 <code>SideTableBuf</code>   静态变量</p>
@@ -364,7 +326,7 @@
 <p>创建新元素，因此 <code>location</code> 地址的原值为 <code>nil</code> </p>
 <p><img src="https://ooo.0o0.ooo/2017/05/29/592bf940c681b.jpg"></p>
 <p><strong>进入 SideTables() 函数</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">static</span> StripedMap&lt;SideTable&gt;&amp; SideTables() {</span><br><span class="line">    <span class="hljs-keyword">return</span> *reinterpret_cast&lt;StripedMap&lt;SideTable&gt;*&gt;(SideTableBuf);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> StripedMap&lt;SideTable&gt;&amp; SideTables() &#123;</span><br><span class="line">    <span class="keyword">return</span> *reinterpret_cast&lt;StripedMap&lt;SideTable&gt;*&gt;(SideTableBuf);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-const-cast-and-reinterpret-cast-be-used">关于 <code>reinterpret_cast</code> 的讨论</a></p>
 <blockquote>
@@ -375,32 +337,32 @@
 <p><code>SideTableBuf</code> 是大小为 <code>4096</code> 的 <code>SideTable</code> 缓存数组， <code>oldTable</code> 的赋值相当于在取数组元素，<code>nil</code> 可看成 <code>0</code> ，即取第一个元素。</p>
 <p>同理，<code>haveNew</code> 为 <code>true</code> ，<code>newTable</code> 是以 <code>newObj</code> 为索引在 <code>SideTabBuf</code> 中 查找元素。</p>
 <p><strong>调用 SideTable::lockTwo 方法</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SideTable::lockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SideTable::lockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br></pre></td></tr></table></figure>
 
 <p><strong>进入 SideTable::lockTwo 方法</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template&lt;&gt;</span><br><span class="line"><span class="hljs-type">void</span> SideTable::lockTwo&lt;DoHaveOld, DoHaveNew&gt;</span><br><span class="line">    (SideTable *lock1, SideTable *lock2)</span><br><span class="line">{</span><br><span class="line">    spinlock_t::lockTwo(&amp;lock1-&gt;slock, &amp;lock2-&gt;slock);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">template&lt;&gt;</span><br><span class="line"><span class="type">void</span> SideTable::lockTwo&lt;DoHaveOld, DoHaveNew&gt;</span><br><span class="line">    (SideTable *lock1, SideTable *lock2)</span><br><span class="line">&#123;</span><br><span class="line">    spinlock_t::lockTwo(&amp;lock1-&gt;slock, &amp;lock2-&gt;slock);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>进入 lockTwo 方法</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Address-ordered lock discipline for a pair of locks.</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">static</span> <span class="hljs-type">void</span> lockTwo(mutex_tt *lock1, mutex_tt *lock2) {</span><br><span class="line">   <span class="hljs-keyword">if</span> (lock1 &lt; lock2) {</span><br><span class="line">       lock1-&gt;lock();</span><br><span class="line">       lock2-&gt;lock();</span><br><span class="line">   } <span class="hljs-keyword">else</span> {</span><br><span class="line">       lock2-&gt;lock();</span><br><span class="line">       <span class="hljs-keyword">if</span> (lock2 != lock1) lock1-&gt;lock(); </span><br><span class="line">   }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Address-ordered lock discipline for a pair of locks.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="type">void</span> lockTwo(mutex_tt *lock1, mutex_tt *lock2) &#123;</span><br><span class="line">   <span class="keyword">if</span> (lock1 &lt; lock2) &#123;</span><br><span class="line">       lock1-&gt;lock();</span><br><span class="line">       lock2-&gt;lock();</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       lock2-&gt;lock();</span><br><span class="line">       <span class="keyword">if</span> (lock2 != lock1) lock1-&gt;lock(); </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>*<em>判断 if (haveOld  &amp;&amp;  <em>location != oldObj) 条件</em></em></p>
 <p><code>haveOld  &amp;&amp;  *location != oldObj</code> ，<code>oldObj</code> 被赋值为 <code>*location</code> 正常情况下，两者相等，不等说明出了问题，算是容错。</p>
 <p><strong>判断 if (haveNew  &amp;&amp;  newObj) 条件</strong></p>
 <p><code>haveNew  &amp;&amp;  newObj</code> 根据注释可知也是一个容错的处理</p>
 <p><strong>清除旧值</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">if</span> (haveOld) {</span><br><span class="line">   weak_unregister_no_lock(&amp;oldTable-&gt;weak_table, oldObj, location);</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (haveOld) &#123;</span><br><span class="line">   weak_unregister_no_lock(&amp;oldTable-&gt;weak_table, oldObj, location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>赋予新值</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// Assign new value, if any.</span></span><br><span class="line"><span class="hljs-keyword">if</span> (haveNew) {</span><br><span class="line">   newObj = (objc_object *)</span><br><span class="line">       weak_register_no_lock(&amp;newTable-&gt;weak_table, (<span class="hljs-type">id</span>)newObj, location, </span><br><span class="line">                             crashIfDeallocating);</span><br><span class="line">   <span class="hljs-comment">// weak_register_no_lock returns nil if weak store should be rejected</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// Set is-weakly-referenced bit in refcount table.</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (newObj  &amp;&amp;  !newObj-&gt;isTaggedPointer()) {</span><br><span class="line">       newObj-&gt;setWeaklyReferenced_nolock();</span><br><span class="line">   }</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// Do not set *location anywhere else. That would introduce a race.</span></span><br><span class="line">   *location = (<span class="hljs-type">id</span>)newObj;</span><br><span class="line">}</span><br><span class="line"><span class="hljs-keyword">else</span> {</span><br><span class="line">   <span class="hljs-comment">// No new value. The storage is not changed.</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Assign new value, if any.</span></span><br><span class="line"><span class="keyword">if</span> (haveNew) &#123;</span><br><span class="line">   newObj = (objc_object *)</span><br><span class="line">       weak_register_no_lock(&amp;newTable-&gt;weak_table, (<span class="type">id</span>)newObj, location, </span><br><span class="line">                             crashIfDeallocating);</span><br><span class="line">   <span class="comment">// weak_register_no_lock returns nil if weak store should be rejected</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// Set is-weakly-referenced bit in refcount table.</span></span><br><span class="line">   <span class="keyword">if</span> (newObj  &amp;&amp;  !newObj-&gt;isTaggedPointer()) &#123;</span><br><span class="line">       newObj-&gt;setWeaklyReferenced_nolock();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Do not set *location anywhere else. That would introduce a race.</span></span><br><span class="line">   *location = (<span class="type">id</span>)newObj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">   <span class="comment">// No new value. The storage is not changed.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>以 <em>location</em> 为 key,以 <em>newObj</em> 为值保存到对应的 <code>weak_table_t</code> 的结构体中</p>
 <p><strong>调用 SideTable::unlockTwo 方法</strong></p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SideTable::unlockTwo&lt;haveOld, haveNew&gt;(oldTable, newTable);</span><br></pre></td></tr></table></figure>
 
 <h3 id="分析-void-objc-destroyWeak-id-location"><a href="#分析-void-objc-destroyWeak-id-location" class="headerlink" title="分析: void objc_destroyWeak(id *location)"></a>分析: <code>void objc_destroyWeak(id *location)</code></h3><p>　</p>
 <p>因为传递的模板参数为 <code>DontHaveNew</code> ，当释放掉旧值后，不会再进入 <code>if (haveNew)</code> 条件中获得新值。</p>
 <h3 id="分析-id-objc-loadWeakRetained-id-location"><a href="#分析-id-objc-loadWeakRetained-id-location" class="headerlink" title="分析: id objc_loadWeakRetained(id *location)"></a>分析: <code>id objc_loadWeakRetained(id *location)</code></h3><p>　</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">retry:</span><br><span class="line">	<span class="hljs-comment">// fixme std::atomic this load</span></span><br><span class="line">	obj = *location;</span><br><span class="line">	...</span><br><span class="line">	result = obj;</span><br><span class="line">	... </span><br><span class="line">	<span class="hljs-keyword">return</span> result</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">retry:</span><br><span class="line">	<span class="comment">// fixme std::atomic this load</span></span><br><span class="line">	obj = *location;</span><br><span class="line">	...</span><br><span class="line">	result = obj;</span><br><span class="line">	... </span><br><span class="line">	<span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
 
 <p>通过 <code>*</code> 取值符号操作 <code>location</code> ，获得弱引用指向的地址。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>　</p>
@@ -414,237 +376,203 @@
 <li><a target="_blank" rel="noopener" href="http://en.cppreference.com/w/cpp/language/alignas">alignas specifier</a></li>
 <li><a target="_blank" rel="noopener" href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0204j/Cihcdbca.html">4.3.7. MOV and MVN</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/">ObjC Runtime 中 Weak 属性的实现 (中)</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2017/05/20/iOSer-Analysis-of-UIButton-s-imageEdgeInsets-with-titleEdgeInsets/">浅析UIButton的imageEdgeInsets与titleEdgeInsets</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Runtime/" rel="tag"># Runtime</a>
+              <a href="/tags/Mechanism/" rel="tag"># Mechanism</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/20/iOS-Analysis-of-UIButton-s-imageEdgeInsets-with-titleEdgeInsets/" rel="prev" title="iOS - UIButton的imageEdgeInsets与titleEdgeInsets">
+      <i class="fa fa-chevron-left"></i> iOS - UIButton的imageEdgeInsets与titleEdgeInsets
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/04/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part2/" rel="next" title="ObjC Runtime 中 Weak 属性的实现 (中)">
+      ObjC Runtime 中 Weak 属性的实现 (中) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">参考答案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.1.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">4.2.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">相关函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F-amp-%E5%88%86%E6%9E%90"><span class="nav-number">5.</span> <span class="nav-text">观察 &amp; 分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F-id-objc-storeWeak-id-location-id-newObj"><span class="nav-number">5.1.</span> <span class="nav-text">观察: id objc_storeWeak(id *location, id newObj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%82%E5%AF%9F-void-objc-destroyWeak-id-location"><span class="nav-number">5.2.</span> <span class="nav-text">观察: void objc_destroyWeak(id *location)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0-storeWeak-%E6%BA%90%E7%A0%81"><span class="nav-number">5.3.</span> <span class="nav-text">函数 storeWeak 源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90-id-objc-storeWeak-id-location-id-newObj"><span class="nav-number">5.4.</span> <span class="nav-text">分析: id objc_storeWeak(id *location, id newObj)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%93%BA%E5%9E%AB-SideTable"><span class="nav-number">5.4.1.</span> <span class="nav-text">铺垫: SideTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E6%96%87-id-objc-storeWeak-id-location-id-newObj"><span class="nav-number">5.4.2.</span> <span class="nav-text">正文: id objc_storeWeak(id *location, id newObj)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90-void-objc-destroyWeak-id-location"><span class="nav-number">5.5.</span> <span class="nav-text">分析: void objc_destroyWeak(id *location)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90-id-objc-loadWeakRetained-id-location"><span class="nav-number">5.6.</span> <span class="nav-text">分析: id objc_loadWeakRetained(id *location)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

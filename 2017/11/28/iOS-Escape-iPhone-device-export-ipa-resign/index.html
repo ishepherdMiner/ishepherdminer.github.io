@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言　　以前想获取应用的 .ipa 文件可以从 iTunes 下载，macOS 上的 iTunes  升级成 12.7 后,无法再获得 .ipa 文件, 而iOS 9 后就不能从 iTools 之类的辅助工具中导出 .ipa 文件。 　　后面 Apple 官网又提供了一个 12.6.3 的链接　　　　出于好奇心,想试试直接导出.ipa文件,并重签名安装到未越狱的设备上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS - 越狱 iPhone 设备导出 ipa &amp;&amp; 重签名">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/iOS-Escape-iPhone-device-export-ipa-resign/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="前言　　以前想获取应用的 .ipa 文件可以从 iTunes 下载，macOS 上的 iTunes  升级成 12.7 后,无法再获得 .ipa 文件, 而iOS 9 后就不能从 iTools 之类的辅助工具中导出 .ipa 文件。 　　后面 Apple 官网又提供了一个 12.6.3 的链接　　　　出于好奇心,想试试直接导出.ipa文件,并重签名安装到未越狱的设备上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2017/11/28/5a1cd5bd1e20d.jpg">
+<meta property="og:image" content="https://i.loli.net/2017/11/28/5a1cd5bd4fa59.png">
+<meta property="article:published_time" content="2017-11-28T03:15:45.000Z">
+<meta property="article:modified_time" content="2025-04-26T14:35:33.676Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Reverse">
+<meta property="article:tag" content="Mechanism">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2017/11/28/5a1cd5bd1e20d.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2017/11/28/iOS-Escape-iPhone-device-export-ipa-resign/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - 越狱 iPhone 设备导出 ipa && 重签名 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/28/iOS-Escape-iPhone-device-export-ipa-resign/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - 越狱 iPhone 设备导出 ipa && 重签名
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-11-28 11:15:45" itemprop="dateCreated datePublished" datetime="2017-11-28T11:15:45+08:00">2017-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:35:33" itemprop="dateModified" datetime="2025-04-26T22:35:33+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以前想获取应用的 <code>.ipa</code> 文件可以从 <code>iTunes</code> 下载，<code>macOS</code> 上的 <code>iTunes</code>  升级成 <code>12.7</code> 后,无法再获得 <code>.ipa</code> 文件, 而<code>iOS 9</code> 后就不能从 <code>iTools</code> 之类的辅助工具中导出 <code>.ipa</code> 文件。</p>
+<p>　　后面 <code>Apple</code> 官网又提供了一个 <a target="_blank" rel="noopener" href="https://support.apple.com/en-us/HT208079">12.6.3 的链接</a><br>　　<br>　　出于好奇心,想试试直接导出<code>.ipa</code>文件,并重签名安装到未越狱的设备上。</p>
+<span id="more"></span>
+
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>macOS Sierra 10.12.6<br>iPhone 6 Plus (11.0)<br>Xcode Version 9.0 (9A235)<br>iPhone 5s(9.3.3 已越狱)</p>
+</blockquote>
+<h2 id="越狱设备中导出-ipa"><a href="#越狱设备中导出-ipa" class="headerlink" title="越狱设备中导出 .ipa"></a>越狱设备中导出 <code>.ipa</code></h2><p><code>SSH</code> 到越狱设备,使用<a target="_blank" rel="noopener" href="http://www.cycript.org/">Cycript</a> 找到<code>xxx.app</code> 的位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iPhone:~ root# ps -ef | grep WeChat</span><br><span class="line">  501   714     1   0   0:00.00 ??         0:29.04 /var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66/WeChat.app/WeChat</span><br><span class="line">    0   807   805   0   0:00.00 ttys001    0:00.01 grep WeChat</span><br></pre></td></tr></table></figure>
+
+<p>找到后使用 <code>tar</code> 将 <code>xxx.app</code> 打包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">iPhone:~ root# <span class="built_in">cd</span> /var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66/</span><br><span class="line">iPhone:/var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66 root# <span class="built_in">ls</span></span><br><span class="line">WeChat.app  iTunesArtwork  iTunesMetadata.plist</span><br><span class="line">iPhone:/var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66 root# tar -cvf /tmp/WeChat.tar ./</span><br><span class="line">./</span><br><span class="line">./.com.apple.mobile_container_manager.metadata.plist</span><br><span class="line">./WeChat.app/</span><br><span class="line">./WeChat.app/AppIcon60x60@2x.png</span><br><span class="line">...</span><br><span class="line">./WeChat.app/zh_TW.lproj/network_setting.html</span><br><span class="line">./iTunesArtwork</span><br><span class="line">./iTunesMetadata.plist</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>scp</code> 发送打包文件到 <code>mac</code> 上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ scp root@192.168.199.132:/tmp/WeChat.tar ~/Desktop/WeChat.tar</span><br><span class="line">root@192.168.199.132<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">WeChat.tar                                                        100%   97MB   1.7MB/s   00:58</span></span><br></pre></td></tr></table></figure>
+
+<p>重签名要求可执行文件要先脱壳</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// 获得沙盒地址</span><br><span class="line">iPhone:~ root# cycript -p WeChat</span><br><span class="line">cy# [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask][0]</span><br><span class="line"><span class="comment">#&quot;file://s&quot;</span></span><br><span class="line">cy# <span class="built_in">exit</span>(0)</span><br><span class="line"></span><br><span class="line">// 获得应用地址</span><br><span class="line">iPhone:~ root# ps -ef | grep WeChat</span><br><span class="line">  501   714     1   0   0:00.00 ??         0:03.25 /var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66/WeChat.app/WeChat</span><br><span class="line">    0   717   699   0   0:00.00 ttys000    0:00.01 grep WeChat</span><br><span class="line"></span><br><span class="line">// DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib path/to/App</span><br><span class="line">iPhone:/var/mobile/Containers/Data/Application/E7DE74DA-2FC9-4A86-A4D7-F993A88AB225/Documents root# su mobile</span><br><span class="line">iPhone:~/Containers/Data/Application/E7DE74DA-2FC9-4A86-A4D7-F993A88AB225/Documents mobile$ DYLD_INSERT_LIBRARIES=dumpdecrypted.dylib /var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66/WeChat.app/WeChat</span><br><span class="line">mach-o decryption dumper</span><br><span class="line"></span><br><span class="line">DISCLAIMER: This tool is only meant <span class="keyword">for</span> security research purposes, not <span class="keyword">for</span> application crackers.</span><br><span class="line"></span><br><span class="line">[+] detected 64bit ARM binary <span class="keyword">in</span> memory.</span><br><span class="line">[+] offset to cryptid found: @0x100028ca8(from 0x100028000) = ca8</span><br><span class="line">[+] Found encrypted data at address 00004000 of length 56131584 bytes - <span class="built_in">type</span> 1.</span><br><span class="line">[+] Opening /private/var/containers/Bundle/Application/41A6836F-CFC9-4DC1-8A9C-ED4DE09F9A66/WeChat.app/WeChat <span class="keyword">for</span> reading.</span><br><span class="line">[+] Reading header</span><br><span class="line">[+] Detecting header <span class="built_in">type</span></span><br><span class="line">[+] Executable is a plain MACH-O image</span><br><span class="line">[+] Opening WeChat.decrypted <span class="keyword">for</span> writing.</span><br><span class="line">[+] Copying the not encrypted start of the file</span><br><span class="line">[+] Dumping the decrypted data into the file</span><br><span class="line">[+] Copying the not encrypted remainder of the file</span><br><span class="line">[+] Setting the LC_ENCRYPTION_INFO-&gt;cryptid to 0 at offset ca8</span><br><span class="line">[+] Closing original file</span><br><span class="line">[+] Closing dump file</span><br></pre></td></tr></table></figure>
+
+<p>原版的 <a target="_blank" rel="noopener" href="https://github.com/stefanesser/dumpdecrypted">dumpdecrypted</a> 无法应对有 <code>Frameworks</code> 的情况,不过有一个分支版本<a target="_blank" rel="noopener" href="https://github.com/conradev/dumpdecrypted">dumpdecrypted</a> 提供了解决的方法,但是还有<code>Plugins</code>,幸而还有一个分支提供了使用<a target="_blank" rel="noopener" href="https://github.com/CarinaTT/dumpdecrypted">dumpdecryptd</a> 对 <code>.extension</code> 文件进行脱壳(<code>today</code>那种小插件,用这个版本脱壳尝试不成功,找了XX助手去下载脱壳的部分),详情可参考<a target="_blank" rel="noopener" href="https://nianxi.net/ios/dump-decrypted-ios-app-extensions.html">App Extension的脱壳办法</a>。都能支持的版本也已经有了<a target="_blank" rel="noopener" href="https://github.com/AloneMonkey/dumpdecrypted">dumpdecrypted</a></p>
+<h3 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h3><p>对 <code>dumpdecrypted</code> 有些部分的代码不理解</p>
+<ul>
+<li>原版的 <code>dumptofile</code> 的函数参数是怎么来的? </li>
+<li><code>Frameworks</code>分支版本做了什么?</li>
+<li><code>extension</code> 分支版本做了什么?</li>
+</ul>
+<p>在这个<code>dumpdecrypted</code>的<code>Frameworks</code> 分支版本中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((constructor))</span><br><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">dumpexecutable</span><span class="params">()</span> &#123;</span><br><span class="line">		...</span><br><span class="line">		_dyld_register_func_for_add_image(&amp;image_added);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="attribute-constructor"><a href="#attribute-constructor" class="headerlink" title="__attribute__((constructor))"></a><code>__attribute__((constructor))</code></h4><p>根据 <a target="_blank" rel="noopener" href="http://www.jianshu.com/p/dd425b9dc9db"><strong>attribute</strong>((constructor))用法解析</a>,得到的<a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc-6.2.0/gcc/Common-Function-Attributes.html#Common-Function-Attributes">GNU的文档</a> 可知 <code>dumpexecutable()</code> 方法在 <code>main</code> 函数之前执行</p>
+<h4 id="dyld-register-func-for-add-image"><a href="#dyld-register-func-for-add-image" class="headerlink" title="_dyld_register_func_for_add_image"></a><code>_dyld_register_func_for_add_image</code></h4><p>找了 <code>github</code> 上的 <a target="_blank" rel="noopener" href="https://github.com/opensource-apple/dyld">dyld</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * _dyld_register_func_for_add_image registers the specified function to be</span></span><br><span class="line"><span class="comment"> * called when a new image is added (a bundle or a dynamic shared library) to</span></span><br><span class="line"><span class="comment"> * the program.  When this function is first registered it is called for once</span></span><br><span class="line"><span class="comment"> * for each image that is currently part of the program.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span></span><br><span class="line">_dyld_register_func_for_add_image(</span><br><span class="line"><span class="type">void</span> (*func)(<span class="type">const</span> <span class="keyword">struct</span> mach_header *mh, <span class="type">intptr_t</span> vmaddr_slide))</span><br><span class="line">&#123;</span><br><span class="line">	DYLD_LOCK_THIS_BLOCK;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*<span class="type">callback_t</span>)</span><span class="params">(<span class="type">const</span> <span class="keyword">struct</span> mach_header *mh, <span class="type">intptr_t</span> vmaddr_slide)</span>;</span><br><span class="line">    <span class="type">static</span> <span class="title function_">void</span> <span class="params">(*p)</span><span class="params">(<span class="type">callback_t</span> func)</span> = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(p == <span class="literal">NULL</span>)</span><br><span class="line">	    _dyld_func_lookup(<span class="string">&quot;__dyld_register_func_for_add_image&quot;</span>, (<span class="type">void</span>**)&amp;p);</span><br><span class="line">	p(func);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>dyld</code> 会负责传递 <code>mh</code> 和 <code>intptr_t</code> 参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// usr/include/sys/_types/_intptr_t.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">__darwin_intptr_t</span>	<span class="type">intptr_t</span>;</span><br><span class="line"><span class="comment">// usr/include/arm/_types.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span>			<span class="type">__darwin_intptr_t</span>; </span><br></pre></td></tr></table></figure>
+
+<p>因此 <code>intptr_t</code> 就是 <code>long</code> 类型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">image_added</span><span class="params">(<span class="type">const</span> <span class="keyword">struct</span> mach_header *mh, <span class="type">intptr_t</span> slide)</span> &#123;</span><br><span class="line">	Dl_info image_info;</span><br><span class="line">	<span class="type">int</span> result = dladdr(mh, &amp;image_info);</span><br><span class="line">	dumptofile(image_info.dli_fname, mh);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用 <code>dumptofile</code> 函数, 在 <code>_dyld_register_func_for_add_image</code> 函数的注释中提到了 <code>called when a new image is added (a bundle or a dynamic shared library)</code> 因此可以将 <code>framework</code> 也一起导出。</p>
+<p>查找 <code>dyld</code> 后发现在 <code>ImageLoader.h</code> 头文件中,有</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*Initializer)</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span>* argv[], <span class="type">const</span> <span class="type">char</span>* envp[], <span class="type">const</span> <span class="type">char</span>* apple[], <span class="type">const</span> ProgramVars* vars)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>ImageLoaderMachO.cpp</code> 中有如下的函数实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">ImageLoaderMachO::doImageInit</span><span class="params">(<span class="type">const</span> LinkContext&amp; context)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> ( fHasDashInit ) &#123;</span><br><span class="line">		<span class="type">const</span> <span class="type">uint32_t</span> cmd_count = ((macho_header*)fMachOData)-&gt;ncmds;</span><br><span class="line">		<span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">load_command</span>* <span class="title">const</span> <span class="title">cmds</span> =</span> (<span class="keyword">struct</span> load_command*)&amp;fMachOData[<span class="keyword">sizeof</span>(macho_header)];</span><br><span class="line">		<span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">load_command</span>* <span class="title">cmd</span> =</span> cmds;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">uint32_t</span> i = <span class="number">0</span>; i &lt; cmd_count; ++i) &#123;</span><br><span class="line">			<span class="keyword">switch</span> (cmd-&gt;cmd) &#123;</span><br><span class="line">				<span class="keyword">case</span> LC_ROUTINES_COMMAND:</span><br><span class="line">					Initializer func = (Initializer)(((<span class="keyword">struct</span> macho_routines_command*)cmd)-&gt;init_address + fSlide);</span><br><span class="line">					<span class="comment">// &lt;rdar://problem/8543820&amp;9228031&gt; verify initializers are in image</span></span><br><span class="line">					<span class="keyword">if</span> ( ! this-&gt;containsAddress((<span class="type">void</span>*)func) ) &#123;</span><br><span class="line">						dyld::throwf(<span class="string">&quot;initializer function %p not in mapped image for %s\n&quot;</span>, func, this-&gt;getPath());</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span> ( context.verboseInit )</span><br><span class="line">						dyld::<span class="built_in">log</span>(<span class="string">&quot;dyld: calling -init function %p in %s\n&quot;</span>, func, this-&gt;getPath());</span><br><span class="line">					func(context.argc, context.argv, context.envp, context.apple, &amp;context.programVars);</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			cmd = (<span class="type">const</span> <span class="keyword">struct</span> load_command*)(((<span class="type">char</span>*)cmd)+cmd-&gt;cmdsize);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据函数命名知道这应该是给镜像做初始化的,里面 <code>func</code> 函数是 <code>Initializer</code> 类型的,通过 <code>context</code> 参数获取上下文信息,原版的 <code>dumptofile</code> 函数的参数列表为什么会是 <code>(int argc, const char **argv, const char **envp, const char **apple, struct ProgramVars *pvars)</code>  到这里就可知一二。</p>
+<p><code>.extension</code> 脱壳的 <code>dumpdecrypted</code> 版本与原版的区别主要是</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">strlcpy(npath, cachePath.UTF8String, <span class="keyword">sizeof</span>(npath));</span><br><span class="line">strlcat(npath, tmp, <span class="keyword">sizeof</span>(npath));</span><br><span class="line">strlcat(npath, <span class="string">&quot;.decrypted&quot;</span>, <span class="keyword">sizeof</span>(npath));</span><br><span class="line">strlcpy(buffer, npath, <span class="keyword">sizeof</span>(buffer));</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>指明将脱壳的包导出到应用沙盒的 <code>.../Library/Caches</code> 目录下</p>
+<p><code>/Library/MobileSubstrate/DynamicLibraries/</code> 下的动态库会被<a target="_blank" rel="noopener" href="http://iphonedevwiki.net/index.php/Cydia_Substrate">MobileSubstrate.dylib</a> 自动加载。</p>
+<p>在原版的 <code>dumpdecrypted</code> 添加一些输出,使用 <code>printf</code> 时,据说在后面添加一个 <code>\n</code> 可以在日志中看到,但是试了似乎没效果,因此使用 <code>NSLog</code> 进行输出,添加 </p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>同时修改 <code>Makefile</code> 文件, 指明要链接 <code>Foundation</code> 框架</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-framework Foundation</span><br></pre></td></tr></table></figure>
+
+<p><code>make</code>  &amp;&amp; <code>ldid</code> 签名,发送到 <code>/Library/MobileSubstrate/DynamicLibraries/</code> 配置好对应的 <code>.plist</code> 文件,启动,然后闪退,查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Notice&gt;: MS:Notice: Injecting: com.tencent.qqreaderiphone [QQReaderUI] (1290.11)</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Notice&gt;: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/dumpdecrypted.dylib</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:rpath = /private/var/containers/Bundle/Application/E276C2C9-20FE-4450-915A-86EBE07798AC/QQReaderUI.app/QQReaderUI</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:fd = 4</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:npath = QQReaderUI</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:npath = QQReaderUI.decrypted</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:outfd = -1</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone QQReaderUI[1237] &lt;Warning&gt;: [TEST]:outfd = -1</span><br><span class="line">Nov 20 09:13:29 Jasons-iPhone com.apple.xpc.launchd[1] (UIKitApplication:com.tencent.qqreaderiphone[0xc2a3][1237]) &lt;Warning&gt;: Service exited with abnormal code: 1</span><br></pre></td></tr></table></figure>
+
+<p>第一个 <code>outfd = -1</code> </p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">outfd = open(npath, O_RDWR|O_CREAT|O_TRUNC, <span class="number">0644</span>);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@&quot;[TEST]:outfd = %d\n&quot;</span>,outfd);</span><br></pre></td></tr></table></figure>
+<p>尝试在当前目录下(<code>/Library/MobileSubstrate/DynamicLibraries/</code>),打开(创建)一个 <code>QQReaderUI.decrypted</code>,因为权限的问题失败了。</p>
+<p>第二个 <code>outfd = -1</code></p>
+<p>后面 <code>dumpdecrypted.dylib</code> 还会判断是不是在<code>/private/var/mobile/Applications</code>(通过AppStore和iTunes安装的程序都在里面。),但显然不是,因此也失败了</p>
+<p>调用 <code>_exit(1)</code> 闪退</p>
+<p>找到一个比较具体的<a target="_blank" rel="noopener" href="http://www.iosre.com/t/dumpdecrypted/465">解释</a>,排版不太好…</p>
+<h3 id="回到正题"><a href="#回到正题" class="headerlink" title="回到正题"></a>回到正题</h3><p>将脱壳后的可执行文件同样的发送到 <code>mac</code> 上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ scp root@192.168.199.132:/var/mobile/Containers/Data/Application/E7DE74DA-2FC9-4A86-A4D7-F993A88AB225/Documents/WeChat.decrypted ~/Desktop</span><br><span class="line">root@192.168.199.132<span class="string">&#x27;s password:</span></span><br><span class="line"><span class="string">WeChat.decrypted                                                   100%   68MB 444.4KB/s   02:36</span></span><br><span class="line"><span class="string">➜  ~ cd Desktop</span></span><br><span class="line"><span class="string">➜  Desktop file WeChat.decrypted</span></span><br><span class="line"><span class="string">WeChat.decrypted: Mach-O 64-bit executable arm64</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="如何判断是否已脱壳"><a href="#如何判断是否已脱壳" class="headerlink" title="如何判断是否已脱壳"></a>如何判断是否已脱壳</h3><p>判断二进制是否被加密可以使用 <code>otool</code> 工具</p>
+<blockquote>
+<p>otool - object file displaying tool</p>
+</blockquote>
+<blockquote>
+<p>otool可以输出app的load commands，然后通过查看cryptid这个标志位来判断app是否被加密。1代表加密了，0代表被解密了</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 直接从手机中导出的 WeChat </span><br><span class="line">➜  Wechat otool -l WeChat.app/WeChat | grep -B 2 crypt</span><br><span class="line">(standard input)-489-          cmd LC_ENCRYPTION_INFO</span><br><span class="line">(standard input)-490-      cmdsize 20</span><br><span class="line">(standard input):491:     cryptoff 16384</span><br><span class="line">(standard input):492:    cryptsize 46907392</span><br><span class="line">(standard input):493:      cryptid 1</span><br><span class="line"></span><br><span class="line">// 脱壳后的 WeChat</span><br><span class="line">➜  Wechat otool -l WeChat.decrypted | grep -B 2 crypt</span><br><span class="line">(standard input):1:WeChat.decrypted:</span><br><span class="line">--</span><br><span class="line">(standard input)-489-          cmd LC_ENCRYPTION_INFO</span><br><span class="line">(standard input)-490-      cmdsize 20</span><br><span class="line">(standard input):491:     cryptoff 16384</span><br><span class="line">(standard input):492:    cryptsize 46907392</span><br><span class="line">(standard input):493:      cryptid 0</span><br></pre></td></tr></table></figure>
+
+<p>可以看出手机导出的只有当前架构的,而脱壳也只针对当前运行的架构,直接从 <code>iTunes</code> 下载的 <code>.ipa</code> 文件中的二进制文件大小大约是从手机导出的两倍,因为它包含了其他的架构。</p>
+<h2 id="了解重签名"><a href="#了解重签名" class="headerlink" title="了解重签名"></a>了解重签名</h2><p>学习一般都是从模仿开始的,看看 <code>Xcode</code> 是怎么签名的,创建新工程,<code>⌘ + B</code> 编译一下,然后查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/// 签名</span><br><span class="line">CodeSign /Users/Jason/Library/Developer/Xcode/DerivedData/JustForTest-ggxnkdgkdklojofwwsifymqzfwqo/Build/Products/Debug-iphoneos/JustForTest.app</span><br><span class="line"></span><br><span class="line">/// <span class="built_in">cd</span> 到工程目录</span><br><span class="line">    <span class="built_in">cd</span> path/to/project</span><br><span class="line"></span><br><span class="line">/// 扩展环境变量</span><br><span class="line">    <span class="built_in">export</span> CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate</span><br><span class="line">    <span class="built_in">export</span> PATH=<span class="string">&quot;/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin&quot;</span></span><br><span class="line"></span><br><span class="line">/// 签名的身份 + 描述文件说明   </span><br><span class="line">Signing Identity:     <span class="string">&quot;iPhone Developer: 开发者名 (开发者ID)&quot;</span></span><br><span class="line">Provisioning Profile: <span class="string">&quot;iOS Team Provisioning Profile: com.coder.bk123&quot;</span></span><br><span class="line">                      (c8748c6c-9d07-41ce-8d55-ff5ca9999999)</span><br><span class="line"></span><br><span class="line">// 使用 codesign 执行签名操作</span><br><span class="line">    /usr/bin/codesign --force --sign 签名值 --entitlements /Users/Jason/Library/Developer/Xcode/DerivedData/JustForTest-ggxnkdgkdklojofwwsifymqzfwqo/Build/Intermediates.noindex/JustForTest.build/Debug-iphoneos/JustForTest.build/JustForTest.app.xcent --timestamp=none /Users/Jason/Library/Developer/Xcode/DerivedData/JustForTest-ggxnkdgkdklojofwwsifymqzfwqo/Build/Products/Debug-iphoneos/JustForTest.app</span><br></pre></td></tr></table></figure>
+
+<h3 id="force"><a href="#force" class="headerlink" title="--force"></a><code>--force</code></h3><p>强制代替已存在的签名</p>
+<h3 id="timestamp"><a href="#timestamp" class="headerlink" title="--timestamp"></a><code>--timestamp</code></h3><p>时间戳</p>
+<h3 id="sign"><a href="#sign" class="headerlink" title="--sign"></a><code>--sign</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-s, --sign identity</span><br><span class="line">        Sign the code at the path(s) given using this identity. See SIGNING IDENTI-</span><br><span class="line">        TIES below.</span><br></pre></td></tr></table></figure>
+
+<p>详情可使用 <code>man codesign</code> 查看</p>
+<p>打开钥匙串应用,找到开发者证书,因为我是<code>Debug</code>状态下运行的,所以看开发证书,<code>sign</code> 的值就是指纹中的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/SHA-1">SHA1</a> 签名,<code>20</code>个<code>16</code>进制 正好是<code>40</code>位</p>
+<h3 id="entitlements"><a href="#entitlements" class="headerlink" title="--entitlements"></a><code>--entitlements</code></h3><p>参数值对应的 <code>xxx.app.xcent</code> 文件内容如下 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>application-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>XXXXX.包名<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>com.apple.developer.team-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>XXXXX<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>get-task-allow<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>keychain-access-groups<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>XXXXX.包名<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>XXXXX</code> 是发布证书中开发者的身份<code>ID</code> 即 <code>com.apple.developer.team-identifier</code> 中的字段值</p>
+<p>在 <a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2016/401/">WWDC16 Session 401 What’s New in Xcode App Signing</a> 有如下的内容</p>
+<blockquote>
+<p>There are three things that you need in order to sign your apps. The first thing is a <strong>signing certificate</strong>. Signing certificates establish your identity as a developer.<br><strong>Provisioning profiles</strong> are all about your apps, and they grant permissions. And <strong>entitlements</strong> declare support for capabilities.<br>Like iCloud or Wallet. So certificates. These are issued by Apple.<br>And this is important because the device needs a trust chain back to Apple so it can install the app. And certificates come in two forms.</p>
+</blockquote>
+<p><code>signing certificate</code>: 开发者身份是否可信<br><code>Provisioning profiles</code>: 哪些设备可安装<br><code>entitlements</code>: 有哪些能力,比如推送,应用间分享….</p>
+<p>在新创建的工程 <code>Product</code> 目录下 <code>Show in Finder</code> 来查看 <code>xxx.app</code> 文件,可以发现里面包含一个 <code>embedded.mobileprovision</code>  文件,可以通过</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  security cms -D -i embedded.mobileprovision</span><br></pre></td></tr></table></figure>
+
+<p>结果如下:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>AppIDName<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>Resign01<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>ApplicationIdentifierPrefix<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>发布时的开发者ID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>CreationDate<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">date</span>&gt;</span>2017-11-15T03:42:41Z<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Platform<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>iOS<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>DeveloperCertificates<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">data</span>&gt;</span>签名证书<span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">data</span>&gt;</span>...<span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Entitlements<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>keychain-access-groups<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">string</span>&gt;</span>发布时的开发者ID.*<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>get-task-allow<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>application-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>发布时的开发者ID.com.coder.Resign01<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>com.apple.developer.healthkit<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>com.apple.security.application-groups<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">string</span>&gt;</span>group.com.coder.Resign01<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>com.apple.developer.team-identifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>发布时的开发者ID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>aps-environment<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>development<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>ExpirationDate<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">date</span>&gt;</span>2018-11-15T03:42:41Z<span class="tag">&lt;/<span class="name">date</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Name<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>iOS Team Provisioning Profile: com.coder.Resign01<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>ProvisionedDevices<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>允许安装的设备的UDID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>....<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>TeamIdentifier<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">string</span>&gt;</span>发布时的开发者ID<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>TeamName<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>开发者名<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>TimeToLive<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">integer</span>&gt;</span>365<span class="tag">&lt;/<span class="name">integer</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>UUID<span class="tag">&lt;/<span class="name">key</span>&gt;</span> &lt;-- 描述文件 --&gt;</span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>c8748c6c-9d07-41ce-8d55-ff5ca999999<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Version<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">integer</span>&gt;</span>1<span class="tag">&lt;/<span class="name">integer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>Xcode</code> 日志的描述文件序列号在 <code>~/Library/MobileDevice/Provisioning Profiles/</code> 目录查找,然后用对比工具进行比较,发现两者是相同的,</p>
+<p>从中可以看出,开发的情况下,签名的过程会将我们从 <code>Apple</code> 开发者后台下载的描述文件<code>embedded.mobileprovision</code> 放到包中,用于安装时的验证。</p>
+<p>我们在 <code>Apple</code> 开发者后台生成证书时要求上传一个 <code>.csr</code> 文件,<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Certificate_signing_request">Certificate_signing_request</a></p>
+<blockquote>
+<p>Before creating a CSR, the applicant first generates a <strong>key pair</strong>, keeping the <strong>private key secret</strong>. The CSR contains information identifying the applicant (such as a distinguished name in the case of an X.509 certificate) which must be signed using the applicant’s private key. The CSR also contains the <strong>public key</strong> chosen by the applicant. The CSR may be accompanied by other credentials or proofs of identity required by the certificate authority, and the certificate authority may contact the applicant for further information.</p>
+</blockquote>
+<p>创建 <code>.csr</code> 文件前,会用非对称加密算法生成一对密钥,分别是公钥和私钥,私钥存放在本地,而公钥与一些表明能自身身份的信息一起用于生成 <code>.csr</code> 文件。</p>
+<p><code>Apple</code> 开发者后台相当于一个 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Certificate_authority">CA</a></p>
+<blockquote>
+<p>Trusted certificates can be used to create secure connections to a server via the Internet. A certificate is essential in order to circumvent a malicious party which happens to be on the route to a target server which acts as if it were the target. Such a scenario is commonly referred to as a man-in-the-middle attack. The client uses the CA certificate to authenticate the CA signature on the server certificate, as part of the authorizations before launching a secure connection. Usually, client software—for example, browsers—include a set of trusted CA certificates. This makes sense, as many users need to trust their client software. A malicious or compromised client can skip any security check and still fool its users into believing otherwise.</p>
+</blockquote>
+<p>关于签名的原理,请看下图</p>
+<p><img src="https://ooo.0o0.ooo/2017/11/28/5a1cd5bd1e20d.jpg"><br><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/QbILp8uGmpGlqL5eY5pABQ">来自-iOS App 签名的原理</a></p>
+<p>测试环境下(Ad Hoc)如何保证应用能正常运行?</p>
+<p><img src="https://i.loli.net/2017/11/28/5a1cd5bd4fa59.png"></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/TestingYouriOSApp/TestingYouriOSApp.html">来自 developer.apple.com</a></p>
+<p><del>证书和 <code>device ID</code> 一般应该都不会有问题,都是从 <code>Apple</code> 开发者后台获取的,所以主要去考虑的是 <code>bundle ID</code> 和 <code>entitlements</code></del></p>
+<p>后面实践发现对 <code>entitlements.plist</code> 文件添加权限,删除权限,会影响到对应的<code>embedded.mobileprovision</code>,但是依然可以成功安装并运行。</p>
+<p>看了文字的说明</p>
+<blockquote>
+<p>The app successfully launches if the app’s bundle ID matches the App ID, the signature matches the distribution certificate, and the device is in the device list of the ad hoc provisioning profile.</p>
+</blockquote>
+<p>只提到了 <code>3</code> 点,包名匹配,证书匹配(<code>--sign</code> 对应的证书签名<code>embedded.mobileprovision</code> 文件中包含的证书),描述文件的设备列表包含当前设备</p>
+<h3 id="哪些文件需要参与签名"><a href="#哪些文件需要参与签名" class="headerlink" title="哪些文件需要参与签名"></a>哪些文件需要参与签名</h3><blockquote>
+<p>Nested code , 比如 .a 静态库, .frameworks (先签名)<br>Mach-O executables , 二进制可执行文件<br>Resources , 资源文件，就是 CodeResources 的部分<br>To apply the signature, the codesign utility adds the signature directly to the executable file.</p>
+</blockquote>
+<p><code>.ipa</code> 包里有一个 <code>_CodeSignature</code> 的文件夹，其中有个 <code>CodeResources</code> 文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">plist</span> <span class="keyword">PUBLIC</span> <span class="string">&quot;-//Apple//DTD PLIST 1.0//EN&quot;</span> <span class="string">&quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">&quot;1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>files<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		...</span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>files2<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		...</span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>rules<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		...</span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>rules2<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		...</span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rules 和 files 是为老版本准备的，而 files2 和 rules2是为新的第二版的代码签名准备的。最主要的区别是在新版本中你无法再将某些资源文件排除在代码签名之外。+<br>二进制的签名会被放到可执行文件中</p>
+</blockquote>
+<p>参考的那篇文章的链接挂了… </p>
+<p><a target="_blank" rel="noopener" href="https://xiuchundao.me/post/code-resources-and-embedded-mobileprovision-included-in-ipa-file">https://xiuchundao.me/post/code-resources-and-embedded-mobileprovision-included-in-ipa-file</a></p>
+<blockquote>
+<p>Mach-O executables. … To apply the signature, the codesign utility adds the signature directly to the executable file. </p>
+</blockquote>
+<p>可以知道二进制文件的签名确实是直接在文件中的</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>签名工具: <code>codesign</code>,需要提供 <strong>证书的<code>SHA1</code>签名值</strong> 和 <strong>entitlements.plist</strong></li>
+<li><code>embedded.mobileprovision</code> 就是从 <code>Apple</code> 开发者后台下载的描述文件, 同时在编译时会被拷贝到包中</li>
+<li>重签名的应用要成功运行要保证包名匹配,证书匹配(<code>--sign</code> 对应的证书签名<code>embedded.mobileprovision</code> 文件中包含的证书),描述文件的设备列表包含当前设备</li>
+<li>参与签名的有内嵌的框架,资源文件,二进制可执行文件</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/SHA-1">Wiki-SHA1</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html">App Distribution Guide - Adding Capabilities</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Urinx/iOSAppHook">iOSAppHook</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/Security/Conceptual/CodeSigningGuide/Procedures/Procedures.html">Code Signing Tasks</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/MaintainingProfiles/MaintainingProfiles.html">Maintaining Identifiers, Devices, and Profiles</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/Introduction/Introduction.html">AppDistributionGuide-Introduction</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.jianshu.com/p/dd425b9dc9db"><strong>attribute</strong>((constructor))用法解析</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/43438056/how-do-you-compile-and-run-an-objective-c-file-outside-xcode">How do you compile and run an objective-c file outside Xcode?</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Reverse/" rel="tag"># Reverse</a>
+              <a href="/tags/Mechanism/" rel="tag"># Mechanism</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/09/24/Technology-router-cascade-magnified-wifi/" rel="prev" title="路由器级联放大Wifi信号">
+      <i class="fa fa-chevron-left"></i> 路由器级联放大Wifi信号
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/24/Topic-Clang-Learn-Clang-01/" rel="next" title="Clang学习历程 概述">
+      Clang学习历程 概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%8A%E7%8B%B1%E8%AE%BE%E5%A4%87%E4%B8%AD%E5%AF%BC%E5%87%BA-ipa"><span class="nav-number">3.</span> <span class="nav-text">越狱设备中导出 .ipa</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%94%AF"><span class="nav-number">3.1.</span> <span class="nav-text">分支</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#attribute-constructor"><span class="nav-number">3.1.1.</span> <span class="nav-text">__attribute__((constructor))</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dyld-register-func-for-add-image"><span class="nav-number">3.1.2.</span> <span class="nav-text">_dyld_register_func_for_add_image</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9E%E5%88%B0%E6%AD%A3%E9%A2%98"><span class="nav-number">3.2.</span> <span class="nav-text">回到正题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%B7%B2%E8%84%B1%E5%A3%B3"><span class="nav-number">3.3.</span> <span class="nav-text">如何判断是否已脱壳</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E9%87%8D%E7%AD%BE%E5%90%8D"><span class="nav-number">4.</span> <span class="nav-text">了解重签名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#force"><span class="nav-number">4.1.</span> <span class="nav-text">--force</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#timestamp"><span class="nav-number">4.2.</span> <span class="nav-text">--timestamp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sign"><span class="nav-number">4.3.</span> <span class="nav-text">--sign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#entitlements"><span class="nav-number">4.4.</span> <span class="nav-text">--entitlements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%AA%E4%BA%9B%E6%96%87%E4%BB%B6%E9%9C%80%E8%A6%81%E5%8F%82%E4%B8%8E%E7%AD%BE%E5%90%8D"><span class="nav-number">4.5.</span> <span class="nav-text">哪些文件需要参与签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

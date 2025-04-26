@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>FFmpeg学习笔记01(环境搭建) - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="前言　　学习FFmpeg 环境 macOS Sierra 10.12.3Xcode 8.2.1FFmpeg 3.2  是什么? 一个用于录制,转换和流式传输音频和视频的完整的跨平台解决方案。  可通过git方式下载源码  git clone https:&#x2F;&#x2F;git.ffmpeg.org&#x2F;ffmpeg.git ffmpeg">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言　　学习FFmpeg 环境 macOS Sierra 10.12.3Xcode 8.2.1FFmpeg 3.2  是什么? 一个用于录制,转换和流式传输音频和视频的完整的跨平台解决方案。  可通过git方式下载源码  git clone https:&#x2F;&#x2F;git.ffmpeg.org&#x2F;ffmpeg.git ffmpeg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="FFmpeg学习笔记01(环境搭建)">
 <meta property="og:url" content="http://yoursite.com/2017/03/06/Technology-FFmpeg-study-notes-01-environmental-building/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="前言　　学习FFmpeg 环境 macOS Sierra 10.12.3Xcode 8.2.1FFmpeg 3.2  是什么? 一个用于录制,转换和流式传输音频和视频的完整的跨平台解决方案。  可通过git方式下载源码  git clone https:&#x2F;&#x2F;git.ffmpeg.org&#x2F;ffmpeg.git ffmpeg">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/06/58bc369867c1b.jpg">
@@ -35,222 +37,195 @@
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/06/58bc369476f25.jpg">
 <meta property="og:image" content="https://ooo.0o0.ooo/2017/03/06/58bc3695bf400.jpg">
 <meta property="article:published_time" content="2017-03-05T16:04:48.000Z">
-<meta property="article:modified_time" content="2022-12-11T10:08:32.866Z">
-<meta property="article:author" content="Shepherd">
+<meta property="article:modified_time" content="2025-04-26T14:17:50.656Z">
+<meta property="article:author" content="忘川三">
 <meta property="article:tag" content="iOSer CS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ooo.0o0.ooo/2017/03/06/58bc369867c1b.jpg">
 
+<link rel="canonical" href="http://yoursite.com/2017/03/06/Technology-FFmpeg-study-notes-01-environmental-building/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>FFmpeg学习笔记01(环境搭建) | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#前言">1&nbsp;&nbsp;<b>前言</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#环境">2&nbsp;&nbsp;<b>环境</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#是什么">3&nbsp;&nbsp;<b>是什么?</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#流程">4&nbsp;&nbsp;<b>流程</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#方案一">4.1&nbsp;&nbsp;方案一</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#方案二">4.2&nbsp;&nbsp;方案二</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#我的尝试">4.3&nbsp;&nbsp;我的尝试</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Xcode编译指令">4.3.1&nbsp;&nbsp;Xcode编译指令</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#我的解决方案">4.4&nbsp;&nbsp;我的解决方案</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#编译静态库工程">4.4.1&nbsp;&nbsp;编译静态库工程</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#引用静态库工程">4.4.2&nbsp;&nbsp;引用静态库工程</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#源码工程">4.5&nbsp;&nbsp;源码工程</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#最终目录结构">4.6&nbsp;&nbsp;最终目录结构</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#最终工程结构">4.7&nbsp;&nbsp;最终工程结构</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#Update-170309">5&nbsp;&nbsp;<b>Update 170309</b></a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">6&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            FFmpeg学习笔记01(环境搭建)
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2017-03-05T16:04:48.000Z" itemprop="datePublished">3月 6 2017</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/Technology/">Technology</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            10 分钟 读完 (约 1459 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　学习<em>FFmpeg</em></p>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/06/Technology-FFmpeg-study-notes-01-environmental-building/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FFmpeg学习笔记01(环境搭建)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-06 00:04:48" itemprop="dateCreated datePublished" datetime="2017-03-06T00:04:48+08:00">2017-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:17:50" itemprop="dateModified" datetime="2025-04-26T22:17:50+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Media/" itemprop="url" rel="index"><span itemprop="name">Media</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　学习<em>FFmpeg</em></p>
 <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p><em>macOS Sierra 10.12.3</em><br><em>Xcode 8.2.1</em><br><em>FFmpeg 3.2</em></p>
 </blockquote>
@@ -272,10 +247,10 @@
 <p><strong>先说结果,目前没有做成功</strong></p>
 <p>阅读<em>FFmpeg-iOS-build-script</em>的<em>build-ffmpeg.sh</em>脚本<br>脚本前面下载源码及依赖脚本的部分,就不说了</p>
 <p>最后的<em>configure</em>指令形式大概是这样的</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --target-os=darwin --<span class="hljs-built_in">arch</span>=arm64 --cc=<span class="hljs-string">"xcrun -sdk iphoneos clang"</span> --enable-cross-compile --disable-debug --disable-programs --disable-doc --enable-pic --extra-cflags=<span class="hljs-string">"-arch arm64 -mios-version-min=6.0 -fembed-bitcode"</span> --extra-ldflags=<span class="hljs-string">"-arch arm64 -mios-version-min=6.0 -fembed-bitcode"</span> --prefix=/Users/Jason/Desktop/thin</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --target-os=darwin --<span class="built_in">arch</span>=arm64 --cc=<span class="string">&quot;xcrun -sdk iphoneos clang&quot;</span> --enable-cross-compile --disable-debug --disable-programs --disable-doc --enable-pic --extra-cflags=<span class="string">&quot;-arch arm64 -mios-version-min=6.0 -fembed-bitcode&quot;</span> --extra-ldflags=<span class="string">&quot;-arch arm64 -mios-version-min=6.0 -fembed-bitcode&quot;</span> --prefix=/Users/Jason/Desktop/thin</span><br></pre></td></tr></table></figure>
 
 <p>指定了架构,编译器类型,最低版本等信息,<em>make</em>编译,<em>.o</em>文件也可以正常产生。</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./* -name <span class="hljs-string">"*.o"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./* -name <span class="string">&quot;*.o&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>通过查看编译了哪些*.o*,尝试找出源码中的哪些*.c<em>是参与编译的。主要是几个库中的</em>.c*文件参与了编译。</p>
 <h4 id="Xcode编译指令"><a href="#Xcode编译指令" class="headerlink" title="Xcode编译指令"></a>Xcode编译指令</h4><p>用<em>Xcode</em>编译流程可通过下图方式获知</p>
@@ -289,11 +264,11 @@
 <li>引用了静态库的<em>iOS</em>应用的工程,偏应用方面的,比如怎么使用<em>FFmpeg</em>的<em>API</em>来实现音视频编码解码之类的</li>
 <li><em>FFmpeg</em>源码可调式命令行工程,用于调试研究<em>FFmpeg</em>的底层实现</li>
 </ul>
-<h4 id="编译静态库工程"><a href="#编译静态库工程" class="headerlink" title="编译静态库工程"></a>编译静态库工程</h4><figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git <span class="hljs-built_in">clone</span> https://github.com/kewlbear/FFmpeg-iOS-build-script</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 编译</span></span><br><span class="line">./build-ffmpeg.sh</span><br><span class="line"> </span><br><span class="line"><span class="hljs-comment"># 合并</span></span><br><span class="line">./build-ffmpeg.sh lipo</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="编译静态库工程"><a href="#编译静态库工程" class="headerlink" title="编译静态库工程"></a>编译静态库工程</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/kewlbear/FFmpeg-iOS-build-script</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">./build-ffmpeg.sh</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 合并</span></span><br><span class="line">./build-ffmpeg.sh lipo</span><br></pre></td></tr></table></figure>
 
 <h4 id="引用静态库工程"><a href="#引用静态库工程" class="headerlink" title="引用静态库工程"></a>引用静态库工程</h4><p>使用引用方式将编译后的<em>FFmpeg-iOS</em>目录(包含静态库和头文件)添加到工程中</p>
 <p>根据当前目录结构给<em>Build Settings</em>中的<em>Library Search Paths</em>,添加</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(PROJECT_DIR)/../FFmpeg-iOS-build-script/FFmpeg-iOS/lib</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(PROJECT_DIR)/../FFmpeg-iOS-build-script/FFmpeg-iOS/lib</span><br></pre></td></tr></table></figure>
 
 <p>指向静态库的路径</p>
 <p>引用依赖的动态库</p>
@@ -305,15 +280,15 @@
 <p>添加<a target="_blank" rel="noopener" href="https://github.com/kolyvan/kxmovie"><em>kxmovie</em></a>工程,一个基于<em>FFmpeg</em>的播放器</p>
 <p><em>git</em>下工程,并将<em>kxmovie</em>目录拖拽并复制到工程中,因为目录中有<em>pch</em>文件,</p>
 <p>简单在<em>Main.storyboard</em>中添加一个导航控制器,并在工程的根控制器添加如下代码</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#import <span class="hljs-string">"KxMovieViewController.h"</span></span></span><br><span class="line">...</span><br><span class="line">- (<span class="hljs-type">void</span>)viewDidLoad {</span><br><span class="line">    [<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">    ViewController *vc;</span><br><span class="line">    <span class="hljs-built_in">NSString</span> *path = <span class="hljs-string">@""</span>;</span><br><span class="line">    vc = [KxMovieViewController movieViewControllerWithContentPath:path parameters:<span class="hljs-literal">nil</span>];</span><br><span class="line">    [<span class="hljs-keyword">self</span> presentViewController:vc animated:<span class="hljs-literal">YES</span> completion:<span class="hljs-literal">nil</span>];</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&quot;KxMovieViewController.h&quot;</span></span></span><br><span class="line">...</span><br><span class="line">- (<span class="type">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="variable language_">super</span> viewDidLoad];</span><br><span class="line">    ViewController *vc;</span><br><span class="line">    <span class="built_in">NSString</span> *path = <span class="string">@&quot;&quot;</span>;</span><br><span class="line">    vc = [KxMovieViewController movieViewControllerWithContentPath:path parameters:<span class="literal">nil</span>];</span><br><span class="line">    [<span class="keyword">self</span> presentViewController:vc animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>在<em>Build settings</em>的<em>Prefix Header</em>,添加如下字段,指向<em>pch</em>文件</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Learn-FFmpeg/kxmovie/kxmovie-Prefix.pch</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Learn-FFmpeg/kxmovie/kxmovie-Prefix.pch</span><br></pre></td></tr></table></figure>
 
 <p><em>⌘ + B</em> 提示</p>
 <p><img src="https://ooo.0o0.ooo/2017/03/06/58bc3692e806e.jpg"></p>
 <p>头文件路径的问题,同样在<em>Build Settings</em>的<em>Header Search Paths</em>添加</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(PROJECT_DIR)/../FFmpeg-iOS-build-script/FFmpeg-iOS/include</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(PROJECT_DIR)/../FFmpeg-iOS-build-script/FFmpeg-iOS/include</span><br></pre></td></tr></table></figure>
 
 <p><em>⌘ + B</em> 提示</p>
 <p><img src="https://ooo.0o0.ooo/2017/03/06/58bc36934390e.jpg"></p>
@@ -323,10 +298,10 @@
 <p>添加<em>VideoToolbox.framework</em>即可</p>
 <p><em>⌘ + B</em> 成功</p>
 <p>修改代码,设置<em>path</em>为本地音频地址</p>
-<figure class="highlight objc hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ViewController *vc;</span><br><span class="line"><span class="hljs-built_in">NSString</span> *path = <span class="hljs-string">@"http://192.168.5.101/~Jason/TestMusic.mp3"</span>;</span><br><span class="line">vc = [KxMovieViewController movieViewControllerWithContentPath:path parameters:<span class="hljs-literal">nil</span>];</span><br><span class="line">[<span class="hljs-keyword">self</span> presentViewController:vc animated:<span class="hljs-literal">YES</span> completion:<span class="hljs-literal">nil</span>];</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ViewController *vc;</span><br><span class="line"><span class="built_in">NSString</span> *path = <span class="string">@&quot;http://192.168.5.101/~Jason/TestMusic.mp3&quot;</span>;</span><br><span class="line">vc = [KxMovieViewController movieViewControllerWithContentPath:path parameters:<span class="literal">nil</span>];</span><br><span class="line">[<span class="keyword">self</span> presentViewController:vc animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
 
 <p>顺便设置<em>info.plist</em>以支持<em>http</em>访问</p>
-<figure class="highlight xml hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>NSAppTransportSecurity<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dict</span>&gt;</span></span><br><span class="line">   <span class="hljs-tag">&lt;<span class="hljs-name">key</span>&gt;</span>NSAllowsArbitraryLoads<span class="hljs-tag">&lt;/<span class="hljs-name">key</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">true</span>/&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dict</span>&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>NSAppTransportSecurity<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">key</span>&gt;</span>NSAllowsArbitraryLoads<span class="tag">&lt;/<span class="name">key</span>&gt;</span><span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>截图<br><img src="https://ooo.0o0.ooo/2017/03/06/58bc36937ec20.png" alt="IMG_0966"></p>
 <p>视频截图</p>
@@ -338,7 +313,7 @@
 <h3 id="最终工程结构"><a href="#最终工程结构" class="headerlink" title="最终工程结构"></a>最终工程结构</h3><p><img src="https://ooo.0o0.ooo/2017/03/06/58bc3695bf400.jpg"></p>
 <p><a target="_blank" rel="noopener" href="https://github.com/ishepherdMiner/Learn-FFmpeg">DEMO</a></p>
 <h2 id="Update-170309"><a href="#Update-170309" class="headerlink" title="Update 170309"></a>Update 170309</h2><p>因为<em>FFmpeg-iOS-build-script</em>没有添加到<em>git</em>中管理,整个目录文件,将近1个<em>G</em>,太大了,没有提交,简单写了个脚本来处理</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">version=3.2</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">if</span> [ ! -d <span class="hljs-string">"./FFmpeg-iOS-build-script"</span> ]; <span class="hljs-keyword">then</span></span><br><span class="line">  git <span class="hljs-built_in">clone</span> https://github.com/kewlbear/FFmpeg-iOS-build-script</span><br><span class="line">  <span class="hljs-built_in">cd</span> ./FFmpeg-iOS-build-script</span><br><span class="line">  ./build-ffmpeg.sh</span><br><span class="line">  ./build-ffmpeg.sh lipo</span><br><span class="line">  <span class="hljs-built_in">cd</span> ffmpeg-<span class="hljs-variable">${version}</span></span><br><span class="line">  ./configure --disable-optimizations &amp;&amp; make -j3</span><br><span class="line"><span class="hljs-keyword">fi</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">version=3.2</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">&quot;./FFmpeg-iOS-build-script&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  git <span class="built_in">clone</span> https://github.com/kewlbear/FFmpeg-iOS-build-script</span><br><span class="line">  <span class="built_in">cd</span> ./FFmpeg-iOS-build-script</span><br><span class="line">  ./build-ffmpeg.sh</span><br><span class="line">  ./build-ffmpeg.sh lipo</span><br><span class="line">  <span class="built_in">cd</span> ffmpeg-<span class="variable">$&#123;version&#125;</span></span><br><span class="line">  ./configure --disable-optimizations &amp;&amp; make -j3</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a target="_blank" rel="noopener" href="http://albert-oma.blogspot.com/2013/01/ffmpeg-library-for-ios.html">FFMPEG – 編譯 ffmpeg library for iOS</a></li>
@@ -349,237 +324,199 @@
 <li><a target="_blank" rel="noopener" href="https://lists.ffmpeg.org/pipermail/ffmpeg-user/2012-February/004778.html">FFmpeg-user Need to debug the ffmpeg with gdb –enable-debug=3</a></li>
 <li><a target="_blank" rel="noopener" href="https://github.com/kewlbear/FFmpeg-iOS-build-script">FFmpeg-iOS-build-script</a></li>
 </ul>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2017/03/10/iOSer-iOS-Shake/">iOS摇一摇</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2017/03/03/iOSer-Understand-the-block/">理解Block(上)</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/03/iOSer-Understand-the-block/" rel="prev" title="iOS - 理解Block(上)">
+      <i class="fa fa-chevron-left"></i> iOS - 理解Block(上)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/10/iOSer-iOS-Shake/" rel="next" title="iOS - 摇一摇">
+      iOS - 摇一摇 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">3.</span> <span class="nav-text">是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80"><span class="nav-number">4.1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C"><span class="nav-number">4.2.</span> <span class="nav-text">方案二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="nav-number">4.3.</span> <span class="nav-text">我的尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Xcode%E7%BC%96%E8%AF%91%E6%8C%87%E4%BB%A4"><span class="nav-number">4.3.1.</span> <span class="nav-text">Xcode编译指令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">4.4.</span> <span class="nav-text">我的解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E9%9D%99%E6%80%81%E5%BA%93%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.4.1.</span> <span class="nav-text">编译静态库工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.4.2.</span> <span class="nav-text">引用静态库工程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%B7%A5%E7%A8%8B"><span class="nav-number">4.5.</span> <span class="nav-text">源码工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">4.6.</span> <span class="nav-text">最终目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E5%B7%A5%E7%A8%8B%E7%BB%93%E6%9E%84"><span class="nav-number">4.7.</span> <span class="nav-text">最终工程结构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Update-170309"><span class="nav-number">5.</span> <span class="nav-text">Update 170309</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>

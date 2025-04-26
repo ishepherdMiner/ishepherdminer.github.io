@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-<title>学习笔记 Mach-O 文件 - 牧羊人</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
-
-
-
-
-<meta name="description" content="一个闲散的程序员">
-
-
-
-<meta name="keywords" content="iOSer CS">
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-    <meta name="description" content="Mach-O基本结构 Header: ：文件类型、目标架构类型等 Load Commands：描述文件在虚拟内存中的逻辑结构、布局 Data: 在Load commands中定义的Segment的数据">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Mach-O基本结构 Header: ：文件类型、目标架构类型等 Load Commands：描述文件在虚拟内存中的逻辑结构、布局 Data: 在Load commands中定义的Segment的数据">
 <meta property="og:type" content="article">
-<meta property="og:title" content="学习笔记 Mach-O 文件">
+<meta property="og:title" content="iOS - Mach-O 文件">
 <meta property="og:url" content="http://yoursite.com/2025/04/19/Technology-learn-ios-100/index.html">
-<meta property="og:site_name" content="牧羊人">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
 <meta property="og:description" content="Mach-O基本结构 Header: ：文件类型、目标架构类型等 Load Commands：描述文件在虚拟内存中的逻辑结构、布局 Data: 在Load commands中定义的Segment的数据">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2025/04/19/TLE87QIb5oSaKB3.png">
@@ -53,256 +55,196 @@
 <meta property="og:image" content="https://s2.loli.net/2025/04/19/YiCavdxw8t7LGM3.png">
 <meta property="og:image" content="https://s2.loli.net/2025/04/19/ap3ARMj51S4WDvq.png">
 <meta property="article:published_time" content="2025-04-19T08:59:00.000Z">
-<meta property="article:modified_time" content="2025-04-19T09:01:03.118Z">
-<meta property="article:author" content="Shepherd">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:modified_time" content="2025-04-26T14:24:35.230Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Runtime">
+<meta property="article:tag" content="Mechanism">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2025/04/19/TLE87QIb5oSaKB3.png">
 
+<link rel="canonical" href="http://yoursite.com/2025/04/19/Technology-learn-ios-100/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>iOS - Mach-O 文件 | 👨🏻‍💻's 博客</title>
+  
 
 
 
 
-<link rel="icon" href="/images/favicon.png">
 
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Ovo|Source+Code+Pro">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/css/justifiedGallery.min.css">
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+</head>
 
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
 
-
-<link rel="stylesheet" href="/css/style.css">
-
-
-<script defer src="//use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    
-
-
-<meta name="generator" content="Hexo 5.4.2"></head>
-<body>
-    
-<nav class="navbar is-transparent is-fixed-top navbar-main" role="navigation" aria-label="main navigation">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item navbar-logo" href="/">
-                
-                    
-                    牧羊人
-                    
-                
-            </a>
-            <div class="navbar-burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-        
-        <div class="navbar-menu navbar-start">
-            
-            <a class="navbar-item "
-               href="/categories/Technology">技术</a>
-            
-            <a class="navbar-item "
-               href="/categories/iOSer">iOSer</a>
-            
-            <a class="navbar-item "
-               href="/categories">主题</a>
-            
-            <a class="navbar-item "
-               href="/archives">时间流</a>
-            
-        </div>
-        
-        <div class="navbar-menu navbar-end">
-            
-            <a class="navbar-item search" title="搜索" href="javascript:;">
-                <i class="fas fa-search"></i>
-            </a>
-            
-            
-            <div class="navbar-item is-hoverable has-dropdown is-hidden-mobile is-hidden-tablet-only toc">
-                <a class="navbar-item" title="目录">
-                    <i class="fa fa-list"></i>
-                </a>
-                <div class="navbar-dropdown is-right">
-                    
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Mach-O基本结构">1&nbsp;&nbsp;<b>Mach-O基本结构</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Header">1.1&nbsp;&nbsp;Header</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#Load-Commands">2&nbsp;&nbsp;<b>Load Commands</b></a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#LC-SEGMENT-64">2.1&nbsp;&nbsp;LC_SEGMENT_64</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#使用segment-command-64结构体的segment">2.2&nbsp;&nbsp;使用segment_command_64结构体的segment</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Segment-PAGEZERO">2.2.1&nbsp;&nbsp;Segment: __PAGEZERO</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Segment-TEXT-代码">2.2.2&nbsp;&nbsp;Segment: __TEXT 代码</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Segment-DATA-数据">2.2.3&nbsp;&nbsp;Segment: __DATA 数据</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Segment-LINKEDIT">2.2.4&nbsp;&nbsp;Segment: __LINKEDIT</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#使用其他结构体的Command">2.3&nbsp;&nbsp;使用其他结构体的Command</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-DYLD-INFO-ONLY">2.3.1&nbsp;&nbsp;Command:LC_DYLD_INFO_ONLY</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-SYMTAB">2.3.2&nbsp;&nbsp;Command: LC_SYMTAB</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-DYSYMTAB">2.3.3&nbsp;&nbsp;Command: LC_DYSYMTAB</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-LOAD-DYLINKER">2.3.4&nbsp;&nbsp;Command: LC_LOAD_DYLINKER</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-UUID">2.3.5&nbsp;&nbsp;Command: LC_UUID</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-VERSION-MIN-IPHONEOS">2.3.6&nbsp;&nbsp;Command: LC_VERSION_MIN_IPHONEOS</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-SOURCE-VERSION">2.3.7&nbsp;&nbsp;Command: LC_SOURCE_VERSION</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-MAIN">2.3.8&nbsp;&nbsp;Command: LC_MAIN</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-ENCRYPTION-INFO-64">2.3.9&nbsp;&nbsp;Command: LC_ENCRYPTION_INFO_64</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-LOAD-DYLIB">2.3.10&nbsp;&nbsp;Command: LC_LOAD_DYLIB</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-RPATH">2.3.11&nbsp;&nbsp;Command: LC_RPATH</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-FUNCTION-STARTS">2.3.12&nbsp;&nbsp;Command: LC_FUNCTION_STARTS</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-DATA-IN-CODE">2.3.13&nbsp;&nbsp;Command: LC_DATA_IN_CODE</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Command-LC-CODE-SIGATURE">2.3.14&nbsp;&nbsp;Command: LC_CODE_SIGATURE</a>
-                    
-                    
-                    
-                    <a class="navbar-item" href="#Data">2.4&nbsp;&nbsp;Data</a>
-                    
-                    
-                    <hr class="navbar-divider">
-                    
-                    
-                    <a class="navbar-item" href="#参考">3&nbsp;&nbsp;<b>参考</b></a>
-                    
-                </div>
-            </div>
-            
-            
-            <a class="navbar-item" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ishepherdMiner">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-               
-            
-        </div>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
 </nav>
 
-    <section class="section">
-    <div class="container">
-    <article class="article content gallery" itemscope itemprop="blogPost">
-    <h1 class="article-title is-size-3 is-size-4-mobile" itemprop="name">
-        
-            学习笔记 Mach-O 文件
-        
-    </h1>
-    <div class="article-meta columns is-variable is-1 is-multiline is-mobile is-size-7-mobile">
-        <span class="column is-narrow">
-            
-                <time datetime="2025-04-19T08:59:00.000Z" itemprop="datePublished">4月 19 2025</time>
-            
-        </span>
-        <!--
-        
-        <span class="column is-narrow article-category">
-            <i class="far fa-folder"></i>
-            <a class="article-category-link" href="/categories/iOSer/">iOSer</a>
-        </span>
-         
-        -->
-        
-        <span class="column is-narrow">
-            
-            
-            25 分钟 读完 (约 3676 字)
-        </span>
-        
-    </div>
-    <div class="article-entry is-size-6-mobile" itemprop="articleBody">
+
+
+
+</div>
+    </header>
+
     
-        <html><head></head><body><h2 id="Mach-O基本结构"><a href="#Mach-O基本结构" class="headerlink" title="Mach-O基本结构"></a>Mach-O基本结构</h2><ol>
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/19/Technology-learn-ios-100/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          iOS - Mach-O 文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-19 16:59:00" itemprop="dateCreated datePublished" datetime="2025-04-19T16:59:00+08:00">2025-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:24:35" itemprop="dateModified" datetime="2025-04-26T22:24:35+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Mach-O基本结构"><a href="#Mach-O基本结构" class="headerlink" title="Mach-O基本结构"></a>Mach-O基本结构</h2><ol>
 <li>Header: ：文件类型、目标架构类型等</li>
 <li>Load Commands：描述文件在虚拟内存中的逻辑结构、布局</li>
 <li>Data: 在Load commands中定义的Segment的数据</li>
@@ -312,14 +254,14 @@
 <p><img src="https://s2.loli.net/2025/04/19/TLE87QIb5oSaKB3.png" alt="2025-04-17 14.57.00.png"></p>
 <h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><p><img src="https://s2.loli.net/2025/04/19/Q4BeS8LYbTIHXuh.png" alt="2025-04-17 14.59.03.png"></p>
 <p>Header的结构定义在<code>loader.h</code></p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The 64-bit mach header appears at the very beginning of object files for</span></span><br><span class="line"><span class="hljs-comment"> * 64-bit architectures.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">mach_header_64</span> {</span></span><br><span class="line">    <span class="hljs-comment">// 魔数:64位的mach-o有两个取值</span></span><br><span class="line">    <span class="hljs-comment">// #define MH_MAGIC_64 0xfeedfacf -- 小端:Intel</span></span><br><span class="line">    <span class="hljs-comment">// #define MH_CIGAM_64 0xcffaedfe -- 大端:以前macOS在PowerPC安装</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	magic;		<span class="hljs-comment">/* mach magic number identifier */</span></span><br><span class="line">    <span class="hljs-comment">// cpu类型</span></span><br><span class="line">    <span class="hljs-comment">// 在machine.h中定义</span></span><br><span class="line">    <span class="hljs-comment">// 例子中的显示的cpu的Value是:CPU_TYPE_ARM,根据下面的定义 0x0000000C | 0x01000000 = 0x0100000C</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_ARCH_ABI64          0x01000000      /* 64 bit ABI */</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_TYPE_ARM            ((cpu_type_t) 12)</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_TYPE_ARM64 (CPU_TYPE_ARM | CPU_ARCH_ABI64)</span></span><br><span class="line">    <span class="hljs-type">int32_t</span>		cputype;	<span class="hljs-comment">/* cpu specifier */</span></span><br><span class="line">    <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">     *  ARM64 subtypes</span></span><br><span class="line"><span class="hljs-comment">     *  ARM64的具体类型</span></span><br><span class="line"><span class="hljs-comment">     *  例子中的显示的值是0,即CPU_SUBTYPE_ARM64_ALL</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_SUBTYPE_ARM64_ALL           ((cpu_subtype_t) 0)</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_SUBTYPE_ARM64_V8            ((cpu_subtype_t) 1)</span></span><br><span class="line">    <span class="hljs-comment">// #define CPU_SUBTYPE_ARM64E              ((cpu_subtype_t) 2)</span></span><br><span class="line">    <span class="hljs-type">int32_t</span>		cpusubtype;	<span class="hljs-comment">/* machine specifier */</span></span><br><span class="line">    <span class="hljs-comment">// 文件类型</span></span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_OBJECT	0x1 -- .o文件,.a是.o的合集</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_EXECUTE	0x2 -- 可执行文件</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_DYLIB	0x6 -- 动态库</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_DYLINKER	0x7 -- dyld链接器</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_DSYM		0xa -- 符号表文件</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-comment">// 例子中的是2,即MH_EXECUTE,可执行文件</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	filetype;	<span class="hljs-comment">/* type of file */</span></span><br><span class="line">    <span class="hljs-comment">// Load Commands加载命令的条数</span></span><br><span class="line">    <span class="hljs-comment">// 例子中是23条</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	ncmds;		<span class="hljs-comment">/* number of load commands */</span></span><br><span class="line">    <span class="hljs-comment">// Load Commands部分的长度</span></span><br><span class="line">    <span class="hljs-comment">// 例子中是2864byte</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	sizeofcmds;	<span class="hljs-comment">/* the size of all the load commands */</span></span><br><span class="line">    <span class="hljs-comment">// mach-o的标志，通过位移枚举定义</span></span><br><span class="line">    <span class="hljs-comment">// 例子中的</span></span><br><span class="line">    <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">     * #define	 MH_NOUNDEFS	0x1 -- 没有未定义的引用</span></span><br><span class="line"><span class="hljs-comment">     * #define MH_DYLDLINK	0x4 -- 已经静态链接过了，可以动态链接</span></span><br><span class="line"><span class="hljs-comment">     * #define MH_TWOLEVEL	0x8 -- 链接时:库名 + 函数减少同名冲突 见参考一</span></span><br><span class="line"><span class="hljs-comment">     * #define	MH_PIE 0x200000 -- 每次加载主程序在一个随机地址,增加安全</span></span><br><span class="line"><span class="hljs-comment">     */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	flags;		<span class="hljs-comment">/* flags */</span></span><br><span class="line">    <span class="hljs-comment">// 保留</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	reserved;	<span class="hljs-comment">/* reserved */</span></span><br><span class="line">};</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The 64-bit mach header appears at the very beginning of object files for</span></span><br><span class="line"><span class="comment"> * 64-bit architectures.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">mach_header_64</span> &#123;</span></span><br><span class="line">    <span class="comment">// 魔数:64位的mach-o有两个取值</span></span><br><span class="line">    <span class="comment">// #define MH_MAGIC_64 0xfeedfacf -- 小端:Intel</span></span><br><span class="line">    <span class="comment">// #define MH_CIGAM_64 0xcffaedfe -- 大端:以前macOS在PowerPC安装</span></span><br><span class="line">    <span class="type">uint32_t</span>	magic;		<span class="comment">/* mach magic number identifier */</span></span><br><span class="line">    <span class="comment">// cpu类型</span></span><br><span class="line">    <span class="comment">// 在machine.h中定义</span></span><br><span class="line">    <span class="comment">// 例子中的显示的cpu的Value是:CPU_TYPE_ARM,根据下面的定义 0x0000000C | 0x01000000 = 0x0100000C</span></span><br><span class="line">    <span class="comment">// #define CPU_ARCH_ABI64          0x01000000      /* 64 bit ABI */</span></span><br><span class="line">    <span class="comment">// #define CPU_TYPE_ARM            ((cpu_type_t) 12)</span></span><br><span class="line">    <span class="comment">// #define CPU_TYPE_ARM64 (CPU_TYPE_ARM | CPU_ARCH_ABI64)</span></span><br><span class="line">    <span class="type">int32_t</span>		cputype;	<span class="comment">/* cpu specifier */</span></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *  ARM64 subtypes</span></span><br><span class="line"><span class="comment">     *  ARM64的具体类型</span></span><br><span class="line"><span class="comment">     *  例子中的显示的值是0,即CPU_SUBTYPE_ARM64_ALL</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// #define CPU_SUBTYPE_ARM64_ALL           ((cpu_subtype_t) 0)</span></span><br><span class="line">    <span class="comment">// #define CPU_SUBTYPE_ARM64_V8            ((cpu_subtype_t) 1)</span></span><br><span class="line">    <span class="comment">// #define CPU_SUBTYPE_ARM64E              ((cpu_subtype_t) 2)</span></span><br><span class="line">    <span class="type">int32_t</span>		cpusubtype;	<span class="comment">/* machine specifier */</span></span><br><span class="line">    <span class="comment">// 文件类型</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * #define	MH_OBJECT	0x1 -- .o文件,.a是.o的合集</span></span><br><span class="line"><span class="comment">     * #define	MH_EXECUTE	0x2 -- 可执行文件</span></span><br><span class="line"><span class="comment">     * #define	MH_DYLIB	0x6 -- 动态库</span></span><br><span class="line"><span class="comment">     * #define	MH_DYLINKER	0x7 -- dyld链接器</span></span><br><span class="line"><span class="comment">     * #define	MH_DSYM		0xa -- 符号表文件</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">// 例子中的是2,即MH_EXECUTE,可执行文件</span></span><br><span class="line">    <span class="type">uint32_t</span>	filetype;	<span class="comment">/* type of file */</span></span><br><span class="line">    <span class="comment">// Load Commands加载命令的条数</span></span><br><span class="line">    <span class="comment">// 例子中是23条</span></span><br><span class="line">    <span class="type">uint32_t</span>	ncmds;		<span class="comment">/* number of load commands */</span></span><br><span class="line">    <span class="comment">// Load Commands部分的长度</span></span><br><span class="line">    <span class="comment">// 例子中是2864byte</span></span><br><span class="line">    <span class="type">uint32_t</span>	sizeofcmds;	<span class="comment">/* the size of all the load commands */</span></span><br><span class="line">    <span class="comment">// mach-o的标志，通过位移枚举定义</span></span><br><span class="line">    <span class="comment">// 例子中的</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * #define	 MH_NOUNDEFS	0x1 -- 没有未定义的引用</span></span><br><span class="line"><span class="comment">     * #define MH_DYLDLINK	0x4 -- 已经静态链接过了，可以动态链接</span></span><br><span class="line"><span class="comment">     * #define MH_TWOLEVEL	0x8 -- 链接时:库名 + 函数减少同名冲突 见参考一</span></span><br><span class="line"><span class="comment">     * #define	MH_PIE 0x200000 -- 每次加载主程序在一个随机地址,增加安全</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="type">uint32_t</span>	flags;		<span class="comment">/* flags */</span></span><br><span class="line">    <span class="comment">// 保留</span></span><br><span class="line">    <span class="type">uint32_t</span>	reserved;	<span class="comment">/* reserved */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h2 id="Load-Commands"><a href="#Load-Commands" class="headerlink" title="Load Commands"></a>Load Commands</h2><p>每个Load Commands都有对应的结构体</p>
-<h3 id="LC-SEGMENT-64"><a href="#LC-SEGMENT-64" class="headerlink" title="LC_SEGMENT_64"></a>LC_SEGMENT_64</h3><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The 64-bit segment load command indicates that a part of this file is to be</span></span><br><span class="line"><span class="hljs-comment"> * mapped into a 64-bit task's address space.  If the 64-bit segment has</span></span><br><span class="line"><span class="hljs-comment"> * sections then section_64 structures directly follow the 64-bit segment</span></span><br><span class="line"><span class="hljs-comment"> * command and their size is reflected in cmdsize.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">segment_command_64</span> {</span> <span class="hljs-comment">/* for 64-bit architectures */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_SEGMENT_64 */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* includes sizeof section_64 structs */</span></span><br><span class="line">	<span class="hljs-type">char</span>		segname[<span class="hljs-number">16</span>];	<span class="hljs-comment">/* segment name */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	vmaddr;		<span class="hljs-comment">/* memory address of this segment */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	vmsize;		<span class="hljs-comment">/* memory size of this segment */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	fileoff;	<span class="hljs-comment">/* file offset of this segment */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	filesize;	<span class="hljs-comment">/* amount to map from the file */</span></span><br><span class="line">	<span class="hljs-type">int32_t</span>  maxprot;	<span class="hljs-comment">/* maximum VM protection */</span></span><br><span class="line">	<span class="hljs-type">int32_t</span>	initprot;	<span class="hljs-comment">/* initial VM protection */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	nsects;		<span class="hljs-comment">/* number of sections in segment */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	flags;		<span class="hljs-comment">/* flags */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="LC-SEGMENT-64"><a href="#LC-SEGMENT-64" class="headerlink" title="LC_SEGMENT_64"></a>LC_SEGMENT_64</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The 64-bit segment load command indicates that a part of this file is to be</span></span><br><span class="line"><span class="comment"> * mapped into a 64-bit task&#x27;s address space.  If the 64-bit segment has</span></span><br><span class="line"><span class="comment"> * sections then section_64 structures directly follow the 64-bit segment</span></span><br><span class="line"><span class="comment"> * command and their size is reflected in cmdsize.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">segment_command_64</span> &#123;</span> <span class="comment">/* for 64-bit architectures */</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_SEGMENT_64 */</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* includes sizeof section_64 structs */</span></span><br><span class="line">	<span class="type">char</span>		segname[<span class="number">16</span>];	<span class="comment">/* segment name */</span></span><br><span class="line">	<span class="type">uint64_t</span>	vmaddr;		<span class="comment">/* memory address of this segment */</span></span><br><span class="line">	<span class="type">uint64_t</span>	vmsize;		<span class="comment">/* memory size of this segment */</span></span><br><span class="line">	<span class="type">uint64_t</span>	fileoff;	<span class="comment">/* file offset of this segment */</span></span><br><span class="line">	<span class="type">uint64_t</span>	filesize;	<span class="comment">/* amount to map from the file */</span></span><br><span class="line">	<span class="type">int32_t</span>  maxprot;	<span class="comment">/* maximum VM protection */</span></span><br><span class="line">	<span class="type">int32_t</span>	initprot;	<span class="comment">/* initial VM protection */</span></span><br><span class="line">	<span class="type">uint32_t</span>	nsects;		<span class="comment">/* number of sections in segment */</span></span><br><span class="line">	<span class="type">uint32_t</span>	flags;		<span class="comment">/* flags */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h3 id="使用segment-command-64结构体的segment"><a href="#使用segment-command-64结构体的segment" class="headerlink" title="使用segment_command_64结构体的segment"></a>使用segment_command_64结构体的segment</h3><h4 id="Segment-PAGEZERO"><a href="#Segment-PAGEZERO" class="headerlink" title="Segment: __PAGEZERO"></a>Segment: __PAGEZERO</h4><p><code>__PAGEZERO</code>用于捕捉NULL指针引用</p>
 <p><img src="https://s2.loli.net/2025/04/19/KJBWPIrNT9ZRidg.png" alt="2025-04-18 13.29.35.png"></p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> LC_SEGMENT_64 0x19 <span class="hljs-comment">// 即64位的segment</span></span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// vm_prot.h</span></span><br><span class="line"><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span>             <span class="hljs-type">vm_prot_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> VM_PROT_NONE    ((vm_prot_t) 0x00)</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 读/写/执行</span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> VM_PROT_READ    ((vm_prot_t) 0x01)      <span class="hljs-comment">/* read permission */</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> VM_PROT_WRITE   ((vm_prot_t) 0x02)      <span class="hljs-comment">/* write permission */</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> VM_PROT_EXECUTE ((vm_prot_t) 0x04)      <span class="hljs-comment">/* execute permission */</span></span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LC_SEGMENT_64 0x19 <span class="comment">// 即64位的segment</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// vm_prot.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">int</span>             <span class="type">vm_prot_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VM_PROT_NONE    ((vm_prot_t) 0x00)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 读/写/执行</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VM_PROT_READ    ((vm_prot_t) 0x01)      <span class="comment">/* read permission */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VM_PROT_WRITE   ((vm_prot_t) 0x02)      <span class="comment">/* write permission */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VM_PROT_EXECUTE ((vm_prot_t) 0x04)      <span class="comment">/* execute permission */</span></span></span><br><span class="line">...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <table>
 <thead>
@@ -389,10 +331,10 @@
 <p><img src="https://s2.loli.net/2025/04/19/fPq83ZegOm2E5wH.png" alt="2025-04-18 13.59.07.png"></p>
 <p>也是segment_command_64结构体,可以看到这个segment中的initprot中是有VM_PROT_EXECUTE，声明这部分是可以被执行的。segment中9个sections</p>
 <h5 id="Section-text"><a href="#Section-text" class="headerlink" title="Section: __text"></a>Section: __text</h5><p>每个section的结构体如下</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">section_64</span> {</span> <span class="hljs-comment">/* for 64-bit architectures */</span></span><br><span class="line">	<span class="hljs-type">char</span>		sectname[<span class="hljs-number">16</span>];	<span class="hljs-comment">/* name of this section */</span></span><br><span class="line">	<span class="hljs-type">char</span>		segname[<span class="hljs-number">16</span>];	<span class="hljs-comment">/* segment this section goes in */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	addr;		<span class="hljs-comment">/* memory address of this section */</span></span><br><span class="line">	<span class="hljs-type">uint64_t</span>	size;		<span class="hljs-comment">/* size in bytes of this section */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	offset;		<span class="hljs-comment">/* file offset of this section */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	align;		<span class="hljs-comment">/* section alignment (power of 2) */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	reloff;		<span class="hljs-comment">/* file offset of relocation entries */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	nreloc;		<span class="hljs-comment">/* number of relocation entries */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	flags;		<span class="hljs-comment">/* flags (section type and attributes)*/</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	reserved1;	<span class="hljs-comment">/* reserved (for offset or index) */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	reserved2;	<span class="hljs-comment">/* reserved (for count or sizeof) */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	reserved3;	<span class="hljs-comment">/* reserved */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">section_64</span> &#123;</span> <span class="comment">/* for 64-bit architectures */</span></span><br><span class="line">	<span class="type">char</span>		sectname[<span class="number">16</span>];	<span class="comment">/* name of this section */</span></span><br><span class="line">	<span class="type">char</span>		segname[<span class="number">16</span>];	<span class="comment">/* segment this section goes in */</span></span><br><span class="line">	<span class="type">uint64_t</span>	addr;		<span class="comment">/* memory address of this section */</span></span><br><span class="line">	<span class="type">uint64_t</span>	size;		<span class="comment">/* size in bytes of this section */</span></span><br><span class="line">	<span class="type">uint32_t</span>	offset;		<span class="comment">/* file offset of this section */</span></span><br><span class="line">	<span class="type">uint32_t</span>	align;		<span class="comment">/* section alignment (power of 2) */</span></span><br><span class="line">	<span class="type">uint32_t</span>	reloff;		<span class="comment">/* file offset of relocation entries */</span></span><br><span class="line">	<span class="type">uint32_t</span>	nreloc;		<span class="comment">/* number of relocation entries */</span></span><br><span class="line">	<span class="type">uint32_t</span>	flags;		<span class="comment">/* flags (section type and attributes)*/</span></span><br><span class="line">	<span class="type">uint32_t</span>	reserved1;	<span class="comment">/* reserved (for offset or index) */</span></span><br><span class="line">	<span class="type">uint32_t</span>	reserved2;	<span class="comment">/* reserved (for count or sizeof) */</span></span><br><span class="line">	<span class="type">uint32_t</span>	reserved3;	<span class="comment">/* reserved */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/5S1t3mEMrvFBasN.png" alt="2025-04-18 14.12.42.png"></p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span>	S_REGULAR		0x0	<span class="hljs-comment">/* regular section */</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> S_ATTR_PURE_INSTRUCTIONS 0x80000000 <span class="hljs-comment">// 这个sections只包含机器指令</span></span></span><br><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span> S_ATTR_SOME_INSTRUCTIONS 0x00000400	<span class="hljs-comment">/* section contains some</span></span></span><br><span class="line"><span class="hljs-comment"><span class="hljs-meta">						   machine instructions */</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span>	S_REGULAR		0x0	<span class="comment">/* regular section */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> S_ATTR_PURE_INSTRUCTIONS 0x80000000 <span class="comment">// 这个sections只包含机器指令</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> S_ATTR_SOME_INSTRUCTIONS 0x00000400	<span class="comment">/* section contains some</span></span></span><br><span class="line"><span class="comment"><span class="meta">						   machine instructions */</span></span></span><br></pre></td></tr></table></figure>
 
 
 <table>
@@ -480,7 +422,7 @@
 </blockquote>
 <p>应该是个高版本SDK跳过消息查找过程,加快方法调用的优化，后面再探究。</p>
 <h5 id="Section-objc-methods"><a href="#Section-objc-methods" class="headerlink" title="Section: __objc_methods"></a>Section: __objc_methods</h5><p>OC方法的信息</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">#<span class="hljs-keyword">define</span>	S_CSTRING_LITERALS	0x2	<span class="hljs-comment">/* section with only literal C strings*/</span> <span class="hljs-comment">// sections里只有C语言的常量字符串</span></span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span>	S_CSTRING_LITERALS	0x2	<span class="comment">/* section with only literal C strings*/</span> <span class="comment">// sections里只有C语言的常量字符串</span></span></span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/KFB1NRjTr25lekn.png" alt="2025-04-18 15.58.12.png"></p>
 <h5 id="Section-objc-classname"><a href="#Section-objc-classname" class="headerlink" title="Section:__objc_classname"></a>Section:__objc_classname</h5><p>OC的类名相关的描述,和<code>__objc_methods</code>差不多</p>
@@ -515,44 +457,44 @@
 <h5 id="Section-data"><a href="#Section-data" class="headerlink" title="Section: __data"></a>Section: __data</h5><p>初始化过的可变数据</p>
 <h4 id="Segment-LINKEDIT"><a href="#Segment-LINKEDIT" class="headerlink" title="Segment: __LINKEDIT"></a>Segment: __LINKEDIT</h4><p><img src="https://s2.loli.net/2025/04/19/xCLr2NaMA1UBbXO.png" alt="16.23.03"></p>
 <p>fileOffset是 0xc000,size是0x7850，两者相加得 0x13850，从下图可知Dynamic Loader Info 到Code Signature都是这个区间内,里面包含动态库加载哪些符号，符号表，二进制的签名信息。所以可执行文件的加载指令后的实际内容就是__TEXT,__DATA,__LINKEDIT，__PAGEZERO是占位</p>
-<figure class="highlight sh hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment"># 用size命令显示macho文件时就是4个段</span></span><br><span class="line">$ size -x -m path/to/macho-execute</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用size命令显示macho文件时就是4个段</span></span><br><span class="line">$ size -x -m path/to/macho-execute</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/gRbIo76EOqMU4AW.png" alt="2025-04-18 18.24.32.png"></p>
 <p><img src="https://s2.loli.net/2025/04/19/QvmLFjP9IafCWRM.png" alt="2025-04-18 16.26.29.png"></p>
 <p><img src="https://s2.loli.net/2025/04/19/tsyDPgI5HTGeXFA.png" alt="2025-04-18 16.28.03.png"></p>
 <h3 id="使用其他结构体的Command"><a href="#使用其他结构体的Command" class="headerlink" title="使用其他结构体的Command"></a>使用其他结构体的Command</h3><h4 id="Command-LC-DYLD-INFO-ONLY"><a href="#Command-LC-DYLD-INFO-ONLY" class="headerlink" title="Command:LC_DYLD_INFO_ONLY"></a>Command:LC_DYLD_INFO_ONLY</h4><p>描述dyld要绑定动态库的哪些符号,是强绑定还是弱绑定</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The dyld_info_command contains the file offsets and sizes of </span></span><br><span class="line"><span class="hljs-comment"> * the new compressed form of the information dyld needs to </span></span><br><span class="line"><span class="hljs-comment"> * load the image.  This information is used by dyld on Mac OS X</span></span><br><span class="line"><span class="hljs-comment"> * 10.6 and later.  All information pointed to by this command</span></span><br><span class="line"><span class="hljs-comment"> * is encoded using byte streams, so no endian swapping is needed</span></span><br><span class="line"><span class="hljs-comment"> * to interpret it. </span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dyld_info_command</span> {</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   cmd;		<span class="hljs-comment">/* LC_DYLD_INFO or LC_DYLD_INFO_ONLY */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   cmdsize;		<span class="hljs-comment">/* sizeof(struct dyld_info_command) */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   rebase_off;	<span class="hljs-comment">/* file offset to rebase info  */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   rebase_size;	<span class="hljs-comment">/* size of rebase info   */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   bind_off;	<span class="hljs-comment">/* file offset to binding info   */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   bind_size;	<span class="hljs-comment">/* size of binding info  */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   weak_bind_off;</span><br><span class="line">    <span class="hljs-type">uint32_t</span>   weak_bind_size;  <span class="hljs-comment">/* size of weak binding info  */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   lazy_bind_off;</span><br><span class="line">    <span class="hljs-type">uint32_t</span>   lazy_bind_size;  <span class="hljs-comment">/* size of lazy binding infs */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   export_off;	<span class="hljs-comment">/* file offset to lazy binding info */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>   export_size;	<span class="hljs-comment">/* size of lazy binding infs */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The dyld_info_command contains the file offsets and sizes of </span></span><br><span class="line"><span class="comment"> * the new compressed form of the information dyld needs to </span></span><br><span class="line"><span class="comment"> * load the image.  This information is used by dyld on Mac OS X</span></span><br><span class="line"><span class="comment"> * 10.6 and later.  All information pointed to by this command</span></span><br><span class="line"><span class="comment"> * is encoded using byte streams, so no endian swapping is needed</span></span><br><span class="line"><span class="comment"> * to interpret it. </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dyld_info_command</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>   cmd;		<span class="comment">/* LC_DYLD_INFO or LC_DYLD_INFO_ONLY */</span></span><br><span class="line">    <span class="type">uint32_t</span>   cmdsize;		<span class="comment">/* sizeof(struct dyld_info_command) */</span></span><br><span class="line">    <span class="type">uint32_t</span>   rebase_off;	<span class="comment">/* file offset to rebase info  */</span></span><br><span class="line">    <span class="type">uint32_t</span>   rebase_size;	<span class="comment">/* size of rebase info   */</span></span><br><span class="line">    <span class="type">uint32_t</span>   bind_off;	<span class="comment">/* file offset to binding info   */</span></span><br><span class="line">    <span class="type">uint32_t</span>   bind_size;	<span class="comment">/* size of binding info  */</span></span><br><span class="line">    <span class="type">uint32_t</span>   weak_bind_off;</span><br><span class="line">    <span class="type">uint32_t</span>   weak_bind_size;  <span class="comment">/* size of weak binding info  */</span></span><br><span class="line">    <span class="type">uint32_t</span>   lazy_bind_off;</span><br><span class="line">    <span class="type">uint32_t</span>   lazy_bind_size;  <span class="comment">/* size of lazy binding infs */</span></span><br><span class="line">    <span class="type">uint32_t</span>   export_off;	<span class="comment">/* file offset to lazy binding info */</span></span><br><span class="line">    <span class="type">uint32_t</span>   export_size;	<span class="comment">/* size of lazy binding infs */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Command-LC-SYMTAB"><a href="#Command-LC-SYMTAB" class="headerlink" title="Command: LC_SYMTAB"></a>Command: LC_SYMTAB</h4><p>macho文件的符号表的描述</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The symtab_command contains the offsets and sizes of the link-edit 4.3BSD</span></span><br><span class="line"><span class="hljs-comment"> * "stab" style symbol table information as described in the header files</span></span><br><span class="line"><span class="hljs-comment"> * &lt;nlist.h&gt; and &lt;stab.h&gt;.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">symtab_command</span> {</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_SYMTAB */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* sizeof(struct symtab_command) */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	symoff;		<span class="hljs-comment">/* symbol table offset */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	nsyms;		<span class="hljs-comment">/* number of symbol table entries */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	stroff;		<span class="hljs-comment">/* string table offset */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	strsize;	<span class="hljs-comment">/* string table size in bytes */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The symtab_command contains the offsets and sizes of the link-edit 4.3BSD</span></span><br><span class="line"><span class="comment"> * &quot;stab&quot; style symbol table information as described in the header files</span></span><br><span class="line"><span class="comment"> * &lt;nlist.h&gt; and &lt;stab.h&gt;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">symtab_command</span> &#123;</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_SYMTAB */</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* sizeof(struct symtab_command) */</span></span><br><span class="line">	<span class="type">uint32_t</span>	symoff;		<span class="comment">/* symbol table offset */</span></span><br><span class="line">	<span class="type">uint32_t</span>	nsyms;		<span class="comment">/* number of symbol table entries */</span></span><br><span class="line">	<span class="type">uint32_t</span>	stroff;		<span class="comment">/* string table offset */</span></span><br><span class="line">	<span class="type">uint32_t</span>	strsize;	<span class="comment">/* string table size in bytes */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Command-LC-DYSYMTAB"><a href="#Command-LC-DYSYMTAB" class="headerlink" title="Command: LC_DYSYMTAB"></a>Command: LC_DYSYMTAB</h4><p>macho文件依赖的动态库的符号表</p>
 <h4 id="Command-LC-LOAD-DYLINKER"><a href="#Command-LC-LOAD-DYLINKER" class="headerlink" title="Command: LC_LOAD_DYLINKER"></a>Command: LC_LOAD_DYLINKER</h4><p>加载dyld链接器</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * A program that uses a dynamic linker contains a dylinker_command to identify</span></span><br><span class="line"><span class="hljs-comment"> * the name of the dynamic linker (LC_LOAD_DYLINKER).  And a dynamic linker</span></span><br><span class="line"><span class="hljs-comment"> * contains a dylinker_command to identify the dynamic linker (LC_ID_DYLINKER).</span></span><br><span class="line"><span class="hljs-comment"> * A file can have at most one of these.</span></span><br><span class="line"><span class="hljs-comment"> * This struct is also used for the LC_DYLD_ENVIRONMENT load command and</span></span><br><span class="line"><span class="hljs-comment"> * contains string for dyld to treat like environment variable.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dylinker_command</span> {</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_ID_DYLINKER, LC_LOAD_DYLINKER or</span></span><br><span class="line"><span class="hljs-comment">					   LC_DYLD_ENVIRONMENT */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* includes pathname string */</span></span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">lc_str</span>    <span class="hljs-title">name</span>;</span>		<span class="hljs-comment">/* dynamic linker's path name */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * A program that uses a dynamic linker contains a dylinker_command to identify</span></span><br><span class="line"><span class="comment"> * the name of the dynamic linker (LC_LOAD_DYLINKER).  And a dynamic linker</span></span><br><span class="line"><span class="comment"> * contains a dylinker_command to identify the dynamic linker (LC_ID_DYLINKER).</span></span><br><span class="line"><span class="comment"> * A file can have at most one of these.</span></span><br><span class="line"><span class="comment"> * This struct is also used for the LC_DYLD_ENVIRONMENT load command and</span></span><br><span class="line"><span class="comment"> * contains string for dyld to treat like environment variable.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dylinker_command</span> &#123;</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_ID_DYLINKER, LC_LOAD_DYLINKER or</span></span><br><span class="line"><span class="comment">					   LC_DYLD_ENVIRONMENT */</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* includes pathname string */</span></span><br><span class="line">	<span class="class"><span class="keyword">union</span> <span class="title">lc_str</span>    <span class="title">name</span>;</span>		<span class="comment">/* dynamic linker&#x27;s path name */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/De1YdSQF4bLNXcy.png" alt="2025-04-18 16.41.23.png"></p>
 <h4 id="Command-LC-UUID"><a href="#Command-LC-UUID" class="headerlink" title="Command: LC_UUID"></a>Command: LC_UUID</h4><p>静态连接器生成的128位随机数,用于标识macho文件</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The uuid load command contains a single 128-bit unique random number that</span></span><br><span class="line"><span class="hljs-comment"> * identifies an object produced by the static link editor.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">uuid_command</span> {</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_UUID */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* sizeof(struct uuid_command) */</span></span><br><span class="line">    <span class="hljs-type">uint8_t</span>	uuid[<span class="hljs-number">16</span>];	<span class="hljs-comment">/* the 128-bit uuid */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The uuid load command contains a single 128-bit unique random number that</span></span><br><span class="line"><span class="comment"> * identifies an object produced by the static link editor.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">uuid_command</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_UUID */</span></span><br><span class="line">    <span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* sizeof(struct uuid_command) */</span></span><br><span class="line">    <span class="type">uint8_t</span>	uuid[<span class="number">16</span>];	<span class="comment">/* the 128-bit uuid */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Command-LC-VERSION-MIN-IPHONEOS"><a href="#Command-LC-VERSION-MIN-IPHONEOS" class="headerlink" title="Command: LC_VERSION_MIN_IPHONEOS"></a>Command: LC_VERSION_MIN_IPHONEOS</h4><p>指定最低版本号</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The version_min_command contains the min OS version on which this </span></span><br><span class="line"><span class="hljs-comment"> * binary was built to run.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">version_min_command</span> {</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_VERSION_MIN_MACOSX or</span></span><br><span class="line"><span class="hljs-comment">				   LC_VERSION_MIN_IPHONEOS or</span></span><br><span class="line"><span class="hljs-comment">				   LC_VERSION_MIN_WATCHOS or</span></span><br><span class="line"><span class="hljs-comment">				   LC_VERSION_MIN_TVOS */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* sizeof(struct min_version_command) */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	version;	<span class="hljs-comment">/* X.Y.Z is encoded in nibbles xxxx.yy.zz */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>	sdk;		<span class="hljs-comment">/* X.Y.Z is encoded in nibbles xxxx.yy.zz */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The version_min_command contains the min OS version on which this </span></span><br><span class="line"><span class="comment"> * binary was built to run.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">version_min_command</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_VERSION_MIN_MACOSX or</span></span><br><span class="line"><span class="comment">				   LC_VERSION_MIN_IPHONEOS or</span></span><br><span class="line"><span class="comment">				   LC_VERSION_MIN_WATCHOS or</span></span><br><span class="line"><span class="comment">				   LC_VERSION_MIN_TVOS */</span></span><br><span class="line">    <span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* sizeof(struct min_version_command) */</span></span><br><span class="line">    <span class="type">uint32_t</span>	version;	<span class="comment">/* X.Y.Z is encoded in nibbles xxxx.yy.zz */</span></span><br><span class="line">    <span class="type">uint32_t</span>	sdk;		<span class="comment">/* X.Y.Z is encoded in nibbles xxxx.yy.zz */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Command-LC-SOURCE-VERSION"><a href="#Command-LC-SOURCE-VERSION" class="headerlink" title="Command: LC_SOURCE_VERSION"></a>Command: LC_SOURCE_VERSION</h4><p>指定iOS SDK系统库的版本</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The source_version_command is an optional load command containing</span></span><br><span class="line"><span class="hljs-comment"> * the version of the sources used to build the binary.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">source_version_command</span> {</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>  cmd;	<span class="hljs-comment">/* LC_SOURCE_VERSION */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>  cmdsize;	<span class="hljs-comment">/* 16 */</span></span><br><span class="line">    <span class="hljs-type">uint64_t</span>  version;	<span class="hljs-comment">/* A.B.C.D.E packed as a24.b10.c10.d10.e10 */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The source_version_command is an optional load command containing</span></span><br><span class="line"><span class="comment"> * the version of the sources used to build the binary.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">source_version_command</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>  cmd;	<span class="comment">/* LC_SOURCE_VERSION */</span></span><br><span class="line">    <span class="type">uint32_t</span>  cmdsize;	<span class="comment">/* 16 */</span></span><br><span class="line">    <span class="type">uint64_t</span>  version;	<span class="comment">/* A.B.C.D.E packed as a24.b10.c10.d10.e10 */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <h4 id="Command-LC-MAIN"><a href="#Command-LC-MAIN" class="headerlink" title="Command: LC_MAIN"></a>Command: LC_MAIN</h4><p>应用程序入口</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The entry_point_command is a replacement for thread_command.</span></span><br><span class="line"><span class="hljs-comment"> * It is used for main executables to specify the location (file offset)</span></span><br><span class="line"><span class="hljs-comment"> * of main().  If -stack_size was used at link time, the stacksize</span></span><br><span class="line"><span class="hljs-comment"> * field will contain the stack size need for the main thread.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">entry_point_command</span> {</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>  cmd;	<span class="hljs-comment">/* LC_MAIN only used in MH_EXECUTE filetypes */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span>  cmdsize;	<span class="hljs-comment">/* 24 */</span></span><br><span class="line">    <span class="hljs-type">uint64_t</span>  entryoff;	<span class="hljs-comment">/* file (__TEXT) offset of main() */</span></span><br><span class="line">    <span class="hljs-type">uint64_t</span>  stacksize;<span class="hljs-comment">/* if not zero, initial stack size */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The entry_point_command is a replacement for thread_command.</span></span><br><span class="line"><span class="comment"> * It is used for main executables to specify the location (file offset)</span></span><br><span class="line"><span class="comment"> * of main().  If -stack_size was used at link time, the stacksize</span></span><br><span class="line"><span class="comment"> * field will contain the stack size need for the main thread.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">entry_point_command</span> &#123;</span></span><br><span class="line">    <span class="type">uint32_t</span>  cmd;	<span class="comment">/* LC_MAIN only used in MH_EXECUTE filetypes */</span></span><br><span class="line">    <span class="type">uint32_t</span>  cmdsize;	<span class="comment">/* 24 */</span></span><br><span class="line">    <span class="type">uint64_t</span>  entryoff;	<span class="comment">/* file (__TEXT) offset of main() */</span></span><br><span class="line">    <span class="type">uint64_t</span>  stacksize;<span class="comment">/* if not zero, initial stack size */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/KqL3vRz95yTplwD.png" alt="2025-04-18 16.52.55.png"></p>
 <p>地址是 0x6120，找到对应地址可知就是 <code>_main</code>函数的地址</p>
 <p><img src="https://s2.loli.net/2025/04/19/tNn4ORhPp3lHKTE.png" alt="2025-04-18 16.53.19.png"></p>
-<h4 id="Command-LC-ENCRYPTION-INFO-64"><a href="#Command-LC-ENCRYPTION-INFO-64" class="headerlink" title="Command: LC_ENCRYPTION_INFO_64"></a>Command: LC_ENCRYPTION_INFO_64</h4><figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * The encryption_info_command contains the file offset and size of an</span></span><br><span class="line"><span class="hljs-comment"> * of an encrypted segment.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">encryption_info_command</span> {</span></span><br><span class="line">   <span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_ENCRYPTION_INFO */</span></span><br><span class="line">   <span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* sizeof(struct encryption_info_command) */</span></span><br><span class="line">   <span class="hljs-type">uint32_t</span>	cryptoff;	<span class="hljs-comment">/* file offset of encrypted range */</span></span><br><span class="line">   <span class="hljs-type">uint32_t</span>	cryptsize;	<span class="hljs-comment">/* file size of encrypted range */</span></span><br><span class="line">   <span class="hljs-type">uint32_t</span>	cryptid;	<span class="hljs-comment">/* which enryption system,</span></span><br><span class="line"><span class="hljs-comment">				   0 means not-encrypted yet */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="Command-LC-ENCRYPTION-INFO-64"><a href="#Command-LC-ENCRYPTION-INFO-64" class="headerlink" title="Command: LC_ENCRYPTION_INFO_64"></a>Command: LC_ENCRYPTION_INFO_64</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * The encryption_info_command contains the file offset and size of an</span></span><br><span class="line"><span class="comment"> * of an encrypted segment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">encryption_info_command</span> &#123;</span></span><br><span class="line">   <span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_ENCRYPTION_INFO */</span></span><br><span class="line">   <span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* sizeof(struct encryption_info_command) */</span></span><br><span class="line">   <span class="type">uint32_t</span>	cryptoff;	<span class="comment">/* file offset of encrypted range */</span></span><br><span class="line">   <span class="type">uint32_t</span>	cryptsize;	<span class="comment">/* file size of encrypted range */</span></span><br><span class="line">   <span class="type">uint32_t</span>	cryptid;	<span class="comment">/* which enryption system,</span></span><br><span class="line"><span class="comment">				   0 means not-encrypted yet */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>加密部分是Crypt Offset:0x4000 , Crypt Size: 0x4000,两者相加末尾地址为0x8000,根据下图看,实际加密的部分是代码Segment的内容</p>
 <p><img src="https://s2.loli.net/2025/04/19/lOYZIouvECmTdDr.png" alt="2025-04-18 17.11.15.png"></p>
 <p><img src="https://s2.loli.net/2025/04/19/YiCavdxw8t7LGM3.png" alt="2025-04-18 17.11.34.png"></p>
 <h4 id="Command-LC-LOAD-DYLIB"><a href="#Command-LC-LOAD-DYLIB" class="headerlink" title="Command: LC_LOAD_DYLIB"></a>Command: LC_LOAD_DYLIB</h4><p>有若干个该命令,用于加载系统及应用链接的动态库</p>
-<figure class="highlight c hljs"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * Dynamicly linked shared libraries are identified by two things.  The</span></span><br><span class="line"><span class="hljs-comment"> * pathname (the name of the library as found for execution), and the</span></span><br><span class="line"><span class="hljs-comment"> * compatibility version number.  The pathname must match and the compatibility</span></span><br><span class="line"><span class="hljs-comment"> * number in the user of the library must be greater than or equal to the</span></span><br><span class="line"><span class="hljs-comment"> * library being used.  The time stamp is used to record the time a library was</span></span><br><span class="line"><span class="hljs-comment"> * built and copied into user so it can be use to determined if the library used</span></span><br><span class="line"><span class="hljs-comment"> * at runtime is exactly the same as used to built the program.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dylib</span> {</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">union</span> <span class="hljs-title">lc_str</span>  <span class="hljs-title">name</span>;</span>			<span class="hljs-comment">/* library's path name */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span> timestamp;			<span class="hljs-comment">/* library's build time stamp */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span> current_version;		<span class="hljs-comment">/* library's current version number */</span></span><br><span class="line">    <span class="hljs-type">uint32_t</span> compatibility_version;	<span class="hljs-comment">/* library's compatibility vers number*/</span></span><br><span class="line">};</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment"> * A dynamically linked shared library (filetype == MH_DYLIB in the mach header)</span></span><br><span class="line"><span class="hljs-comment"> * contains a dylib_command (cmd == LC_ID_DYLIB) to identify the library.</span></span><br><span class="line"><span class="hljs-comment"> * An object that uses a dynamically linked shared library also contains a</span></span><br><span class="line"><span class="hljs-comment"> * dylib_command (cmd == LC_LOAD_DYLIB, LC_LOAD_WEAK_DYLIB, or</span></span><br><span class="line"><span class="hljs-comment"> * LC_REEXPORT_DYLIB) for each library it uses.</span></span><br><span class="line"><span class="hljs-comment"> */</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dylib_command</span> {</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmd;		<span class="hljs-comment">/* LC_ID_DYLIB, LC_LOAD_{,WEAK_}DYLIB,</span></span><br><span class="line"><span class="hljs-comment">					   LC_REEXPORT_DYLIB */</span></span><br><span class="line">	<span class="hljs-type">uint32_t</span>	cmdsize;	<span class="hljs-comment">/* includes pathname string */</span></span><br><span class="line">	<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">dylib</span>	<span class="hljs-title">dylib</span>;</span>		<span class="hljs-comment">/* the library identification */</span></span><br><span class="line">};</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Dynamicly linked shared libraries are identified by two things.  The</span></span><br><span class="line"><span class="comment"> * pathname (the name of the library as found for execution), and the</span></span><br><span class="line"><span class="comment"> * compatibility version number.  The pathname must match and the compatibility</span></span><br><span class="line"><span class="comment"> * number in the user of the library must be greater than or equal to the</span></span><br><span class="line"><span class="comment"> * library being used.  The time stamp is used to record the time a library was</span></span><br><span class="line"><span class="comment"> * built and copied into user so it can be use to determined if the library used</span></span><br><span class="line"><span class="comment"> * at runtime is exactly the same as used to built the program.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dylib</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">union</span> <span class="title">lc_str</span>  <span class="title">name</span>;</span>			<span class="comment">/* library&#x27;s path name */</span></span><br><span class="line">    <span class="type">uint32_t</span> timestamp;			<span class="comment">/* library&#x27;s build time stamp */</span></span><br><span class="line">    <span class="type">uint32_t</span> current_version;		<span class="comment">/* library&#x27;s current version number */</span></span><br><span class="line">    <span class="type">uint32_t</span> compatibility_version;	<span class="comment">/* library&#x27;s compatibility vers number*/</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * A dynamically linked shared library (filetype == MH_DYLIB in the mach header)</span></span><br><span class="line"><span class="comment"> * contains a dylib_command (cmd == LC_ID_DYLIB) to identify the library.</span></span><br><span class="line"><span class="comment"> * An object that uses a dynamically linked shared library also contains a</span></span><br><span class="line"><span class="comment"> * dylib_command (cmd == LC_LOAD_DYLIB, LC_LOAD_WEAK_DYLIB, or</span></span><br><span class="line"><span class="comment"> * LC_REEXPORT_DYLIB) for each library it uses.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dylib_command</span> &#123;</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmd;		<span class="comment">/* LC_ID_DYLIB, LC_LOAD_&#123;,WEAK_&#125;DYLIB,</span></span><br><span class="line"><span class="comment">					   LC_REEXPORT_DYLIB */</span></span><br><span class="line">	<span class="type">uint32_t</span>	cmdsize;	<span class="comment">/* includes pathname string */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">dylib</span>	<span class="title">dylib</span>;</span>		<span class="comment">/* the library identification */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://s2.loli.net/2025/04/19/ap3ARMj51S4WDvq.png" alt="2025-04-18 17.17.48.png"></p>
 <p>name字段指明加载路径</p>
@@ -566,237 +508,203 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/NationalSecurityAgency/ghidra/issues/5938">ghidra-issues</a></li>
 <li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6977278725465309214">MachO文件学习笔记</a></li>
 </ol>
-</body></html>
-    
-    </div>
-    
-    
-    <div class="columns is-mobile is-multiline article-nav">
-        <span class="column is-12-mobile is-half-desktop  article-nav-prev">
-            
-            <a href="/2025/04/20/Technology-learn-ios-101/">optool为macho文件增加动态库</a>
-            
-        </span>
-        <span class="column is-12-mobile is-half-desktop  article-nav-next">
-            
-            <a href="/2025/04/17/Technology-learn-media-02/">音视频学习 - ffmpeg 编译与调试</a>
-            
-        </span>
-    </div>
-    
-</article>
-
-
-
 
     </div>
-</section>
-    <footer class="footer">
-    <div class="container">
-        <div class="columns content">
-            <div class="column is-narrow has-text-centered">
-                &copy; 2025 Shepherd&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        target="_blank" rel="noopener" href="http://github.com/ppoffice/hexo-theme-minos">Minos</a>
-            </div>
-            <div class="column is-hidden-mobile"></div>
 
-            
-            <div class="column is-narrow">
-                <div class="columns is-mobile is-multiline is-centered">
-                
-                    
-                <a class="column is-narrow has-text-black" title="GitHub" target="_blank" rel="noopener" href="https://github.com/ppoffice/hexo-theme-minos">
-                    
-                    GitHub
-                    
-                </a>
-                
-                </div>
-            </div>
-            
-            
-        </div>
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Runtime/" rel="tag"># Runtime</a>
+              <a href="/tags/Mechanism/" rel="tag"># Mechanism</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/17/Technology-learn-media-02/" rel="prev" title="音视频 - ffmpeg 编译与调试">
+      <i class="fa fa-chevron-left"></i> 音视频 - ffmpeg 编译与调试
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/04/20/Technology-learn-ios-101/" rel="next" title="optool为macho文件增加动态库">
+      optool为macho文件增加动态库 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
-</footer>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+      </footer>
+    
+  </article>
+  
+  
+  
 
-<!-- test if the browser is outdated -->
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" target="_blank" rel="noopener" href="http://outdatedbrowser.com/">Update my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js"></script>
-<script>
-    $(document).ready(function () {
-        // plugin function, place inside DOM ready function
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        })
-    });
-</script>
+
+
+          </div>
+          
 
 <script>
-    window.FontAwesomeConfig = {
-        searchPseudoElements: true
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
     }
-    moment.locale("zh-CN");
-</script>
-
-
-    
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script>
-    MathJax.Hub.Config({
-        "HTML-CSS": {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
     });
+  }
 </script>
 
-    
-    
-    
-    
-<script src="//cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery-all.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.6.5/js/jquery.justifiedGallery.min.js"></script>
-<script>
-    (function ($) {
-        $(document).ready(function () {
-            if (typeof($.fn.lightGallery) === 'function') {
-                $('.article.gallery').lightGallery({ selector: '.gallery-item' });
-            }
-            if (typeof($.fn.justifiedGallery) === 'function') {
-                $('.justified-gallery > p > .gallery-item').unwrap();
-                $('.justified-gallery').justifiedGallery();
-            }
-        });
-    })(jQuery);
-</script>
-
-    
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-    <style>
-        .hljs {
-            position: relative;
-        }
-
-        .hljs .clipboard-btn {
-            float: right;
-            color: #9a9a9a;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hljs .clipboard-btn:hover {
-          color: #8a8a8a;
-        }
-
-        .hljs > .clipboard-btn {
-            display: none;
-            position: absolute;
-            right: 4px;
-            top: 4px;
-        }
-
-        .hljs:hover > .clipboard-btn {
-            display: inline;
-        }
-
-        .hljs > figcaption > .clipboard-btn {
-            margin-right: 4px;
-        }
-    </style>
-    <script>
-      $(document).ready(function () {
-        $('figure.hljs').each(function(i, figure) {
-          var codeId = 'code-' + i;
-          var code = figure.querySelector('.code');
-          var copyButton = $('<button>Copy <i class="far fa-clipboard"></i></button>');
-          code.id = codeId;
-          copyButton.addClass('clipboard-btn');
-          copyButton.attr('data-clipboard-target-id', codeId);
-
-          var figcaption = figure.querySelector('figcaption');
-
-          if (figcaption) {
-            figcaption.append(copyButton[0]);
-          } else {
-            figure.prepend(copyButton[0]);
-          }
-        })
-
-        var clipboard = new ClipboardJS('.clipboard-btn', {
-          target: function(trigger) {
-            return document.getElementById(trigger.getAttribute('data-clipboard-target-id'));
-          }
-        });
-        clipboard.on('success', function(e) {
-          e.clearSelection();
-        })
-      })
-    </script>
-
-    
-    
-
-    
-
-
-
-<script src="/js/script.js"></script>
-
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-mask"></div>
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="站内搜索" />
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mach-O%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Mach-O基本结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Header"><span class="nav-number">1.1.</span> <span class="nav-text">Header</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Load-Commands"><span class="nav-number">2.</span> <span class="nav-text">Load Commands</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LC-SEGMENT-64"><span class="nav-number">2.1.</span> <span class="nav-text">LC_SEGMENT_64</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8segment-command-64%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84segment"><span class="nav-number">2.2.</span> <span class="nav-text">使用segment_command_64结构体的segment</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Segment-PAGEZERO"><span class="nav-number">2.2.1.</span> <span class="nav-text">Segment: __PAGEZERO</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Segment-TEXT-%E4%BB%A3%E7%A0%81"><span class="nav-number">2.2.2.</span> <span class="nav-text">Segment: __TEXT 代码</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-text"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">Section: __text</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-stubs"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">Section: __stubs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-stub-helper"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">Section: __stub_helper</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-stubs"><span class="nav-number">2.2.2.4.</span> <span class="nav-text">Section: __objc_stubs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-methods"><span class="nav-number">2.2.2.5.</span> <span class="nav-text">Section: __objc_methods</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-classname"><span class="nav-number">2.2.2.6.</span> <span class="nav-text">Section:__objc_classname</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-methtype"><span class="nav-number">2.2.2.7.</span> <span class="nav-text">Section:__objc_methtype</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-cstring"><span class="nav-number">2.2.2.8.</span> <span class="nav-text">Section: __cstring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-unwind-info"><span class="nav-number">2.2.2.9.</span> <span class="nav-text">Section: __unwind_info</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Segment-DATA-%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.3.</span> <span class="nav-text">Segment: __DATA 数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-got"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">Section: __got</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Seciton-la-symbol-ptr"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">Seciton: __la_symbol_ptr</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-cfstring"><span class="nav-number">2.2.3.3.</span> <span class="nav-text">Section: __cfstring</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-classlist"><span class="nav-number">2.2.3.4.</span> <span class="nav-text">Section: __objc_classlist</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-protolist"><span class="nav-number">2.2.3.5.</span> <span class="nav-text">Section: __objc_protolist</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-imageInfo"><span class="nav-number">2.2.3.6.</span> <span class="nav-text">Section: __objc_imageInfo</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-const"><span class="nav-number">2.2.3.7.</span> <span class="nav-text">Section: __objc_const</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-selrefs"><span class="nav-number">2.2.3.8.</span> <span class="nav-text">Section: __objc_selrefs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-classrefs"><span class="nav-number">2.2.3.9.</span> <span class="nav-text">Section: __objc_classrefs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-superrefs"><span class="nav-number">2.2.3.10.</span> <span class="nav-text">Section: __objc_superrefs</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-ivar"><span class="nav-number">2.2.3.11.</span> <span class="nav-text">Section: __objc_ivar</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-objc-data"><span class="nav-number">2.2.3.12.</span> <span class="nav-text">Section: __objc_data</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Section-data"><span class="nav-number">2.2.3.13.</span> <span class="nav-text">Section: __data</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Segment-LINKEDIT"><span class="nav-number">2.2.4.</span> <span class="nav-text">Segment: __LINKEDIT</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%85%B6%E4%BB%96%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84Command"><span class="nav-number">2.3.</span> <span class="nav-text">使用其他结构体的Command</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-DYLD-INFO-ONLY"><span class="nav-number">2.3.1.</span> <span class="nav-text">Command:LC_DYLD_INFO_ONLY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-SYMTAB"><span class="nav-number">2.3.2.</span> <span class="nav-text">Command: LC_SYMTAB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-DYSYMTAB"><span class="nav-number">2.3.3.</span> <span class="nav-text">Command: LC_DYSYMTAB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-LOAD-DYLINKER"><span class="nav-number">2.3.4.</span> <span class="nav-text">Command: LC_LOAD_DYLINKER</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-UUID"><span class="nav-number">2.3.5.</span> <span class="nav-text">Command: LC_UUID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-VERSION-MIN-IPHONEOS"><span class="nav-number">2.3.6.</span> <span class="nav-text">Command: LC_VERSION_MIN_IPHONEOS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-SOURCE-VERSION"><span class="nav-number">2.3.7.</span> <span class="nav-text">Command: LC_SOURCE_VERSION</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-MAIN"><span class="nav-number">2.3.8.</span> <span class="nav-text">Command: LC_MAIN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-ENCRYPTION-INFO-64"><span class="nav-number">2.3.9.</span> <span class="nav-text">Command: LC_ENCRYPTION_INFO_64</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-LOAD-DYLIB"><span class="nav-number">2.3.10.</span> <span class="nav-text">Command: LC_LOAD_DYLIB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-RPATH"><span class="nav-number">2.3.11.</span> <span class="nav-text">Command: LC_RPATH</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-FUNCTION-STARTS"><span class="nav-number">2.3.12.</span> <span class="nav-text">Command: LC_FUNCTION_STARTS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-DATA-IN-CODE"><span class="nav-number">2.3.13.</span> <span class="nav-text">Command: LC_DATA_IN_CODE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Command-LC-CODE-SIGATURE"><span class="nav-number">2.3.14.</span> <span class="nav-text">Command: LC_CODE_SIGATURE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Data"><span class="nav-number">2.4.</span> <span class="nav-text">Data</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
-<script src="/js/insight.js"></script>
 
-    
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
 </body>
 </html>
