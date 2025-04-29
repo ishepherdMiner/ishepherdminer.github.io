@@ -159,6 +159,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/12/Technology-learn-vue-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/12/Technology-learn-vue-05/" class="post-title-link" itemprop="url">Vue学习笔记 - 插件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-12 14:37:04" itemprop="dateCreated datePublished" datetime="2025-04-12T14:37:04+08:00">2025-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:28:02" itemprop="dateModified" datetime="2025-04-26T22:28:02+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>插件 <code>(Plugins)</code> 是一种能为 <code>Vue</code> 添加全局功能的工具代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(&#123;&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(myPlugin, &#123;</span><br><span class="line">  <span class="comment">/* 可选的选项 */</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>一个插件可以是一个拥有 <code>install()</code> 方法的对象，也可以直接是一个安装函数本身。安装函数会接收到安装它的应用实例和传递给 <code>app.use()</code> 的额外选项作为参数：</p>
+<p>对象的写法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myPlugin = &#123;</span><br><span class="line">  <span class="title function_">install</span>(<span class="params">app, options</span>) &#123;</span><br><span class="line">    <span class="comment">// 配置此应用</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/04/12/Technology-learn-vue-05/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/11/Technology-learn-vue-04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -952,89 +1038,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/03/28/Technology-win-mac-brige/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/03/28/Technology-win-mac-brige/" class="post-title-link" itemprop="url">Windows与Mac端数据共享</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-03-28 21:38:38" itemprop="dateCreated datePublished" datetime="2025-03-28T21:38:38+08:00">2025-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-26 22:30:46" itemprop="dateModified" datetime="2025-04-26T22:30:46+08:00">2025-04-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Eassy/" itemprop="url" rel="index"><span itemprop="name">Eassy</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在win上访问外部的网站网速比较快,但是日常开发又在macbook上,因此需要两台电脑能数据共享，一开始是想通过微信的,但是同一个账号不能同时登陆；用网盘传输之类的，又要额外下载应用或者依赖浏览器。既然是个人使用,可以直接在win上创建共享目录来解决。</p>
-<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="设置共享目录"><a href="#设置共享目录" class="headerlink" title="设置共享目录"></a>设置共享目录</h2><p>在win上设置个人目录</p>
-<p><img src="https://s2.loli.net/2025/03/28/OkJ8wjhEyuaI6mV.png" alt="1.png"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/03/28/Technology-win-mac-brige/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1104,7 +1107,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1117,7 +1120,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
