@@ -159,6 +159,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/Topic-Clang-Learn-Clang-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/28/Topic-Clang-Learn-Clang-02/" class="post-title-link" itemprop="url">Clang学习历程 编译过程-词法分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-28 15:18:45" itemprop="dateCreated datePublished" datetime="2018-12-28T15:18:45+08:00">2018-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:31:26" itemprop="dateModified" datetime="2025-04-26T22:31:26+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index"><span itemprop="name">Tools</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <div class="gallery-item">
+
+<p><img src="/images/gallery/pexels-jahoo-clouseau-388415.jpg"></p>
+</div>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>《编译原理》中提到</p>
+<blockquote>
+<p>编译器的第一个步骤是词法分析(Lexical Analysis)或扫描。词法分析器读入组成源程序的字符流,并且将它们组织成为有意义的词素(lexeme)的序列。对于每个词素,词法分析产生如下形式的词法单元(token)作为输出:<br><code>&lt;token-name,attribute-value&gt;</code><br><code>token-name</code>     是一个语法分析步骤要使用的抽象符号<br><code>attribute-value</code>指向符号表中关于这个词法单元的条目</p>
+</blockquote>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="type">int</span> initial = <span class="number">8</span>;</span><br><span class="line">        <span class="type">int</span> six = <span class="number">6</span>;</span><br><span class="line">        NSString* site = [[NSString alloc] initWithUTF8String:<span class="string">&quot;starming&quot;</span>];</span><br><span class="line">        <span class="type">int</span> rank = initial + six;</span><br><span class="line">        <span class="type">int</span> position = initial + rank * <span class="number">60</span>;</span><br><span class="line">        NSLog(@<span class="string">&quot;%@ rank %d&quot;</span>, site, position);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/12/28/Topic-Clang-Learn-Clang-02/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/24/Topic-Clang-Learn-Clang-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -945,92 +1035,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/" class="post-title-link" itemprop="url">iOS - Touch ID 解锁功能</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-04-29 07:58:00" itemprop="dateCreated datePublished" datetime="2017-04-29T07:58:00+08:00">2017-04-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-26 22:33:54" itemprop="dateModified" datetime="2025-04-26T22:33:54+08:00">2025-04-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><p><em>iOS 8</em> 引入了 <em>Touch ID</em> 认证的方式来解决输入密码的麻烦操作，<em>Swift</em> 最低需要 <em>iOS 8</em>，因此本文会用 <em>Swift</em> 来实现 <em>Touch ID</em> 功能</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>macOS Sierra 10.12.4<br>Xcode 8.3.1<br>Swift 3.0<br>iPhone 6S 10.1.1 </p>
-</blockquote>
-<p><em>Touch ID</em> 需要硬件支持</p>
-<p><img src="https://ooo.0o0.ooo/2017/04/26/59001750992e4.jpg"> </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/04/29/iOSer-Practice-Touch-ID-unlock-function/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1100,7 +1104,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">83</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hello world⌘ + shift + p  选择 Empty Application 模板">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 概览">
+<meta property="og:url" content="http://yoursite.com/2025/05/02/Technology-learn-flutter-03/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="Hello world⌘ + shift + p  选择 Empty Application 模板">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/ZoatM3gr6Fd1eBT.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/J9UqbgyXclRkKZj.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/ov2bcKn3HBhFRsx.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/YXQRq6S3GfFOZtm.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/RqKcXaLb5W8iYeh.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/DoZkNB4lSesCJTg.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/UT5Csd3MlYVjNPp.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/kzgRDVKPUI56dBb.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/OkxrKec1BV5jMHE.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/ubhsnrxajvpU43i.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/VhU7cXeFQNdiwME.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/WqYxL7v83RNGgit.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/02/A46USHsvR7aTtl9.gif">
+<meta property="article:published_time" content="2025-05-02T10:38:31.000Z">
+<meta property="article:modified_time" content="2025-05-02T10:39:43.565Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/02/ZoatM3gr6Fd1eBT.png">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/02/Technology-learn-flutter-03/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - 概览 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/02/Technology-learn-flutter-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-02 18:38:31 / 修改时间：18:39:43" itemprop="dateCreated datePublished" datetime="2025-05-02T18:38:31+08:00">2025-05-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><p>⌘ + shift + p</p>
+<p><img src="https://s2.loli.net/2025/05/02/ZoatM3gr6Fd1eBT.png" alt="2025-05-01 20.05.16.png"></p>
+<p>选择 <code>Empty Application</code> 模板</p>
+<span id="more"></span>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导入Material风格的组件包</span></span><br><span class="line"><span class="comment">// 位置在flutter安装目录/packages/flutter/lib/material.dart</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// runApp函数接收MainApp组件并将这个Widget作为根节点</span></span><br><span class="line">  runApp(<span class="keyword">const</span> MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// Describes the part of the user interface represented by this widget.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// The framework calls this method when this widget is inserted into the tree in  a given </span></span><br><span class="line">  <span class="comment">// [BuildContext] and when the dependencies of this widget change </span></span><br><span class="line">  <span class="comment">// (e.g., an [InheritedWidget] referenced by this widget changes). </span></span><br><span class="line">  <span class="comment">// This method can potentially be called in every frame and should not have any  </span></span><br><span class="line">  <span class="comment">// side effects beyond building a widget.</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">An application that uses Material Design.</span></span></span><br><span class="line">    <span class="comment">/// <span class="language-markdown">使用Material设计的组件,home代表默认页</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> MaterialApp(</span><br><span class="line">      <span class="comment">/// <span class="language-markdown">The Scaffold is designed to be a top level container for</span></span></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">a [MaterialApp]. This means that adding a Scaffold</span></span></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">to each route on a Material app will provide the app with</span></span></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">Material&#x27;s basic visual layout structure.</span></span></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">Scaffold,MateriaApp组件的顶层容器,规范样式之类的</span></span></span><br><span class="line">      home: Scaffold(</span><br><span class="line">        body: Center(  <span class="comment">/// <span class="language-markdown">局中显示Hello World</span></span></span><br><span class="line">          child: Text(<span class="string">&#x27;Hello World&#x27;</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>build方法用于描述Widget的展示效果,当被<strong>添加到上下文的树</strong>和<strong>Widget发生变化</strong>时会触发这个方法。因为这个方法是高频操作所以不应该有副作用。</p>
+<h3 id="热重载-Hot-reload"><a href="#热重载-Hot-reload" class="headerlink" title="热重载(Hot reload)"></a>热重载(Hot reload)</h3><p> Flutter支持热重载,无需重启启动应用的情况下去重新刷新页面。通过将更新代码注入到运行的Dart虚拟机来实现热重载。在虚拟机使用新的字段和函数更新类后,Flutter框架自动重新构建widget。</p>
+<p> 修改后直接保存/点击调试那里的闪电图标能直接刷新</p>
+<p><img src="https://s2.loli.net/2025/05/02/J9UqbgyXclRkKZj.gif" alt="optimized.gif"></p>
+<h3 id="有状态-StatefulWidget-无状态-StatelessWidget"><a href="#有状态-StatefulWidget-无状态-StatelessWidget" class="headerlink" title="有状态(StatefulWidget) + 无状态(StatelessWidget)"></a>有状态(StatefulWidget) + 无状态(StatelessWidget)</h3><blockquote>
+<p>Flutter中的一切都是Widget，Widget分为有状态和无状态两种,在 Flutter 中每个页面都是一帧，无状态就是保持在那一帧，而有状态的 Widget 当数据更新时，其实是创建了新的 Widget，只是 State 实现了跨帧的数据同步保存。</p>
+</blockquote>
+<p>比如上面的<code>MainApp</code>是无状态的Widget,而<code>Scaffold</code>是有状态的<code>Widget</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Scaffold</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建新组件时继承有状态还是无状态的<code>Widget</code>取决于是否要管理状态</p>
+<h2 id="基础组件"><a href="#基础组件" class="headerlink" title="基础组件"></a>基础组件</h2><h3 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h3><p>Text 是现实单一样式的文本字符串组件。字符串可能跨多行中断,也可能全部显示在同一行上，取决于布局约束</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      home:Scaffold(</span><br><span class="line">        body:Center(</span><br><span class="line">          <span class="comment">// 设置宽度限制为100点</span></span><br><span class="line">          child:Container(</span><br><span class="line">              width: <span class="number">100</span>,</span><br><span class="line">              height:<span class="number">30</span>,</span><br><span class="line">              <span class="comment">// 边框</span></span><br><span class="line">              decoration: BoxDecoration(border: Border.all()),</span><br><span class="line">              <span class="comment">// TextOverflow.ellipsis 超过部分用...</span></span><br><span class="line">              <span class="comment">// TextOverflow.clip -- Clip the overflowing text to fix its container. 超出部分换下一行,外部容器会被遮挡</span></span><br><span class="line">              <span class="comment">// TextOverflow.visible -- Render overflowing text outside of its container. 超出容器部分能渲染</span></span><br><span class="line">              child: Text(overflow:TextOverflow.ellipsis, <span class="string">&#x27;Hello world, how are you?&#x27;</span>))</span><br><span class="line">      ))</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>TextOverflow.ellipsis</code>的效果</p>
+<p><img src="https://s2.loli.net/2025/05/02/ov2bcKn3HBhFRsx.png" alt="2025-05-02 14.56.13.png"></p>
+<p><code>TextOverflow.clip</code> 的效果</p>
+<p><img src="https://s2.loli.net/2025/05/02/YXQRq6S3GfFOZtm.png" alt="2025-05-02 14.55.32.png"></p>
+<p><code>TextOverflow.visible</code> 的效果</p>
+<p><img src="https://s2.loli.net/2025/05/02/RqKcXaLb5W8iYeh.png" alt="2025-05-02 15.06.07.png"></p>
+<p><code>maxLines</code> 控制最大行数<br><code>softWrap</code> 控制是否换行</p>
+<p>当<code>overflow</code>是<code>TextOverflow.visible</code>时</p>
+<p><code>softWrap: false</code></p>
+<p><img src="https://s2.loli.net/2025/05/02/DoZkNB4lSesCJTg.png" alt="2025-05-02 15.04.59.png"></p>
+<p><code>softWrap: true</code></p>
+<p><img src="https://s2.loli.net/2025/05/02/UT5Csd3MlYVjNPp.png" alt="2025-05-02 15.07.44.png"></p>
+<h4 id="Text-rich"><a href="#Text-rich" class="headerlink" title="Text.rich"></a>Text.rich</h4><p>使用Text.rich构造器,Text组件可以在一个段落中展示不同的样式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        body: Center(</span><br><span class="line">          child: <span class="keyword">const</span> Text.rich(</span><br><span class="line">            TextSpan(</span><br><span class="line">              text: <span class="string">&#x27;Hello&#x27;</span>, <span class="comment">// default text style</span></span><br><span class="line">              children: &lt;TextSpan&gt;[</span><br><span class="line">                TextSpan(</span><br><span class="line">                  text: <span class="string">&#x27; beautiful &#x27;</span>,</span><br><span class="line">                  style: TextStyle(fontStyle: FontStyle.italic),</span><br><span class="line">                ),</span><br><span class="line">                TextSpan(</span><br><span class="line">                  text: <span class="string">&#x27;world&#x27;</span>,</span><br><span class="line">                  style: TextStyle(fontWeight: FontWeight.bold),</span><br><span class="line">                ),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/kzgRDVKPUI56dBb.png" alt="2025-05-02 15.16.39.png"></p>
+<h5 id="关于Text的交互"><a href="#关于Text的交互" class="headerlink" title="关于Text的交互"></a>关于Text的交互</h5><p>用<code>GestureDetector widget</code>包装<code>Text</code>,然后在<code>GestureDetector.onTap</code>中处理点击事件。或者使用<code>TextButton</code>来代替</p>
+<h3 id="Row-Column-Stack-Container"><a href="#Row-Column-Stack-Container" class="headerlink" title="Row,Column,Stack,Container"></a>Row,Column,Stack,Container</h3><ul>
+<li>Container: 只有一个子 Widget。默认充满，包含了padding、margin、color、宽高、decoration 等配置</li>
+<li>Row: 可以有多个子 Widget。水平布局。</li>
+<li>Column: 可以有多个子 Widget。垂直布局。</li>
+<li>Stack: 可以有多个子 Widget。 子Widget堆叠在一起。</li>
+<li>Center: 只有一个子 Widget。只用于居中显示，常用于嵌套child，给child设置居中。</li>
+<li>Padding: 只有一个子 Widget。只用于设置Padding，常用于嵌套child，给child设置padding。</li>
+<li>Expanded: 只有一个子 Widget。在 Column 和 Row 中充满。</li>
+<li>ListView: 可以有多个子Widget,列表布局</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 水平布局</span></span><br><span class="line">Row(</span><br><span class="line">    children: [</span><br><span class="line">      <span class="comment">// 图标</span></span><br><span class="line">      <span class="keyword">const</span> IconButton(</span><br><span class="line">        icon: Icon(Icons.menu),</span><br><span class="line">        tooltip: <span class="string">&#x27;Navigation menu&#x27;</span>,</span><br><span class="line">        onPressed: <span class="keyword">null</span>, <span class="comment">// null disables the button</span></span><br><span class="line">      ),</span><br><span class="line">      <span class="comment">// Expanded expands its child</span></span><br><span class="line">      <span class="comment">// to fill the available space.</span></span><br><span class="line">      <span class="comment">// 填充满2个图标之间的空间</span></span><br><span class="line">      Expanded(child: title),</span><br><span class="line">      <span class="comment">// 查询图标</span></span><br><span class="line">      <span class="keyword">const</span> IconButton(</span><br><span class="line">        icon: Icon(Icons.search),</span><br><span class="line">        tooltip: <span class="string">&#x27;Search&#x27;</span>,</span><br><span class="line">        onPressed: <span class="keyword">null</span>,</span><br><span class="line">      ),</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 垂直布局</span></span><br><span class="line">Column(</span><br><span class="line">    children: [</span><br><span class="line">      MyAppBar(</span><br><span class="line">        title: Text(</span><br><span class="line">          <span class="string">&#x27;示例标题&#x27;</span>,</span><br><span class="line">          style:</span><br><span class="line">              Theme.of(context) <span class="comment">//</span></span><br><span class="line">              .primaryTextTheme.titleLarge,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      <span class="keyword">const</span> Expanded(child: Center(child: Text(<span class="string">&#x27;容器&#x27;</span>))),</span><br><span class="line">    ],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/OkxrKec1BV5jMHE.png" alt="2025-05-02 16.10.27.png"></p>
+<p>要使用material中这些预定义图标,需要将工程中的<code>pubspec.yaml</code>文件里的<code>uses-material-design</code>字段设置为<code>true</code></p>
+<h2 id="使用Material组件"><a href="#使用Material组件" class="headerlink" title="使用Material组件"></a>使用Material组件</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(<span class="keyword">const</span> MaterialApp(title: <span class="string">&#x27;Flutter Tutorial&#x27;</span>, home: TutorialHome()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TutorialHome</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> TutorialHome(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="comment">// Scaffold is a layout for</span></span><br><span class="line">    <span class="comment">// the major Material Components.</span></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        leading: <span class="keyword">const</span> IconButton(</span><br><span class="line">          icon: Icon(Icons.menu),</span><br><span class="line">          tooltip: <span class="string">&#x27;Navigation menu&#x27;</span>,</span><br><span class="line">          onPressed: <span class="keyword">null</span>,</span><br><span class="line">        ),</span><br><span class="line">        title: <span class="keyword">const</span> Text(<span class="string">&#x27;Material Components&#x27;</span>),</span><br><span class="line">        actions: <span class="keyword">const</span> [</span><br><span class="line">          IconButton(</span><br><span class="line">            icon: Icon(Icons.search),</span><br><span class="line">            tooltip: <span class="string">&#x27;Search&#x27;</span>,</span><br><span class="line">            onPressed: <span class="keyword">null</span>,</span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">      <span class="comment">// body is the majority of the screen.</span></span><br><span class="line">      body: <span class="keyword">const</span> Center(child: Text(<span class="string">&#x27;Material!&#x27;</span>)),</span><br><span class="line">      floatingActionButton: <span class="keyword">const</span> FloatingActionButton(</span><br><span class="line">        tooltip: <span class="string">&#x27;Add&#x27;</span>, <span class="comment">// used by assistive technologies</span></span><br><span class="line">        onPressed: <span class="keyword">null</span>,</span><br><span class="line">        child: Icon(Icons.add),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/ubhsnrxajvpU43i.png" alt="2025-05-02 16.31.29.png"></p>
+<p>使用<code>Scaffold</code>和<code>AppBar</code>替换原来自定义的<code>MyScaffold</code>和<code>MyAppBar</code></p>
+<h2 id="手势处理"><a href="#手势处理" class="headerlink" title="手势处理"></a>手势处理</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        body: Center(</span><br><span class="line">          child: GestureDetector(</span><br><span class="line">            child: Text(<span class="string">&#x27;Hello world&#x27;</span>,overflow: TextOverflow.ellipsis,),</span><br><span class="line">            onTap: ()=&gt; &#123;</span><br><span class="line">            <span class="comment">// 生产环境不要用print</span></span><br><span class="line">              <span class="built_in">print</span>(<span class="string">&quot;123&quot;</span>)</span><br><span class="line">            &#125;,)</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/VhU7cXeFQNdiwME.png" alt="2025-05-02 15.38.53.png"></p>
+<h2 id="更改小组件以响应输入"><a href="#更改小组件以响应输入" class="headerlink" title="更改小组件以响应输入"></a>更改小组件以响应输入</h2><p>UI通常需要对用户的输入进行响应,比如点外卖时根据用户选择菜品计算最后的价格, <code>Flutter</code>中使用<code>StatefulWidgets</code>来处理这种场景。</p>
+<p>继承<code>StatefulWidget</code>,重写<code>createState</code>方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Counter(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 继承StatefulWidget的类要重写createState()方法,内容返回是_CounterState对象</span></span><br><span class="line">  <span class="comment">// ``=&gt;`` (胖箭头)简写语法用于仅包含一条语句的函数。该语法在将匿名函数作为参数传递时非常有用</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Counter&gt; createState() =&gt; _CounterState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有的类都隐式定义成了一个接口。因此，<strong>任意类都可以作为接口被实现</strong>,定义一个继承State并实现<code>Counter</code>类的方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">[State] objects are created by the framework by calling the</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">[StatefulWidget.createState] method when inflating a [StatefulWidget] to</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">insert it into the tree. </span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">在这里当Counter组件被添加到渲染树时,因为也实现了Counter类,所以会调用对应的createState方法。</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_CounterState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Counter</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> _counter = <span class="number">0</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// _ 代表私有方法</span></span><br><span class="line">  <span class="keyword">void</span> _increment() &#123;</span><br><span class="line">    <span class="comment">// 调用setState()通知Flutter状态变化了,然后重新执行build方法实现实时刷新的效果</span></span><br><span class="line">    setState(() &#123;</span><br><span class="line">      _counter++;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/WqYxL7v83RNGgit.png" alt="2025-05-02 17.45.53.png"></p>
+<h2 id="合并的示例"><a href="#合并的示例" class="headerlink" title="合并的示例"></a>合并的示例</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Product(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.name&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> CartChangedCallback = <span class="built_in">Function</span>(Product product, <span class="built_in">bool</span> inCart);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShoppingListItem</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  ShoppingListItem(&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.product,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.inCart,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.onCartChanged,</span><br><span class="line">  &#125;) : <span class="keyword">super</span>(key: ObjectKey(product));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> Product product;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">bool</span> inCart;</span><br><span class="line">  <span class="keyword">final</span> CartChangedCallback onCartChanged;</span><br><span class="line"></span><br><span class="line">  Color _getColor(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> inCart <span class="comment">//</span></span><br><span class="line">        ? Colors.black54</span><br><span class="line">        : Theme.of(context).primaryColor;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  TextStyle? _getTextStyle(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!inCart) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> TextStyle(</span><br><span class="line">      color: Colors.black54,</span><br><span class="line">      decoration: TextDecoration.lineThrough,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ListTile(</span><br><span class="line">      <span class="comment">// 5. 点击Item时调用传入 onCartChanged 回调,并传入一开始接收的出参数</span></span><br><span class="line">      <span class="comment">// 比如一开始在订单内inCart传true</span></span><br><span class="line">      onTap: () &#123;</span><br><span class="line">        onCartChanged(product, inCart);</span><br><span class="line">      &#125;,</span><br><span class="line">      leading: CircleAvatar(</span><br><span class="line">        backgroundColor: _getColor(context),</span><br><span class="line">        child: Text(product.name[<span class="number">0</span>]),</span><br><span class="line">      ),</span><br><span class="line">      <span class="comment">// 4.显示产品订单的样式</span></span><br><span class="line">      <span class="comment">// 10.根据新参数重新显示样式</span></span><br><span class="line">      title: Text(product.name, style: _getTextStyle(context)),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ShoppingList</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="comment">// 要求传入 products属性</span></span><br><span class="line">  <span class="keyword">const</span> ShoppingList(&#123;<span class="keyword">required</span> <span class="keyword">this</span>.products, <span class="keyword">super</span>.key&#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;Product&gt; products;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 2. 调用_ShoppingListState创建状态对象</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;ShoppingList&gt; createState() =&gt; _ShoppingListState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ShoppingListState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ShoppingList</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> _shoppingCart = &lt;Product&gt;&#123;&#125;;</span><br><span class="line">  <span class="comment">// 6. 点击触发回调</span></span><br><span class="line">  <span class="keyword">void</span> _handleCartChanged(Product product, <span class="built_in">bool</span> inCart) &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      <span class="comment">// 7. 根据入参进行判断,如果一开始是true，则移除,否则添加,即取反操作</span></span><br><span class="line">      <span class="keyword">if</span> (!inCart) &#123;</span><br><span class="line">        _shoppingCart.add(product);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        _shoppingCart.remove(product);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 8. 通知Flutter 重新执行_ShoppingListState对象的build方法</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;Shopping List&#x27;</span>)),</span><br><span class="line">      body: ListView(</span><br><span class="line">        padding: <span class="keyword">const</span> EdgeInsets.symmetric(vertical: <span class="number">8</span>),</span><br><span class="line">        children:</span><br><span class="line">            <span class="comment">// 3. 根据products属性创建ShoppingListItem,并传入产品信息,回调</span></span><br><span class="line">            <span class="comment">// 9. 再次调用ShoppingListItem并传入新参数</span></span><br><span class="line">            widget.products.map((product) &#123;</span><br><span class="line">              <span class="keyword">return</span> ShoppingListItem(</span><br><span class="line">                product: product,</span><br><span class="line">                inCart: _shoppingCart.contains(product),</span><br><span class="line">                onCartChanged: _handleCartChanged,</span><br><span class="line">              );</span><br><span class="line">            &#125;).toList(),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(</span><br><span class="line">    <span class="keyword">const</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Shopping App&#x27;</span>,</span><br><span class="line">      <span class="comment">// 1. 创建ShoppingList对象,并传入Product参数</span></span><br><span class="line">      home: ShoppingList(</span><br><span class="line">        products: [</span><br><span class="line">          Product(name: <span class="string">&#x27;Eggs&#x27;</span>),</span><br><span class="line">          Product(name: <span class="string">&#x27;Flour&#x27;</span>),</span><br><span class="line">          Product(name: <span class="string">&#x27;Chocolate chips&#x27;</span>),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/02/A46USHsvR7aTtl9.gif" alt="optimized.gif"></p>
+<h2 id="响应组件的生命周期相关事件"><a href="#响应组件的生命周期相关事件" class="headerlink" title="响应组件的生命周期相关事件"></a>响应组件的生命周期相关事件</h2><p><code>Flutter</code>调用<code>createState</code>方法后,会将<code>state</code>对象添加到渲染树并且调用<code>state</code>对象的<code>initState()</code>,可以重写这个方法中配置动画或准备订阅平台相关的服务,重写方法开始要先调用<code>super.initState</code>。当<code>state</code>对象不再需要时,<code>Flutter</code>会调用对象的<code>dispose</code>方法来执行清理操作，比如取消定时器,取消订阅,同样在重写方法中也要先调用<code>super.dispose</code></p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><h3 id="包缓存地址"><a href="#包缓存地址" class="headerlink" title="包缓存地址"></a>包缓存地址</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub get </span><br><span class="line"><span class="comment"># 命令下载的包在~/.pub-cache/hosted</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://flutter.cn/learn/">Flutter</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/ui">Flutter-UI</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7197061916904226872">Flutter - 我给官方提PR，解决run命令卡住问题 😃</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1eeea55f5c8d">Day16 - Flutter - 屏幕适配</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/04/29/Media-learn-media-06/" rel="prev" title="iOS - 音频:Core Audio - 播放">
+      <i class="fa fa-chevron-left"></i> iOS - 音频:Core Audio - 播放
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hello-world"><span class="nav-number">1.</span> <span class="nav-text">Hello world</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%83%AD%E9%87%8D%E8%BD%BD-Hot-reload"><span class="nav-number">1.1.</span> <span class="nav-text">热重载(Hot reload)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%8A%B6%E6%80%81-StatefulWidget-%E6%97%A0%E7%8A%B6%E6%80%81-StatelessWidget"><span class="nav-number">1.2.</span> <span class="nav-text">有状态(StatefulWidget) + 无状态(StatelessWidget)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">基础组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Text"><span class="nav-number">2.1.</span> <span class="nav-text">Text</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Text-rich"><span class="nav-number">2.1.1.</span> <span class="nav-text">Text.rich</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EText%E7%9A%84%E4%BA%A4%E4%BA%92"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">关于Text的交互</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Row-Column-Stack-Container"><span class="nav-number">2.2.</span> <span class="nav-text">Row,Column,Stack,Container</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Material%E7%BB%84%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">使用Material组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%BF%E5%A4%84%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">手势处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E5%B0%8F%E7%BB%84%E4%BB%B6%E4%BB%A5%E5%93%8D%E5%BA%94%E8%BE%93%E5%85%A5"><span class="nav-number">5.</span> <span class="nav-text">更改小组件以响应输入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%88%E5%B9%B6%E7%9A%84%E7%A4%BA%E4%BE%8B"><span class="nav-number">6.</span> <span class="nav-text">合并的示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E7%BB%84%E4%BB%B6%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%B8%E5%85%B3%E4%BA%8B%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">响应组件的生命周期相关事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83"><span class="nav-number">8.</span> <span class="nav-text">其它</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E7%BC%93%E5%AD%98%E5%9C%B0%E5%9D%80"><span class="nav-number">8.1.</span> <span class="nav-text">包缓存地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">9.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
