@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="要点Flutter 布局的核心机制是 widget。在 Flutter 中，几乎所有东西都是 widget — 甚至布局模型都是 widget。你在 Flutter 应用程序中看到的图像，图标和文本都是 widget。此外不能直接看到的也是 widget，例如用来排列、限制和对齐可见 widget 的行、列和网格。 布局流程 选择一个布局Widget 创建一个可见Widget 将可见Widget添">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter 布局">
+<meta property="og:url" content="http://yoursite.com/2025/05/06/Technology-learn-flutter-04/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="要点Flutter 布局的核心机制是 widget。在 Flutter 中，几乎所有东西都是 widget — 甚至布局模型都是 widget。你在 Flutter 应用程序中看到的图像，图标和文本都是 widget。此外不能直接看到的也是 widget，例如用来排列、限制和对齐可见 widget 的行、列和网格。 布局流程 选择一个布局Widget 创建一个可见Widget 将可见Widget添">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/06/APNnbOaXFLZ2e7y.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/06/BIbEdiP925AmjSU.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/06/ZOEA6WQShd9Kye4.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/06/moILF2AHabDuOKr.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/06/TjG2nQYiLUdF8Az.png">
+<meta property="article:published_time" content="2025-05-06T03:53:29.000Z">
+<meta property="article:modified_time" content="2025-05-06T03:54:24.642Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/06/APNnbOaXFLZ2e7y.png">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/06/Technology-learn-flutter-04/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter 布局 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/06/Technology-learn-flutter-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter 布局
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-06 11:53:29 / 修改时间：11:54:24" itemprop="dateCreated datePublished" datetime="2025-05-06T11:53:29+08:00">2025-05-06</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="要点"><a href="#要点" class="headerlink" title="要点"></a>要点</h2><p>Flutter 布局的核心机制是 <strong>widget</strong>。在 Flutter 中，几乎所有东西都是 widget — 甚至布局模型都是 widget。你在 Flutter 应用程序中看到的图像，图标和文本都是 widget。此外不能直接看到的也是 widget，例如用来排列、限制和对齐可见 widget 的行、列和网格。</p>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><ol>
+<li>选择一个布局Widget</li>
+<li>创建一个可见Widget</li>
+<li>将可见Widget添加到布局Widget</li>
+<li>将布局Widget添加到页面 </li>
+<li>运行应用</li>
+</ol>
+<span id="more"></span>
+
+<h3 id="Center"><a href="#Center" class="headerlink" title="Center"></a>Center</h3><p>步骤1: 选择Center Widget</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="comment">// 步骤4: 一个 Flutter 应用本身就是一个 widget，大多数 widget 都有一个 build() 方法，在应用的 build() 方法中实例化和返回一个 widget 会让它显示出来。</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> MaterialApp(</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        <span class="comment">// 步骤3: 通过child属性将Text Widget添加到Center Widget中</span></span><br><span class="line">        body: Center(</span><br><span class="line">          child: Text(<span class="string">&#x27;Hello World!&#x27;</span>), <span class="comment">// 创建可见的 Widget</span></span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所有布局<code>Widget</code>都具有以下任一项:</p>
+<ul>
+<li>一个<code>child</code>属性,当布局<code>Widget</code>只包含一个子项，比如<code>Center</code>,<code>Container</code></li>
+<li>一个<code>children</code>属性,当布局<code>Widget</code>包含多个子项，比如<code>Row</code>,<code>Column</code>,<code>ListView</code>和<code>Stack</code></li>
+</ul>
+<p>对应 Material 应用，可以使用 Scaffold widget，它提供默认的 banner 背景颜色，还有用于添加抽屉、提示条和底部列表弹窗的 API</p>
+<h3 id="Row-列-Column-行-Container-spacing-Padding-SizedBox-margin-Expanded"><a href="#Row-列-Column-行-Container-spacing-Padding-SizedBox-margin-Expanded" class="headerlink" title="Row(列) , Column(行),Container , spacing, Padding, SizedBox, margin,Expanded"></a>Row(列) , Column(行),Container , spacing, Padding, SizedBox, margin,Expanded</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&quot;Flutter布局学习&quot;</span>,</span><br><span class="line">      home: Scaffold(</span><br><span class="line">        appBar: AppBar(title: Text(<span class="string">&quot;Flutter 布局学习&quot;</span>)),</span><br><span class="line">        body: Column(</span><br><span class="line">          spacing: <span class="number">6</span>,</span><br><span class="line">          children: [</span><br><span class="line">            Column(</span><br><span class="line">              spacing: <span class="number">10</span>,</span><br><span class="line">              children: [</span><br><span class="line">                Text(<span class="string">&quot;回乡偶书&quot;</span>, style: TextStyle(fontSize: <span class="number">24</span>)),</span><br><span class="line">                Text(<span class="string">&quot;唐.贺知章&quot;</span>),</span><br><span class="line">                Text(</span><br><span class="line">                  <span class="string">&quot;少小离家老大回，乡音无改鬓毛衰。&quot;</span>,</span><br><span class="line">                  style: TextStyle(</span><br><span class="line">                    color: Colors.black,</span><br><span class="line">                    fontSize: <span class="number">16</span>,</span><br><span class="line">                    height: <span class="number">1.5</span>, <span class="comment">// 控制行高</span></span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">                Text(</span><br><span class="line">                  <span class="string">&quot;儿童相见不相识，笑问客从何处来。&quot;</span>,</span><br><span class="line">                  style: TextStyle(color: Colors.black, fontSize: <span class="number">16</span>),</span><br><span class="line">                ),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">            Column(</span><br><span class="line">              spacing: <span class="number">6</span>,</span><br><span class="line">              <span class="comment">// Text 设置左对齐</span></span><br><span class="line">              <span class="comment">// 由于Text Widget的大小是自动包裹内容的，</span></span><br><span class="line">              <span class="comment">// 所以设置Text的Alignment.left不能生效。</span></span><br><span class="line">              <span class="comment">// 当布局是Column时,可以设置Column的</span></span><br><span class="line">              <span class="comment">// crossAxisAlignment: CrossAxisAlignment.start。</span></span><br><span class="line">              crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">              children: [</span><br><span class="line">                Padding(</span><br><span class="line">                  padding: EdgeInsets.fromLTRB(<span class="number">16</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">4</span>),</span><br><span class="line">                  child: Text(<span class="string">&quot;译文:&quot;</span>, textAlign: TextAlign.left),</span><br><span class="line">                ),</span><br><span class="line">                Padding(</span><br><span class="line">                  padding: EdgeInsets.fromLTRB(<span class="number">16</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">4</span>),</span><br><span class="line">                  child: Text(</span><br><span class="line">                    <span class="string">&quot;年少时离乡老年才归家，我的乡音虽未改变，但鬓角的毛发却已经疏落。家乡的儿童们看见我，没有一个认识我。他们笑着询问我：你是从哪里来的呀？&quot;</span>,</span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">                Padding(</span><br><span class="line">                  padding: EdgeInsets.fromLTRB(<span class="number">16</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">4</span>),</span><br><span class="line">                  child: Text(<span class="string">&quot;创作背景:&quot;</span>),</span><br><span class="line">                ),</span><br><span class="line">                Padding(</span><br><span class="line">                  padding: EdgeInsets.fromLTRB(<span class="number">16</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">4</span>),</span><br><span class="line">                  child: SizedBox(</span><br><span class="line">                    width: <span class="number">360</span>,</span><br><span class="line">                    child: Text(</span><br><span class="line">                      <span class="string">&quot;贺知章在公元744年（天宝三载），辞去朝廷官职，告老返回故乡越州永兴（今浙江萧山），时已八十六岁，这时，距他中年离乡已经很久了，此诗便作于此时。&quot;</span>,</span><br><span class="line">                    ),</span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">            Row(</span><br><span class="line">              crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">              spacing: <span class="number">10</span>,</span><br><span class="line">              children: [</span><br><span class="line">                Padding(</span><br><span class="line">                  padding: EdgeInsets.fromLTRB(<span class="number">16</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>),</span><br><span class="line">                  <span class="comment">// Image.asset方法里设置的图片路径是相对于pubspec.yaml文件</span></span><br><span class="line">                  child: Image.asset(</span><br><span class="line">                    <span class="string">&#x27;assets/images/layout_01@3x.png&#x27;</span>,</span><br><span class="line">                    width: <span class="number">160</span>,</span><br><span class="line">                    alignment: Alignment.center,</span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">                <span class="comment">// 设置Text Widget离右侧屏幕距离为16</span></span><br><span class="line">                <span class="comment">// 1. Expanded占满了父Widget的剩余空间</span></span><br><span class="line">                <span class="comment">// 2. Container size 包装Text Widget</span></span><br><span class="line">                <span class="comment">// 3. margin设置控制右边距</span></span><br><span class="line">                Expanded(</span><br><span class="line">                  child: Column(</span><br><span class="line">                    spacing: <span class="number">10</span>,</span><br><span class="line">                    crossAxisAlignment: CrossAxisAlignment.start,</span><br><span class="line">                    children: [</span><br><span class="line">                      Container(</span><br><span class="line">                        <span class="comment">// EdgeInsets.only: 仅设置一个方向的间距</span></span><br><span class="line">                        margin: EdgeInsets.only(right: <span class="number">16</span>),</span><br><span class="line">                        <span class="comment">// L:Left,T:Top,R:Right,B:Bottom 通过英文来记忆4参数</span></span><br><span class="line">                        <span class="comment">// padding: EdgeInsets.fromLTRB(0, 0, 16,0),</span></span><br><span class="line">                        padding: EdgeInsets.only(right: <span class="number">16</span>),</span><br><span class="line">                        decoration: BoxDecoration(border: Border.all()),</span><br><span class="line">                        child: Text(</span><br><span class="line">                          <span class="string">&quot;问题:请问这首诗表达了作者的什么样的感情?&quot;</span>,</span><br><span class="line">                          maxLines: <span class="number">4</span>,</span><br><span class="line">                          softWrap: <span class="keyword">true</span>,</span><br><span class="line">                        ),</span><br><span class="line">                      ),</span><br><span class="line">                      Container(</span><br><span class="line">                        margin: EdgeInsets.only(right: <span class="number">30</span>),</span><br><span class="line">                        child: Text(</span><br><span class="line">                          <span class="string">&quot;如果现在是北京时间早上八点整，我飞往巴黎，到达后巴黎当地时间为早上八点整，请问：我的生命相对延长了吗？&quot;</span>,</span><br><span class="line">                        ),</span><br><span class="line">                      ),</span><br><span class="line">                      Text(<span class="string">&quot;答：你把表的电池扣了你是不是就不死了？&quot;</span>),</span><br><span class="line">                    ],</span><br><span class="line">                  ),</span><br><span class="line">                ),</span><br><span class="line">              ],</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/06/APNnbOaXFLZ2e7y.png" alt="2025-05-05 21.54.23.png"></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Column</td>
+<td>垂直布局,可以包含多个子Widget,子Widget从上往下延伸</td>
+</tr>
+<tr>
+<td>Row</td>
+<td>水平布局,可以包含多个子Widget,子Widget从左往右延伸</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>包含一个子Widget,一般用来包装显示的Widget,在这里设置宽高,内外边距</td>
+</tr>
+<tr>
+<td>Padding</td>
+<td>包含一个子Widget,控制内边距</td>
+</tr>
+<tr>
+<td>SizedBox</td>
+<td>包含一个子Widget,固定大小</td>
+</tr>
+<tr>
+<td>Expanded</td>
+<td>包含一个子Widget,填充父Widget的剩余空间</td>
+</tr>
+</tbody></table>
+<h4 id="GridView-amp-amp-ListView"><a href="#GridView-amp-amp-ListView" class="headerlink" title="GridView &amp;&amp; ListView"></a>GridView &amp;&amp; ListView</h4><p>使用 GridView 将 widget 作为二维列表展示。 GridView 提供两个预制的列表，或者你可以自定义网格。当 GridView 检测到内容太长而无法适应渲染盒时，它就会自动支持滚动。</p>
+<p>GridView的特点</p>
+<ul>
+<li>在网格中使用widget</li>
+<li>当列的内容超出渲染容器时,它会自动支持滚动</li>
+<li>创建自定义的网格,或者使用 <code>GridView.count</code> 设置列的数量/ <code>GridView.extent</code>设置单元格最大宽度</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Widget _buildGrid() =&gt; GridView.extent(</span><br><span class="line">    <span class="comment">// 单元格最大宽度,因为子Widget是从上往下延伸,所以主轴是上下,交叉轴是左右,子Widget左右方向的是宽度</span></span><br><span class="line">    maxCrossAxisExtent: <span class="number">150</span>,</span><br><span class="line">    <span class="comment">// 上下左右内边距</span></span><br><span class="line">    padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">4</span>),</span><br><span class="line">    <span class="comment">// 上下单元格间距</span></span><br><span class="line">    mainAxisSpacing: <span class="number">4</span>,</span><br><span class="line">    <span class="comment">// 左右单元格间距</span></span><br><span class="line">    crossAxisSpacing: <span class="number">4</span>,</span><br><span class="line">    children: _buildGridTileList(<span class="number">30</span>),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数支持箭头形式的简写，当函数体只有一行表达式时，可以通过=&gt;简写表示返回表达式的值。</span></span><br><span class="line"><span class="comment">// 从0递增到count-1获取assets/images/pic$i.jpg的图标作为GridView的children</span></span><br><span class="line"><span class="comment">// Generates a list of values.</span></span><br><span class="line"><span class="comment">// Creates a list with [length] positions and fills it with values created by calling [generator] </span></span><br><span class="line"><span class="comment">// for each index in the range 0 .. length - 1 in increasing order.</span></span><br><span class="line"><span class="built_in">List</span>&lt;Widget&gt; _buildGridTileList(<span class="built_in">int</span> count) =&gt;</span><br><span class="line">      <span class="built_in">List</span>.generate(count, (i) =&gt; Image.asset(<span class="string">&#x27;assets/images/pic<span class="subst">$i</span>.jpg&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/06/BIbEdiP925AmjSU.gif" alt="optimized.gif"></p>
+<p><code>ListView</code>是一个和<code>Column</code>相似的<code>Widget</code>,当内容大于自己的渲染框时,就会自动支持滚动</p>
+<p><code>ListView</code>的特点</p>
+<ul>
+<li>一个用来组织盒子中列表的专用<code>Column</code></li>
+<li>可以水平或者垂直布局</li>
+<li>当检测到空间不足时,会自动支持滚动</li>
+<li>比<code>Column</code>的配置少,使用更容易,且支持滚动</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">Widget _buildList() &#123;</span><br><span class="line">    <span class="keyword">return</span> ListView(</span><br><span class="line">      children: [</span><br><span class="line">        _tile(<span class="string">&#x27;CineArts at the Empire&#x27;</span>, <span class="string">&#x27;85 W Portal Ave&#x27;</span>, Icons.theaters),</span><br><span class="line">        _tile(<span class="string">&#x27;The Castro Theater&#x27;</span>, <span class="string">&#x27;429 Castro St&#x27;</span>, Icons.theaters),</span><br><span class="line">        _tile(<span class="string">&#x27;Alamo Drafthouse Cinema&#x27;</span>, <span class="string">&#x27;2550 Mission St&#x27;</span>, Icons.theaters),</span><br><span class="line">        _tile(<span class="string">&#x27;Roxie Theater&#x27;</span>, <span class="string">&#x27;3117 16th St&#x27;</span>, Icons.theaters),</span><br><span class="line">        _tile(</span><br><span class="line">          <span class="string">&#x27;United Artists Stonestown Twin&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;501 Buckingham Way&#x27;</span>,</span><br><span class="line">          Icons.theaters,</span><br><span class="line">        ),</span><br><span class="line">        _tile(<span class="string">&#x27;AMC Metreon 16&#x27;</span>, <span class="string">&#x27;135 4th St #3000&#x27;</span>, Icons.theaters),</span><br><span class="line">        <span class="comment">// 分割线</span></span><br><span class="line">        <span class="keyword">const</span> Divider(),</span><br><span class="line">        _tile(<span class="string">&#x27;K\&#x27;s Kitchen&#x27;</span>, <span class="string">&#x27;757 Monterey Blvd&#x27;</span>, Icons.restaurant),</span><br><span class="line">        _tile(<span class="string">&#x27;Emmy\&#x27;s Restaurant&#x27;</span>, <span class="string">&#x27;1923 Ocean Ave&#x27;</span>, Icons.restaurant),</span><br><span class="line">        _tile(<span class="string">&#x27;Chaiya Thai Restaurant&#x27;</span>, <span class="string">&#x27;272 Claremont Blvd&#x27;</span>, Icons.restaurant),</span><br><span class="line">        _tile(<span class="string">&#x27;La Ciccia&#x27;</span>, <span class="string">&#x27;291 30th St&#x27;</span>, Icons.restaurant),</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  ListTile _tile(<span class="built_in">String</span> title, <span class="built_in">String</span> subtitle, IconData icon) &#123;</span><br><span class="line">    <span class="keyword">return</span> ListTile(</span><br><span class="line">      title: Text(</span><br><span class="line">        title,</span><br><span class="line">        style: <span class="keyword">const</span> TextStyle(fontWeight: FontWeight.w500, fontSize: <span class="number">20</span>),</span><br><span class="line">      ),</span><br><span class="line">      subtitle: Text(subtitle),</span><br><span class="line">      leading: Icon(icon, color: Colors.blue[<span class="number">500</span>]),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/06/ZOEA6WQShd9Kye4.png" alt="2025-05-06 10.50.56.png"></p>
+<p>里面每一行都是<code>ListTile</code>,它是<code>Material</code>库中专用的行<code>Widget</code>，它可以很轻松的创建一个包含三行文本以及可选的行前和行尾图标的行。 <code>ListTile</code> 在 <code>Card</code> 或者 <code>ListView</code> 中最常用，但是也可以在别处使用。</p>
+<h4 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h4><p><code>Stack</code>布局用于叠加场景,比如图片上添加文字描述</p>
+<p><code>Stack</code>的特点</p>
+<ul>
+<li>用于覆盖另一个<code>Widget</code> – 类似栈:后进(渲染)先出(显示在外层)</li>
+<li>子列表中的第一个<code>Widget</code>是基础<code>Widget</code>;后面的子项覆盖在基础<code>Widget</code>的顶部</li>
+<li><code>Stack</code>的内容是无法滚动的</li>
+<li>可以剪切掉超出渲染框的子项</li>
+</ul>
+<p><img src="https://s2.loli.net/2025/05/06/moILF2AHabDuOKr.png" alt="2025-05-06 11.13.36.png"></p>
+<h4 id="Card"><a href="#Card" class="headerlink" title="Card"></a>Card</h4><p><code>Material</code> 库中的<code>Card</code>包含相关有价值信息,几乎可以由任何<code>Widget</code>组成,但是通常和<code>ListTile</code>一起使用,<code>Card</code> 只有一个子项,这个子项可以是列,行,列表,网格或者其它支持多个子项的<code>Widget</code>。默认情况下,<code>Card</code>的大小是0x0像素。可以使用<code>SizeBox</code>控制<code>Card</code>的大小</p>
+<p>在 <code>Flutter</code> 中，<code>Card</code> 有轻微的圆角和阴影来使它具有 <code>3D</code> 效果。改变 <code>Card</code> 的 <code>elevation</code> 属性可以控制阴影效果</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Widget _buildCard() &#123;</span><br><span class="line">    <span class="keyword">return</span> SizedBox(</span><br><span class="line">      height: <span class="number">210</span>,</span><br><span class="line">      child: Card(</span><br><span class="line">        child: Column(</span><br><span class="line">          children: [</span><br><span class="line">            ListTile(</span><br><span class="line">              title: <span class="keyword">const</span> Text(</span><br><span class="line">                <span class="string">&#x27;1625 Main Street&#x27;</span>,</span><br><span class="line">                style: TextStyle(fontWeight: FontWeight.w500),</span><br><span class="line">              ),</span><br><span class="line">              subtitle: <span class="keyword">const</span> Text(<span class="string">&#x27;My City, CA 99984&#x27;</span>),</span><br><span class="line">              leading: Icon(Icons.restaurant_menu, color: Colors.blue[<span class="number">500</span>]),</span><br><span class="line">            ),</span><br><span class="line">            <span class="keyword">const</span> Divider(),</span><br><span class="line">            ListTile(</span><br><span class="line">              title: <span class="keyword">const</span> Text(</span><br><span class="line">                <span class="string">&#x27;(408) 555-1212&#x27;</span>,</span><br><span class="line">                style: TextStyle(fontWeight: FontWeight.w500),</span><br><span class="line">              ),</span><br><span class="line">              leading: Icon(Icons.contact_phone, color: Colors.blue[<span class="number">500</span>]),</span><br><span class="line">            ),</span><br><span class="line">            ListTile(</span><br><span class="line">              title: <span class="keyword">const</span> Text(<span class="string">&#x27;costa@example.com&#x27;</span>),</span><br><span class="line">              leading: Icon(Icons.contact_mail, color: Colors.blue[<span class="number">500</span>]),</span><br><span class="line">            ),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/06/TjG2nQYiLUdF8Az.png" alt="2025-05-06 11.21.21.png"></p>
+<h2 id="一些收获"><a href="#一些收获" class="headerlink" title="一些收获"></a>一些收获</h2><h3 id="CrossAxisAlignment-交叉轴-amp-amp-MainAxisAlignment-主轴"><a href="#CrossAxisAlignment-交叉轴-amp-amp-MainAxisAlignment-主轴" class="headerlink" title="CrossAxisAlignment(交叉轴) &amp;&amp; MainAxisAlignment(主轴)"></a>CrossAxisAlignment(交叉轴) &amp;&amp; MainAxisAlignment(主轴)</h3><p><code>MainAxisAlignment</code>（主轴）就是与当前子<code>Widget</code>延伸方向一致的轴，而<code>CrossAxisAlignment</code>（交叉轴）就是与当前子<code>Widget</code>延伸方向垂直的轴</p>
+<p>比如<code>Column</code>: 子<code>Widget</code>是从上往下延伸的,所以主轴就是垂直方向,交叉轴就是水平方向的。<br>即<code>Column</code> 的 <code>MainAxisAlignment</code> 属性用于控制子<code>Widget</code>在主轴（垂直轴）上的对齐方式,<code>Column</code> 的 <code>CrossAxisAlignment</code> 属性用于控制子<code>Widget</code>在交叉轴（水平轴）上的对齐方式</p>
+<p>当设置为<code>CrossAxisAlignment.start</code>时表示<code>Column</code>中的元素左对齐。</p>
+<h3 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h3><p>通过快捷键 <code>⌥(option) + ⇧(shift) + f</code> 可以快速对代码格式化</p>
+<h3 id="内容不可见"><a href="#内容不可见" class="headerlink" title="内容不可见"></a>内容不可见</h3><p><code>Flutter</code>界面会告警提示当前的布局超过多少像素,存在内容不可见的问题</p>
+<h3 id="Waiting-for-another-flutter-command-to-release-the-startup-lock"><a href="#Waiting-for-another-flutter-command-to-release-the-startup-lock" class="headerlink" title="Waiting for another flutter command to release the startup lock"></a><code>Waiting for another flutter command to release the startup lock</code></h3><p>问题: VS Code 创建新的Flutter工程一直卡在<code>Waiting for another flutter command to release the startup lock</code></p>
+<p>方案: </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 执行后关闭VS Code 重新打开再次创建Flutter工程</span><br><span class="line">killall -<span class="number">9</span> dart</span><br></pre></td></tr></table></figure>
+<h3 id="ERR-Proxy-failed-to-establish-tunnel-503-Forwarding-failure-uri-pub-flutter-io-cn-443"><a href="#ERR-Proxy-failed-to-establish-tunnel-503-Forwarding-failure-uri-pub-flutter-io-cn-443" class="headerlink" title="ERR : Proxy failed to establish tunnel (503 Forwarding failure), uri=//pub.flutter-io.cn:443"></a>ERR : Proxy failed to establish tunnel (503 Forwarding failure), uri=//pub.flutter-io.cn:443</h3><p>一般是网络原因,我是终端加了端口转发,然后一直访问不了<code>pub.flutter-io.cn</code>,所以去掉代理</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 去掉代理 + 重新执行 flutter pub get --verbose</span></span><br><span class="line"><span class="built_in">export</span> https_proxy=</span><br><span class="line"><span class="built_in">export</span> http_proxy= </span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/51679269/waiting-for-another-flutter-command-to-release-the-startup-lock">Waiting for another flutter command to release the startup lock</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_42338962/article/details/122330555">flutter 设置Text居左无效</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/smileKH/article/details/138770028">Flutter 中的 Column 小部件：全面指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/ui/layout/constraints/">https://docs.flutter.cn/ui/layout/constraints/</a></li>
+<li><a target="_blank" rel="noopener" href="http://jianshu.com/p/8a142e06c48e">GridView.extent中maxCrossAxisExtent的作用</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/02/Technology-learn-flutter-03/" rel="prev" title="Flutter - 概览">
+      <i class="fa fa-chevron-left"></i> Flutter - 概览
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%81%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">要点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%83%E5%B1%80"><span class="nav-number">2.</span> <span class="nav-text">布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Center"><span class="nav-number">2.2.</span> <span class="nav-text">Center</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Row-%E5%88%97-Column-%E8%A1%8C-Container-spacing-Padding-SizedBox-margin-Expanded"><span class="nav-number">2.3.</span> <span class="nav-text">Row(列) , Column(行),Container , spacing, Padding, SizedBox, margin,Expanded</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GridView-amp-amp-ListView"><span class="nav-number">2.3.1.</span> <span class="nav-text">GridView &amp;&amp; ListView</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stack"><span class="nav-number">2.3.2.</span> <span class="nav-text">Stack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Card"><span class="nav-number">2.3.3.</span> <span class="nav-text">Card</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%94%B6%E8%8E%B7"><span class="nav-number">3.</span> <span class="nav-text">一些收获</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CrossAxisAlignment-%E4%BA%A4%E5%8F%89%E8%BD%B4-amp-amp-MainAxisAlignment-%E4%B8%BB%E8%BD%B4"><span class="nav-number">3.1.</span> <span class="nav-text">CrossAxisAlignment(交叉轴) &amp;&amp; MainAxisAlignment(主轴)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">3.2.</span> <span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E4%B8%8D%E5%8F%AF%E8%A7%81"><span class="nav-number">3.3.</span> <span class="nav-text">内容不可见</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Waiting-for-another-flutter-command-to-release-the-startup-lock"><span class="nav-number">3.4.</span> <span class="nav-text">Waiting for another flutter command to release the startup lock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ERR-Proxy-failed-to-establish-tunnel-503-Forwarding-failure-uri-pub-flutter-io-cn-443"><span class="nav-number">3.5.</span> <span class="nav-text">ERR : Proxy failed to establish tunnel (503 Forwarding failure), uri&#x3D;&#x2F;&#x2F;pub.flutter-io.cn:443</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
