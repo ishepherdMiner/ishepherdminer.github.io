@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境 Flutter 3.29macOS Sequoia 15.4.1Xcode 16.3  概览UIView与Widgets的比较在UIKit使用UIView类的对象进行页面开发,布局也是UIView类的对象,在Flutter中使用的是Widget,在概念上Widget可以理解成UIView。 差异：  有效期: Widgets是不可变的,它的生存期只到被改变前。当Widgets或它们的状态改变">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - UIKit开发相关指南 - 概览">
+<meta property="og:url" content="http://yoursite.com/2025/05/10/Technology-learn-flutter-05/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="环境 Flutter 3.29macOS Sequoia 15.4.1Xcode 16.3  概览UIView与Widgets的比较在UIKit使用UIView类的对象进行页面开发,布局也是UIView类的对象,在Flutter中使用的是Widget,在概念上Widget可以理解成UIView。 差异：  有效期: Widgets是不可变的,它的生存期只到被改变前。当Widgets或它们的状态改变">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/10/lupvybc94xXICWi.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/10/NYUtvGMH1WAVw4r.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/10/mO5xSbK8JyhrNUP.gif">
+<meta property="article:published_time" content="2025-05-10T15:07:54.000Z">
+<meta property="article:modified_time" content="2025-05-10T15:09:36.538Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/10/lupvybc94xXICWi.gif">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/10/Technology-learn-flutter-05/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - UIKit开发相关指南 - 概览 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/10/Technology-learn-flutter-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - UIKit开发相关指南 - 概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-10 23:07:54 / 修改时间：23:09:36" itemprop="dateCreated datePublished" datetime="2025-05-10T23:07:54+08:00">2025-05-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>Flutter 3.29<br>macOS Sequoia 15.4.1<br>Xcode 16.3</p>
+</blockquote>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><h3 id="UIView与Widgets的比较"><a href="#UIView与Widgets的比较" class="headerlink" title="UIView与Widgets的比较"></a>UIView与Widgets的比较</h3><p>在UIKit使用UIView类的对象进行页面开发,布局也是UIView类的对象,在Flutter中使用的是Widget,在概念上Widget可以理解成UIView。</p>
+<p>差异：</p>
+<ol>
+<li>有效期: Widgets是不可变的,它的生存期只到被改变前。当Widgets或它们的状态改变了。Flutter’s 框架会创建一个widget的实例，而UIKit中的UIView是不会重新创建，它是可变的,绘制一次并且在使用setNeedDisplay()使其失效之前不会重新绘制</li>
+<li>轻量: Widgets相对更轻量,一个原因是它们是不可变，而且它们不负责显示和绘制,更多的是一种语义的描述。</li>
+</ol>
+<p>Flutter 包含 Matterial 组件库,其中的Widgets都符合了Material设计指引。Material设计是个适配多平台的设计系统,也支持iOS</p>
+<p>但如果想用iOS的UI风格,可以使用<a target="_blank" rel="noopener" href="https://docs.flutter.cn/ui/widgets/cupertino">Cupertino widgets libray</a></p>
+<span id="more"></span>
+
+<h3 id="更新Widgets"><a href="#更新Widgets" class="headerlink" title="更新Widgets"></a>更新Widgets</h3><p>使用UIKit开发时可以直接改变对应的视图。就像上面提到的,因为Flutter的Widgets是不可变的，可以通过更新Widget的状态来更新Widget。</p>
+<p>这就是有状态 widget 与无状态 widget 的概念。StatelessWidget是没有附加状态的 widget。</p>
+<p>当需要实现HTTP请求获取数据后根据数据动态改变的UI,可以使用StatefulWidget。</p>
+<p>无状态和有状态 widget 之间的重要区别在于，StatefulWidgets 有一个 State 对象，用于存储状态数据并在树重建中传递数据，因此它不会丢失。</p>
+<p>Text Widget是常见的无状态的Widget</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Text</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Text(</span><br><span class="line">    <span class="built_in">String</span> <span class="keyword">this</span>.data, &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Text(</span><br><span class="line">  <span class="string">&#x27;I like Flutter!&#x27;</span>,</span><br><span class="line">  style: TextStyle(fontWeight: FontWeight.bold),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>初始化时并没有传递状态,要实现动态的修改Text Widget的内容,可以通过包装到一个StatefulWidget中</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 1. 创建MainApp Widget</span></span><br><span class="line">  runApp(MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="comment">// 2.调用</span></span><br><span class="line">    <span class="keyword">return</span> MaterialApp(title: <span class="string">&#x27;Sample App&#x27;</span>, home: CustomStatefulPage());</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_CustomStatefulePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">CustomStatefulPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> text = <span class="string">&#x27;I Like Flutter&#x27;</span>;</span><br><span class="line">  <span class="comment">// 5.点击按钮触发_updateText</span></span><br><span class="line">  <span class="keyword">void</span> _updateText() &#123;</span><br><span class="line">    <span class="comment">// 6.通知Flutter更新</span></span><br><span class="line">    setState(() &#123;</span><br><span class="line">      text = <span class="string">&quot;Flutter is Awesome!&quot;</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// 7.调用build方法,刷新页面</span></span><br><span class="line">  <span class="comment">// 4.调用build方法,按钮点击方法绑定_updateText方法</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;Sample App&#x27;</span>)),</span><br><span class="line">      body: Center(child: Text(text)),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _updateText,</span><br><span class="line">        tooltip: <span class="string">&#x27;Update Text&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">const</span> Icon(Icons.update),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomStatefulPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> CustomStatefulPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// 3.创建_CustomStatefulePageState对象</span></span><br><span class="line">  State&lt;StatefulWidget&gt; createState() =&gt; _CustomStatefulePageState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Widget-布局"><a href="#Widget-布局" class="headerlink" title="Widget 布局"></a>Widget 布局</h3><p>在UIKit中可以使用Storyboard和用代码去更新View的约束。在Flutter中,通过组合Widget树来展示布局。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> Scaffold(</span><br><span class="line">    appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;Sample App&#x27;</span>)),</span><br><span class="line">    body: Center(</span><br><span class="line">      child: CupertinoButton(</span><br><span class="line">        onPressed: () &#123;&#125;,</span><br><span class="line">        <span class="comment">// 指定内边距</span></span><br><span class="line">        padding: <span class="keyword">const</span> EdgeInsets.only(left: <span class="number">10</span>, right: <span class="number">10</span>),</span><br><span class="line">        child: <span class="keyword">const</span> Text(<span class="string">&#x27;Hello&#x27;</span>),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="移除Widget"><a href="#移除Widget" class="headerlink" title="移除Widget"></a>移除Widget</h3><p>在UIKit中使用<code>addSubview()</code>或<code>removeFromSuperview()</code>来动态的添加或移除视图。在Flutter中Widget是不可变，没有那种类似<code>addSubview()</code>的方法。可以在父Widget传一个函数,然后控制显示的效果</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/cupertino.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 1. 创建MainApp Widget</span></span><br><span class="line">  runApp(MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="comment">// This widget is the root of your application.</span></span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="comment">// 2. 创建SampleAppPage</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> MaterialApp(title: <span class="string">&#x27;Sample App&#x27;</span>, home: SampleAppPage());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleAppPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> SampleAppPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// 3. 调用_SampleAppPageState方法创建State&lt;SampleAppPage&gt;</span></span><br><span class="line">  State&lt;SampleAppPage&gt; createState() =&gt; _SampleAppPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_SampleAppPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">SampleAppPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// Default value for toggle.</span></span><br><span class="line">  <span class="built_in">bool</span> toggle = <span class="keyword">true</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 5.点击按钮触发</span></span><br><span class="line">  <span class="keyword">void</span> _toggle() &#123;</span><br><span class="line">    <span class="comment">// 6.通知Flutter更新toggle</span></span><br><span class="line">    setState(() &#123;</span><br><span class="line">      toggle = !toggle;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Widget _getToggleChild() &#123;</span><br><span class="line">    <span class="comment">// 8.根据toggle的值显示不同页面效果</span></span><br><span class="line">    <span class="keyword">if</span> (toggle) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">const</span> Text(<span class="string">&#x27;Toggle One&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> CupertinoButton(onPressed: () &#123;&#125;, child: <span class="keyword">const</span> Text(<span class="string">&#x27;Toggle Two&#x27;</span>));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// 4. 触发build方法,FloatingActionButton点击绑定_toggle</span></span><br><span class="line">  <span class="comment">// 7. 重新执行_getToggleChild</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;Sample App&#x27;</span>)),</span><br><span class="line">      body: Center(child: _getToggleChild()),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _toggle,</span><br><span class="line">        tooltip: <span class="string">&#x27;Update Text&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">const</span> Icon(Icons.update),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>在UIKit中,通过UIView的<code>animate(withDuration:animations:)</code>执行动画。在Flutter中,使用动画库将Widget包装在动画Widget内。</p>
+<p>Flutter中使用<code>AnimationController</code>来控制动画的暂停,进度,停止。在屏幕刷新的每一帧，就会生成一个新的值。默认情况下，AnimationController在给定的时间段内会线性的生成从0.0到1.0的数字。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 1. 创建MainApp Widget</span></span><br><span class="line">  runApp(MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Fade Demo&#x27;</span>,</span><br><span class="line">      <span class="comment">// 2. 创建MyFadeTest</span></span><br><span class="line">      home: MyFadeTest(title: <span class="string">&#x27;Fade Demo&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFadeTest</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MyFadeTest(&#123;<span class="keyword">super</span>.key, <span class="keyword">required</span> <span class="keyword">this</span>.title&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> title;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// The framework can call this method multiple times over the lifetime of a [StatefulWidget].</span></span><br><span class="line">  <span class="comment">// For example, if the widget is inserted into the tree in multiple locations,</span></span><br><span class="line">  <span class="comment">// the framework will create a separate [State] object for each location.</span></span><br><span class="line">  <span class="comment">// 添加到tree中的每个MyFadeTest Widget都会创建对应的State&lt;MyFadeTest&gt;对象</span></span><br><span class="line">  <span class="comment">// 3.创建_MyFadeTest</span></span><br><span class="line">  State&lt;MyFadeTest&gt; createState() =&gt; _MyFadeTest();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyFadeTest</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyFadeTest</span>&gt;</span></span><br><span class="line"><span class="class">    // 单个 <span class="title">AnimationController</span> 的时候使用 <span class="title">SingleTickerProviderStateMixin</span></span></span><br><span class="line"><span class="class">    <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> AnimationController controller;</span><br><span class="line">  <span class="keyword">late</span> CurvedAnimation curve;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// Called when this object is inserted into the tree.</span></span><br><span class="line">  <span class="comment">// 添加到tree中时调用</span></span><br><span class="line">  <span class="comment">// 4. 调用initState,指定AnimationController</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    controller = AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">2000</span>),</span><br><span class="line">      <span class="comment">// TickerProvider(抽象类)，用于接收动画变化过程中的通知，类似于接口回调</span></span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">// 指定生成0.0到1.0的规则</span></span><br><span class="line">    curve = CurvedAnimation(parent: controller, curve: Curves.easeIn);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// Called when this object is removed from the tree permanently.</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    <span class="comment">// 8.当对象对tree中移除时,回收AnimationController的资源</span></span><br><span class="line">    controller.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: Text(widget.title)),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: FadeTransition(</span><br><span class="line">          <span class="comment">// 5. 应用透明效果,opacity的变化规则指定为上面创建的curve</span></span><br><span class="line">          opacity: curve,</span><br><span class="line">          <span class="comment">// 6. 动画包装的Widget</span></span><br><span class="line">          child: <span class="keyword">const</span> FlutterLogo(size: <span class="number">100</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: () &#123;</span><br><span class="line">          <span class="comment">// Starts running this animation forwards (towards the end).</span></span><br><span class="line">          <span class="comment">// 7. 正向播放动画</span></span><br><span class="line">          controller.forward();</span><br><span class="line">        &#125;,</span><br><span class="line">        tooltip: <span class="string">&#x27;Fade&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">const</span> Icon(Icons.brush),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/10/lupvybc94xXICWi.gif" alt="2025.gif"></p>
+<h3 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h3><p>在UIKit中使用<code>CoreGraphics</code>在手机屏幕上绘制线条和凸显。Flutter使用<code>Canvas</code>,<code>CustomPaint</code>,<code>CustomPainter</code>来实现绘制操作。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(<span class="keyword">const</span> MaterialApp(home: DemoApp()));</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> DemoApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) =&gt; <span class="keyword">const</span> Scaffold(body: Signature());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Signature</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Signature(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Signature&gt; createState() =&gt; SignatureState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SignatureState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Signature</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">List</span>&lt;Offset?&gt; _points = &lt;Offset?&gt;[];</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> GestureDetector(</span><br><span class="line">      <span class="comment">// 绘制时移动的回调</span></span><br><span class="line">      onPanUpdate: (details) &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">          <span class="comment">// 当前Widget关联的RenderObject</span></span><br><span class="line">          RenderBox? referenceBox = context.findRenderObject() <span class="keyword">as</span> RenderBox;</span><br><span class="line">          <span class="comment">// 坐标转换: 全局坐标转换为局部坐标</span></span><br><span class="line">          <span class="comment">// globalPosition表示当前手势触点在全局坐标系位置与对应组件顶点坐标的偏移量</span></span><br><span class="line">          <span class="comment">// localPosition则就表示当前手势触点在对应组件坐标系位置与对应组件顶点坐标的偏移量</span></span><br><span class="line">          Offset localPosition = referenceBox.globalToLocal(</span><br><span class="line">            details.globalPosition,</span><br><span class="line">          );</span><br><span class="line">          _points = <span class="built_in">List</span>.from(_points)..add(localPosition);</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="comment">// 绘制结束时调用</span></span><br><span class="line">      onPanEnd: (details) =&gt; _points.add(<span class="keyword">null</span>),</span><br><span class="line">      child: CustomPaint(</span><br><span class="line">        <span class="comment">// 具体的绘制操作调用Canvas</span></span><br><span class="line">        painter: SignaturePainter(_points),</span><br><span class="line">        <span class="comment">// 不限制长度</span></span><br><span class="line">        size: Size.infinite,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SignaturePainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  SignaturePainter(<span class="keyword">this</span>.points);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;Offset?&gt; points;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> Paint paint =</span><br><span class="line">        <span class="comment">//「..」意思是 「级联 操作符」，为了方便配置而使用。</span></span><br><span class="line">        <span class="comment">//「..」和「.」不同的是 调用「..」后返回的相当于是 this</span></span><br><span class="line">        Paint()</span><br><span class="line">          ..color = <span class="keyword">const</span> Color.fromARGB(<span class="number">255</span>, <span class="number">29</span>, <span class="number">25</span>, <span class="number">25</span>)</span><br><span class="line">          ..strokeCap = StrokeCap.round</span><br><span class="line">          ..strokeWidth = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; points.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">      <span class="comment">// 起点与终点都不为null,说明是一个线段,然后执行绘制</span></span><br><span class="line">      <span class="keyword">if</span> (points[i] != <span class="keyword">null</span> &amp;&amp; points[i + <span class="number">1</span>] != <span class="keyword">null</span>) &#123;</span><br><span class="line">        canvas.drawLine(points[i]!, points[i + <span class="number">1</span>]!, paint);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(SignaturePainter oldDelegate) =&gt;</span><br><span class="line">      oldDelegate.points != points;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="透明度"><a href="#透明度" class="headerlink" title="透明度"></a>透明度</h3><p>UIKit中使用<code>.opactiy</code>或者<code>.alpha</code>实现。Flutter中使用<code>Opacity</code> 组件来实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Flutter layout demo&#x27;</span>,</span><br><span class="line">      home: CustomStatefulPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomStatefulPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> CustomStatefulPage(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;StatefulWidget&gt; createState() =&gt; _CustomStatefulePageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_CustomStatefulePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">CustomStatefulPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">double</span> opacity = <span class="number">0.3</span>;</span><br><span class="line">  <span class="built_in">String</span> text = <span class="string">&quot;透明度&quot;</span>;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: Text(text)),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: Opacity(opacity: opacity, child: Text(<span class="string">&quot;透明度:<span class="subst">$opacity</span>&quot;</span>)),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: () &#123;</span><br><span class="line">          setState(() &#123;</span><br><span class="line">            opacity = <span class="number">1.0</span>;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        tooltip: <span class="string">&#x27;Update Text&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">const</span> Icon(Icons.update),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/10/NYUtvGMH1WAVw4r.gif" alt="20252222.gif"></p>
+<h3 id="自定义-Widgets"><a href="#自定义-Widgets" class="headerlink" title="自定义 Widgets"></a>自定义 Widgets</h3><p>在UIKit中通过继承UIView来自定义组件,而在Flutter中定义自定义组件通常使用组合的方式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:flutter/material.dart&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MaterialApp(home: CustomWidget()));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomWidget</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> CustomWidget(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: Text(<span class="string">&quot;Custom Widget&quot;</span>)),</span><br><span class="line">      body: Center(child: CustomButton(<span class="string">&quot;自定义按钮&quot;</span>)),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">自定义按钮</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomButton</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> CustomButton(<span class="keyword">this</span>.label, &#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> label;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> ElevatedButton(onPressed: () &#123;&#125;, child: Text(label));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/10/mO5xSbK8JyhrNUP.gif" alt="202505102241.gif"></p>
+<h3 id="管理依赖"><a href="#管理依赖" class="headerlink" title="管理依赖"></a>管理依赖</h3><p>iOS中使用CocoaPods管理时,可以通过配置Podfile文件。Flutter 是用pubspec.yaml 来管理依赖的库。iOS端需要的库写在Podfile里</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">///</span> <span class="string">包名</span> <span class="string">此属性表示包名（package</span> <span class="string">name），此属性是非常重要的，引入其他文件时需要使用此包名：</span></span><br><span class="line"><span class="string">///</span> <span class="string">import</span> <span class="string">&#x27;package:uikit/home_page.dart&#x27;</span><span class="string">;</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">uikit</span></span><br><span class="line"><span class="string">///</span> <span class="string">description</span> <span class="string">属性是一个可选配置属性，是对当前项目的介绍</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&quot;A new Flutter project.&quot;</span></span><br><span class="line"><span class="attr">publish_to:</span> <span class="string">&#x27;none&#x27;</span></span><br><span class="line"><span class="string">//</span> <span class="string">此属性应用程序的版本和内部版本号，格式为</span> <span class="string">x.x.x+x，例如：1.0.0+1，这个版本号称为</span> <span class="string">语义版本号（semantic</span> <span class="string">versioning</span> <span class="string">）</span></span><br><span class="line"><span class="string">//</span> <span class="string">版本号</span> <span class="string">+</span> <span class="string">前面到部分，叫做</span> <span class="string">version</span> <span class="string">number，由</span> <span class="number">2</span> <span class="string">个小点隔开，后面的部分叫做</span> <span class="string">build</span> <span class="string">number。</span></span><br><span class="line"><span class="string">//</span> <span class="string">在</span> <span class="string">Android</span> <span class="string">中</span> <span class="string">version</span> <span class="string">number</span> <span class="string">对应</span> <span class="string">versionName，build</span> <span class="string">number</span> <span class="string">对应</span> <span class="string">versionCode，在</span> <span class="string">android/build.gradle</span> <span class="string">下有相关配置，</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">0.1</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"><span class="string">///</span> <span class="string">Environment</span> <span class="string">属性下添加</span> <span class="string">Flutter</span> <span class="string">和</span> <span class="string">Dart</span> <span class="string">版本控制。</span></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">^3.7.2</span></span><br><span class="line"></span><br><span class="line"><span class="string">///</span> <span class="string">dependencies</span> <span class="string">和</span> <span class="string">dev_dependencies</span> <span class="string">下包含应用程序所依赖的包，dependencies</span> <span class="string">和</span> <span class="string">dev_dependencies</span> <span class="string">就像其名字一样，dependencies</span> <span class="string">下的所有依赖会编译到项目中，而</span> <span class="string">dev_dependencies</span> <span class="string">仅仅是运行期间的包，比如自动生成代码的库</span></span><br><span class="line"></span><br><span class="line"><span class="string">///</span> <span class="string">可以通过四种方式依赖包</span></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="string">///</span> <span class="number">1</span><span class="string">.</span> <span class="string">依赖pub.dev</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line"></span><br><span class="line">  <span class="string">///</span> <span class="number">2</span><span class="string">.</span> <span class="string">依赖本地库</span></span><br><span class="line">  <span class="attr">flutter_local_pacakge:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/path/to/flutter_local_package</span></span><br><span class="line">    </span><br><span class="line">  <span class="string">///</span> <span class="number">3</span><span class="string">.</span> <span class="string">依赖git</span> <span class="string">repository</span></span><br><span class="line">  <span class="string">///</span> <span class="string">url：github</span> <span class="string">地址</span></span><br><span class="line">  <span class="string">///</span> <span class="string">ref：表示git引用，可以是</span> <span class="string">commit</span> <span class="string">hash,</span> <span class="string">tag</span> <span class="string">或者</span> <span class="string">branch</span></span><br><span class="line">  <span class="string">///</span> <span class="string">path：如果</span> <span class="string">git</span> <span class="string">仓库中有多个软件包，则可以使用此属性指定软件包</span></span><br><span class="line">  <span class="attr">bloc:</span></span><br><span class="line">    <span class="attr">git:</span></span><br><span class="line">        <span class="string">url:https://wwww.xxx.git</span></span><br><span class="line">        <span class="attr">ref:</span> <span class="string">bloc_fixes_issue_100</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">package/bloc</span></span><br><span class="line">   </span><br><span class="line">  <span class="string">///</span> <span class="number">4</span><span class="string">.</span> <span class="string">依赖私有仓</span></span><br><span class="line">  <span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">bloc:</span> </span><br><span class="line">    <span class="attr">hosted:</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">bloc</span></span><br><span class="line">      <span class="attr">url:</span> <span class="string">http://your-package-server.com</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">^6.0.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">flutter_test:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">flutter_lints:</span> <span class="string">^5.0.0</span></span><br><span class="line"></span><br><span class="line"><span class="string">///</span> <span class="string">Flutter</span> <span class="string">下面的配置都是</span> <span class="string">Flutter</span> <span class="string">的相关配置。</span></span><br><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="string">///</span> <span class="string">应用程序中包含Material</span> <span class="string">Icons字体</span></span><br><span class="line">  <span class="attr">uses-material-design:</span> <span class="literal">true</span></span><br><span class="line">  <span class="string">///</span> <span class="string">是对当前资源的配置,比如图片,字体等</span></span><br><span class="line">  <span class="string">////</span> <span class="string">本地图片</span></span><br><span class="line">  <span class="attr">assets:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">images/a_dot_burr.jpeg</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">images/a_dot_ham.jpeg</span></span><br><span class="line">   <span class="attr">flutter:</span></span><br><span class="line"></span><br><span class="line">  <span class="string">///</span> <span class="string">插件</span></span><br><span class="line">  <span class="attr">plugin:</span></span><br><span class="line">    <span class="attr">platforms:</span></span><br><span class="line">      <span class="attr">android:</span></span><br><span class="line">        <span class="attr">package:</span> <span class="string">com.flutter.app_market</span></span><br><span class="line">        <span class="attr">pluginClass:</span> <span class="string">AppMarketPlugin</span></span><br><span class="line">      <span class="attr">ios:</span></span><br><span class="line">        <span class="attr">pluginClass:</span> <span class="string">AppMarketPlugin</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://docs.flutter.cn/get-started/flutter-for/uikit-devs/">给 UIKit 开发者的 Flutter 指南</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6891263591058538510">【Flutter 实战】pubspec.yaml 配置文件详解</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/huangbiao86/article/details/121158793">No Directionality widget found错误背后的原理</a><br><a href="blog.csdn.net/shihuboke/article/details/131986432">Flutter - Dart中(.)、(..)、(…)语法使用</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/06/Technology-learn-flutter-04/" rel="prev" title="Flutter 布局">
+      <i class="fa fa-chevron-left"></i> Flutter 布局
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">2.</span> <span class="nav-text">概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UIView%E4%B8%8EWidgets%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">2.1.</span> <span class="nav-text">UIView与Widgets的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0Widgets"><span class="nav-number">2.2.</span> <span class="nav-text">更新Widgets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Widget-%E5%B8%83%E5%B1%80"><span class="nav-number">2.3.</span> <span class="nav-text">Widget 布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4Widget"><span class="nav-number">2.4.</span> <span class="nav-text">移除Widget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E7%94%BB"><span class="nav-number">2.5.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%98%E5%9B%BE"><span class="nav-number">2.6.</span> <span class="nav-text">绘图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6"><span class="nav-number">2.7.</span> <span class="nav-text">透明度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Widgets"><span class="nav-number">2.8.</span> <span class="nav-text">自定义 Widgets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E4%BE%9D%E8%B5%96"><span class="nav-number">2.9.</span> <span class="nav-text">管理依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -159,6 +159,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/10/Technology-learn-flutter-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/05/10/Technology-learn-flutter-05/" class="post-title-link" itemprop="url">Flutter - UIKit开发相关指南 - 概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-10 23:07:54 / 修改时间：23:09:36" itemprop="dateCreated datePublished" datetime="2025-05-10T23:07:54+08:00">2025-05-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>Flutter 3.29<br>macOS Sequoia 15.4.1<br>Xcode 16.3</p>
+</blockquote>
+<h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><h3 id="UIView与Widgets的比较"><a href="#UIView与Widgets的比较" class="headerlink" title="UIView与Widgets的比较"></a>UIView与Widgets的比较</h3><p>在UIKit使用UIView类的对象进行页面开发,布局也是UIView类的对象,在Flutter中使用的是Widget,在概念上Widget可以理解成UIView。</p>
+<p>差异：</p>
+<ol>
+<li>有效期: Widgets是不可变的,它的生存期只到被改变前。当Widgets或它们的状态改变了。Flutter’s 框架会创建一个widget的实例，而UIKit中的UIView是不会重新创建，它是可变的,绘制一次并且在使用setNeedDisplay()使其失效之前不会重新绘制</li>
+<li>轻量: Widgets相对更轻量,一个原因是它们是不可变，而且它们不负责显示和绘制,更多的是一种语义的描述。</li>
+</ol>
+<p>Flutter 包含 Matterial 组件库,其中的Widgets都符合了Material设计指引。Material设计是个适配多平台的设计系统,也支持iOS</p>
+<p>但如果想用iOS的UI风格,可以使用<a target="_blank" rel="noopener" href="https://docs.flutter.cn/ui/widgets/cupertino">Cupertino widgets libray</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/05/10/Technology-learn-flutter-05/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/06/Technology-learn-flutter-04/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -934,89 +1019,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/16/Technology-learn-media-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/16/Technology-learn-media-01/" class="post-title-link" itemprop="url">音视频 - 音频基础概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-04-16 16:39:33" itemprop="dateCreated datePublished" datetime="2025-04-16T16:39:33+08:00">2025-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-26 22:26:35" itemprop="dateModified" datetime="2025-04-26T22:26:35+08:00">2025-04-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Media/" itemprop="url" rel="index"><span itemprop="name">Media</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h2><p>物体在一定的振动频率下产生了声音。声音可以被分解为不同频率不同强度正弦波的叠加。</p>
-<h3 id="声音三要素"><a href="#声音三要素" class="headerlink" title="声音三要素"></a>声音三要素</h3><h4 id="声调"><a href="#声调" class="headerlink" title="声调"></a>声调</h4><p>音调: 由发声体振动的频率决定，频率越高（振动越快）则音调越高，听起来就越“刺耳”，反之音调越低、听起来就越低沉。</p>
-<p>声音的音调，即音频频率或每秒的变化次数</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/16/Technology-learn-media-01/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1086,7 +1088,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
