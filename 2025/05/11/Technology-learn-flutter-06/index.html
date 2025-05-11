@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="导航两个页面之间切换UIKit中,使用UINavigationController来管理视图。Flutter中通过Navigator和Routes来实现相似的功能。 一个Route是一个应用中屏幕或页的抽象,Navigator是一个Widget来管理这些Routes。Route可以粗略的认为是一个UIViewController，Navigator类似iOS中的UINavigationContro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - UIKit开发相关指南 - 导航">
+<meta property="og:url" content="http://yoursite.com/2025/05/11/Technology-learn-flutter-06/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="导航两个页面之间切换UIKit中,使用UINavigationController来管理视图。Flutter中通过Navigator和Routes来实现相似的功能。 一个Route是一个应用中屏幕或页的抽象,Navigator是一个Widget来管理这些Routes。Route可以粗略的认为是一个UIViewController，Navigator类似iOS中的UINavigationContro">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/11/xcPnIHKgrB6Uwt3.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/11/qSnFTuJXzxIsoHk.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/11/cv5mf86q3JjUpPV.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/05/11/rpGQOJmRKTjUF4M.gif">
+<meta property="article:published_time" content="2025-05-11T03:47:57.000Z">
+<meta property="article:modified_time" content="2025-05-11T03:50:56.343Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/11/xcPnIHKgrB6Uwt3.gif">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/11/Technology-learn-flutter-06/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - UIKit开发相关指南 - 导航 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/11/Technology-learn-flutter-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - UIKit开发相关指南 - 导航
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-11 11:47:57 / 修改时间：11:50:56" itemprop="dateCreated datePublished" datetime="2025-05-11T11:47:57+08:00">2025-05-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><h3 id="两个页面之间切换"><a href="#两个页面之间切换" class="headerlink" title="两个页面之间切换"></a>两个页面之间切换</h3><p>UIKit中,使用<code>UINavigationController</code>来管理视图。Flutter中通过<code>Navigator</code>和<code>Routes</code>来实现相似的功能。</p>
+<p>一个<code>Route</code>是一个应用中屏幕或页的抽象,<code>Navigator</code>是一个Widget来管理这些<code>Routes</code>。<code>Route</code>可以粗略的认为是一个<code>UIViewController</code>，<code>Navigator</code>类似iOS中的<code>UINavigationController</code>，可以<code>push</code>和<code>pop</code>Routes。</p>
+<p>切页面有两种方法</p>
+<ul>
+<li>指定一个路由的映射表</li>
+<li>直接导航到一个<code>Route</code></li>
+</ul>
+<span id="more"></span>
+
+<h4 id="指定路由表-pushName"><a href="#指定路由表-pushName" class="headerlink" title="指定路由表 - pushName"></a>指定路由表 - pushName</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:navigation/second_route.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(<span class="keyword">const</span> MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&quot;导航示例&quot;</span>,</span><br><span class="line">      home: Builder(</span><br><span class="line">        builder:</span><br><span class="line">            (context) =&gt; Scaffold(</span><br><span class="line">              appBar: AppBar(title: Text(<span class="string">&quot;导航&quot;</span>)),</span><br><span class="line">              body: Center(</span><br><span class="line">                child: ElevatedButton(</span><br><span class="line">                  onPressed: () &#123;</span><br><span class="line">                    <span class="comment">// 2. 跳转到SecondRoute</span></span><br><span class="line">                    Navigator.of(context).pushNamed(<span class="string">&#x27;/second&#x27;</span>);</span><br><span class="line">                  &#125;,</span><br><span class="line">                  child: <span class="keyword">const</span> Text(<span class="string">&quot;到第二个页面&quot;</span>),</span><br><span class="line">                ),</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">      ),</span><br><span class="line">      <span class="comment">// 1.建立映射表 &quot;/second&quot;指向SecondRoute()</span></span><br><span class="line">      routes: &#123;<span class="string">&#x27;/second&#x27;</span>: (context) =&gt; <span class="keyword">const</span> SecondRoute()&#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:flutter/cupertino.dart&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:flutter/material.dart&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecondRoute</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> SecondRoute(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="comment">// 3. 显示</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&quot;第二个路由页面&quot;</span>)),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: CupertinoButton(</span><br><span class="line">          onPressed: () &#123;</span><br><span class="line">            <span class="comment">// 4.点击返回</span></span><br><span class="line">            Navigator.pop(context);</span><br><span class="line">          &#125;,</span><br><span class="line">          child: <span class="keyword">const</span> Text(<span class="string">&quot;返回&quot;</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/11/xcPnIHKgrB6Uwt3.gif" alt="202505111031.gif"></p>
+<h5 id="返回-pop"><a href="#返回-pop" class="headerlink" title="返回 - pop"></a>返回 - pop</h5><p>Flutter中使用如下代码实现<code>pop</code>功能</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 或 Navigator.pop()</span><br><span class="line">SystemNavigator.pop()</span><br></pre></td></tr></table></figure>
+
+<p>在iOS上约等于如下的实现</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIViewController</span>* viewController = [<span class="built_in">UIApplication</span> sharedApplication].keyWindow.rootViewController;</span><br><span class="line"><span class="keyword">if</span> ([viewController isKindOfClass:[<span class="built_in">UINavigationController</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">  [((<span class="built_in">UINavigationController</span>*)viewController) popViewControllerAnimated:<span class="literal">NO</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="指定路由表-push"><a href="#指定路由表-push" class="headerlink" title="指定路由表 - push"></a>指定路由表 - push</h4><p>在push方法中直接用builder跳转，而不需要通过路由表</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:navigation/second_route.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(<span class="keyword">const</span> MainApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> MainApp(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&quot;导航示例&quot;</span>,</span><br><span class="line">      home: Builder(</span><br><span class="line">        builder:</span><br><span class="line">            (context) =&gt; Scaffold(</span><br><span class="line">              appBar: AppBar(title: Text(<span class="string">&quot;导航&quot;</span>)),</span><br><span class="line">              body: Center(</span><br><span class="line">                child: ElevatedButton(</span><br><span class="line">                  onPressed: () &#123;</span><br><span class="line">                    <span class="comment">// 点击直接指定跳转的界面</span></span><br><span class="line">                    Navigator.of(context).push(</span><br><span class="line">                      MaterialPageRoute(</span><br><span class="line">                        builder: (context) =&gt; <span class="keyword">const</span> SecondRoute(),</span><br><span class="line">                      ),</span><br><span class="line">                    );</span><br><span class="line">                  &#125;,</span><br><span class="line">                  child: <span class="keyword">const</span> Text(<span class="string">&quot;到另一个页面&quot;</span>),</span><br><span class="line">                ),</span><br><span class="line">              ),</span><br><span class="line">            ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/11/qSnFTuJXzxIsoHk.gif" alt="202505111051.gif"></p>
+<h4 id="指定路由表-go-router"><a href="#指定路由表-go-router" class="headerlink" title="指定路由表 - go_router"></a>指定路由表 - go_router</h4><p>go_router是一个用于Flutter声明式的路由包,使用Router API为不同屏幕间进行切换</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add go_router</span><br></pre></td></tr></table></figure>
+
+<p>会在<code>pubspec.yaml</code>文件中添加go_router依赖包,并下载</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:go_router/go_router.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:navigation/second_route.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MaterialApp.router(title: <span class="string">&#x27;导航&#x27;</span>, routerConfig: _router));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1.定义路由信息</span></span><br><span class="line"><span class="keyword">final</span> _router = GoRouter(</span><br><span class="line">  routes: [</span><br><span class="line">    GoRoute(path: <span class="string">&#x27;/&#x27;</span>, builder: (context, state) =&gt; <span class="keyword">const</span> FirstScreen()),</span><br><span class="line">    GoRoute(path: <span class="string">&#x27;/second&#x27;</span>, builder: (context, state) =&gt; <span class="keyword">const</span> SecondRoute()),</span><br><span class="line">  ],</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FirstScreen</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> FirstScreen(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;第一个界面&#x27;</span>)),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: ElevatedButton(</span><br><span class="line">          child: <span class="keyword">const</span> Text(<span class="string">&#x27;使用go_router跳转&#x27;</span>),</span><br><span class="line">          <span class="comment">// 2.指定跳转界面</span></span><br><span class="line">          onPressed: () =&gt; context.go(<span class="string">&#x27;/second&#x27;</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:flutter/cupertino.dart&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:flutter/material.dart&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:go_router/go_router.dart&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SecondRoute</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> SecondRoute(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(title: <span class="keyword">const</span> Text(<span class="string">&quot;第二个路由页面&quot;</span>)),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: CupertinoButton(</span><br><span class="line">          onPressed: () &#123;</span><br><span class="line">            <span class="comment">// 3. 点击返回根目录</span></span><br><span class="line">            context.go(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">          &#125;,</span><br><span class="line">          child: <span class="keyword">const</span> Text(<span class="string">&quot;返回&quot;</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="导航到其它应用"><a href="#导航到其它应用" class="headerlink" title="导航到其它应用"></a>导航到其它应用</h3><p>在UIKit中使用URL scheme来实现。Flutter可以使用类似 <code>url_launcher</code> 的插件来实现。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Android</th>
+<th>iOS</th>
+<th>Linux</th>
+<th>macOS</th>
+<th>Web</th>
+<th>Windows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>支持</td>
+<td>SDK 16+</td>
+<td>12.0+</td>
+<td>Any</td>
+<td>10.14+</td>
+<td>Any</td>
+<td>Window 10+</td>
+</tr>
+</tbody></table>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add url_launcher</span><br></pre></td></tr></table></figure>
+
+<h4 id="加载Web界面"><a href="#加载Web界面" class="headerlink" title="加载Web界面"></a>加载Web界面</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:url_launcher/url_launcher.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">Uri</span> _url = <span class="built_in">Uri</span>.parse(<span class="string">&#x27;https://flutter.cn&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(</span><br><span class="line">      <span class="keyword">const</span> MaterialApp(</span><br><span class="line">        home: Material(</span><br><span class="line">          child: Center(</span><br><span class="line">            child: ElevatedButton(</span><br><span class="line">              onPressed: _launchUrl,</span><br><span class="line">              child: Text(<span class="string">&#x27;Show Flutter homepage&#x27;</span>),</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; _launchUrl() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!<span class="keyword">await</span> launchUrl(_url)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> Exception(<span class="string">&#x27;Could not launch <span class="subst">$_url</span>&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/11/cv5mf86q3JjUpPV.gif" alt="202505111132.gif"></p>
+<h4 id="加载其它应用"><a href="#加载其它应用" class="headerlink" title="加载其它应用"></a>加载其它应用</h4><p>在<code>Info.plist</code>添加允许打开短信和电话的配置</p>
+<figure class="highlight plist"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>LSApplicationQueriesSchemes<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">string</span>&gt;</span>sms<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">string</span>&gt;</span>tel<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:url_launcher/url_launcher.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">Uri</span> _url = <span class="built_in">Uri</span>.parse(<span class="string">&#x27;tel://10000&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(</span><br><span class="line">  <span class="keyword">const</span> MaterialApp(</span><br><span class="line">    home: Material(</span><br><span class="line">      child: Center(</span><br><span class="line">        child: ElevatedButton(</span><br><span class="line">          <span class="comment">// 1. 绑定对应方法</span></span><br><span class="line">          onPressed: _launchUrl,</span><br><span class="line">          child: Text(<span class="string">&#x27;Show Flutter homepage&#x27;</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; _launchUrl() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">// 2. 确认是否能打开对应url,已添加到plist文件</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">await</span> canLaunchUrl(_url)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">await</span> launchUrl(_url)) &#123;</span><br><span class="line">      <span class="keyword">throw</span> Exception(<span class="string">&#x27;Could not launch <span class="subst">$_url</span>&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/11/rpGQOJmRKTjUF4M.gif" alt="tel.gif"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/get-started/flutter-for/uikit-devs/">给 UIKit 开发者的 Flutter 指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://pub-web.flutter-io.cn/packages/url_launcher">url_launcher</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/10/Technology-learn-flutter-05/" rel="prev" title="Flutter - UIKit开发相关指南 - 概览">
+      <i class="fa fa-chevron-left"></i> Flutter - UIKit开发相关指南 - 概览
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E8%88%AA"><span class="nav-number">1.</span> <span class="nav-text">导航</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E9%A1%B5%E9%9D%A2%E4%B9%8B%E9%97%B4%E5%88%87%E6%8D%A2"><span class="nav-number">1.1.</span> <span class="nav-text">两个页面之间切换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%B7%AF%E7%94%B1%E8%A1%A8-pushName"><span class="nav-number">1.1.1.</span> <span class="nav-text">指定路由表 - pushName</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E-pop"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">返回 - pop</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%B7%AF%E7%94%B1%E8%A1%A8-push"><span class="nav-number">1.1.2.</span> <span class="nav-text">指定路由表 - push</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%B7%AF%E7%94%B1%E8%A1%A8-go-router"><span class="nav-number">1.1.3.</span> <span class="nav-text">指定路由表 - go_router</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E8%88%AA%E5%88%B0%E5%85%B6%E5%AE%83%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">导航到其它应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BDWeb%E7%95%8C%E9%9D%A2"><span class="nav-number">1.2.1.</span> <span class="nav-text">加载Web界面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%85%B6%E5%AE%83%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">加载其它应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

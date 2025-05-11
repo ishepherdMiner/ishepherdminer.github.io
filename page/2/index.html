@@ -159,6 +159,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/17/Technology-learn-media-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/04/17/Technology-learn-media-02/" class="post-title-link" itemprop="url">音视频 - ffmpeg 编译与调试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-04-17 16:27:46" itemprop="dateCreated datePublished" datetime="2025-04-17T16:27:46+08:00">2025-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 22:26:49" itemprop="dateModified" datetime="2025-04-26T22:26:49+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Media/" itemprop="url" rel="index"><span itemprop="name">Media</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><blockquote>
+<p>macOS Ventrua 13.4<br>ffmpeg 7.7.1<br>Visual Studio Code Version: 1.99.0 (Universal)</p>
+</blockquote>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p><a target="_blank" rel="noopener" href="https://ffmpeg.org/">FFmpeg</a> 下载源码</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ffmpeg-x.y.z</span><br><span class="line">$ ./configure</span><br><span class="line">nasm/yasm not found or too old. Use --disable-x86asm <span class="keyword">for</span> a crippled build.</span><br><span class="line"></span><br><span class="line">If you think configure made a mistake, make sure you are using the latest</span><br><span class="line">version from Git.  If the latest version fails, report the problem to the</span><br><span class="line">ffmpeg-user@ffmpeg.org mailing list or IRC <span class="comment">#ffmpeg on irc.libera.chat.</span></span><br><span class="line">Include the <span class="built_in">log</span> file <span class="string">&quot;ffbuild/config.log&quot;</span> produced by configure as this will <span class="built_in">help</span></span><br><span class="line">solve the problem.</span><br><span class="line"></span><br><span class="line"><span class="comment"># 听劝 + 考虑到后面需要调试</span></span><br><span class="line">$ <span class="built_in">mkdir</span> build</span><br><span class="line">$ ./configure --prefix=./build --disable-x86asm --enable-debug --disable-stripping</span><br><span class="line">$ make </span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2025/04/17/Technology-learn-media-02/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/16/Technology-learn-media-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -940,93 +1025,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/04/04/Technology-learn-flask-05/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/04/04/Technology-learn-flask-05/" class="post-title-link" itemprop="url">Flask学习笔记 - 表单</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-04-04 10:19:14" itemprop="dateCreated datePublished" datetime="2025-04-04T10:19:14+08:00">2025-04-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-26 22:21:13" itemprop="dateModified" datetime="2025-04-26T22:21:13+08:00">2025-04-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="表单处理"><a href="#表单处理" class="headerlink" title="表单处理"></a>表单处理</h2><ol>
-<li>基本表单处理：使用 request.form 获取表单数据。</li>
-<li>使用 Flask-WTF：结合 WTForms 进行表单处理和验证，简化表单操作。</li>
-<li>表单验证：使用验证器确保表单数据的有效性。</li>
-<li>文件上传：处理文件上传和保存文件。</li>
-<li>CSRF 保护：确保表单免受跨站请求伪造攻击。</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/04/04/Technology-learn-flask-05/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1096,7 +1094,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">86</span>
+          <span class="site-state-item-count">87</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
