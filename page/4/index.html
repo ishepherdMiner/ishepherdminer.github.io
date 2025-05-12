@@ -159,6 +159,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/iOSer-OC-Color-macro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/25/iOSer-OC-Color-macro/" class="post-title-link" itemprop="url">iOS 颜色宏</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-25 13:57:21" itemprop="dateCreated datePublished" datetime="2019-11-25T13:57:21+08:00">2019-11-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-04-26 21:51:17" itemprop="dateModified" datetime="2025-04-26T21:51:17+08:00">2025-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　平常用的颜色宏大概如下</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> RGBHex(rgbValue) [UIColor colorWithRed:((float)((rgbValue &amp; 0xFF0000) &gt;&gt; 16))/255.0 green:((float)((rgbValue &amp; 0xFF00) &gt;&gt; 8))/255.0 blue:((float)(rgbValue &amp; 0xFF))/255.0 alpha:1.0]</span></span><br></pre></td></tr></table></figure>
+
+<p>　　考虑到蓝湖中获得的十六进制颜色值为<code>#FF0000</code>,cv时需要先删除#再添加<code>0x</code>,想省略这部分</p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>　　<code>C</code>语言宏中’#’称之为字符串化操作符(Stringizing Operator)，它将函数宏的实际参数转换为对应的字符串常量。利用这个特点定义如下的颜色宏</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> HEXA(COLOR,A) (&#123; \</span></span><br><span class="line"><span class="meta">    char *color = #COLOR;\</span></span><br><span class="line"><span class="meta">    NSString *colorString = [NSString stringWithUTF8String:color]; \</span></span><br><span class="line"><span class="meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="string">&quot;#&quot;</span> withString:@<span class="string">&quot;&quot;</span>]; \</span></span><br><span class="line"><span class="meta">    colorString = [colorString stringByReplacingOccurrencesOfString:@<span class="string">&quot;0x&quot;</span> withString:@<span class="string">&quot;&quot;</span>]; \</span></span><br><span class="line"><span class="meta">    unsigned int red,green,blue; \</span></span><br><span class="line"><span class="meta">    NSRange range; \</span></span><br><span class="line"><span class="meta">    range.length = 2; \</span></span><br><span class="line"><span class="meta">    range.location = 0; \</span></span><br><span class="line"><span class="meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;red]; \</span></span><br><span class="line"><span class="meta">    range.location = 2; \</span></span><br><span class="line"><span class="meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;green]; \</span></span><br><span class="line"><span class="meta">    range.location = 4; \</span></span><br><span class="line"><span class="meta">    [[NSScanner scannerWithString:[colorString substringWithRange:range]] scanHexInt:&amp;blue]; \</span></span><br><span class="line"><span class="meta">    [UIColor colorWithRed:red/255.0f green:green/255.0f blue:blue/255.0f alpha:A]; \</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> HEX(COLOR) HEXA(COLOR,1.0)</span></span><br></pre></td></tr></table></figure>
+
+<p>　　支持<code>0xFF0000/#FF0000/FF0000</code>这三种格式</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/22/Technology-ReactNative-Intro/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -941,97 +1022,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/" class="post-title-link" itemprop="url">iOS - ObjC Runtime 中 Weak 属性的实现 (上)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-05-29 18:34:18" itemprop="dateCreated datePublished" datetime="2017-05-29T18:34:18+08:00">2017-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-04-26 22:35:08" itemprop="dateModified" datetime="2025-04-26T22:35:08+08:00">2025-04-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　</p>
-<p><code>OC</code> 中的 <code>weak</code> 属性是怎么实现的，为什么在对象释放后会自动变成 <em>nil</em>？本文对这个问题进行了一点探讨。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　</p>
-<blockquote>
-<p>mac OS Sierra 10.12.4<br>objc709</p>
-</blockquote>
-<h2 id="参考答案"><a href="#参考答案" class="headerlink" title="参考答案"></a>参考答案</h2><p>　</p>
-<p>搜索后发现<a target="_blank" rel="noopener" href="https://dayon.gitbooks.io/-ios/content/chapter8.html">runtime 如何实现 weak 属性</a>给出了一个参考答案。</p>
-<blockquote>
-<p><code>runtime</code> 对注册的类， 会进行布局，对于 <code>weak</code> 对象会放入一个 <code>hash</code> 表中。 用 <code>weak</code> 指向的对象内存地址作为 <code>key</code>，当此对象的引用计数为 <code>0</code> 的时候会 <code>dealloc</code>，假如 <code>weak</code> 指向的对象内存地址是 <code>a</code> ，那么就会以 <code>a</code> 为键， 在这个 <code>weak</code> 表中搜索，找到所有以 <code>a</code> 为键的 <code>weak</code> 对象，从而设置为 <code>nil</code> 。</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/05/29/iOSer-Implementation-of-Weak-Attribute-in-ObjC-Runtime-Part1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1101,7 +1091,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">88</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
