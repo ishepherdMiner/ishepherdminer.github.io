@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="日志使用print方法时,会提示  添加依赖1$ flutter pub add logger  下载依赖1$ flutter pub get">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 集成三方库:日志(logger)">
+<meta property="og:url" content="http://yoursite.com/2025/05/16/Technology-learn-flutter-09/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="日志使用print方法时,会提示  添加依赖1$ flutter pub add logger  下载依赖1$ flutter pub get">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/16/8ea2pZotIN6ujRE.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/16/UQW9VakROw6gyqP.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/16/Ys6JB7iDZjNIKWM.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/16/SVQMPzfRoK3ejpN.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/16/Uw9DhPspCtmKRq5.png">
+<meta property="article:published_time" content="2025-05-16T08:45:16.000Z">
+<meta property="article:modified_time" content="2025-05-16T08:46:59.176Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/16/8ea2pZotIN6ujRE.png">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/16/Technology-learn-flutter-09/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - 集成三方库:日志(logger) | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/16/Technology-learn-flutter-09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 集成三方库:日志(logger)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-16 16:45:16 / 修改时间：16:46:59" itemprop="dateCreated datePublished" datetime="2025-05-16T16:45:16+08:00">2025-05-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>使用<code>print</code>方法时,会提示</p>
+<p><img src="https://s2.loli.net/2025/05/16/8ea2pZotIN6ujRE.png" alt="2025-05-15 20.52.59.png"></p>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add logger</span><br></pre></td></tr></table></figure>
+
+<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub get</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="打印"><a href="#打印" class="headerlink" title="打印"></a>打印</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:logger/logger.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> logger = Logger();</span><br><span class="line">logger.d(<span class="string">&quot;debug&quot;</span>);</span><br><span class="line">logger.e(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">logger.i(<span class="string">&quot;info&quot;</span>);</span><br><span class="line">logger.f(<span class="string">&quot;fatal&quot;</span>);</span><br><span class="line">logger.w(<span class="string">&quot;warning&quot;</span>);</span><br><span class="line">logger.t(<span class="string">&quot;trace&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/16/UQW9VakROw6gyqP.png" alt="2025-05-15 21.02.31.png"></p>
+<h4 id="设置打印级别"><a href="#设置打印级别" class="headerlink" title="设置打印级别"></a>设置打印级别</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">The current logging level of the app.</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">All logs with levels below this level will be omitted.</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">设置打印级别,低于level的不会被打印</span></span></span><br><span class="line">Logger.level;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Level &#123;</span><br><span class="line">  all(<span class="number">0</span>),</span><br><span class="line">  <span class="meta">@Deprecated</span>(<span class="string">&#x27;[verbose] is being deprecated in favor of [trace].&#x27;</span>)</span><br><span class="line">  verbose(<span class="number">999</span>),</span><br><span class="line">  trace(<span class="number">1000</span>),</span><br><span class="line">  debug(<span class="number">2000</span>),</span><br><span class="line">  info(<span class="number">3000</span>),</span><br><span class="line">  warning(<span class="number">4000</span>),</span><br><span class="line">  error(<span class="number">5000</span>),</span><br><span class="line">  <span class="meta">@Deprecated</span>(<span class="string">&#x27;[wtf] is being deprecated in favor of [fatal].&#x27;</span>)</span><br><span class="line">  wtf(<span class="number">5999</span>),</span><br><span class="line">  fatal(<span class="number">6000</span>),</span><br><span class="line">  <span class="meta">@Deprecated</span>(<span class="string">&#x27;[nothing] is being deprecated in favor of [off].&#x27;</span>)</span><br><span class="line">  nothing(<span class="number">9999</span>),</span><br><span class="line">  off(<span class="number">10000</span>),</span><br><span class="line">  ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> value;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> Level(<span class="keyword">this</span>.value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="打印到文件"><a href="#打印到文件" class="headerlink" title="打印到文件"></a>打印到文件</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">使用 getApplicationDocumentsDirectory 需要</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">添加 path<span class="emphasis">_provider</span></span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown"><span class="emphasis">flutter pub add path_</span>provider</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">flutter pub ge </span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown"><span class="bullet">-</span> <span class="code">`NSDocumentDirectory`</span> on iOS and macOS.</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown"><span class="bullet">-</span> The Flutter engine&#x27;s <span class="code">`PathUtils.getDataDirectory`</span> API on Android.</span></span></span><br><span class="line">Directory documentDir = <span class="keyword">await</span> getApplicationDocumentsDirectory();</span><br><span class="line"><span class="keyword">var</span> logger = Logger(</span><br><span class="line">  output: FileOutput(file: File(<span class="string">&quot;<span class="subst">$&#123;documentDir.path&#125;</span>/log.txt&quot;</span>)),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h4 id="打印到控制台-文件"><a href="#打印到控制台-文件" class="headerlink" title="打印到控制台+文件"></a>打印到控制台+文件</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Directory documentDir = <span class="keyword">await</span> getApplicationDocumentsDirectory();</span><br><span class="line">FileOutput fileOutPut = FileOutput(</span><br><span class="line">  file: File(<span class="string">&quot;<span class="subst">$&#123;documentDir.path&#125;</span>/log.txt&quot;</span>),</span><br><span class="line">);</span><br><span class="line">ConsoleOutput consoleOutput = ConsoleOutput();</span><br><span class="line"><span class="built_in">List</span>&lt;LogOutput&gt; multiOutput = [fileOutPut, consoleOutput];</span><br><span class="line"><span class="keyword">var</span> logger = Logger(</span><br><span class="line"> output: MultiOutput(multiOutput),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/16/Ys6JB7iDZjNIKWM.png" alt="2025-05-16 16.00.23.png"></p>
+<h3 id="打印时间"><a href="#打印时间" class="headerlink" title="打印时间"></a>打印时间</h3><p>Logger构造函数有个<code>printer</code>参数可以指定输出格式</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> logger = Logger(</span><br><span class="line">    filter: <span class="keyword">null</span>, <span class="comment">// Use the default LogFilter (-&gt; only log in debug mode)</span></span><br><span class="line">    printer: PrettyPrinter(dateTimeFormat: DateTimeFormat.dateAndTime),</span><br><span class="line">    output: MultiOutput(multiOutput),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/16/SVQMPzfRoK3ejpN.png" alt="2025-05-16 16.05.54.png"></p>
+<h3 id="打印过滤器"><a href="#打印过滤器" class="headerlink" title="打印过滤器"></a>打印过滤器</h3><p>默认的过滤器(DevelopmentFilter)在debug模式下可以打印所有level &gt;= Logger.level的日志，在Release模式下所有日志被忽略。</p>
+<p>比如设置Release模式下只打印warning级别以上的日志</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFilter</span> <span class="keyword">extends</span> <span class="title">LogFilter</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldLog(LogEvent event) &#123;</span><br><span class="line">    <span class="keyword">if</span> (event.level.value &lt; Logger.level.value) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">bool</span> inProduction = <span class="built_in">bool</span>.fromEnvironment(<span class="string">&quot;dart.vm.product&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (inProduction) &#123;</span><br><span class="line">  Logger.level = Level.warning;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">ConsoleOutput consoleOutput = ConsoleOutput();</span><br><span class="line">    <span class="built_in">List</span>&lt;LogOutput&gt; multiOutput = [fileOutPut, consoleOutput];</span><br><span class="line">    <span class="keyword">var</span> logger = Logger(</span><br><span class="line">      filter:</span><br><span class="line">          MyFilter(), <span class="comment">// Use the default LogFilter (-&gt; only log in debug mode)</span></span><br><span class="line">      printer: PrettyPrinter(dateTimeFormat: DateTimeFormat.dateAndTime),</span><br><span class="line">      output: MultiOutput(multiOutput),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">logger.d(<span class="string">&quot;debug&quot;</span>);</span><br><span class="line">logger.e(<span class="string">&quot;error&quot;</span>);</span><br><span class="line">logger.i(<span class="string">&quot;info&quot;</span>);</span><br><span class="line">logger.f(<span class="string">&quot;fatal&quot;</span>);</span><br><span class="line">logger.w(<span class="string">&quot;warning&quot;</span>);</span><br><span class="line">logger.t(<span class="string">&quot;trace&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/16/Uw9DhPspCtmKRq5.png" alt="2025-05-16 16.40.34.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://pub.dev/packages/logger">logger</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7041365514416816159">Flutter-文件系统目录和文件读写</a></li>
+<li><a target="_blank" rel="noopener" href="https://flutterfixes.com/flutter-how-to-show-log-output-in-console-and-automatically-store-it/">Flutter: How to show log output in console and automatically store it?</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011733020/article/details/124695935">Flutter中如何判断当前运行模式是Debug还是Release</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/14/Technology-learn-flutter-08/" rel="prev" title="Flutter - UIKit开发相关指南 - 线程和异步">
+      <i class="fa fa-chevron-left"></i> Flutter - UIKit开发相关指南 - 线程和异步
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">1.</span> <span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E4%BE%9D%E8%B5%96"><span class="nav-number">1.2.</span> <span class="nav-text">下载依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%8D%B0"><span class="nav-number">1.3.1.</span> <span class="nav-text">打印</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%89%93%E5%8D%B0%E7%BA%A7%E5%88%AB"><span class="nav-number">1.3.2.</span> <span class="nav-text">设置打印级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E5%88%B0%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.3.</span> <span class="nav-text">打印到文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E5%88%B0%E6%8E%A7%E5%88%B6%E5%8F%B0-%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.4.</span> <span class="nav-text">打印到控制台+文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E6%97%B6%E9%97%B4"><span class="nav-number">1.4.</span> <span class="nav-text">打印时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">打印过滤器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">90</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
