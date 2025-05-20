@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="数据库12$ flutter pub add sqlite$ flutter pub get  1$ flutter run  运行失败，看是编译报错,打开Xcode工程 ⌘ + B 编译  对比 GSYGithubAppFlutter 的Xcode工程Build Phases &gt; [CP] Embed Pods Frameworks 有sqfite.framework。本地默认的Flutt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 集成三方库:数据库(sqflite)">
+<meta property="og:url" content="http://yoursite.com/2025/05/20/Technology-learn-flutter-10/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="数据库12$ flutter pub add sqlite$ flutter pub get  1$ flutter run  运行失败，看是编译报错,打开Xcode工程 ⌘ + B 编译  对比 GSYGithubAppFlutter 的Xcode工程Build Phases &gt; [CP] Embed Pods Frameworks 有sqfite.framework。本地默认的Flutt">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/G5wHY7vDxherQis.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/AC6FOEx89bhul52.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/rSoiaeyDVX17LEf.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/61E4bVJcwPanue7.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/onzSqVZY3vcA7Gj.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/orYplZP1q4BvuNg.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/vS75WXhyFLVZpxM.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/PEyABTjWLNX89Hi.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/20/2kgtJBSEODn61w3.png">
+<meta property="article:published_time" content="2025-05-20T08:58:57.000Z">
+<meta property="article:modified_time" content="2025-05-20T08:59:55.440Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/20/G5wHY7vDxherQis.png">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/20/Technology-learn-flutter-10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - 集成三方库:数据库(sqflite) | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/20/Technology-learn-flutter-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 集成三方库:数据库(sqflite)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-20 16:58:57 / 修改时间：16:59:55" itemprop="dateCreated datePublished" datetime="2025-05-20T16:58:57+08:00">2025-05-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add sqlite</span><br><span class="line">$ flutter pub get</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter run</span><br></pre></td></tr></table></figure>
+
+<p>运行失败，看是编译报错,打开Xcode工程 ⌘ + B 编译</p>
+<p><img src="https://s2.loli.net/2025/05/20/G5wHY7vDxherQis.png" alt="2025-05-15 08.47.33.png"></p>
+<p>对比 <a target="_blank" rel="noopener" href="https://gitee.com/CarGuo/GSYGithubAppFlutter">GSYGithubAppFlutter</a> 的Xcode工程Build Phases &gt; [CP] Embed Pods Frameworks 有sqfite.framework。本地默认的Flutter工程默认未生成Podfile</p>
+<p><img src="https://s2.loli.net/2025/05/20/AC6FOEx89bhul52.png" alt="2025-05-15 19.03.14.png"></p>
+<p>然后查看 <a target="_blank" rel="noopener" href="https://gitee.com/CarGuo/GSYGithubAppFlutter/blob/master/ios/Podfile">GSYGithubAppFlutter</a></p>
+<span id="more"></span>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">require</span> <span class="title class_">File</span>.expand_path(<span class="title class_">File</span>.join(<span class="string">&#x27;packages&#x27;</span>, <span class="string">&#x27;flutter_tools&#x27;</span>, <span class="string">&#x27;bin&#x27;</span>, <span class="string">&#x27;podhelper&#x27;</span>), flutter_root)</span><br><span class="line"></span><br><span class="line">flutter_ios_podfile_setup</span><br><span class="line"></span><br><span class="line">target <span class="string">&#x27;Runner&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line">  use_modular_headers!</span><br><span class="line"></span><br><span class="line">  flutter_install_all_ios_pods <span class="title class_">File</span>.dirname(<span class="title class_">File</span>.realpath(<span class="variable constant_">__FILE__</span>))</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>看代码是引入了Flutter提供的工具的,从flutter的安装目录下找到podhelper.rb这个文件</p>
+<p><img src="https://s2.loli.net/2025/05/20/rSoiaeyDVX17LEf.jpg" alt="17473073456022.jpg"></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法: flutter_install_all_ios_pods</span></span><br><span class="line"><span class="comment"># 安装Flutter在iOS平台上的引擎和插件</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">flutter_install_all_ios_pods</span>(<span class="params">ios_application_path = <span class="literal">nil</span></span>)</span><br><span class="line">  <span class="comment"># 创建Flutter引擎的.podspec文件</span></span><br><span class="line">  flutter_install_ios_engine_pod(ios_application_path)</span><br><span class="line">  flutter_install_plugin_pods(ios_application_path, <span class="string">&#x27;.symlinks&#x27;</span>, <span class="string">&#x27;ios&#x27;</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法: flutter_install_plugin_pods</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">flutter_install_plugin_pods</span>(<span class="params">application_path = <span class="literal">nil</span>, relative_symlink_dir, platform</span>)</span><br><span class="line">  <span class="comment"># CocoaPods定义了 defined_in_file，获取应用路径,未获取到就中断</span></span><br><span class="line">  application_path |<span class="params"></span>|= <span class="title class_">File</span>.dirname(defined_in_file.realpath) <span class="keyword">if</span> respond_to?(<span class="symbol">:defined_in_file</span>)</span><br><span class="line">  <span class="keyword">raise</span> <span class="string">&#x27;Could not find application path&#x27;</span> <span class="keyword">unless</span> application_path</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Prepare symlinks folder. We use symlinks to avoid having Podfile.lock</span></span><br><span class="line">  <span class="comment"># referring to absolute paths on developers&#x27; machines.</span></span><br><span class="line">  <span class="comment"># 使用符号链接,避免使用Podfile.lock这个文件</span></span><br><span class="line">  <span class="comment"># Flutter是在ios目录下创建.symlinks目录,里面有软链接指向Flutter下载包的位置,这样只需要一份即可。</span></span><br><span class="line">  <span class="comment"># 先删除,再创建对应的目录</span></span><br><span class="line">  symlink_dir = <span class="title class_">File</span>.expand_path(relative_symlink_dir, application_path)</span><br><span class="line">  system(<span class="string">&#x27;rm&#x27;</span>, <span class="string">&#x27;-rf&#x27;</span>, symlink_dir) </span><br><span class="line"></span><br><span class="line">  symlink_plugins_dir = <span class="title class_">File</span>.expand_path(<span class="string">&#x27;plugins&#x27;</span>, symlink_dir)</span><br><span class="line">  system(<span class="string">&#x27;mkdir&#x27;</span>, <span class="string">&#x27;-p&#x27;</span>, symlink_plugins_dir)</span><br><span class="line"></span><br><span class="line">  plugins_file = <span class="title class_">File</span>.join(application_path, <span class="string">&#x27;..&#x27;</span>, <span class="string">&#x27;.flutter-plugins-dependencies&#x27;</span>)</span><br><span class="line">  dependencies_hash = flutter_parse_plugins_file(plugins_file)</span><br><span class="line">  plugin_pods = flutter_get_plugins_list(dependencies_hash, platform)</span><br><span class="line">  swift_package_manager_enabled = flutter_get_swift_package_manager_enabled(dependencies_hash, platform)</span><br><span class="line"></span><br><span class="line">  plugin_pods.each <span class="keyword">do</span> |<span class="params">plugin_hash</span>|</span><br><span class="line">    plugin_name = plugin_hash[<span class="string">&#x27;name&#x27;</span>]</span><br><span class="line">    plugin_path = plugin_hash[<span class="string">&#x27;path&#x27;</span>]</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment"># 使用path: 的方式本地依赖需要的三方库</span></span><br><span class="line">    <span class="comment"># 手动添加打印确认下</span></span><br><span class="line">    <span class="comment"># print &quot;plugin_name:#&#123;plugin_name&#125;\n&quot;</span></span><br><span class="line">    pod plugin_name, <span class="symbol">path:</span> <span class="title class_">File</span>.join(relative, platform_directory)</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pod update --verbose</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/20/61E4bVJcwPanue7.png" alt="2025-05-15 19.33.17.png"></p>
+<p>因此<code>Podfile</code>里的target部分就依赖了<code>sqflite_darwin</code></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">target <span class="string">&#x27;Runner&#x27;</span> <span class="keyword">do</span></span><br><span class="line">  use_frameworks!</span><br><span class="line">  use_modular_headers!</span><br><span class="line">  ...</span><br><span class="line">  pod <span class="string">&#x27;sqflite_darwin&#x27;</span>, <span class="symbol">path:</span>.symlinks/plugins/sqflite_darwin/darwin</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/20/onzSqVZY3vcA7Gj.png" alt="2025-05-15 19.34.50.png"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="打开-关闭-删除数据库"><a href="#打开-关闭-删除数据库" class="headerlink" title="打开/关闭/删除数据库"></a>打开/关闭/删除数据库</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:sqflite/sqflite.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:path/path.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> databasesPath = <span class="keyword">await</span> getDatabasesPath();</span><br><span class="line"><span class="built_in">String</span> path = join(databasesPath, <span class="string">&#x27;finger.db&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">打开数据库</span></span></span><br><span class="line">Database database = <span class="keyword">await</span> openDatabase(path, version: <span class="number">1</span>,</span><br><span class="line">    onCreate: (Database db, <span class="built_in">int</span> version) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">当创建数据库时创建table</span></span></span><br><span class="line">  <span class="keyword">await</span> db.execute(</span><br><span class="line">      <span class="string">&#x27;CREATE TABLE Test (id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">关闭数据库</span></span></span><br><span class="line"><span class="keyword">await</span> db.close();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">删除数据库</span></span></span><br><span class="line"><span class="keyword">await</span> deleteDatabase(path);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">添加表</span></span></span><br><span class="line"><span class="keyword">await</span> database.execute(</span><br><span class="line">      <span class="string">&quot;CREATE TABLE Test2(id INTEGER PRIMARY KEY, name TEXT, value INTEGER, num REAL)&quot;</span>,</span><br><span class="line">    );</span><br><span class="line">      </span><br><span class="line"><span class="comment">/// <span class="language-markdown">删除表</span></span></span><br><span class="line"><span class="keyword">await</span> database.execute(<span class="string">&#x27;DROP TABLE Test2&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="使用SQL语句"><a href="#使用SQL语句" class="headerlink" title="使用SQL语句"></a>使用SQL语句</h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">添加数据</span></span></span><br><span class="line"><span class="keyword">await</span> database.transaction((txn) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> id1 = <span class="keyword">await</span> txn.rawInsert(</span><br><span class="line">      <span class="string">&#x27;INSERT INTO Test(name, value, num) VALUES(&quot;some name&quot;, 1234, 456.789)&#x27;</span>);</span><br><span class="line">  <span class="built_in">int</span> id2 = <span class="keyword">await</span> txn.rawInsert(</span><br><span class="line">      <span class="string">&#x27;INSERT INTO Test(name, value, num) VALUES(?, ?, ?)&#x27;</span>,</span><br><span class="line">      [<span class="string">&#x27;another name&#x27;</span>, <span class="number">12345678</span>, <span class="number">3.1416</span>]);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">删除数据</span></span></span><br><span class="line">count = <span class="keyword">await</span> database</span><br><span class="line">    .rawDelete(<span class="string">&#x27;DELETE FROM Test WHERE name = ?&#x27;</span>, [<span class="string">&#x27;another name&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">更新数据</span></span></span><br><span class="line"><span class="built_in">int</span> count = <span class="keyword">await</span> database.rawUpdate(</span><br><span class="line">    <span class="string">&#x27;UPDATE Test SET name = ?, value = ? WHERE name = ?&#x27;</span>,</span><br><span class="line">    [<span class="string">&#x27;updated name&#x27;</span>, <span class="string">&#x27;9876&#x27;</span>, <span class="string">&#x27;some name&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">查询数据</span></span></span><br><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; list = <span class="keyword">await</span> database.rawQuery(<span class="string">&#x27;SELECT * FROM Test&#x27;</span>);</span><br><span class="line"><span class="built_in">print</span>(list)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/20/orYplZP1q4BvuNg.png" alt="2025-05-17 20.31.58.png"></p>
+<h4 id="使用工具方法"><a href="#使用工具方法" class="headerlink" title="使用工具方法"></a>使用工具方法</h4><p>使用Sqflite提供的工具方法来执行数据库操作，而不是直接使用SQL语句</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:sqflite/sqflite.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:path/path.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">String</span> tName = <span class="string">&#x27;company&#x27;</span>;</span><br><span class="line"><span class="keyword">final</span> <span class="built_in">String</span> columnId = <span class="string">&quot;_id&quot;</span>;</span><br><span class="line"><span class="keyword">final</span> <span class="built_in">String</span> columnName = <span class="string">&quot;name&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int?</span> id;</span><br><span class="line">  <span class="built_in">String?</span> name;</span><br><span class="line">  Company();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object?</span>&gt; toMap() &#123;</span><br><span class="line">    <span class="keyword">var</span> map = &lt;<span class="built_in">String</span>, <span class="built_in">Object?</span>&gt;&#123;columnName: name&#125;;</span><br><span class="line">    <span class="keyword">if</span> (id != <span class="keyword">null</span>) &#123;</span><br><span class="line">      map[columnId] = id;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> map;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Company.fromMap(<span class="built_in">Map</span> map) &#123;</span><br><span class="line">    id = map[columnId];</span><br><span class="line">    name = map[columnName];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CompanyProvider</span> </span>&#123;</span><br><span class="line">  Database? db;</span><br><span class="line"></span><br><span class="line">  Future&lt;Database?&gt; open() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (db == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> databasesPath = <span class="keyword">await</span> getDatabasesPath();</span><br><span class="line">      <span class="built_in">String</span> path = join(databasesPath, <span class="string">&#x27;demo.db&#x27;</span>);</span><br><span class="line">      db = <span class="keyword">await</span> openDatabase(</span><br><span class="line">        path,</span><br><span class="line">        version: <span class="number">1</span>,</span><br><span class="line">        onCreate: (Database db, <span class="built_in">int</span> version) <span class="keyword">async</span> &#123;</span><br><span class="line">          <span class="keyword">await</span> db.execute(<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">            create table <span class="subst">$tName</span> (</span></span><br><span class="line"><span class="string">            <span class="subst">$columnId</span> integer primary key autoincrement,</span></span><br><span class="line"><span class="string">            <span class="subst">$columnName</span> text not null)</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> db;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">注册企业</span></span></span><br><span class="line">  Future insert(Company company) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">工具方法: 传表名 + 列信息添加数据到数据库</span></span></span><br><span class="line">    company.id = <span class="keyword">await</span> db?.insert(tName, company.toMap());</span><br><span class="line">    <span class="keyword">return</span> company;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">查找企业</span></span></span><br><span class="line">  Future findById(<span class="built_in">int</span> id) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; maps = <span class="keyword">await</span> db!.query(</span><br><span class="line">      tName, <span class="comment">/// <span class="language-markdown">表名</span></span></span><br><span class="line">      columns: [columnId, columnName], <span class="comment">/// <span class="language-markdown">查找的列</span></span></span><br><span class="line">      where: <span class="string">&#x27;<span class="subst">$columnId</span> = ?&#x27;</span>, <span class="comment">/// <span class="language-markdown">查找条件</span></span></span><br><span class="line">      whereArgs: [id], <span class="comment">/// <span class="language-markdown">每个问号填充的值</span></span></span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (maps.isNotEmpty) &#123;</span><br><span class="line">      <span class="keyword">return</span> Company.fromMap(maps.first);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/// <span class="language-markdown">查找所有的企业</span></span></span><br><span class="line">  Future&lt;<span class="built_in">List</span>&lt;Company&gt;&gt; find() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="built_in">List</span>&lt;Company&gt; companys = [];</span><br><span class="line">    <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; maps = <span class="keyword">await</span> db!.query(tName, columns: [columnId, columnName]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> map <span class="keyword">in</span> maps) &#123;</span><br><span class="line">      Company c = Company.fromMap(map);</span><br><span class="line">      companys.add(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> companys;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">删除企业</span></span></span><br><span class="line">  Future delete(<span class="built_in">int</span> id) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">根据id列删除企业</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> db?.delete(tName, where: <span class="string">&#x27;<span class="subst">$columnId</span> = ?&#x27;</span>, whereArgs: [id]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">更新企业信息</span></span></span><br><span class="line">  Future update(Company company) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> db?.update(</span><br><span class="line">      tName,</span><br><span class="line">      company.toMap(),</span><br><span class="line">      where: <span class="string">&#x27;<span class="subst">$columnId</span> = ?&#x27;</span>,</span><br><span class="line">      whereArgs: [company.id],</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> test() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">添加2条测试数据</span></span></span><br><span class="line">    CompanyProvider cp = CompanyProvider();</span><br><span class="line">    <span class="keyword">await</span> cp.open();</span><br><span class="line">    <span class="built_in">List</span>&lt;<span class="built_in">Map</span>&gt; maps = [</span><br><span class="line">      &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Google&quot;</span>&#125;,</span><br><span class="line">      &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Apple&quot;</span>&#125;,</span><br><span class="line">    ];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// <span class="language-markdown">新增数据</span></span></span><br><span class="line">    <span class="built_in">int</span> firstId = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; maps.length; ++i) &#123;</span><br><span class="line">      Company c = Company.fromMap(maps[i]);</span><br><span class="line">      cp.insert(c);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// <span class="language-markdown">查找数据</span></span></span><br><span class="line">    <span class="built_in">List</span>&lt;Company&gt; companys = <span class="keyword">await</span> cp.find();</span><br><span class="line">    <span class="keyword">if</span> (companys.isNotEmpty) &#123;</span><br><span class="line">      firstId = companys.first.id!;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (firstId &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      Company firstCompany = <span class="keyword">await</span> cp.findById(firstId);</span><br><span class="line">      <span class="built_in">print</span>(firstCompany.toMap());</span><br><span class="line"></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">更新数据</span></span></span><br><span class="line">      Company chgCompany = Company();</span><br><span class="line">      chgCompany.id = firstId;</span><br><span class="line">      chgCompany.name = <span class="built_in">DateTime</span>.now().microsecondsSinceEpoch.toString();</span><br><span class="line">      cp.update(chgCompany);</span><br><span class="line"></span><br><span class="line">      firstCompany = <span class="keyword">await</span> cp.findById(firstId);</span><br><span class="line">      <span class="built_in">print</span>(firstCompany.toMap());</span><br><span class="line"></span><br><span class="line">      <span class="comment">/// <span class="language-markdown">删除数据</span></span></span><br><span class="line">      cp.delete(firstId);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/20/vS75WXhyFLVZpxM.png" alt="2025-05-20 15.33.50.png"></p>
+<h4 id="数据库迁移"><a href="#数据库迁移" class="headerlink" title="数据库迁移"></a>数据库迁移</h4><p>随着功能迭代,需要对数据库的表结构进行修改时,比如增加新字段时,需要对表的结构进行更新。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;Database?&gt; open() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (db == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">var</span> databasesPath = <span class="keyword">await</span> getDatabasesPath();</span><br><span class="line">      <span class="built_in">String</span> path = join(databasesPath, <span class="string">&#x27;demo.db&#x27;</span>);</span><br><span class="line">      db = <span class="keyword">await</span> openDatabase(</span><br><span class="line">        path,</span><br><span class="line">        version: <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment">/// <span class="language-markdown">1.新版本发布时改成2</span></span></span><br><span class="line">        onCreate: (db, version) <span class="keyword">async</span> &#123;</span><br><span class="line">          <span class="comment">/// <span class="language-markdown">2.新安装设备触发onCreate，所以这里添加新的字段</span></span></span><br><span class="line">          <span class="keyword">await</span> db.execute(<span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">            create table <span class="subst">$tName</span> (</span></span><br><span class="line"><span class="string">            <span class="subst">$columnId</span> integer primary key autoincrement,</span></span><br><span class="line"><span class="string">            <span class="subst">$columnName</span> text not null,</span></span><br><span class="line"><span class="string">            <span class="subst">$columnDesc</span> text)</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        onUpgrade: (db, oldVersion, newVersion) <span class="keyword">async</span> &#123;</span><br><span class="line">          <span class="keyword">var</span> batch = db.batch();</span><br><span class="line">          <span class="comment">/// <span class="language-markdown">[onUpgrade] is called if either of </span></span></span><br><span class="line">          <span class="comment">/// <span class="language-markdown">the following conditions are met:</span></span></span><br><span class="line"></span><br><span class="line">          <span class="comment">/// <span class="language-markdown"><span class="bullet">1.</span> [onCreate] is not specified</span></span></span><br><span class="line">          <span class="comment">/// <span class="language-markdown"><span class="bullet">2.</span> The database already exists and [version] is higher than the last database version</span></span></span><br><span class="line">          <span class="comment">/// <span class="language-markdown">onUpgrade回调在未指定onCreate回调或者数据库已经存在同时version字段高于已安装的版本,执行完onUpgrade回调后应该会更新关联的版本,设置断点让onUpgrade执行中断,下次还会会执行这个方法</span></span></span><br><span class="line">          </span><br><span class="line">          <span class="comment">/// <span class="language-markdown">3.对旧版本的设备:判断安装设备已创建的数据库版本</span></span></span><br><span class="line">          <span class="keyword">if</span> (oldVersion == <span class="number">1</span>) &#123;</span><br><span class="line">            _updateTableCompanyV1toV2(batch);</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">await</span> batch.commit();</span><br><span class="line">        &#125;,</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> db;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">4.添加description字段</span></span></span><br><span class="line"><span class="keyword">void</span> _updateTableCompanyV1toV2(Batch batch) &#123;</span><br><span class="line">    batch.execute(<span class="string">&#x27;ALTER TABLE Company ADD description TEXT&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">其它的一些处理</span></span></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">String</span> columnDesc = <span class="string">&quot;description&quot;</span>;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Company</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int?</span> id;</span><br><span class="line">  <span class="built_in">String?</span> name;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">5.模型增加对应字段 + 列</span></span></span><br><span class="line">  <span class="built_in">String?</span> description;</span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/// <span class="language-markdown"><span class="bullet">6.</span> 更新map和对象的转换方法</span></span></span><br><span class="line">  <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object?</span>&gt; toMap() &#123;</span><br><span class="line">    <span class="keyword">var</span> map = &lt;<span class="built_in">String</span>, <span class="built_in">Object?</span>&gt;&#123;columnName: name, columnDesc: description&#125;;</span><br><span class="line">    <span class="keyword">if</span> (id != <span class="keyword">null</span>) &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">调用</span></span></span><br><span class="line">...</span><br><span class="line">firstCompany.description = <span class="string">&quot;版本2新增的字段&quot;</span>;</span><br><span class="line"><span class="built_in">print</span>(firstCompany.toMap());</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2025/05/20/PEyABTjWLNX89Hi.png" alt="2025-05-20 16.26.51.png"></p>
+<h4 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h4><p>数据库的增删改查可能会失败,导致数据与预期的不一致,为了保证在执行前后的数据一致性，引入了事务。事务具有ACID这4个特性：原子性、一致性、隔离性和持久性。</p>
+<p>在事务中不要使用数据库,而只需要使用事务对象访问数据库。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> database.transaction((txn) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">// 正确</span></span><br><span class="line">  <span class="keyword">await</span> txn.execute(<span class="string">&#x27;CREATE TABLE Test1 (id INTEGER PRIMARY KEY)&#x27;</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 不要在事务中使用数据库</span></span><br><span class="line">  <span class="comment">// 下面会导致死锁</span></span><br><span class="line">  <span class="keyword">await</span> database.execute(<span class="string">&#x27;CREATE TABLE Test2 (id INTEGER PRIMARY KEY)&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">   <span class="keyword">await</span> database.transaction((txn) <span class="keyword">async</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> txn.update(<span class="string">&#x27;TABLE&#x27;</span>, &#123;<span class="string">&#x27;foo&#x27;</span>: <span class="string">&#x27;bar&#x27;</span>&#125;);</span><br><span class="line">   &#125;);</span><br><span class="line">   </span><br><span class="line">   <span class="comment">// No error, the transaction is committed</span></span><br><span class="line">   <span class="comment">// 1. 未报错,则事务被提交</span></span><br><span class="line">   </span><br><span class="line">   <span class="comment">// cancel the transaction (any error will do)</span></span><br><span class="line">   <span class="comment">// 2. 取消或执行时报错,则抛出异常在,catch中被捕获</span></span><br><span class="line">   <span class="comment">// throw StateError(&#x27;cancel transaction&#x27;);</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e, st) &#123;</span><br><span class="line">   <span class="comment">// this reliably catch if there is a key conflict</span></span><br><span class="line">   <span class="comment">// We know that the transaction is rolled back.</span></span><br><span class="line">   <span class="comment">// 3. 事务被回滚,执行业务相关的操作,比如提示报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="批处理"><a href="#批处理" class="headerlink" title="批处理"></a>批处理</h4><p>使用 Batch,即批处理,来避免在 Dart 和原生代码之间的反复切换。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">batch = db.batch();</span><br><span class="line">batch.insert(<span class="string">&#x27;Test&#x27;</span>, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;item&#x27;</span>&#125;);</span><br><span class="line">batch.update(<span class="string">&#x27;Test&#x27;</span>, &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;new_item&#x27;</span>&#125;, where: <span class="string">&#x27;name = ?&#x27;</span>, whereArgs: [<span class="string">&#x27;item&#x27;</span>]);</span><br><span class="line">batch.delete(<span class="string">&#x27;Test&#x27;</span>, where: <span class="string">&#x27;name = ?&#x27;</span>, whereArgs: [<span class="string">&#x27;item&#x27;</span>]);</span><br><span class="line"><span class="comment">/// <span class="language-markdown">批处理统一提交</span></span></span><br><span class="line">results = <span class="keyword">await</span> batch.commit();</span><br></pre></td></tr></table></figure>
+
+<p>在事务中,批处理的commit会等到事务提交后</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> database.transaction((txn) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> batch = txn.batch();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// commit but the actual commit will happen when the transaction is committed</span></span><br><span class="line">  <span class="comment">// however the data is available in this transaction</span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">当事务被提交时才会真正的提交</span></span></span><br><span class="line">  <span class="keyword">await</span> batch.commit();</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//  ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">设置批处理出现错误依然提交</span></span></span><br><span class="line"><span class="keyword">await</span> batch.commit(continueOnError: <span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="表名和列名"><a href="#表名和列名" class="headerlink" title="表名和列名"></a>表名和列名</h4><p>SQLite的关键词,要避免使用作为实体(Entity)名。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;add&quot;</span>,<span class="string">&quot;all&quot;</span>,<span class="string">&quot;alter&quot;</span>,<span class="string">&quot;and&quot;</span>,<span class="string">&quot;as&quot;</span>,<span class="string">&quot;autoincrement&quot;</span>,<span class="string">&quot;between&quot;</span>,<span class="string">&quot;case&quot;</span>,<span class="string">&quot;check&quot;</span>,<span class="string">&quot;collate&quot;</span>,<span class="string">&quot;commit&quot;</span>,<span class="string">&quot;constraint&quot;</span>,<span class="string">&quot;create&quot;</span>,<span class="string">&quot;default&quot;</span>,<span class="string">&quot;deferrable&quot;</span>,<span class="string">&quot;delete&quot;</span>,<span class="string">&quot;distinct&quot;</span>,<span class="string">&quot;drop&quot;</span>,<span class="string">&quot;else&quot;</span>,<span class="string">&quot;escape&quot;</span>,<span class="string">&quot;except&quot;</span>,<span class="string">&quot;exists&quot;</span>,<span class="string">&quot;foreign&quot;</span>,<span class="string">&quot;from&quot;</span>,<span class="string">&quot;group&quot;</span>,<span class="string">&quot;having&quot;</span>,<span class="string">&quot;if&quot;</span>,<span class="string">&quot;in&quot;</span>,<span class="string">&quot;index&quot;</span>,<span class="string">&quot;insert&quot;</span>,<span class="string">&quot;intersect&quot;</span>,<span class="string">&quot;into&quot;</span>,<span class="string">&quot;is&quot;</span>,<span class="string">&quot;isnull&quot;</span>,<span class="string">&quot;join&quot;</span>,<span class="string">&quot;limit&quot;</span>,<span class="string">&quot;not&quot;</span>,<span class="string">&quot;notnull&quot;</span>,<span class="string">&quot;null&quot;</span>,<span class="string">&quot;on&quot;</span>,<span class="string">&quot;or&quot;</span>,<span class="string">&quot;order&quot;</span>,<span class="string">&quot;primary&quot;</span>,<span class="string">&quot;references&quot;</span>,<span class="string">&quot;select&quot;</span>,<span class="string">&quot;set&quot;</span>,<span class="string">&quot;table&quot;</span>,<span class="string">&quot;then&quot;</span>,<span class="string">&quot;to&quot;</span>,<span class="string">&quot;transaction&quot;</span>,<span class="string">&quot;union&quot;</span>,<span class="string">&quot;unique&quot;</span>,<span class="string">&quot;update&quot;</span>,<span class="string">&quot;using&quot;</span>,<span class="string">&quot;values&quot;</span>,<span class="string">&quot;when&quot;</span>,<span class="string">&quot;where&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>sqflite的工具方法会进行处理,避免与关键字的冲突</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">db.query(<span class="string">&#x27;table&#x27;</span>)</span><br><span class="line"><span class="comment">/// <span class="language-markdown">等价于</span></span></span><br><span class="line">db.rawQuery(<span class="string">&#x27;SELECT * FROM &quot;table&quot;&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="其它问题"><a href="#其它问题" class="headerlink" title="其它问题"></a>其它问题</h2><h3 id="VSCode-无法调试"><a href="#VSCode-无法调试" class="headerlink" title="VSCode 无法调试"></a>VSCode 无法调试</h3><blockquote>
+<p>Error connecting to the service protocol: failed to connect to <a target="_blank" rel="noopener" href="http://127.0.0.1:51020/Kra7fZnYjeI=/">http://127.0.0.1:51020/Kra7fZnYjeI=/</a> Error: Failed to register service methods on attached VM Service: registerService: (-32000) Service connection disposed</p>
+</blockquote>
+<p>原来有成功过，后面发现一直都会有问题,前段时间突然不行,在长时间运行后就会报这个错误,但是单独在VSCode外部用flutter run命令能正常运行。</p>
+<p>发现终端可以是把本地的端口转发的代理给去掉了。然后发现VSCode的代理有这样的说明,若未设置则会继承环境变量中的<code>http_proxy</code>和<code>https_proxy</code>，我把代理加到<code>.zshrc</code>中，所以VSCode的默认会用代理,但是运行在真机上,手机没有代理，应该是这样影响了网络环境。</p>
+<ol>
+<li>.zshrc去掉代理的配置</li>
+<li>重新打开VSCode &amp;&amp; 运行 =&gt; 能正常调试</li>
+</ol>
+<p><img src="https://s2.loli.net/2025/05/20/2kgtJBSEODn61w3.png" alt="2025-05-15 18.54.02.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@anand.pro.dev/sqlite-crud-operations-in-flutter-1da0e35b134d">SQLite CRUD operations in Flutter</a></li>
+<li><a target="_blank" rel="noopener" href="https://pub.dev/documentation/sqflite/latest/">sqflite-doc</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tekartik/sqflite/blob/master/sqflite/doc/migration_example.md">sqflite Migration example</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/16/Technology-learn-flutter-09/" rel="prev" title="Flutter - 集成三方库:日志(logger)">
+      <i class="fa fa-chevron-left"></i> Flutter - 集成三方库:日志(logger)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E5%BC%80-%E5%85%B3%E9%97%AD-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.1.</span> <span class="nav-text">打开&#x2F;关闭&#x2F;删除数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SQL%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用SQL语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用工具方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%81%E7%A7%BB"><span class="nav-number">1.1.4.</span> <span class="nav-text">数据库迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.1.5.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%B9%E5%A4%84%E7%90%86"><span class="nav-number">1.1.6.</span> <span class="nav-text">批处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E5%90%8D%E5%92%8C%E5%88%97%E5%90%8D"><span class="nav-number">1.1.7.</span> <span class="nav-text">表名和列名</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">其它问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VSCode-%E6%97%A0%E6%B3%95%E8%B0%83%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">VSCode 无法调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">91</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
