@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="环境 Flutter 3.29 macOS Sequoia 15.4.1 Xcode 16.3  集成Flutter提供了camera插件来拍照和录视频，它提供了一系列可用的相机，并使用特定的相机展示相机预览、拍照、录视频。 添加依赖 camera: 提供使用设备相机模块的工具 path_provider: 寻找存储图片的正确路径 path: 创建适配任何平台的路径">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 原生交互 - 相机Camera - 01">
+<meta property="og:url" content="http://yoursite.com/2025/05/31/Technology-learn-flutter-12/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="环境 Flutter 3.29 macOS Sequoia 15.4.1 Xcode 16.3  集成Flutter提供了camera插件来拍照和录视频，它提供了一系列可用的相机，并使用特定的相机展示相机预览、拍照、录视频。 添加依赖 camera: 提供使用设备相机模块的工具 path_provider: 寻找存储图片的正确路径 path: 创建适配任何平台的路径">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/05/31/Q2VkeIjLxSo6wy8.png">
+<meta property="og:image" content="https://s2.loli.net/2025/05/31/EsYiOcbgzDHypG3.jpg">
+<meta property="article:published_time" content="2025-05-31T14:49:47.000Z">
+<meta property="article:modified_time" content="2025-05-31T14:57:15.067Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/05/31/Q2VkeIjLxSo6wy8.png">
+
+<link rel="canonical" href="http://yoursite.com/2025/05/31/Technology-learn-flutter-12/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - 原生交互 - 相机Camera - 01 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/31/Technology-learn-flutter-12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 原生交互 - 相机Camera - 01
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-05-31 22:49:47 / 修改时间：22:57:15" itemprop="dateCreated datePublished" datetime="2025-05-31T22:49:47+08:00">2025-05-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+<p>Flutter 3.29</p>
+<p>macOS Sequoia 15.4.1</p>
+<p>Xcode 16.3</p>
+</blockquote>
+<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p><code>Flutter</code>提供了<code>camera</code>插件来拍照和录视频，它提供了一系列可用的相机，并使用特定的相机展示相机预览、拍照、录视频。</p>
+<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><ul>
+<li>camera: 提供使用设备相机模块的工具</li>
+<li>path_provider: 寻找存储图片的正确路径</li>
+<li>path: 创建适配任何平台的路径</li>
+</ul>
+<span id="more"></span>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add camera path_provider path</span><br></pre></td></tr></table></figure>
+
+<p>执行完成后iOS工程的<code>GeneratedPluginRegistrant.m</code>文件会自动生成对应的集成代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> __has_include(<span class="string">&lt;camera_avfoundation/CameraPlugin.h&gt;)</span></span></span><br><span class="line"><span class="meta">#import <span class="string">&lt;camera_avfoundation/CameraPlugin.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="keyword">@import</span> camera_avfoundation;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> __has_include(<span class="string">&lt;path_provider_foundation/PathProviderPlugin.h&gt;)</span></span></span><br><span class="line"><span class="meta">#import <span class="string">&lt;path_provider_foundation/PathProviderPlugin.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="keyword">@import</span> path_provider_foundation;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">[CameraPlugin registerWithRegistrar:[registry registrarForPlugin:<span class="string">@&quot;CameraPlugin&quot;</span>]];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:<span class="string">@&quot;PathProviderPlugin&quot;</span>]];</span><br></pre></td></tr></table></figure>
+
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="registry-registrarForPlugin-”CameraPlugin”"><a href="#registry-registrarForPlugin-”CameraPlugin”" class="headerlink" title="[registry registrarForPlugin:@”CameraPlugin”]"></a><strong>[registry registrarForPlugin:@”CameraPlugin”]</strong></h4><p>在<code>AppDelegate.swfit</code>的<code>application(_:didFinishLaunchingWithOptions:)</code>中将FlutterAppDelegate的子类AppDelegate对象作为参数传入并调用该方法</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GeneratedPluginRegistrant</span>.register(with: <span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/blob/master/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterAppDelegate.mm">源码: FlutterAppDelegate.mm</a></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSObject</span>&lt;FlutterPluginRegistrar&gt;*)registrarForPlugin:(<span class="built_in">NSString</span>*)pluginKey &#123;</span><br><span class="line">  <span class="comment">/// &lt;1&gt; 获取应用的flutterRootViewController对象</span></span><br><span class="line">  FlutterViewController* flutterRootViewController = [<span class="keyword">self</span> rootFlutterViewController];</span><br><span class="line">  <span class="keyword">if</span> (flutterRootViewController) &#123;</span><br><span class="line">    <span class="comment">/// &lt;4&gt; 返回一个FlutterEngine对象</span></span><br><span class="line">    <span class="keyword">return</span> [[flutterRootViewController pluginRegistry] registrarForPlugin:pluginKey];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Returns the key window&#x27;s rootViewController, if it&#x27;s a FlutterViewController.</span></span><br><span class="line"><span class="comment">// Otherwise, returns nil.</span></span><br><span class="line">- (FlutterViewController*)rootFlutterViewController &#123;</span><br><span class="line">  <span class="comment">///- (FlutterViewController*(^ rootFlutterViewControllerGetter) (void))</span></span><br><span class="line">  <span class="comment">/// &lt;2&gt; 检查是否有外部注入,有则使用自定义的回调获取FlutterViewController对象</span></span><br><span class="line">  <span class="keyword">if</span> (_rootFlutterViewControllerGetter != <span class="literal">nil</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> _rootFlutterViewControllerGetter();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/// &lt;3&gt; 没有则检查window的rootViewController属性,如果是FlutterViewController则返回,否则返回nil</span></span><br><span class="line">  <span class="built_in">UIViewController</span>* rootViewController = _window.rootViewController;</span><br><span class="line">  <span class="keyword">if</span> ([rootViewController isKindOfClass:[FlutterViewController <span class="keyword">class</span>]]) &#123;</span><br><span class="line">    <span class="keyword">return</span> (FlutterViewController*)rootViewController;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="flutterRootViewController-pluginRegistry"><a href="#flutterRootViewController-pluginRegistry" class="headerlink" title="[flutterRootViewController pluginRegistry] "></a><code>[flutterRootViewController pluginRegistry] </code></h5><p>第&lt;4&gt;步中的方法调用在 <a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/blob/master/engine/src/flutter/shell/platform/darwin/ios/framework/Source/FlutterViewController.mm">FlutterViewController.mm</a></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///  pluginRegistry方法获得一个遵守FlutterPluginRegistry协议的对象</span></span><br><span class="line">- (<span class="type">id</span>&lt;FlutterPluginRegistry&gt;)pluginRegistry &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.engine;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">/// engine是FlutterEngine对象</span></span><br><span class="line">- (<span class="type">void</span>)sharedSetupWithProject:(<span class="keyword">nullable</span> FlutterDartProject*)project</span><br><span class="line">                  initialRoute:(<span class="keyword">nullable</span> <span class="built_in">NSString</span>*)initialRoute &#123;</span><br><span class="line">...</span><br><span class="line">engine = [[FlutterEngine alloc] initWithName:<span class="string">@&quot;io.flutter&quot;</span></span><br><span class="line">                                         project:project</span><br><span class="line">                          allowHeadlessExecution:<span class="keyword">self</span>.engineAllowHeadlessExecution</span><br><span class="line">                              restorationEnabled:<span class="keyword">self</span>.restorationIdentifier != <span class="literal">nil</span>];</span><br><span class="line">...</span><br><span class="line">_engine = engine;</span><br><span class="line">...              </span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithEngine:(FlutterEngine*)engine</span><br><span class="line">                       nibName:(<span class="keyword">nullable</span> <span class="built_in">NSString</span>*)nibName</span><br><span class="line">                        bundle:(<span class="keyword">nullable</span> <span class="built_in">NSBundle</span>*)nibBundle &#123;</span><br><span class="line">...</span><br><span class="line">_engine = engine;          </span><br></pre></td></tr></table></figure>
+
+
+<p><code>FlutterPluginRegistry</code>协议的继承结构</p>
+<p><img src="https://s2.loli.net/2025/05/31/Q2VkeIjLxSo6wy8.png" alt="17485097331657.png"></p>
+<h5 id="FlutterEngine对象调用registrarForPlugin-方法"><a href="#FlutterEngine对象调用registrarForPlugin-方法" class="headerlink" title="FlutterEngine对象调用registrarForPlugin:方法"></a><code>FlutterEngine</code>对象调用<code>registrarForPlugin:</code>方法</h5><p><a target="_blank" rel="noopener" href="https://github.com/flutter/flutter/blob/master/engine/src/flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm">源码: FlutterEngine.mm</a></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 文件: FlutterEngine.mm</span></span><br><span class="line">...</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * All registrars returned from registrarForPlugin:</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>)</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span>&lt;<span class="built_in">NSString</span>*, FlutterEngineRegistrar*&gt;* pluginRegistrars;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">- (<span class="type">id</span>&lt;FlutterPluginRegistrar&gt;)registrarForPlugin:(<span class="built_in">NSString</span>*)pluginName &#123;</span><br><span class="line">  <span class="comment">/// &lt;5&gt; 检查可变字典中是否已存在插件名的key</span></span><br><span class="line">  <span class="type">id</span>&lt;FlutterPluginRegistrar&gt; registrar = <span class="keyword">self</span>.pluginRegistrars[pluginName];</span><br><span class="line">  <span class="keyword">if</span> (!registrar) &#123;</span><br><span class="line">    <span class="comment">/// &lt;6&gt; 首次注册,生成FlutterEngineRegistrar对象并持有pluginName和弱引用FlutterEngine 对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/// 为什么是弱引用?</span></span><br><span class="line">    <span class="comment">/// 文件:FlutterViewController.m 强引入了FlutterEngine对象</span></span><br><span class="line">    <span class="comment">/// @property(nonatomic, readonly) FlutterEngine* engine;</span></span><br><span class="line">    </span><br><span class="line">    FlutterEngineRegistrar* registrarImpl =</span><br><span class="line">        [[FlutterEngineRegistrar alloc] initWithPlugin:pluginName flutterEngine:<span class="keyword">self</span>];</span><br><span class="line">    <span class="comment">/// 接收传入的pluginName  + self即FlutterEngine对象</span></span><br><span class="line">    <span class="comment">/// @interface FlutterEngineRegistrar : NSObject &lt;FlutterPluginRegistrar&gt;</span></span><br><span class="line">    <span class="comment">/// @property(nonatomic, weak) FlutterEngine* flutterEngine;</span></span><br><span class="line">    <span class="comment">/// @implementation FlutterEngineRegistrar &#123;</span></span><br><span class="line">    <span class="comment">///   NSString* _pluginKey;</span></span><br><span class="line">    <span class="comment">/// &#125;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 因为FlutterViewController.m 已经强引入了FlutterEngine对象，所以这里的flutterEngine弱引用即可</span></span><br><span class="line">    <span class="comment">/// @property(nonatomic, readonly) FlutterEngine* engine;</span></span><br><span class="line">    <span class="comment">/// </span></span><br><span class="line">    <span class="comment">/// &lt;7&gt; 添加到FlutterEngine对象的可变字典中</span></span><br><span class="line">    <span class="keyword">self</span>.pluginRegistrars[pluginName] = registrarImpl;</span><br><span class="line">    registrar = registrarImpl;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">/// &lt;8&gt; 返回FlutterEngineRegistrar注册对象,其中保存FlutterEngine相关的信息,负责与Flutter的iOS插件交互</span></span><br><span class="line">  <span class="keyword">return</span> registrar;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="CameraPlugin-registerWithRegistrar-registrar"><a href="#CameraPlugin-registerWithRegistrar-registrar" class="headerlink" title="[CameraPlugin registerWithRegistrar:registrar]"></a><code>[CameraPlugin registerWithRegistrar:</code>registrar<code>]</code></h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// camera插件的类定义</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">CameraPlugin</span>: <span class="title class_ inherited__">NSObject</span>, <span class="title class_ inherited__">FlutterPlugin</span> &#123;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">FlutterPlugin</span> &lt;<span class="title">NSObject</span>, <span class="title">FlutterApplicationLifeCycleDelegate</span>&gt;</span></span><br><span class="line"><span class="keyword">@required</span></span><br><span class="line">+ (<span class="type">void</span>)registerWithRegistrar:(<span class="built_in">NSObject</span>&lt;FlutterPluginRegistrar&gt;*)registrar;</span><br></pre></td></tr></table></figure>
+
+<p>Flutter中的iOS插件遵守<code>FlutterPlugin</code>协议且必须实现<code>+registerWithRegistrar:</code>方法</p>
+<p>以camera插件为例,CameraPlugin.swift是对外的Swift的接口包装</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">func</span> <span class="title function_">register</span>(<span class="params">with</span> <span class="params">registrar</span>: <span class="type">FlutterPluginRegistrar</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> instance <span class="operator">=</span> <span class="type">CameraPlugin</span>(</span><br><span class="line">      <span class="comment">/// 文件: FlutterEngine.mm</span></span><br><span class="line">      <span class="comment">/// &lt;9&gt; 从FlutterEngineRegistrar对象中获取纹理的对象</span></span><br><span class="line">      <span class="comment">/// - (NSObject&lt;FlutterTextureRegistry&gt;*)textures &#123;</span></span><br><span class="line">      <span class="comment">///   return _flutterEngine.textureRegistry;</span></span><br><span class="line">      <span class="comment">/// &#125;</span></span><br><span class="line">      registry: registrar.textures(),</span><br><span class="line">      <span class="comment">/// Returns a `FlutterBinaryMessenger` for creating Dart/iOS communication</span></span><br><span class="line">      <span class="comment">/// channels to be used by the plugin.</span></span><br><span class="line">      <span class="comment">/// &lt;10&gt; 从FlutterEngineRegistrar返回Dart与iOS原生消息的对象</span></span><br><span class="line">      messenger: registrar.messenger(),</span><br><span class="line">      globalAPI: <span class="type">FCPCameraGlobalEventApi</span>(binaryMessenger: registrar.messenger()),</span><br><span class="line">      deviceDiscoverer: <span class="type">FLTDefaultCameraDeviceDiscoverer</span>(),</span><br><span class="line">      permissionManager: <span class="type">FLTCameraPermissionManager</span>(</span><br><span class="line">        permissionService: <span class="type">FLTDefaultPermissionService</span>()),</span><br><span class="line">      deviceFactory: &#123; name <span class="keyword">in</span></span><br><span class="line">        <span class="comment">// TODO(RobertOdrowaz) Implement better error handling and remove non-null assertion</span></span><br><span class="line">        <span class="type">FLTDefaultCaptureDevice</span>(device: <span class="type">AVCaptureDevice</span>(uniqueID: name)<span class="operator">!</span>)</span><br><span class="line">      &#125;,</span><br><span class="line">      captureSessionFactory: &#123; <span class="type">FLTDefaultCaptureSession</span>(captureSession: <span class="type">AVCaptureSession</span>()) &#125;,</span><br><span class="line">      captureDeviceInputFactory: <span class="type">FLTDefaultCaptureDeviceInputFactory</span>(),</span><br><span class="line">      captureSessionQueue: <span class="type">DispatchQueue</span>(label: <span class="string">&quot;io.flutter.camera.captureSessionQueue&quot;</span>)</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// &lt;11&gt;设置Dart相机API的消息通道</span></span><br><span class="line">    <span class="type">SetUpFCPCameraApi</span>(registrar.messenger(), instance)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="registrar-messenger"><a href="#registrar-messenger" class="headerlink" title="registrar.messenger()"></a><code>registrar.messenger()</code></h5><p>从前面可知<code>registrar</code>是一个<code>FlutterEngineRegistrar</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 文件: FlutterEngine.mm</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">FlutterEngineRegistrar</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">- (<span class="built_in">NSObject</span>&lt;FlutterBinaryMessenger&gt;*)messenger &#123;</span><br><span class="line">  <span class="comment">/// 返回的是FlutterEngineRegistrar对象绑定的FlutterEngine中的binaryMessenger属性</span></span><br><span class="line">  <span class="keyword">return</span> _flutterEngine.binaryMessenger;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">FlutterEngine</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">FlutterBinaryMessengerRelay* _binaryMessenger;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">/// FlutterEngine对象中的binaryMessenger属性是FlutterBinaryMessengerRelay对象</span></span><br><span class="line"><span class="comment">/// 且parent属性关联的是FlutterEngine对象</span></span><br><span class="line">_binaryMessenger = [[FlutterBinaryMessengerRelay alloc] initWithParent:<span class="keyword">self</span>];</span><br></pre></td></tr></table></figure>
+
+<h5 id="SetUpFCPCameraApi-registrar-messenger-instance"><a href="#SetUpFCPCameraApi-registrar-messenger-instance" class="headerlink" title="SetUpFCPCameraApi(registrar.messenger(), instance)"></a><code>SetUpFCPCameraApi(registrar.messenger(), instance)</code></h5><p>代码执行进入文件 <code>message.g.m</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> SetUpFCPCameraApiWithSuffix(<span class="type">id</span>&lt;FlutterBinaryMessenger&gt; binaryMessenger,</span><br><span class="line">                                 <span class="built_in">NSObject</span>&lt;FCPCameraApi&gt; *api, <span class="built_in">NSString</span> *messageChannelSuffix) &#123;</span><br><span class="line">  messageChannelSuffix = messageChannelSuffix.length &gt; <span class="number">0</span></span><br><span class="line">                             ? [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;.%@&quot;</span>, messageChannelSuffix]</span><br><span class="line">                             : <span class="string">@&quot;&quot;</span>;</span><br><span class="line">  <span class="comment">/// Returns the list of available cameras.</span></span><br><span class="line">  <span class="comment">/// 建立设备的相机可用列表API</span></span><br><span class="line">  &#123;</span><br><span class="line">    FlutterBasicMessageChannel *channel = [[FlutterBasicMessageChannel alloc]</span><br><span class="line">           initWithName:[<span class="built_in">NSString</span> stringWithFormat:<span class="string">@&quot;%@%@&quot;</span>,</span><br><span class="line">                                                   <span class="string">@&quot;dev.flutter.pigeon.camera_avfoundation.&quot;</span></span><br><span class="line">                                                   <span class="string">@&quot;CameraApi.getAvailableCameras&quot;</span>,</span><br><span class="line">                                                   messageChannelSuffix]</span><br><span class="line">        binaryMessenger:binaryMessenger</span><br><span class="line">                  codec:FCPGetMessagesCodec()];</span><br><span class="line">    <span class="keyword">if</span> (api) &#123;</span><br><span class="line">      <span class="built_in">NSCAssert</span>(</span><br><span class="line">          [api respondsToSelector:<span class="keyword">@selector</span>(availableCamerasWithCompletion:)],</span><br><span class="line">          <span class="string">@&quot;FCPCameraApi api (%@) doesn&#x27;t respond to @selector(availableCamerasWithCompletion:)&quot;</span>,</span><br><span class="line">          api);</span><br><span class="line">      [channel setMessageHandler:^(<span class="type">id</span> _Nullable message, FlutterReply callback) &#123;</span><br><span class="line">        [api availableCamerasWithCompletion:^(</span><br><span class="line">                 <span class="built_in">NSArray</span>&lt;FCPPlatformCameraDescription *&gt; *_Nullable output,</span><br><span class="line">                 FlutterError *_Nullable error) &#123;</span><br><span class="line">          callback(wrapResult(output, error));</span><br><span class="line">        &#125;];</span><br><span class="line">      &#125;];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      [channel setMessageHandler:<span class="literal">nil</span>];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">/// 绑定一系列相机操作的API</span></span><br><span class="line">                                 </span><br></pre></td></tr></table></figure>
+
+<p><code>FlutterBasicMessageChannel</code>类在<code>FlutterChannel.m</code>中，先初始化一个<code>FlutterBasicMessageChannel</code>对象,实现上只是接收外界参数</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">instancetype</span>)initWithName:(<span class="built_in">NSString</span>*)name</span><br><span class="line">             binaryMessenger:(<span class="built_in">NSObject</span>&lt;FlutterBinaryMessenger&gt;*)messenger</span><br><span class="line">                       codec:(<span class="built_in">NSObject</span>&lt;FlutterMessageCodec&gt;*)codec</span><br><span class="line">                   taskQueue:(<span class="built_in">NSObject</span>&lt;FlutterTaskQueue&gt;*)taskQueue &#123;</span><br><span class="line">  <span class="keyword">self</span> = [<span class="variable language_">super</span> init];</span><br><span class="line">  <span class="built_in">NSAssert</span>(<span class="keyword">self</span>, <span class="string">@&quot;Super init cannot be nil&quot;</span>);</span><br><span class="line">  _name = [name <span class="keyword">copy</span>];</span><br><span class="line">  _messenger = messenger;</span><br><span class="line">  _codec = codec;</span><br><span class="line">  _taskQueue = taskQueue;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="channel-setMessageHandler-id-Nullable-message-FlutterReply-callback"><a href="#channel-setMessageHandler-id-Nullable-message-FlutterReply-callback" class="headerlink" title="[channel setMessageHandler:^(id _Nullable message, FlutterReply callback) ...];"></a><code>[channel setMessageHandler:^(id _Nullable message, FlutterReply callback) ...];</code></h6><p>接着判断入参的<code>api</code>是否不为空,<code>api</code>是生成的<code>CameraPlugin</code>对象,所以不为空,然后消息的回调</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)setMessageHandler:(FlutterMessageHandler)handler &#123;</span><br><span class="line">  <span class="comment">/// 未自定义回调时,这里应该是多次调用则清空上一次的,然后再重新创建</span></span><br><span class="line">  <span class="keyword">if</span> (!handler) &#123;</span><br><span class="line">    <span class="keyword">if</span> (_connection &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      [_messenger cleanUpConnection:_connection];</span><br><span class="line">      _connection = <span class="number">0</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      [_messenger setMessageHandlerOnChannel:_name binaryMessageHandler:<span class="literal">nil</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Grab reference to avoid retain on self.</span></span><br><span class="line">  <span class="comment">// `self` might be released before the block, so the block needs to retain the codec to</span></span><br><span class="line">  <span class="comment">// make sure it is not released with `self`</span></span><br><span class="line">  <span class="comment">/// 从前面的代码可以知道这个self即channel对象只有一个局部对象在持有,所以超过作用域会被回收,所以这里接收到codec</span></span><br><span class="line">  <span class="built_in">NSObject</span>&lt;FlutterMessageCodec&gt;* codec = _codec;</span><br><span class="line">  FlutterBinaryMessageHandler messageHandler = ^(<span class="built_in">NSData</span>* message, FlutterBinaryReply callback) &#123;</span><br><span class="line">    handler([codec decode:message], ^(<span class="type">id</span> reply) &#123;</span><br><span class="line">      callback([codec encode:reply]);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">  _connection = SetMessageHandler(_messenger, _name, messageHandler, _taskQueue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> FlutterBinaryMessengerConnection SetMessageHandler(</span><br><span class="line">    <span class="built_in">NSObject</span>&lt;FlutterBinaryMessenger&gt;* messenger,</span><br><span class="line">    <span class="built_in">NSString</span>* name,</span><br><span class="line">    FlutterBinaryMessageHandler handler,</span><br><span class="line">    <span class="built_in">NSObject</span>&lt;FlutterTaskQueue&gt;* taskQueue) &#123;</span><br><span class="line">  <span class="comment">/// 是否要在指定的任务队列上执行</span></span><br><span class="line">  <span class="comment">/// name在这里是 dev.flutter.pigeon.camera_avfoundation.CameraApi.getAvailableCameras...</span></span><br><span class="line">  <span class="comment">/// handler是设置的回调</span></span><br><span class="line">  <span class="comment">/// 发送给FlutterBinaryMessengerRelay对象</span></span><br><span class="line">  <span class="keyword">if</span> (taskQueue) &#123;</span><br><span class="line">    <span class="built_in">NSCAssert</span>([messenger respondsToSelector:<span class="keyword">@selector</span>(setMessageHandlerOnChannel:</span><br><span class="line">                                                            binaryMessageHandler:taskQueue:)],</span><br><span class="line">              <span class="string">@&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> [messenger setMessageHandlerOnChannel:name</span><br><span class="line">                            binaryMessageHandler:handler</span><br><span class="line">                                       taskQueue:taskQueue];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> [messenger setMessageHandlerOnChannel:name binaryMessageHandler:handler];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进入到<code>FlutterBinaryMessengerRelay</code>对象的<code>setMessageHandlerOnChannel:binaryMessageHandler:taskQueue:</code></p>
+<p>文件: <code>FlutterBinaryMessengerRelay.mm</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (FlutterBinaryMessengerConnection)setMessageHandlerOnChannel:(<span class="built_in">NSString</span>*)channel</span><br><span class="line">                                          binaryMessageHandler:(FlutterBinaryMessageHandler)handler</span><br><span class="line">                                                     taskQueue:</span><br><span class="line">                                                         (<span class="built_in">NSObject</span>&lt;FlutterTaskQueue&gt;*)taskQueue &#123;</span><br><span class="line">  <span class="comment">/// parent就是engine对象,因此又回到engine上setMessageHandlerOnChannel:binaryMessageHandler:                                         taskQueue:</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">self</span>.parent) &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span>.parent setMessageHandlerOnChannel:channel</span><br><span class="line">                              binaryMessageHandler:handler</span><br><span class="line">                                         taskQueue:taskQueue];</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    FML_LOG(WARNING) &lt;&lt; <span class="string">&quot;Communicating on a dead channel.&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件: <code>FlutterEngine.mm</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">- (FlutterBinaryMessengerConnection)</span><br><span class="line">    setMessageHandlerOnChannel:(<span class="built_in">NSString</span>*)channel</span><br><span class="line">          binaryMessageHandler:(FlutterBinaryMessageHandler)handler</span><br><span class="line">                     taskQueue:(<span class="built_in">NSObject</span>&lt;FlutterTaskQueue&gt;* _Nullable)taskQueue &#123;</span><br><span class="line">  <span class="built_in">NSParameterAssert</span>(channel);</span><br><span class="line">  <span class="keyword">if</span> (_shell &amp;&amp; _shell-&gt;IsSetup()) &#123;</span><br><span class="line">    <span class="comment">/// 获取原生平台的线程,并传入channel名,回调,任务队列</span></span><br><span class="line">    <span class="keyword">self</span>.platformView-&gt;GetPlatformMessageHandlerIos()-&gt;SetMessageHandler(channel.UTF8String,</span><br><span class="line">                                                                         handler, taskQueue);</span><br><span class="line">    <span class="comment">/// std::unique_ptr&lt;flutter::ConnectionCollection&gt; _connections;</span></span><br><span class="line">    <span class="comment">/// </span></span><br><span class="line">    <span class="comment">///  文件:connection_collection.mm</span></span><br><span class="line">    <span class="comment">///  ConnectionCollection::Connection   ConnectionCollection::AquireConnection(const std::string&amp; name) &#123;</span></span><br><span class="line">    <span class="comment">///   Connection nextConnection = ++counter_;</span></span><br><span class="line">    <span class="comment">///   connections_[name] = nextConnection;</span></span><br><span class="line">    <span class="comment">///   return nextConnection;</span></span><br><span class="line">    <span class="comment">/// &#125;</span></span><br><span class="line">    <span class="comment">/// FlutterEngine对象中的连接集合属性,AcquireConnection方法让connections字典中key为channel的计数加1</span></span><br><span class="line">    <span class="keyword">return</span> _connections-&gt;AquireConnection(channel.UTF8String);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">NSAssert</span>(!handler, <span class="string">@&quot;Setting a message handler before the FlutterEngine has been run.&quot;</span>);</span><br><span class="line">    <span class="comment">// Setting a handler to nil for a channel that has not yet been set up is a no-op.</span></span><br><span class="line">    <span class="keyword">return</span> flutter::ConnectionCollection::MakeErrorConnection(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>文件: <code>platform_view_ios.h</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 调用GetPlatformMessageHandlerIos即返回platform_message_handler_属性</span></span><br><span class="line"><span class="keyword">class</span> PlatformViewIOS final : public PlatformView &#123;</span><br><span class="line">...</span><br><span class="line">std::shared_ptr&lt;PlatformMessageHandlerIos&gt; GetPlatformMessageHandlerIos() <span class="keyword">const</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> platform_message_handler_;</span><br><span class="line">  &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>文件: <code>platform_view_ios.mm</code></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PlatformViewIOS::PlatformViewIOS(PlatformView::Delegate&amp; delegate,</span><br><span class="line">                                 <span class="keyword">const</span> std::shared_ptr&lt;IOSContext&gt;&amp; context,</span><br><span class="line">                                 __<span class="keyword">weak</span> FlutterPlatformViewsController* platform_views_controller,</span><br><span class="line">                                 <span class="keyword">const</span> flutter::TaskRunners&amp; task_runners)</span><br><span class="line">    : PlatformView(delegate, task_runners),</span><br><span class="line">      ios_context_(context),</span><br><span class="line">      platform_views_controller_(platform_views_controller),</span><br><span class="line">      accessibility_bridge_([<span class="variable language_">this</span>](<span class="type">bool</span> enabled) &#123; PlatformView::SetSemanticsEnabled(enabled); &#125;),</span><br><span class="line">      <span class="comment">/// 从初始化列表中可以看出platform_message_handler_的值通过GetPlatformTaskRunner获取UI的主线程</span></span><br><span class="line">      platform_message_handler_(</span><br><span class="line">          new PlatformMessageHandlerIos(task_runners.GetPlatformTaskRunner())) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里Flutter的插件的原生代码部分已经将<code>channel</code>,回调,执行队列(可选)给原生平台的主线程。</p>
+<h3 id="获取可用相机列表"><a href="#获取可用相机列表" class="headerlink" title="获取可用相机列表"></a>获取可用相机列表</h3><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">Dart端调用获取可用摄像头列表</span></span></span><br><span class="line"><span class="keyword">final</span> cameras = <span class="keyword">await</span> availableCameras();</span><br></pre></td></tr></table></figure>
+
+<p>文件: <code>camera_controller.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">Completes with a list of available cameras.</span></span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">May throw a [CameraException].</span></span></span><br><span class="line">Future&lt;<span class="built_in">List</span>&lt;CameraDescription&gt;&gt; availableCameras() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> CameraPlatform.instance.availableCameras();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用<code>CameraPlatform</code>对象的<code>availableCameras</code>方法</p>
+<p>文件: <code>camera_platform.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraPlatform</span> <span class="keyword">extends</span> <span class="title">PlatformInterface</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">Constructs a CameraPlatform.</span></span></span><br><span class="line">  CameraPlatform() : <span class="keyword">super</span>(token: _token);</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">Completes with a list of available cameras.</span></span></span><br><span class="line">  <span class="comment">///</span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">This method returns an empty list when no cameras are available.</span></span></span><br><span class="line">  Future&lt;<span class="built_in">List</span>&lt;CameraDescription&gt;&gt; availableCameras() &#123;</span><br><span class="line">    <span class="keyword">throw</span> UnimplementedError(<span class="string">&#x27;availableCameras() is not implemented.&#x27;</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>CameraPlatform</code>是个抽象类,要找具体的实现。找到camera插件的<code>pubspec.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">flutter:</span></span><br><span class="line">  <span class="attr">plugin:</span></span><br><span class="line">    <span class="attr">implements:</span> <span class="string">camera</span></span><br><span class="line">    <span class="attr">platforms:</span></span><br><span class="line">      <span class="attr">ios:</span></span><br><span class="line">        <span class="attr">pluginClass:</span> <span class="string">CameraPlugin</span></span><br><span class="line">        <span class="attr">dartPluginClass:</span> <span class="string">AVFoundationCamera</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>dartPluginClass: Optional. The Dart class that serves as the entry point for a Flutter plugin. This can be used with the Android, iOS, Linux macOS, and Windows platforms.</p>
+</blockquote>
+<p>因此<code>camera</code>插件<code>dart</code>的入口应该是<code>AVFoundationCamera</code>这个类,它继承了上面的<code>CameraPlatform</code>抽象类</p>
+<p>文件: <code>avfoundation_camera.dart</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AVFoundationCamera</span> <span class="keyword">extends</span> <span class="title">CameraPlatform</span> </span>&#123;</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">Creates a new AVFoundation-based [CameraPlatform] implementation instance.</span></span></span><br><span class="line">  AVFoundationCamera(&#123;<span class="meta">@visibleForTesting</span> CameraApi? api&#125;)</span><br><span class="line">      : _hostApi = api ?? CameraApi();</span><br><span class="line">  ...</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Future&lt;<span class="built_in">List</span>&lt;CameraDescription&gt;&gt; availableCameras() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">await</span> _hostApi.getAvailableCameras())</span><br><span class="line">          .map(cameraDescriptionFromPlatform)</span><br><span class="line">          .toList();</span><br><span class="line">    &#125; <span class="keyword">on</span> PlatformException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">throw</span> CameraException(e.code, e.message);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>从上面代码可知实际调用的是<code>_hostApi</code>的<code>getAvailableCameras</code>方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">List</span>&lt;PlatformCameraDescription&gt;&gt; getAvailableCameras() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">前面建立channel时已经传入了,这样原生执行完相关方法后能通过channel调用对应的回调</span></span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">String</span> pigeonVar_channelName =</span><br><span class="line">        <span class="string">&#x27;dev.flutter.pigeon.camera_avfoundation.CameraApi.getAvailableCameras<span class="subst">$pigeonVar_messageChannelSuffix</span>&#x27;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// <span class="language-markdown">A named channel for communicating with platform plugins using asynchronous message passing.</span></span></span><br><span class="line">    <span class="comment">/// <span class="language-markdown">创建异步消息</span></span></span><br><span class="line">    <span class="keyword">final</span> BasicMessageChannel&lt;<span class="built_in">Object?</span>&gt; pigeonVar_channel =</span><br><span class="line">        BasicMessageChannel&lt;<span class="built_in">Object?</span>&gt;(</span><br><span class="line">      pigeonVar_channelName,</span><br><span class="line">      pigeonChannelCodec,</span><br><span class="line">      binaryMessenger: pigeonVar_binaryMessenger,</span><br><span class="line">    );</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">阻塞<span class="strong">**发送消息**</span></span></span></span><br><span class="line">    <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">Object?</span>&gt;? pigeonVar_replyList =</span><br><span class="line">        <span class="keyword">await</span> pigeonVar_channel.send(<span class="keyword">null</span>) <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="built_in">Object?</span>&gt;?;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// <span class="language-markdown">消息为空抛异常</span></span></span><br><span class="line">    <span class="keyword">if</span> (pigeonVar_replyList == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> _createConnectionError(pigeonVar_channelName);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pigeonVar_replyList.length &gt; <span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> PlatformException(</span><br><span class="line">        code: pigeonVar_replyList[<span class="number">0</span>]! <span class="keyword">as</span> <span class="built_in">String</span>,</span><br><span class="line">        message: pigeonVar_replyList[<span class="number">1</span>] <span class="keyword">as</span> <span class="built_in">String?</span>,</span><br><span class="line">        details: pigeonVar_replyList[<span class="number">2</span>],</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (pigeonVar_replyList[<span class="number">0</span>] == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> PlatformException(</span><br><span class="line">        code: <span class="string">&#x27;null-error&#x27;</span>,</span><br><span class="line">        message: <span class="string">&#x27;Host platform returned null value for non-null return value.&#x27;</span>,</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">/// <span class="language-markdown">得到可用列表转换为Flutter上的摄像头描述的对象</span></span></span><br><span class="line">      <span class="keyword">return</span> (pigeonVar_replyList[<span class="number">0</span>] <span class="keyword">as</span> <span class="built_in">List</span>&lt;<span class="built_in">Object?</span>&gt;?)!</span><br><span class="line">          .cast&lt;PlatformCameraDescription&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="await-pigeonVar-channel-send-null-as-List-lt-Object-gt"><a href="#await-pigeonVar-channel-send-null-as-List-lt-Object-gt" class="headerlink" title="await pigeonVar_channel.send(null) as List&lt;Object?&gt;?;"></a><code>await pigeonVar_channel.send(null) as List&lt;Object?&gt;?;</code></h4><figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">Sends the specified [message] to the platform plugins on this channel.</span></span></span><br><span class="line">  <span class="comment">///</span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">Returns a [Future] which completes to the received response, which may</span></span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">be null.</span></span></span><br><span class="line">  Future&lt;T?&gt; send(T message) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">调用binaryMessenger对象编码发送消息 &amp;&amp; 得到返回后再解码</span></span></span><br><span class="line">    <span class="keyword">return</span> codec.decodeMessage(<span class="keyword">await</span> binaryMessenger.send(name, codec.encodeMessage(message)));</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Flutter Dart端发送指定channel消息 &amp;&amp; 调用原来添加的回调走到Flutter原生插件部分这里,比如当前走到获取可用摄像头的回调</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">...</span></span><br><span class="line">[api availableCamerasWithCompletion:<span class="operator">^</span>(</span><br><span class="line">                 <span class="type">NSArray</span>&lt;<span class="type">FCPPlatformCameraDescription</span> *&gt; <span class="operator">*</span>_Nullable output,</span><br><span class="line">                 <span class="type">FlutterError</span> <span class="operator">*</span>_Nullable error) &#123;</span><br><span class="line">          callback(wrapResult(output, error));</span><br><span class="line">        &#125;];</span><br></pre></td></tr></table></figure>
+
+<p>即调用api(CameraPlugin)的availableCamerasWithCompletion:方法</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="title class_">CameraPlugin</span>: <span class="title class_ inherited__">FCPCameraApi</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">func</span> <span class="title function_">availableCameras</span>(</span><br><span class="line">    <span class="params">completion</span>: <span class="keyword">@escaping</span> ([<span class="type">FCPPlatformCameraDescription</span>]<span class="operator">?</span>, <span class="type">FlutterError</span>?) -&gt; <span class="type">Void</span></span><br><span class="line">  ) &#123;</span><br><span class="line">    captureSessionQueue.async &#123; [<span class="keyword">weak</span> <span class="keyword">self</span>] <span class="keyword">in</span></span><br><span class="line">      <span class="keyword">guard</span> <span class="keyword">let</span> strongSelf <span class="operator">=</span> <span class="keyword">self</span> <span class="keyword">else</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">var</span> discoveryDevices: [<span class="type">AVCaptureDevice</span>.<span class="type">DeviceType</span>] <span class="operator">=</span> [</span><br><span class="line">        .builtInWideAngleCamera,</span><br><span class="line">        .builtInTelephotoCamera,</span><br><span class="line">      ]</span><br><span class="line">      <span class="operator">...</span></span><br><span class="line">      <span class="comment">/// 前置,后置等摄像头，然后统一添加到reply这个数组对象</span></span><br><span class="line">      <span class="keyword">for</span> device <span class="keyword">in</span> devices &#123;</span><br><span class="line">        <span class="keyword">var</span> lensFacing: <span class="type">FCPPlatformCameraLensDirection</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> device.position &#123;</span><br><span class="line">        <span class="keyword">case</span> .back:</span><br><span class="line">          lensFacing <span class="operator">=</span> .back</span><br><span class="line">        <span class="keyword">case</span> .front:</span><br><span class="line">          lensFacing <span class="operator">=</span> .front</span><br><span class="line">        <span class="keyword">case</span> .unspecified:</span><br><span class="line">      <span class="operator">...</span></span><br><span class="line">        &#125;</span><br><span class="line">        reply.append(cameraDescription)</span><br><span class="line">      &#125;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">/// 最后执行callback(wrapResult(output, error));</span></span><br><span class="line">      <span class="comment">/// 获取成功后,Flutter的Dart部分可以获取到可用的摄像头列表</span></span><br><span class="line">      completion(reply, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="https://s2.loli.net/2025/05/31/EsYiOcbgzDHypG3.jpg" alt="17486664768352.jpg"></p>
+<ol>
+<li>原生插件将方法的channel(约定的字符串),回调设置给Flutter原生平台代码(C++ &amp;&amp; OC)</li>
+<li>Flutter的Dart层发送消息并传递channel,Flutter根据channel找到设置的回调(Dart -&gt; C++ &amp;&amp; OC),然后执行原生插件提供的方法(C++ &amp;&amp; OC)</li>
+<li>获取执行结果并返回给Flutter的原生平台代码(C++ &amp;&amp; OC)，再发送给Dart代码(C++ &amp;&amp; OC -&gt; Dart)</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://pub.dev/packages/camera">camera</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.cn/cookbook/plugins/picture-using-camera/">使用 Camera 插件实现拍照功能</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/68871880/do-not-use-buildcontexts-across-async-gaps">do-not-use-buildcontexts-across-async-gaps</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.flutter.dev/tools/pubspec">Flutter pubspec options</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/joye123/article/details/100562767">一张图理解Flutter中Dart与原生环境通信</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/05/23/Technology-learn-flutter-11/" rel="prev" title="Flutter - 国际化">
+      <i class="fa fa-chevron-left"></i> Flutter - 国际化
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E6%88%90"><span class="nav-number">2.</span> <span class="nav-text">集成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">添加依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#registry-registrarForPlugin-%E2%80%9DCameraPlugin%E2%80%9D"><span class="nav-number">2.2.1.</span> <span class="nav-text">[registry registrarForPlugin:@”CameraPlugin”]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#flutterRootViewController-pluginRegistry"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">[flutterRootViewController pluginRegistry] </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#FlutterEngine%E5%AF%B9%E8%B1%A1%E8%B0%83%E7%94%A8registrarForPlugin-%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">FlutterEngine对象调用registrarForPlugin:方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CameraPlugin-registerWithRegistrar-registrar"><span class="nav-number">2.2.2.</span> <span class="nav-text">[CameraPlugin registerWithRegistrar:registrar]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#registrar-messenger"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">registrar.messenger()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SetUpFCPCameraApi-registrar-messenger-instance"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">SetUpFCPCameraApi(registrar.messenger(), instance)</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#channel-setMessageHandler-id-Nullable-message-FlutterReply-callback"><span class="nav-number">2.2.2.2.1.</span> <span class="nav-text">[channel setMessageHandler:^(id _Nullable message, FlutterReply callback) ...];</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%8F%AF%E7%94%A8%E7%9B%B8%E6%9C%BA%E5%88%97%E8%A1%A8"><span class="nav-number">2.3.</span> <span class="nav-text">获取可用相机列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#await-pigeonVar-channel-send-null-as-List-lt-Object-gt"><span class="nav-number">2.3.1.</span> <span class="nav-text">await pigeonVar_channel.send(null) as List&lt;Object?&gt;?;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">93</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
