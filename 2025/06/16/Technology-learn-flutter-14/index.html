@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="曝光Flutter上CupertinoSlider组件的样式是iOS上的Slider,使用该组件控制曝光量，Camera插件提供的API是CameraController的 123Future&lt;double&gt; setExposureOffset(double offset) async &amp;#123;...&amp;#125;  最后调用iOS端的系统方法控制曝光值 1- (void)setEx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频">
+<meta property="og:url" content="http://yoursite.com/2025/06/16/Technology-learn-flutter-14/index.html">
+<meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
+<meta property="og:description" content="曝光Flutter上CupertinoSlider组件的样式是iOS上的Slider,使用该组件控制曝光量，Camera插件提供的API是CameraController的 123Future&lt;double&gt; setExposureOffset(double offset) async &amp;#123;...&amp;#125;  最后调用iOS端的系统方法控制曝光值 1- (void)setEx">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/06/13/ezK24Lwl1XRVdxi.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/15/oWJCweEIXNRarPf.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/15/JFXjxMpbc4QBuqU.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/16/sGyJwfOQWrgpF3u.gif">
+<meta property="article:published_time" content="2025-06-16T09:54:38.000Z">
+<meta property="article:modified_time" content="2025-06-16T09:56:27.118Z">
+<meta property="article:author" content="忘川三">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/06/13/ezK24Lwl1XRVdxi.gif">
+
+<link rel="canonical" href="http://yoursite.com/2025/06/16/Technology-learn-flutter-14/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频 | 👨🏻‍💻's 博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">👨🏻‍💻's 博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">慢品人间烟火色，闲观万事岁月长</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/06/16/Technology-learn-flutter-14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="忘川三">
+      <meta itemprop="description" content="404~ ~ ~就多走一步">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="👨🏻‍💻's 博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-06-16 17:54:38 / 修改时间：17:56:27" itemprop="dateCreated datePublished" datetime="2025-06-16T17:54:38+08:00">2025-06-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="曝光"><a href="#曝光" class="headerlink" title="曝光"></a>曝光</h2><p>Flutter上<code>CupertinoSlider</code>组件的样式是iOS上的<code>Slider</code>,使用该组件控制曝光量，<br>Camera插件提供的API是<code>CameraController</code>的</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">double</span>&gt; setExposureOffset(<span class="built_in">double</span> offset) <span class="keyword">async</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后调用iOS端的系统方法控制曝光值</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)setExposureTargetBias:(<span class="type">float</span>)bias completionHandler:(<span class="keyword">nullable</span> <span class="type">void</span> (^)(<span class="built_in">CMTime</span> syncTime))handler API_AVAILABLE(ios(<span class="number">8.0</span>), macCatalyst(<span class="number">14.0</span>), tvos(<span class="number">17.0</span>)) API_UNAVAILABLE(macos, visionos);</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TakePictureScreenState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TakePictureScreen</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">设置默认值</span></span></span><br><span class="line">    <span class="built_in">double</span> currentExposure = <span class="number">0.0</span>;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">是否显示曝光Slider组件</span></span></span><br><span class="line">    <span class="built_in">bool</span> _showedExposure = <span class="keyword">false</span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">使用CupertinoSlider</span></span></span><br><span class="line">    </span><br><span class="line">    Widget showExposure() &#123;</span><br><span class="line">        <span class="keyword">if</span> (_showedExposure) &#123;</span><br><span class="line">            <span class="keyword">return</span> SizedBox(</span><br><span class="line">                height: <span class="number">44</span>,</span><br><span class="line">                width: MediaQuery.of(context).size.width,</span><br><span class="line">                child: CupertinoSlider(</span><br><span class="line">                    <span class="comment">/// <span class="language-markdown">滑动Slider时触发的事件</span></span></span><br><span class="line">                    onChanged: (value) &#123;</span><br><span class="line">                        setState(() &#123;</span><br><span class="line">                            <span class="comment">/// <span class="language-markdown">调整相机的曝光值</span></span></span><br><span class="line">                            _controller.setExposureOffset(value);</span><br><span class="line">                            currentExposure = value;</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;,</span><br><span class="line">                    min: -<span class="number">3</span>, <span class="comment">/// <span class="language-markdown">设置作用范围</span></span></span><br><span class="line">                    max: <span class="number">3</span>,</span><br><span class="line">                    value: currentExposure, <span class="comment">/// <span class="language-markdown">当前Slider显示的值</span></span></span><br><span class="line">                ),</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> SizedBox.shrink();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://s2.loli.net/2025/06/13/ezK24Lwl1XRVdxi.gif" alt="202506131634.gif" style="width:400px;">
+
+<h2 id="两指手势缩放"><a href="#两指手势缩放" class="headerlink" title="两指手势缩放"></a>两指手势缩放</h2><p>系统的相机可以双指进行缩放操作,在Flutter中可以在GestureDetector来实现</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">最小缩放比例</span></span></span><br><span class="line"><span class="built_in">double</span> _minAvailableZoom = <span class="number">1.0</span>;</span><br><span class="line"><span class="comment">/// <span class="language-markdown">最大缩放比例</span></span></span><br><span class="line"><span class="built_in">double</span> _maxAvailableZoom = <span class="number">1.0</span>;</span><br><span class="line"><span class="comment">/// <span class="language-markdown">记录当前的缩放比例</span></span></span><br><span class="line"><span class="built_in">double</span> _currentScale = <span class="number">1.0</span>;</span><br><span class="line"><span class="comment">/// <span class="language-markdown">当前的基础值</span></span></span><br><span class="line"><span class="built_in">double</span> _baseScale = <span class="number">1.0</span>;</span><br><span class="line"></span><br><span class="line">Listener(</span><br><span class="line">    onPointerDown: (_) =&gt; _pointers++,</span><br><span class="line">    onPointerUp: (_) =&gt; _pointers--, <span class="comment">// 用来判断是否双指</span></span><br><span class="line">    child: CameraPreview(</span><br><span class="line">            _controller,</span><br><span class="line">            <span class="comment">// Creates a widget that defers its building until layout.</span></span><br><span class="line">            <span class="comment">// 布局完成再创建</span></span><br><span class="line">            child: LayoutBuilder(</span><br><span class="line">                builder: (BuildContext context, BoxConstraints constraints) &#123;</span><br><span class="line">                  <span class="keyword">return</span> GestureDetector(</span><br><span class="line">                            <span class="comment">// Opaque targets can be hit by hit tests, causing them to both receive events within their bounds and prevent targets visually behind them from also receiving events.</span></span><br><span class="line">                            <span class="comment">// 相机Widget能收到手势</span></span><br><span class="line">                            behavior: HitTestBehavior.opaque, </span><br><span class="line">                            <span class="comment">// 设置开始缩放事件</span></span><br><span class="line">                            onScaleStart: _handleScaleStart,</span><br><span class="line">                            <span class="comment">// 设置缩放值变化事件</span></span><br><span class="line">                            onScaleUpdate: _handleScaleUpdate,</span><br><span class="line">                            onTapDown:</span><br><span class="line">                            (TapDownDetails details) =&gt;</span><br><span class="line">                                onViewFinderTap(details, constraints),</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  ),</span><br><span class="line">),</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">开始缩放时用<span class="emphasis">_baseScale记录当前的缩放值</span></span></span></span><br><span class="line"><span class="keyword">void</span> _handleScaleStart(ScaleStartDetails details) &#123;</span><br><span class="line">    _baseScale = _currentScale;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; _handleScaleUpdate(ScaleUpdateDetails details) <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">// 判断是否两指操作</span></span><br><span class="line">    <span class="keyword">if</span> (_pointers != <span class="number">2</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前值 = 基础值 * 缩放的值,clamp方法限制缩放值的范围</span></span><br><span class="line">    _currentScale = (_baseScale * details.scale).clamp(</span><br><span class="line">        _minAvailableZoom,</span><br><span class="line">        _maxAvailableZoom,</span><br><span class="line">    );</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置缩放</span></span><br><span class="line">    <span class="keyword">await</span> _controller.setZoomLevel(_currentScale);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://s2.loli.net/2025/06/15/oWJCweEIXNRarPf.gif" alt="202506131634.gif" style="width:400px;">
+
+<h2 id="录制视频"><a href="#录制视频" class="headerlink" title="录制视频"></a>录制视频</h2><p>使用Camera组件中的cameraController.startVideoRecording()方法来开始拍摄视频,然后用cameraController.stopVideoRecording()方法可以结束视频。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> _initializeControllerFuture;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">当前在拍照</span></span></span><br><span class="line">    <span class="keyword">if</span> (_isPhotoMode) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 通过camera组件提供的isRecordingVideo字段确认</span></span><br><span class="line">        <span class="comment">// 当前在拍摄视频</span></span><br><span class="line">        <span class="keyword">if</span> (_controller.value.isRecordingVideo) &#123;</span><br><span class="line">            onStopButtonPressed();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">/// <span class="language-markdown">开始拍摄</span></span></span><br><span class="line">            onVideoRecordButtonPressed();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>录制过程中显示时间</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TakePictureScreenState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">TakePictureScreen</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">with</span> <span class="title">WidgetsBindingObserver</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">Timer? _timer; <span class="comment">// 计时器</span></span><br><span class="line"><span class="built_in">int</span> _totalSeconds = <span class="number">0</span>; <span class="comment">// 总秒数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">格式化时间为 00:00</span></span></span><br><span class="line"><span class="built_in">String</span> _formatTime() &#123;</span><br><span class="line">    <span class="keyword">final</span> minutes = (_totalSeconds ~/ <span class="number">60</span>).toString().padLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    <span class="keyword">final</span> seconds = (_totalSeconds % <span class="number">60</span>).toString().padLeft(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;<span class="subst">$minutes</span>:<span class="subst">$seconds</span>&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">定时器执行方法</span></span></span><br><span class="line"><span class="keyword">void</span> _startTimer() &#123;</span><br><span class="line">    _timer = Timer.periodic(<span class="built_in">Duration</span>(seconds: <span class="number">1</span>), (timer) &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">            _totalSeconds++;</span><br><span class="line">       &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">dispose方法中要释放timer</span></span></span><br><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _controller.dispose();</span><br><span class="line">    _timer?.cancel();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">定时器组件</span></span></span><br><span class="line">Widget timingWidget() &#123;</span><br><span class="line">    <span class="keyword">return</span> Align(</span><br><span class="line">      alignment: <span class="keyword">const</span> Alignment(<span class="number">0.9</span>, <span class="number">0</span>),</span><br><span class="line">      child: Padding(</span><br><span class="line">        padding: EdgeInsets.fromLTRB(<span class="number">0</span>, <span class="number">20</span>, <span class="number">10</span>, <span class="number">20</span>),</span><br><span class="line">        child: Text(</span><br><span class="line">          _formatTime(),</span><br><span class="line">          style: TextStyle(</span><br><span class="line">            color: Colors.white,</span><br><span class="line">            fontSize: <span class="number">20</span>,</span><br><span class="line">            decoration: TextDecoration.none,</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点击录制事件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> onVideoRecordButtonPressed() &#123;</span><br><span class="line">    startVideoRecording().then((_) &#123;</span><br><span class="line">      <span class="comment">/// <span class="language-markdown">异步调用完成后重新刷新页面,比如按钮变化了</span></span></span><br><span class="line">      <span class="keyword">if</span> (mounted) &#123;</span><br><span class="line">        _startTimer(); <span class="comment">// 启动定时器</span></span><br><span class="line">        setState(() &#123;&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; startVideoRecording() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> CameraController cameraController = _controller;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!cameraController.value.isInitialized) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (cameraController.value.isRecordingVideo) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> cameraController.startVideoRecording();</span><br><span class="line">    &#125; <span class="keyword">on</span> CameraException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      debugPrint(e.toString());</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结束录制</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> onStopButtonPressed() &#123;</span><br><span class="line">    stopVideoRecording().then((XFile? file) &#123;</span><br><span class="line">      <span class="keyword">if</span> (mounted) &#123;</span><br><span class="line">        <span class="comment">// 停止计时器 &amp;&amp; 重置计数值</span></span><br><span class="line">        <span class="keyword">if</span> (_timer?.isActive == <span class="keyword">true</span>) &#123;</span><br><span class="line">          _timer?.cancel();</span><br><span class="line">          _totalSeconds = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        setState(() &#123;&#125;);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/// <span class="language-markdown">获取拍摄的视频文件</span></span></span><br><span class="line">      <span class="keyword">if</span> (file != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">/// <span class="language-markdown">设置视频文件显示预览效果</span></span></span><br><span class="line">        videoFile = file;</span><br><span class="line">        _startVideoPlayer();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">Future&lt;XFile?&gt; stopVideoRecording() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">final</span> CameraController cameraController = _controller;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!cameraController.value.isRecordingVideo) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> cameraController.stopVideoRecording();</span><br><span class="line">    &#125; <span class="keyword">on</span> CameraException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      debugPrint(e.toString());</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://s2.loli.net/2025/06/15/JFXjxMpbc4QBuqU.gif" alt="1749993022.gif" style="width:400px;">
+
+<h2 id="查看拍摄视频"><a href="#查看拍摄视频" class="headerlink" title="查看拍摄视频"></a>查看拍摄视频</h2><p>添加<code>video_player</code>组件用于预览视频</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">¥ flutter pub add video_player</span><br><span class="line">¥ flutter pub get</span><br></pre></td></tr></table></figure>
+
+<p>录制结束后调用_startVideoPlayer方法</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; _startVideoPlayer() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (videoFile == <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// <span class="language-markdown">Web则用网络加载</span></span></span><br><span class="line">    <span class="keyword">final</span> VideoPlayerController vController =</span><br><span class="line">        kIsWeb</span><br><span class="line">            ? VideoPlayerController.networkUrl(<span class="built_in">Uri</span>.parse(videoFile!.path))</span><br><span class="line">            : VideoPlayerController.file(File(videoFile!.path));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// <span class="language-markdown">创建监听器刷新页面</span></span></span><br><span class="line">    videoPlayerListener = () &#123;</span><br><span class="line">      <span class="keyword">if</span> (videoController != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mounted) &#123;</span><br><span class="line">          setState(() &#123;&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        videoController!.removeListener(videoPlayerListener!);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    vController.addListener(videoPlayerListener!);</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">是否循环播放</span></span></span><br><span class="line">    <span class="keyword">await</span> vController.setLooping(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">await</span> vController.initialize();</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">清除原来的</span></span></span><br><span class="line">    <span class="keyword">await</span> videoController?.dispose();</span><br><span class="line">    <span class="keyword">if</span> (mounted) &#123;</span><br><span class="line">      setState(() &#123;</span><br><span class="line">        imageFile = <span class="keyword">null</span>;</span><br><span class="line">        videoController = vController;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/// <span class="language-markdown">播放</span></span></span><br><span class="line">    <span class="keyword">await</span> vController.play();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>预览图组件</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Widget _thumbnailWidget() &#123;</span><br><span class="line">    <span class="keyword">final</span> VideoPlayerController? localVideoController = videoController;</span><br><span class="line">    <span class="built_in">bool</span> isNoThumbnail = localVideoController == <span class="keyword">null</span> &amp;&amp; imageFile == <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">return</span> Align(</span><br><span class="line">      alignment: Alignment(-<span class="number">0.8</span>, <span class="number">0</span>),</span><br><span class="line">      child: SizedBox(</span><br><span class="line">        width: <span class="number">64</span>,</span><br><span class="line">        height: <span class="number">64</span>,</span><br><span class="line">        child:</span><br><span class="line">            isNoThumbnail</span><br><span class="line">                ? Container()</span><br><span class="line">                : GestureDetector(</span><br><span class="line">                ...</span><br><span class="line">                child:</span><br><span class="line">                      <span class="comment">/// <span class="language-markdown">当前是拍照的场景</span></span></span><br><span class="line">                      (localVideoController == <span class="keyword">null</span>)</span><br><span class="line">                          ? (</span><br><span class="line">                          kIsWeb</span><br><span class="line">                              ? Image.network(imageFile!.path)</span><br><span class="line">                              : Image.file(File(imageFile!.path)))</span><br><span class="line">                          : AspectRatio(</span><br><span class="line">                            <span class="comment">/// <span class="language-markdown">当前是视频的场景使用video<span class="emphasis">_player插件提供的组件进行播放</span></span></span></span><br><span class="line">                            aspectRatio: localVideoController.value.aspectRatio,</span><br><span class="line">                            child: VideoPlayer(localVideoController),</span><br><span class="line">                          ),</span><br><span class="line">                )</span><br></pre></td></tr></table></figure>
+
+<p>因为是点击的是同一个按钮进行拍照和视频,一些元素的控制</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">点击Video时清空imageFile</span></span></span><br><span class="line"></span><br><span class="line">GestureDetector(</span><br><span class="line">  child: Container(</span><br><span class="line">    margin: EdgeInsets.fromLTRB(<span class="number">0</span>, <span class="number">8</span>, <span class="number">8</span>, <span class="number">0</span>),</span><br><span class="line">    child: Text(</span><br><span class="line">      <span class="string">&quot;VIDEO&quot;</span>,</span><br><span class="line">      style: TextStyle(</span><br><span class="line">        color: _isPhotoMode ? Colors.white : Colors.orangeAccent,</span><br><span class="line">        fontSize: <span class="number">16</span>,</span><br><span class="line">        decoration: TextDecoration.none,</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">  onTap:</span><br><span class="line">      () =&gt; &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">          _isPhotoMode = <span class="keyword">false</span>;</span><br><span class="line">          imageFile = <span class="keyword">null</span>;</span><br><span class="line">        &#125;),</span><br><span class="line">      &#125;,</span><br><span class="line">),</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">拍照时也清空视频相关的属性</span></span></span><br><span class="line"><span class="keyword">if</span> (_isPhotoMode) &#123;</span><br><span class="line">    <span class="keyword">final</span> image = <span class="keyword">await</span> _controller.takePicture();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!context.mounted) <span class="keyword">return</span>;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">        imageFile = image;</span><br><span class="line">        videoController?.dispose();</span><br><span class="line">        videoController = <span class="keyword">null</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 点击开始/停止录制视频</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://s2.loli.net/2025/06/16/sGyJwfOQWrgpF3u.gif" alt="RPReplay_Final1750066889.mov_optimized.gif" style="width:400px;">
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="锁定相机方向-避免手机横屏时相机视图变化"><a href="#锁定相机方向-避免手机横屏时相机视图变化" class="headerlink" title="锁定相机方向,避免手机横屏时相机视图变化"></a>锁定相机方向,避免手机横屏时相机视图变化</h3><p>使用<code>CameraController</code>对象的<code>lockCaptureOrientation</code>方法可以锁定相机的方向</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span> (snapshot.connectionState == ConnectionState.done) &#123;</span><br><span class="line">  <span class="comment">// 相机初始化完成时,锁定相机的方向</span></span><br><span class="line">  _controller.lockCaptureOrientation(</span><br><span class="line">    DeviceOrientation.portraitUp,</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">return</span> CameraPreview(_controller);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://kickerai.com/fixing-stretched-camera-preview-on-flutter-rotation">Fixing Stretched Camera Preview on Flutter Rotation</a></li>
+<li><a target="_blank" rel="noopener" href="https://pub.dev/packages/camera/example">Camera</a></li>
+<li><a target="_blank" rel="noopener" href="https://dev59.com/_bTma4cB1Zd3GeqP-a-c">How to set Flutter CameraPreview Size “Fullscreen”</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/06/11/Technology-learn-flutter-13/" rel="prev" title="Flutter - 原生交互 - 相机Camera - 02">
+      <i class="fa fa-chevron-left"></i> Flutter - 原生交互 - 相机Camera - 02
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%9D%E5%85%89"><span class="nav-number">1.</span> <span class="nav-text">曝光</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E6%8C%87%E6%89%8B%E5%8A%BF%E7%BC%A9%E6%94%BE"><span class="nav-number">2.</span> <span class="nav-text">两指手势缩放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%95%E5%88%B6%E8%A7%86%E9%A2%91"><span class="nav-number">3.</span> <span class="nav-text">录制视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%8B%8D%E6%91%84%E8%A7%86%E9%A2%91"><span class="nav-number">4.</span> <span class="nav-text">查看拍摄视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E5%AE%9A%E7%9B%B8%E6%9C%BA%E6%96%B9%E5%90%91-%E9%81%BF%E5%85%8D%E6%89%8B%E6%9C%BA%E6%A8%AA%E5%B1%8F%E6%97%B6%E7%9B%B8%E6%9C%BA%E8%A7%86%E5%9B%BE%E5%8F%98%E5%8C%96"><span class="nav-number">5.1.</span> <span class="nav-text">锁定相机方向,避免手机横屏时相机视图变化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">忘川三</p>
+  <div class="site-description" itemprop="description">404~ ~ ~就多走一步</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">95</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">忘川三</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
