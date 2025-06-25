@@ -29,11 +29,12 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2025/06/25/TaoVEyWkPq8F12S.png">
 <meta property="og:image" content="https://s2.loli.net/2025/06/24/KYwS6kD2fIOAvtU.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/25/BYtWJ5bx7SzhH9n.gif">
 <meta property="og:image" content="https://s2.loli.net/2025/06/25/zuMc4lWDq3KLBfC.jpg">
 <meta property="og:image" content="https://s2.loli.net/2025/06/25/ec4iYQnD7tgzE1q.gif">
 <meta property="og:image" content="https://s2.loli.net/2025/06/25/JK1zueFAbNynDCH.png">
 <meta property="article:published_time" content="2025-06-25T00:53:48.000Z">
-<meta property="article:modified_time" content="2025-06-25T01:00:33.958Z">
+<meta property="article:modified_time" content="2025-06-25T09:52:04.082Z">
 <meta property="article:author" content="忘川三">
 <meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
@@ -192,7 +193,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-06-25 08:53:48 / 修改时间：09:00:33" itemprop="dateCreated datePublished" datetime="2025-06-25T08:53:48+08:00">2025-06-25</time>
+              <time title="创建时间：2025-06-25 08:53:48 / 修改时间：17:52:04" itemprop="dateCreated datePublished" datetime="2025-06-25T08:53:48+08:00">2025-06-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,7 +254,12 @@
 <p>在上一个界面接收从相册中选择的图片并刷新界面</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">          <span class="keyword">final</span> result = <span class="keyword">await</span> menuWidget(context: context);</span><br><span class="line">          <span class="keyword">if</span> (result != <span class="keyword">null</span>) &#123;</span><br><span class="line">            setState(() &#123;</span><br><span class="line">              _defaultCover = result;</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        backgroundColor: Colors.orangeAccent,</span><br><span class="line">        child: <span class="keyword">const</span> Icon(Icons.add, color: Colors.white),</span><br><span class="line">),</span><br><span class="line"></span><br><span class="line">Future menuWidget(&#123;<span class="keyword">required</span> BuildContext context&#125;) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> Navigator.push(</span><br><span class="line">    context,</span><br><span class="line">    PageRouteBuilder(</span><br><span class="line">      opaque: <span class="keyword">false</span>,</span><br><span class="line">      barrierColor: Colors.black.withValues(alpha: <span class="number">0.2</span>),</span><br><span class="line">      pageBuilder:</span><br><span class="line">          (context, animation, secondaryAnimation) =&gt;</span><br><span class="line">              PopScope(canPop: <span class="keyword">true</span>, child: MenuWidget()),</span><br><span class="line">      transitionsBuilder:</span><br><span class="line">          (context, animation, secondaryAnimation, child) =&gt; SlideTransition(</span><br><span class="line">            position: Tween&lt;Offset&gt;(</span><br><span class="line">              begin: <span class="keyword">const</span> Offset(<span class="number">0.0</span>, <span class="number">2.4</span>),</span><br><span class="line">              end: Offset.zero,</span><br><span class="line">            ).animate(animation),</span><br><span class="line">            child: SlideTransition(</span><br><span class="line">              position: Tween&lt;Offset&gt;(</span><br><span class="line">                begin: Offset.zero,</span><br><span class="line">                end: <span class="keyword">const</span> Offset(<span class="number">0.0</span>, <span class="number">2.4</span>),</span><br><span class="line">              ).animate(secondaryAnimation),</span><br><span class="line">              child: child,</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong>iOS</strong></p>
 <img src="https://s2.loli.net/2025/06/24/KYwS6kD2fIOAvtU.gif" alt="RPReplay_Final1750762491.mov_optimized.gif" style="width:400px;">
+
+
+<p><strong>Andorid</strong></p>
+<img src="https://s2.loli.net/2025/06/25/BYtWJ5bx7SzhH9n.gif" alt="42_1750841362.mp4_optimized.gif" style="width:400px;">
 
 <h3 id="获取多张照片"><a href="#获取多张照片" class="headerlink" title="获取多张照片"></a>获取多张照片</h3><p>可以使用<code>ImagePicker().pickMultiImage()</code>获取多张图片</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_pickMultiImage(),</span><br></pre></td></tr></table></figure>
