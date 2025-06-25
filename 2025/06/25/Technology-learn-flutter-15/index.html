@@ -20,31 +20,39 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="404~ ~ ~就多走一步">
-<meta property="og:type" content="website">
-<meta property="og:title" content="👨🏻‍💻&#39;s 博客">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="环境 Flutter 3.29 macOS Sequoia 15.4.1 Xcode 16.3 iOS 13.4.1iOS 18.5  集成image_picker在Flutter中可以使用image_picker插件实现从相册中获取图片 添加插件flutter中访问相册image_picker插件 12¥ flutter pub add image_picker¥ flutter pub get">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flutter - 原生交互 - 相册">
+<meta property="og:url" content="http://yoursite.com/2025/06/25/Technology-learn-flutter-15/index.html">
 <meta property="og:site_name" content="👨🏻‍💻&#39;s 博客">
-<meta property="og:description" content="404~ ~ ~就多走一步">
+<meta property="og:description" content="环境 Flutter 3.29 macOS Sequoia 15.4.1 Xcode 16.3 iOS 13.4.1iOS 18.5  集成image_picker在Flutter中可以使用image_picker插件实现从相册中获取图片 添加插件flutter中访问相册image_picker插件 12¥ flutter pub add image_picker¥ flutter pub get">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2025/06/25/TaoVEyWkPq8F12S.png">
+<meta property="og:image" content="https://s2.loli.net/2025/06/24/KYwS6kD2fIOAvtU.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/25/zuMc4lWDq3KLBfC.jpg">
+<meta property="og:image" content="https://s2.loli.net/2025/06/25/ec4iYQnD7tgzE1q.gif">
+<meta property="og:image" content="https://s2.loli.net/2025/06/25/JK1zueFAbNynDCH.png">
+<meta property="article:published_time" content="2025-06-25T00:53:48.000Z">
+<meta property="article:modified_time" content="2025-06-25T00:59:28.182Z">
 <meta property="article:author" content="忘川三">
-<meta property="article:tag" content="iOSer CS">
+<meta property="article:tag" content="Flutter">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2025/06/25/TaoVEyWkPq8F12S.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2025/06/25/Technology-learn-flutter-15/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>👨🏻‍💻's 博客</title>
+  <title>Flutter - 原生交互 - 相册 | 👨🏻‍💻's 博客</title>
   
 
 
@@ -153,9 +161,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -171,10 +180,9 @@
       <meta itemprop="name" content="👨🏻‍💻's 博客">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/06/25/Technology-learn-flutter-15/" class="post-title-link" itemprop="url">Flutter - 原生交互 - 相册</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Flutter - 原生交互 - 相册
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -197,6 +205,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -207,7 +222,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
 <p>Flutter 3.29</p>
 <p>macOS Sequoia 15.4.1</p>
 <p>Xcode 16.3</p>
@@ -270,762 +285,34 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/flutter/packages/tree/main/packages/image_picker/image_picker">Image Picker plugin for Flutter</a></li>
 </ol>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/06/16/Technology-learn-flutter-14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/06/16/Technology-learn-flutter-14/" class="post-title-link" itemprop="url">Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-06-16 17:54:38 / 修改时间：17:56:27" itemprop="dateCreated datePublished" datetime="2025-06-16T17:54:38+08:00">2025-06-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="曝光"><a href="#曝光" class="headerlink" title="曝光"></a>曝光</h2><p>Flutter上<code>CupertinoSlider</code>组件的样式是iOS上的<code>Slider</code>,使用该组件控制曝光量，<br>Camera插件提供的API是<code>CameraController</code>的</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">double</span>&gt; setExposureOffset(<span class="built_in">double</span> offset) <span class="keyword">async</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>最后调用iOS端的系统方法控制曝光值</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">void</span>)setExposureTargetBias:(<span class="type">float</span>)bias completionHandler:(<span class="keyword">nullable</span> <span class="type">void</span> (^)(<span class="built_in">CMTime</span> syncTime))handler API_AVAILABLE(ios(<span class="number">8.0</span>), macCatalyst(<span class="number">14.0</span>), tvos(<span class="number">17.0</span>)) API_UNAVAILABLE(macos, visionos);</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/06/16/Technology-learn-flutter-14/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/06/11/Technology-learn-flutter-13/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/06/11/Technology-learn-flutter-13/" class="post-title-link" itemprop="url">Flutter - 原生交互 - 相机Camera - 02</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-06-11 16:27:50 / 修改时间：16:29:30" itemprop="dateCreated datePublished" datetime="2025-06-11T16:27:50+08:00">2025-06-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>Flutter 3.29</p>
-<p>macOS Sequoia 15.4.1</p>
-<p>Xcode 16.3</p>
-</blockquote>
-<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><ol>
-<li>创建一个带有 State 类的 StatefulWidget 组件</li>
-<li>添加一个变量到 State 类来存放 CameraController</li>
-<li>添加另外一个变量到 State 类中来存放 CameraController.initialize() 返回的 Future</li>
-<li>在 initState() 方法中创建并初始化控制器</li>
-<li>在 dispose() 方法中销毁控制器</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/06/11/Technology-learn-flutter-13/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/06/16/Technology-learn-flutter-14/" rel="prev" title="Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频">
+      <i class="fa fa-chevron-left"></i> Flutter - 原生交互 - 相机Camera - 曝光,缩放,录制视频
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/31/Technology-learn-flutter-12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/31/Technology-learn-flutter-12/" class="post-title-link" itemprop="url">Flutter - 原生交互 - 相机Camera - 01</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-31 22:49:47 / 修改时间：22:57:15" itemprop="dateCreated datePublished" datetime="2025-05-31T22:49:47+08:00">2025-05-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>Flutter 3.29</p>
-<p>macOS Sequoia 15.4.1</p>
-<p>Xcode 16.3</p>
-</blockquote>
-<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p><code>Flutter</code>提供了<code>camera</code>插件来拍照和录视频，它提供了一系列可用的相机，并使用特定的相机展示相机预览、拍照、录视频。</p>
-<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><ul>
-<li>camera: 提供使用设备相机模块的工具</li>
-<li>path_provider: 寻找存储图片的正确路径</li>
-<li>path: 创建适配任何平台的路径</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/31/Technology-learn-flutter-12/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/23/Technology-learn-flutter-11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/23/Technology-learn-flutter-11/" class="post-title-link" itemprop="url">Flutter - 国际化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-23 09:32:51 / 修改时间：09:34:15" itemprop="dateCreated datePublished" datetime="2025-05-23T09:32:51+08:00">2025-05-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>Flutter 3.29<br>macOS Sequoia 15.4.1<br>Xcode 16.3</p>
-</blockquote>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><p>默认情况下，Flutter只提供美式英语的本地化，可以通过flutter_localizations这个package来实现国际化。</p>
-<p>创建flutter工程后执行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">¥ flutter pub add flutter_localizations --sdk=flutter</span><br><span class="line">¥ flutter pub add intl:any</span><br></pre></td></tr></table></figure>
-
-<p>执行后的<code>pubspec.yaml</code>文件的效果</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">cupertino_icons:</span> <span class="string">^1.0.8</span></span><br><span class="line">  <span class="attr">flutter_localizations:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">intl:</span> <span class="string">any</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/23/Technology-learn-flutter-11/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/20/Technology-learn-flutter-10/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/20/Technology-learn-flutter-10/" class="post-title-link" itemprop="url">Flutter - 集成三方库:数据库(sqflite)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-20 16:58:57 / 修改时间：16:59:55" itemprop="dateCreated datePublished" datetime="2025-05-20T16:58:57+08:00">2025-05-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add sqlite</span><br><span class="line">$ flutter pub get</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter run</span><br></pre></td></tr></table></figure>
-
-<p>运行失败，看是编译报错,打开Xcode工程 ⌘ + B 编译</p>
-<p><img src="https://s2.loli.net/2025/05/20/G5wHY7vDxherQis.png" alt="2025-05-15 08.47.33.png"></p>
-<p>对比 <a target="_blank" rel="noopener" href="https://gitee.com/CarGuo/GSYGithubAppFlutter">GSYGithubAppFlutter</a> 的Xcode工程Build Phases &gt; [CP] Embed Pods Frameworks 有sqfite.framework。本地默认的Flutter工程默认未生成Podfile</p>
-<p><img src="https://s2.loli.net/2025/05/20/AC6FOEx89bhul52.png" alt="2025-05-15 19.03.14.png"></p>
-<p>然后查看 <a target="_blank" rel="noopener" href="https://gitee.com/CarGuo/GSYGithubAppFlutter/blob/master/ios/Podfile">GSYGithubAppFlutter</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/20/Technology-learn-flutter-10/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/16/Technology-learn-flutter-09/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/16/Technology-learn-flutter-09/" class="post-title-link" itemprop="url">Flutter - 集成三方库:日志(logger)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-16 16:45:16 / 修改时间：16:46:59" itemprop="dateCreated datePublished" datetime="2025-05-16T16:45:16+08:00">2025-05-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p>使用<code>print</code>方法时,会提示</p>
-<p><img src="https://s2.loli.net/2025/05/16/8ea2pZotIN6ujRE.png" alt="2025-05-15 20.52.59.png"></p>
-<h3 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub add logger</span><br></pre></td></tr></table></figure>
-
-<h3 id="下载依赖"><a href="#下载依赖" class="headerlink" title="下载依赖"></a>下载依赖</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub get</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/16/Technology-learn-flutter-09/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/14/Technology-learn-flutter-08/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/14/Technology-learn-flutter-08/" class="post-title-link" itemprop="url">Flutter - UIKit开发相关指南 - 线程和异步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-05-14 10:07:20" itemprop="dateCreated datePublished" datetime="2025-05-14T10:07:20+08:00">2025-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-05-16 16:45:45" itemprop="dateModified" datetime="2025-05-16T16:45:45+08:00">2025-05-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="线程和异步"><a href="#线程和异步" class="headerlink" title="线程和异步"></a>线程和异步</h2><h3 id="编写异步代码"><a href="#编写异步代码" class="headerlink" title="编写异步代码"></a>编写异步代码</h3><p>Dart采用单线程执行模型,支持Isolates(在另一个线程上运行Dart代码)、事件循环和异步编程。除非生成一个Isolates，否则Dart代码将在主UI线程中运行，并由事件循环驱动。Flutter的事件循环相当于iOS的主线程上的RunLoop。</p>
-<p>Dart的单线程模型,不代表阻塞型的操作都会导致UI卡顿。实际上可以采用Dart语言提供的异步功能比如async/await来执行异步的操作。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/14/Technology-learn-flutter-08/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/12/Technology-learn-flutter-07/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/12/Technology-learn-flutter-07/" class="post-title-link" itemprop="url">Flutter - UIKit开发相关指南 - 控制器，主题，表单</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-12 15:26:50 / 修改时间：15:27:49" itemprop="dateCreated datePublished" datetime="2025-05-12T15:26:50+08:00">2025-05-12</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote>
-<p>Flutter 3.29<br>macOS Sequoia 15.4.1<br>Xcode 16.3</p>
-</blockquote>
-<h2 id="控制器-ViewControllers"><a href="#控制器-ViewControllers" class="headerlink" title="控制器(ViewControllers)"></a>控制器(ViewControllers)</h2><p>在UIKit中,通过ViewController控制数据在视图上展现,多个ViewController组合在一起构建复杂的用户界面。在Flutter中,因为所有都是Widget,所以ViewController相关的功能也由Widget来承担。</p>
-<h3 id="生命周期事件"><a href="#生命周期事件" class="headerlink" title="生命周期事件"></a>生命周期事件</h3><p>在UIKit中可以重写自定义控制器的生命周期的方法,或注册AppDelegate的回调。在Flutter3.13前,没有这个概念,但是可以通过监听<code>WidgetsBinding</code>观察者和<code>didChangeAppLifecycleState()</code>改变事件来实现</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/12/Technology-learn-flutter-07/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2025/05/11/Technology-learn-flutter-06/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="忘川三">
-      <meta itemprop="description" content="404~ ~ ~就多走一步">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="👨🏻‍💻's 博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/05/11/Technology-learn-flutter-06/" class="post-title-link" itemprop="url">Flutter - UIKit开发相关指南 - 导航</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-05-11 11:47:57 / 修改时间：11:50:56" itemprop="dateCreated datePublished" datetime="2025-05-11T11:47:57+08:00">2025-05-11</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CrossPlatform/" itemprop="url" rel="index"><span itemprop="name">CrossPlatform</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h2><h3 id="两个页面之间切换"><a href="#两个页面之间切换" class="headerlink" title="两个页面之间切换"></a>两个页面之间切换</h3><p>UIKit中,使用<code>UINavigationController</code>来管理视图。Flutter中通过<code>Navigator</code>和<code>Routes</code>来实现相似的功能。</p>
-<p>一个<code>Route</code>是一个应用中屏幕或页的抽象,<code>Navigator</code>是一个Widget来管理这些<code>Routes</code>。<code>Route</code>可以粗略的认为是一个<code>UIViewController</code>，<code>Navigator</code>类似iOS中的<code>UINavigationController</code>，可以<code>push</code>和<code>pop</code>Routes。</p>
-<p>切页面有两种方法</p>
-<ul>
-<li>指定一个路由的映射表</li>
-<li>直接导航到一个<code>Route</code></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2025/05/11/Technology-learn-flutter-06/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -1077,6 +364,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E6%88%90image-picker"><span class="nav-number">2.</span> <span class="nav-text">集成image_picker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%8F%92%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">添加插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E6%9D%83%E9%99%90"><span class="nav-number">2.2.</span> <span class="nav-text">添加权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%8D%95%E5%BC%A0%E7%85%A7%E7%89%87"><span class="nav-number">2.3.</span> <span class="nav-text">获取单张照片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%A4%9A%E5%BC%A0%E7%85%A7%E7%89%87"><span class="nav-number">2.4.</span> <span class="nav-text">获取多张照片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%A7%86%E9%A2%91"><span class="nav-number">2.5.</span> <span class="nav-text">获取视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E5%A4%9A%E5%AA%92%E4%BD%93%E6%96%87%E4%BB%B6"><span class="nav-number">2.6.</span> <span class="nav-text">获取多媒体文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
